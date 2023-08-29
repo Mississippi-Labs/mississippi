@@ -1,1 +1,1 @@
-export { default as loadMapData } from './loadMapData';
+export { cutMapData, loadMapData, getCellClass } from './map'

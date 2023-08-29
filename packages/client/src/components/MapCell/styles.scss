@@ -1,0 +1,15 @@
+.mi-map-cell {
+    display: flex;
+    flex-wrap: wrap;
+
+    .inner-cell {
+        min-width: percentage(1/3);
+        min-height: percentage(1/3);
+    }
+
+    @for $i from 1 through 25 {
+        .mi-wall-#{$i} {
+            background: url("/src/assets/wall/wall_#{$i}.png") no-repeat center 100% / cover;
+        }
+    }
+}
