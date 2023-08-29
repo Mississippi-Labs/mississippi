@@ -1,24 +1,24 @@
 import { setup } from "./mud/setup";
 import mudConfig from "contracts/mud.config";
+import ReactDOM from "react-dom/client";
+import { App } from './App';
+import './common.scss';
 
 const {
-  components,
-  systemCalls: { increment },
   network,
 } = await setup();
 
 // Components expose a stream that triggers when the component is updated.
-components.Counter.update$.subscribe((update) => {
-  const [nextValue, prevValue] = update.value;
-  console.log("Counter updated", update, { nextValue, prevValue });
-  document.getElementById("counter")!.innerHTML = String(nextValue?.value ?? "unset");
+
+
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("React root not found");
+const root = ReactDOM.createRoot(rootElement);
+
+setup().then((result) => {
+  root.render(<App/>)
 });
 
-// Just for demonstration purposes: we create a global function that can be
-// called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
-(window as any).increment = async () => {
-  console.log("new counter value:", await increment());
-};
 
 // https://vitejs.dev/guide/env-and-mode.html
 if (import.meta.env.DEV) {
