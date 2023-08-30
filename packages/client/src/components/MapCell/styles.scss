@@ -1,11 +1,10 @@
-.mi-map-cell {
-    display: flex;
-    flex-wrap: wrap;
 
-    .inner-cell {
-        min-width: percentage(1/3);
-        min-height: percentage(1/3);
-    }
+.mi-map-cell {
+    flex-wrap: wrap;
+    font-size: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
     @for $i from 1 through 25 {
         .mi-wall-#{$i} {

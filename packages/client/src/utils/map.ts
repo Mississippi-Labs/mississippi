@@ -68,7 +68,7 @@ export const getCellClass = (data, coordinate) => {
   const isTopCritical = y === 0;
   const isBottomCritical = y === data.length - 1;
 
-  let wallIndexArr = Array(9).fill(0);
+  const wallIndexArr = Array(9).fill(0);
   const transforms = [];
 
   const currentMovable = data[y][x] === CellType.movable;
@@ -152,7 +152,7 @@ export const getCellClass = (data, coordinate) => {
         if (leftMovable) {
           wallIndexArr[productIndex - 1] = 4;
         } else {
-          wallIndexArr[productIndex - 1] = 5;
+          wallIndexArr[productIndex - 1] = bottomLeftMovable ? 4 : 5;
         }
       }
     });
@@ -168,13 +168,12 @@ export const getCellClass = (data, coordinate) => {
         if (rightMovable) {
           wallIndexArr[productIndex - 1] = 6;
         } else {
-          wallIndexArr[productIndex - 1] = 5;
+          wallIndexArr[productIndex - 1] = bottomRightMovable ? 6 : 5;
         }
       }
     });
     // 8号位置
     if (topMovable) {
-      // TODO
       wallIndexArr[7] = 12;
     } else {
       wallIndexArr[7] = bottomMovable ? 10 : 5;
@@ -182,7 +181,7 @@ export const getCellClass = (data, coordinate) => {
     // 7号位置
     if (topMovable) {
       if (bottomMovable) {
-        // TODO
+        wallIndexArr[6] = leftMovable ? 8 : 12;
       } else {
         wallIndexArr[6] = leftMovable ? 8 : 12;
       }
@@ -206,24 +205,26 @@ export const getCellClass = (data, coordinate) => {
       }
     }
     // 9号位置
-    if (topMovable && !bottomMovable) {
-      wallIndexArr[8] = rightMovable ? 13 : 12;
-    } else if (!topMovable && bottomMovable) {
+    if (topMovable) {
       if (rightMovable) {
-        wallIndexArr[8] = 6;
+        wallIndexArr[8] = topRightMovable ? 13 : 6;
       } else {
-        if (topRightMovable) {
-          wallIndexArr[8] = 15;
-        } else {
-          wallIndexArr[8] = bottomRightMovable ? 17 : 5;
-        }
+        wallIndexArr[8] = topRightMovable ? 12 : 12;
+      }
+    } else {
+      if (rightMovable) {
+        wallIndexArr[8] = bottomRightMovable ? (bottomMovable ? 14 : 6) : 6;
+      } else {
+        wallIndexArr[8] = topRightMovable ?
+          15
+          :
+          bottomMovable ?
+            10
+            :
+            bottomRightMovable ? 17 : 5;
       }
     }
   }
-
-  // wallIndexArr = wallIndexArr.map((item) => {
-  //   return String(item).padStart(4, '0');
-  // })
 
   return {
     transforms,

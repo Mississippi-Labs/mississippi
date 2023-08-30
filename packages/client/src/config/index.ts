@@ -1,4 +1,4 @@
 export const MapConfig = {
-  visualWidth: 12,
-  visualHeight: 8,
+  visualWidth: 24,
+  visualHeight: 16,
 }

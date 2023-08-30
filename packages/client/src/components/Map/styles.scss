@@ -1,4 +1,4 @@
-$cellSize: 100px;
+@import "../../theme";
 
 .mi-map-wrapper {
     display: flex;
@@ -8,6 +8,8 @@ $cellSize: 100px;
 
     .mi-map-content {
         border: 1px solid;
+        width: $cellSize * 24;
+        font-size: 0;
     }
 
     .mi-map-row {
@@ -15,8 +17,7 @@ $cellSize: 100px;
     }
 
     .mi-map-cell {
-        flex: 1;
-        min-width: $cellSize;
+        width: $cellSize;
         height: $cellSize;
     }
 }
