@@ -5,7 +5,7 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { MapData } from "../codegen/Tables.sol";
 
 contract MapSystem is System {
-  bytes32 constant MAP_KEY = keccak256("mapkey");
+  bytes32 constant MAP_KEY = keccak256("map-key");
 
   function initMap(int[] calldata array, uint xLen, uint yLen) public {
     require(array.length * 256 == xLen * yLen, "map array not equal size");
