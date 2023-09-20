@@ -62,6 +62,9 @@ importers:
       '@latticexyz/world':
         specifier: 2.0.0-next.4
         version: registry.npmmirror.com/@latticexyz/world@2.0.0-next.4(typescript@5.1.6)
+      '@types/node':
+        specifier: ^18.15.11
+        version: 18.17.11
       antd:
         specifier: ^5.9.2
         version: 5.9.2(react-dom@18.2.0)(react@18.2.0)
@@ -98,7 +101,7 @@ importers:
         version: 18.0.11
       vite:
         specifier: ^4.2.1
-        version: registry.npmmirror.com/vite@4.2.1(sass@1.64.1)
+        version: registry.npmmirror.com/vite@4.2.1(@types/node@18.17.11)(sass@1.64.1)
       wait-port:
         specifier: ^1.0.4
         version: registry.npmmirror.com/wait-port@1.0.4
@@ -1098,7 +1101,6 @@ packages:
 
   /@types/node@18.17.11:
     resolution: {integrity: sha512-r3hjHPBu+3LzbGBa8DHnr/KAeTEEOrahkcL+cZc4MaBMTM+mk8LtXR+zw+nqfjuDZZzYTYgTcpHuP+BEQk069g==}
-    dev: false
 
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -2727,13 +2729,13 @@ packages:
     resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
 
   github.com/dapphub/ds-test/e282159d5170298eb2455a6c05280ab5a73a4ef0:
-    resolution: {commit: e282159d5170298eb2455a6c05280ab5a73a4ef0, repo: git+ssh://git@github.com/dapphub/ds-test.git, type: git}
+    resolution: {tarball: https://codeload.github.com/dapphub/ds-test/tar.gz/e282159d5170298eb2455a6c05280ab5a73a4ef0}
     name: ds-test
     version: 1.0.0
     dev: true
 
   github.com/foundry-rs/forge-std/74cfb77e308dd188d2f58864aaf44963ae6b88b1:
-    resolution: {commit: 74cfb77e308dd188d2f58864aaf44963ae6b88b1, repo: git+ssh://git@github.com/foundry-rs/forge-std.git, type: git}
+    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/74cfb77e308dd188d2f58864aaf44963ae6b88b1}
     name: forge-std
     version: 1.6.0
     dev: true
@@ -3733,11 +3735,7 @@ packages:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.15.11.tgz}
     name: '@types/node'
     version: 18.15.11
-
-  registry.npmmirror.com/@types/node@18.17.11:
-    resolution: {integrity: sha512-r3hjHPBu+3LzbGBa8DHnr/KAeTEEOrahkcL+cZc4MaBMTM+mk8LtXR+zw+nqfjuDZZzYTYgTcpHuP+BEQk069g==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.17.11.tgz}
-    name: '@types/node'
-    version: 18.17.11
+    dev: true
 
   registry.npmmirror.com/@types/prettier@2.7.3:
     resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/prettier/-/prettier-2.7.3.tgz}
@@ -3760,7 +3758,7 @@ packages:
     name: '@types/ws'
     version: 8.5.5
     dependencies:
-      '@types/node': registry.npmmirror.com/@types/node@18.15.11
+      '@types/node': 18.17.11
 
   registry.npmmirror.com/@typescript-eslint/eslint-plugin@5.46.1(@typescript-eslint/parser@5.46.1)(eslint@8.29.0)(typescript@5.1.6):
     resolution: {integrity: sha512-YpzNv3aayRBwjs4J3oz65eVLXc9xx0PDbIRisHj+dYhvBn02MjYOD96P8YGiWEIFBrojaUjxvkaUpakD82phsA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.46.1.tgz}
@@ -6264,7 +6262,7 @@ packages:
       '@protobufjs/path': registry.npmmirror.com/@protobufjs/path@1.1.2
       '@protobufjs/pool': registry.npmmirror.com/@protobufjs/pool@1.1.0
       '@protobufjs/utf8': registry.npmmirror.com/@protobufjs/utf8@1.1.0
-      '@types/node': registry.npmmirror.com/@types/node@18.17.11
+      '@types/node': 18.17.11
       long: registry.npmmirror.com/long@5.2.3
 
   registry.npmmirror.com/proxy-deep@3.1.1:
@@ -7144,7 +7142,7 @@ packages:
       - utf-8-validate
       - zod
 
-  registry.npmmirror.com/vite@4.2.1(sass@1.64.1):
+  registry.npmmirror.com/vite@4.2.1(@types/node@18.17.11)(sass@1.64.1):
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/vite/-/vite-4.2.1.tgz}
     id: registry.npmmirror.com/vite/4.2.1
     name: vite
@@ -7172,6 +7170,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 18.17.11
       esbuild: registry.npmmirror.com/esbuild@0.17.19
       postcss: registry.npmmirror.com/postcss@8.4.28
       resolve: registry.npmmirror.com/resolve@1.22.4

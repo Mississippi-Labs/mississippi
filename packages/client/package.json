@@ -21,6 +21,7 @@
     "@latticexyz/store-sync": "2.0.0-next.4",
     "@latticexyz/utils": "2.0.0-next.4",
     "@latticexyz/world": "2.0.0-next.4",
+    "@types/node": "^18.15.11",
     "antd": "^5.9.2",
     "contracts": "workspace:*",
     "ethers": "^5.7.2",

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Col, Row, Button, Input, message } from 'antd';
 import './styles.scss';
 import { useNavigate } from 'react-router-dom';
-import AvatarSelector from '../../components/AvatarSelector';
+import AvatarSelector from '@/components/AvatarSelector';
 
 const Home = () => {
 
@@ -28,7 +28,7 @@ const Home = () => {
       state: {
         avatar,
         roomId,
-        avatar
+        username
       }
     });
   }

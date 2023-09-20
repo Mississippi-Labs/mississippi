@@ -13,9 +13,10 @@ export default defineConfig({
     minify: true,
     sourcemap: true,
   },
-  alias: {
-    '@/avatar': path.resolve(__dirname, './src/assets/avatar'),
-    '@/': path.resolve(__dirname, './src'),
-    '~': path.resolve(__dirname, './src'),
-  },
+  // base: './',
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  }
 });

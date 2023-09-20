@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapConfig } from '../../config';
-import { loadMapData } from '../../utils';
-import Map from '../../components/Map';
+import { MapConfig } from '@/config';
+import { loadMapData } from '@/utils';
+import Map from '@/components/Map';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
