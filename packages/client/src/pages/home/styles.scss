@@ -1,0 +1,26 @@
+.mi-home-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+
+    .home-content {
+        padding: 20px;
+        width: 800px;
+        height: 600px;
+        border: 2px solid;
+
+        .ant-row {
+            margin-bottom: 30px;
+        }
+
+        .ant-col {
+            padding: 0 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+}
