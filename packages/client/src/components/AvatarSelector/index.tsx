@@ -25,7 +25,7 @@ const AvatarSelector = (props: IProps) => {
     <div className="mi-c-avatars-wrap">
       {
         avatar ?
-          <div className={`avatar-selected avatar-${avatar}`} onClick={toggleAvatars} />
+          <div className={`avatar-selected avatar-box avatar-${avatar}`} onClick={toggleAvatars} />
           :
           <Button onClick={toggleAvatars}>Choose avatar</Button>
       }
@@ -36,7 +36,7 @@ const AvatarSelector = (props: IProps) => {
               Avatars.map((avatar) => {
                 return (
                   <li
-                    className={`avatar-item avatar-${avatar}`}
+                    className={`avatar-item avatar-box avatar-${avatar}`}
                     onClick={() => {
                       setAvatar(avatar);
                       setAvatarsVisible(false);

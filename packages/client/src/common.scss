@@ -1,3 +1,18 @@
+$avatars: 'elephant', 'hippo', 'panda', 'penguin', 'rabbit', 'giraffe', 'monkey', 'parrot', 'pig', 'snake';
+$avatarsPath: './assets/avatar/';
+
+@for $i from 1 through 10 {
+    .avatar-#{nth($avatars, $i)} {
+        background-image: url("#{$avatarsPath}#{nth($avatars, $i)}.png");
+    }
+}
+
+.avatar-box {
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 * {
     margin: 0;
     padding: 0;

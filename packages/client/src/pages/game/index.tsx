@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapConfig } from '@/config';
 import { loadMapData } from '@/utils';
 import Map from '@/components/Map';
+import UserAvatar from '@/components/UserAvatar';
+import { useLocation } from 'react-router-dom';
+import './styles.scss';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -11,6 +14,8 @@ const Game = () => {
   });
 
   const mapDataRef = useRef([]);
+  const location = useLocation();
+  const { username = '', avatar = 'snake', roomId = '000000' } = location.state ?? {};
 
   const onKeyDown = (e) => {
     const mapData = mapDataRef.current;
@@ -45,7 +50,18 @@ const Game = () => {
   }, []);
 
   return (
-    <div className="mi-app" onKeyDown={onKeyDown} tabIndex={0}>
+    <div className="mi-game" onKeyDown={onKeyDown} tabIndex={0}>
+      <div className="mi-game-user-avatar">
+        <UserAvatar
+          username={username}
+          roomId={roomId}
+          avatar={avatar}
+          hp={100}
+          maxHp={120}
+          ap={50}
+          maxAp={100}
+        />
+      </div>
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}

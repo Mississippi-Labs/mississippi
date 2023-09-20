@@ -6,7 +6,7 @@ import Game from './pages/game';
 export const App = () => {
 
   return (
-    <div>
+    <div className="mi-app">
       <BrowserRouter>
         <Routes>
           <Route path="/">
