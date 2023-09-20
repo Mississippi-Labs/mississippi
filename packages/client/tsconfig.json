@@ -12,7 +12,12 @@
     "esModuleInterop": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["src/*"],
+    }
   },
   "include": ["src"]
 }

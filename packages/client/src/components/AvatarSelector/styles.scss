@@ -1,0 +1,39 @@
+
+$avatars: 'elephant', 'hippo', 'panda', 'penguin', 'rabbit', 'giraffe', 'monkey', 'parrot', 'pig', 'snake';
+$avatarsPath: '../../assets/avatar/';
+
+.mi-c-avatars-wrap {
+    position: relative;
+    width: 100px;
+    //height: 100px;
+
+    .avatars {
+        position: absolute;
+        top: 100%;
+        display: grid;
+        width: 400px;
+        grid-template-columns: repeat(5, 1fr);
+        background: #fff;
+
+        .avatar-item {
+            height: 80px;
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    }
+
+    .avatar-selected {
+        width: 100px;
+        height: 100px;
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    @for $i from 1 through 10 {
+        .avatar-#{nth($avatars, $i)} {
+            background-image: url("#{$avatarsPath}#{nth($avatars, $i)}.png");
+        }
+    }
+}
