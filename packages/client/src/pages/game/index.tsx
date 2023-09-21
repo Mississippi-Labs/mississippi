@@ -5,6 +5,7 @@ import Map from '@/components/Map';
 import UserAvatar from '@/components/UserAvatar';
 import { useLocation } from 'react-router-dom';
 import './styles.scss';
+import Rank from '@/components/Rank';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -62,6 +63,32 @@ const Game = () => {
           maxAp={100}
         />
       </div>
+
+      <Rank
+        data={[
+          {
+            name: 'aaaa',
+            score: 100,
+            id: 1
+          },
+          {
+            name: 'aaaa1',
+            score: 99,
+            id: 2
+          },
+          {
+            name: 'aaaa2',
+            score: 50,
+            id: 3
+          },
+          {
+            name: 'aaaa3',
+            score: 5,
+            id: 4
+          },
+        ]}
+        curId={3}
+      />
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
