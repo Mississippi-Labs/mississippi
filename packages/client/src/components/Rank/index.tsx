@@ -43,8 +43,8 @@ const Rank = (props: IProps) => {
         <div className="name">ME</div>
         <div className="score">{data[curIndex].score}</div>
       </div>
-      <div className="opt">
-        <div className="toggle-visible" onClick={toggleVisible}/>
+      <div className="opt" onClick={toggleVisible}>
+        <div className="toggle-visible"/>
       </div>
     </div>
   );
