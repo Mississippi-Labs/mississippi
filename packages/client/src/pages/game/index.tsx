@@ -6,6 +6,7 @@ import UserAvatar from '@/components/UserAvatar';
 import { useLocation } from 'react-router-dom';
 import './styles.scss';
 import Rank from '@/components/Rank';
+import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -65,34 +66,13 @@ const Game = () => {
       </div>
 
       <Rank
-        data={[
-          {
-            name: 'aaaa',
-            score: 100,
-            id: 1
-          },
-          {
-            name: 'aaaa1',
-            score: 99,
-            id: 2
-          },
-          {
-            name: 'aaaa2',
-            score: 50,
-            id: 3
-          },
-          {
-            name: 'aaaa3',
-            score: 5,
-            id: 4
-          },
-        ]}
-        curId={3}
+        data={RankMockData}
+        curId={CurIdMockData}
       />
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
-        players={[]}
+        players={PlayersMockData}
         data={renderMapData}
         vertexCoordinate={vertexCoordinate}
       />
