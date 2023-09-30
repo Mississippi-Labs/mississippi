@@ -5,14 +5,14 @@ export interface IPlayer {
   x: number;
   y: number;
   id: number;
+  username: string;
 }
 
 const Player = (props: IPlayer) => {
   return (
     <div className="mi-player">
-      {props.id}
-      {props.x}
-      {props.y}
+      <div className="player-name">{props.username}</div>
+      <div className="player-body avatar-box avatar-panda"/>
     </div>
   );
 };

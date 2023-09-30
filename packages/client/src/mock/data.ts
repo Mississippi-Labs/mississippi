@@ -1,3 +1,5 @@
+import { IPlayer } from '@/components/Player';
+
 export const RankMockData = [
   {
     name: 'aaaa',
@@ -22,15 +24,17 @@ export const RankMockData = [
 ];
 
 
-export const PlayersMockData = [
+export const PlayersMockData: IPlayer[] = [
   {
     id: 1,
+    username: 'Vimo',
     x: 4,
     y: 4,
   },
   {
     id: 1,
-    x: 15,
+    username: 'oto',
+    x: 18,
     y: 10,
   }
 ];
