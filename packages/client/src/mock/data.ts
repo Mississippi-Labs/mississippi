@@ -26,14 +26,14 @@ export const RankMockData = [
 
 export const PlayersMockData: IPlayer[] = [
   {
-    id: 1,
-    username: 'Vimo',
+    id: 3,
+    username: 'Me',
     x: 4,
     y: 4,
   },
   {
     id: 1,
-    username: 'oto',
+    username: 'other',
     x: 18,
     y: 10,
   }

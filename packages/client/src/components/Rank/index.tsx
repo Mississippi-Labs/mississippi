@@ -29,7 +29,7 @@ const Rank = (props: IProps) => {
         {
           data.map((item, index) => {
             return (
-              <li className="rank-info">
+              <li className="rank-info" key={item.id}>
                 <div className="rank-index">{index + 1}</div>
                 <div className="name">{item.name}</div>
                 <div className="score">{item.score}</div>

@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import './styles.scss';
 import Rank from '@/components/Rank';
 import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
+import { IPlayer } from '@/components/Player';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -14,6 +15,9 @@ const Game = () => {
     x: 0,
     y: 0
   });
+
+  const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
+  const [players, setPlayers] = useState(PlayersMockData);
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -41,6 +45,19 @@ const Game = () => {
     setVertexCoordinate({
       ...vertexCoordinate
     });
+  };
+  
+  const movePlayer = (paths) => {
+    let pathIndex = 1;
+    const curPlayerIndex = players.findIndex(item => item.id === curPlayer!.id);
+    const interval = setInterval(() => {
+      Object.assign(players[curPlayerIndex], paths[pathIndex]);
+      pathIndex++;
+      setPlayers([...players]);
+      if (pathIndex === paths.length) {
+        clearInterval(interval);
+      }
+    }, 300);
   }
 
   useEffect(() => {
@@ -48,6 +65,9 @@ const Game = () => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
+
+    const player = players.find((item) => item.id === CurIdMockData);
+    setCurPlayer(player as IPlayer);
 
   }, []);
 
@@ -72,9 +92,11 @@ const Game = () => {
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
-        players={PlayersMockData}
+        players={players}
+        curId={CurIdMockData}
         data={renderMapData}
         vertexCoordinate={vertexCoordinate}
+        onPlayerMove={movePlayer}
       />
     </div>
   )
