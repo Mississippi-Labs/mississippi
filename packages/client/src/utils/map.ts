@@ -272,13 +272,9 @@ export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => 
   return [];
 };
 
-export const simplifyMapData = (mapData: number[][], players: IPlayer[]) => {
+export const simplifyMapData = (mapData: number[][]) => {
   if (mapData.length === 0) {
     return mapData;
   }
-  const data = mapData.map((row) => row.map(type => isMovable(type) ? 0 : 1));
-  players.forEach(({ x, y}) => {
-    data[y][x] = 1;
-  });
-  return data;
+  return  mapData.map((row) => row.map(type => isMovable(type) ? 0 : 1));
 }

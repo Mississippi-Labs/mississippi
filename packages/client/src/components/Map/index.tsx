@@ -26,8 +26,8 @@ const Map = (props: IProps) => {
   }, [width, height]);
 
   const simpleMapData = useMemo(() => {
-    return simplifyMapData(data, players);
-  }, [data, players]);
+    return simplifyMapData(data);
+  }, [data]);
 
   const playerData = useMemo(() => {
     const obj = {};
