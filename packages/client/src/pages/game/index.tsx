@@ -49,7 +49,7 @@ const Game = () => {
   };
   
   const movePlayer = (paths, merkelData) => {
-    let pathIndex = 1;
+    let pathIndex = 0;
     const curPlayerIndex = players.findIndex(item => item.id === curPlayer!.id);
     const interval = setInterval(() => {
       Object.assign(players[curPlayerIndex], paths[pathIndex]);

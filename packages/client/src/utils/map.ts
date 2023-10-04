@@ -242,7 +242,7 @@ export const isMovable = (type) => {
 
 export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => {
   const data = mapData.map((row) => [...row]);
-  data[from.y][from.x] = 1;
+  data[from.y][from.x] = 0;
 
   let paths = [[from]];
   const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
@@ -258,7 +258,7 @@ export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => 
 
         if (data[nextY][nextX] === 1) {
           newPaths.push([...path, { x: nextX, y: nextY}]);
-          data[nextY][nextX] = 1;
+          data[nextY][nextX] = 0;
         }
         return nextX === to.x && nextY === to.y;
       });

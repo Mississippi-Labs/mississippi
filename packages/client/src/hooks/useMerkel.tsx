@@ -8,22 +8,21 @@ const useMerkel = (mapData) => {
 
   const convertToLeafs = (mapData) => {
     const result = [];
-    for (let x = 0; x < mapData.length; x++) {
-      for (let y = 0; y < mapData[x].length; y++) {
-        result.push({ x, y, value: mapData[x][y] });
+    for (let y = 0; y < mapData.length; y++) {
+      for (let x = 0; x < mapData[y].length; x++) {
+        result.push({ x, y, value: mapData[y][x] });
       }
     }
     return result;
   }
 
-  const merkel = useRef({
-    leafs: convertToLeafs(mapData),
-    merkleTree: null
-  });
+  const leafs = useRef([]);
+
+  const merkel = useRef<MerkleTree | null>(null);
 
   const getProof = (x, y) => {
     const leaf = generateLeaf(x, y, 1);
-    return merkel.current.merkleTree.getHexProof(leaf);
+    return merkel.current!.getHexProof(leaf);
   }
 
   // 通过本函数将地图初始化为默克尔树节点的字符串数组,每个字符串的格式为"x,y-value"
@@ -53,11 +52,9 @@ const useMerkel = (mapData) => {
     if (mapData.length === 0) {
       return;
     }
-    merkel.current.leafs = convertToLeafs(mapData);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    merkel.current.merkleTree = new MerkleTree(
-      merkel.current.leafs.map((info) => generateLeaf(info.x, info.y, info.value)),
+    leafs.current = convertToLeafs(mapData);
+    merkel.current = new MerkleTree(
+      leafs.current.map((info) => generateLeaf(info.x, info.y, info.value)),
       keccak256,
       { sortPairs: true }
     );
