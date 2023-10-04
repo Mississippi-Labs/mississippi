@@ -59,8 +59,7 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
-    console.log(merkelData);
-    uploadUserMove(players[curPlayerIndex].x, players[curPlayerIndex].y, merkelData);
+    uploadUserMove(merkelData);
   }
 
   useEffect(() => {

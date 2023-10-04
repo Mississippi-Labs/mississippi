@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { IPlayer } from '../Player';
 import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
@@ -44,9 +44,8 @@ const Map = (props: IProps) => {
 
   const onMoveTo = (coordinate) => {
     const { x, y} = players.find((player) => player.id === curId);
-    const paths = bfs(simpleMapData, { x, y }, coordinate);
+    const paths = bfs(simpleMapData, { x, y }, coordinate).slice(1);
     onPlayerMove(paths, formatMovePath(paths));
-    console.log(paths, { x, y }, coordinate);
   }
 
 
