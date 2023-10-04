@@ -3,6 +3,7 @@ import { IPlayer } from '../Player';
 import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
 import { bfs, simplifyMapData } from '@/utils/map';
+import useMerkel from '@/hooks/useMerkel';
 
 interface IProps {
   width: number;
@@ -14,7 +15,7 @@ interface IProps {
     x: number,
     y: number,
   };
-  onPlayerMove: (paths: ICoordinate[]) => void;
+  onPlayerMove: (paths: ICoordinate[], simpleMapData: number[][]) => void;
 }
 
 const Map = (props: IProps) => {
@@ -29,6 +30,8 @@ const Map = (props: IProps) => {
     return simplifyMapData(data);
   }, [data]);
 
+  const formatMovePath = useMerkel(simpleMapData);
+
   const playerData = useMemo(() => {
     const obj = {};
     players.forEach((player) => {
@@ -40,10 +43,9 @@ const Map = (props: IProps) => {
   const cellClassCache = useRef<ICellClassCache>({});
 
   const onMoveTo = (coordinate) => {
-    console.log(coordinate);
     const { x, y} = players.find((player) => player.id === curId);
     const paths = bfs(simpleMapData, { x, y }, coordinate);
-    onPlayerMove(paths);
+    onPlayerMove(paths, formatMovePath(paths));
     console.log(paths, { x, y }, coordinate);
   }
 

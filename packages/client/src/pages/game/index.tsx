@@ -8,6 +8,7 @@ import './styles.scss';
 import Rank from '@/components/Rank';
 import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 import { IPlayer } from '@/components/Player';
+import { uploadUserMove } from '@/service/user';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -47,7 +48,7 @@ const Game = () => {
     });
   };
   
-  const movePlayer = (paths) => {
+  const movePlayer = (paths, merkelData) => {
     let pathIndex = 1;
     const curPlayerIndex = players.findIndex(item => item.id === curPlayer!.id);
     const interval = setInterval(() => {
@@ -58,6 +59,8 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
+    console.log(merkelData);
+    uploadUserMove(players[curPlayerIndex].x, players[curPlayerIndex].y, merkelData);
   }
 
   useEffect(() => {

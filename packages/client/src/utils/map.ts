@@ -256,7 +256,7 @@ export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => 
         const nextX = last.x + dX;
         const nextY = last.y + dY;
 
-        if (data[nextY][nextX] === 0) {
+        if (data[nextY][nextX] === 1) {
           newPaths.push([...path, { x: nextX, y: nextY}]);
           data[nextY][nextX] = 1;
         }
@@ -276,5 +276,5 @@ export const simplifyMapData = (mapData: number[][]) => {
   if (mapData.length === 0) {
     return mapData;
   }
-  return  mapData.map((row) => row.map(type => isMovable(type) ? 0 : 1));
+  return  mapData.map((row) => row.map(type => isMovable(type) ? 1 : 0));
 }
