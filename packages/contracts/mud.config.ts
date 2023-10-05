@@ -1,14 +1,13 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
+  enums: {
+    BattleState: ["Inited", "Confirmed", "Revealed"],
+    PlayerState: ["Idle", "Preparing", "Exploring", "Attacking"],
+    ActionType: ["Attack", "Escape", "Props"],
+    Buff: ["None", "Fire", "Water", "Wind"],
+  },
   tables: {
-    MapData: {
-      schema: {
-        xLen: "uint256",
-        yLen: "uint256",
-        mapArray: "int256[]", // Store supports dynamic arrays
-      },
-    },
     Season: {
       schema: {
         start: "uint256",
@@ -21,9 +20,114 @@ export default mudConfig({
         addr: "address",
       },
       schema: {
-        name: "uint256",
+        name: "string",
         url: "string",
+        suitId : "uint256",
+        equipmentId : "uint256",
+        x : "uint16",
+        y : "uint16",
+        state : "PlayerState",
+        hP : "uint256",
+        oreBalance: "uint16",
+        treasureBalance: "uint16",
       }
     },
+    Ownable: {
+      schema: {
+        owner: "address",
+      }
+    },
+    Game: {
+      schema: {
+        merkleRoot: "bytes32",
+        maxAttackzDistance: "uint256",
+        maxMoveDistance: "uint256",
+        battleId: "uint256",
+        randomId: "uint256",
+        maxTimeLimit: "uint256",
+        maxUserLocationLockTime: "uint256",
+        originX: "uint16",
+        originY: "uint16",
+        roomId: "uint256",
+        boxId : "uint256",
+        maxBoxBindTime : "uint256",
+        battlefieldPlayers: "address[]",
+      }
+    },
+    Board: {  
+      keySchema: {
+        addr: "address"
+      },
+      schema: {
+        x: "uint16",
+        y: "uint16",
+      }
+    },
+    MapBoard: {
+      keySchema: {
+        x: "uint16",
+        y: "uint16",
+      },
+      schema: {
+        addresses: "address[]",
+      }
+    },
+    RandomList: {
+      keySchema:{
+        id: "uint256",
+      },
+      schema: {
+        blockNumber: "uint256",
+        author: "address",
+    }},
+    BattleList: {
+      keySchema: {
+        battleId: "uint256",
+      },
+      schema: {
+        attacker: "address",
+        defender: "address",
+        winner: "address",
+        round: "uint16",
+        attackerHP: "uint256",
+        defenderHP: "uint256",
+        isEnd: "bool",
+        attackerState: "BattleState",
+        defenderState: "BattleState",
+        attackerAction: "bytes32",
+        defenderAction: "bytes32",
+        attackerBuffHash: "bytes32",
+        defenderBuffHash: "bytes32",
+        timestamp: "uint256",
+        attackerArg: "uint256",
+        defenderArg: "uint256",
+      }
+    },
+    PlayerLocationLock: {
+      keySchema: {
+        addr: "address",
+      },
+      schema: {
+        lockTime: "uint256",
+      }
+    },
+    BoxList : {
+      keySchema: {
+        roomId: "uint256",
+        boxId: "uint256",
+      },
+      schema: {
+        lockTime: "uint256",
+        x: "uint16",
+        y: "uint16",
+        oreBalance: "uint16",
+        treasureBalance: "uint16",
+        randomId: "uint256",
+        dropTime: "uint256",
+        openTime: "uint256",
+        opened: "bool",
+        owner: "address",
+      }
+    }
   }
 });
