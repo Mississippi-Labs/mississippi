@@ -7,6 +7,8 @@ import { Game } from "../codegen/Tables.sol";
 import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { BattleListData, BattleList, Player, PlayerData, 
     PlayerLocationLock, BoxListData, BoxList, RandomList, RandomListData} from "../codegen/Tables.sol";
+import { Move } from "./Common.sol";
+
 
 
 contract GameSystem is System {
@@ -17,11 +19,7 @@ contract GameSystem is System {
     event MoveEvent(address indexed player, uint16 x, uint16 y);
     event AttackStart(address player, address target);
 
-    struct Move {
-        uint16 x;
-        uint16 y;
-        bytes32[] proof;
-    }
+
 
     /*
     bytes32 public merkleRoot;
