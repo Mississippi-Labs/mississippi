@@ -1,4 +1,6 @@
-import { CellType } from '../constants';
+import { CellType } from '@/constants';
+import { ICoordinate } from '@/components/MapCell';
+import { IPlayer } from '@/components/Player';
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
   const { x: startX, y: startY} = startCoordinate;
@@ -231,4 +233,48 @@ export const getCellClass = (data, coordinate) => {
     // 产品的 序号和前端渲染不同，这里做下处理
     classList: [...wallIndexArr.slice(6), ...wallIndexArr.slice(3, 6),...wallIndexArr.slice(0, 3)]
   }
+}
+
+
+export const isMovable = (type) => {
+  return type === CellType.movable;
+}
+
+export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => {
+  const data = mapData.map((row) => [...row]);
+  data[from.y][from.x] = 0;
+
+  let paths = [[from]];
+  const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+  do {
+    const newPaths = [];
+    const hasFind = paths.some((path) => {
+      const last = path[path.length - 1];
+      return dirs.some((dir) => {
+        const [dX, dY] = dir;
+        const nextX = last.x + dX;
+        const nextY = last.y + dY;
+
+        if (data[nextY][nextX] === 1) {
+          newPaths.push([...path, { x: nextX, y: nextY}]);
+          data[nextY][nextX] = 0;
+        }
+        return nextX === to.x && nextY === to.y;
+      });
+    });
+    if (hasFind) {
+      return newPaths[newPaths.length - 1]
+    }
+    paths = newPaths;
+  } while (paths.length !== 0);
+
+  return [];
+};
+
+export const simplifyMapData = (mapData: number[][]) => {
+  if (mapData.length === 0) {
+    return mapData;
+  }
+  return  mapData.map((row) => row.map(type => isMovable(type) ? 1 : 0));
 }
