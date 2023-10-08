@@ -1,1 +1,1 @@
-export { cutMapData, loadMapData, getCellClass } from './map'
+export { cutMapData, loadMapData, getCellClass, isMovable } from './map'

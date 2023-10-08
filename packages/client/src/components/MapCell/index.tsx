@@ -1,7 +1,8 @@
 import React from 'react';
 import { CellType } from '../../constants';
-import { getCellClass } from '../../utils';
+import { getCellClass, isMovable } from '@/utils';
 import './styles.scss';
+import Player, { IPlayer } from '@/components/Player';
 
 interface ITransform {
   index: number;
@@ -13,42 +14,61 @@ interface ICellClass {
   classList: number[];
 }
 
+export interface ICellClassCache {
+  [k: string]: ICellClass
+}
+
+export interface ICoordinate {
+  x: number;
+  y: number;
+}
+
 interface IProps {
-  coordinate: {
-    x: number;
-    y: number;
-  },
+  coordinate: ICoordinate,
   mapData: number[][];
-  cellClassCache: {
-    [k: string]: ICellClass
-  };
+  cellClassCache: ICellClassCache;
+  player?: IPlayer;
+  onMoveTo: (ICoordinate) => void;
 }
 
 const MapCell = (props: IProps) => {
-  const { coordinate: { x, y}, mapData, cellClassCache } = props;
+  const { coordinate: { x, y}, mapData, cellClassCache, player, onMoveTo } = props;
   if (!cellClassCache[`${y}-${x}`]) {
     cellClassCache[`${y}-${x}`] = getCellClass(mapData, { x, y});
   }
 
-  const { transforms, classList } = cellClassCache[`${y}-${x}`]
+  const { transforms, classList } = cellClassCache[`${y}-${x}`];
 
+  const onContextMenu = (e) => {
+    e.preventDefault();
+    const curMapDataType = mapData[y][x];
+    if (isMovable(curMapDataType) && !player) {
+      onMoveTo({ x, y});
+    }
+
+  }
 
   return (
-    <div className="mi-map-cell">
+    <div className="mi-map-cell" onContextMenu={onContextMenu}>
+      <div className="cell-map-box">
+        {
+          classList.map((item, index) => {
+            const transformStyle = transforms.find((item) => item.index === index);
+            const style = transformStyle ? {
+              transform: transformStyle.transform
+            } : {};
+            return (
+              <div
+                key={`${x}-${y}-${index}`}
+                className={`inner-cell mi-wall-${item}`}
+                style={style}
+              />
+            )
+          })
+        }
+      </div>
       {
-        classList.map((item, index) => {
-          const transformStyle = transforms.find((item) => item.index === index);
-          const style = transformStyle ? {
-            transform: transformStyle.transform
-          } : {};
-          return (
-            <div
-              key={`${x}-${y}-${index}`}
-              className={`inner-cell mi-wall-${item}`}
-              style={style}
-            />
-          )
-        })
+        player && <Player {...player}/>
       }
     </div>
   );

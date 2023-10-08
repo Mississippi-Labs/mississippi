@@ -1,0 +1,77 @@
+.mi-c-rank {
+    position: absolute;
+    left: 0;
+    padding: 16px;
+    width: 160px;
+    height: 500px;
+    background: #eee;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+    transition: transform 0.3s;
+
+    .rank-title {
+        border-bottom: 2px solid;
+        line-height: 2;
+        text-align: center;
+    }
+
+    .rank-list {
+        padding: 8px 0;
+    }
+
+    .my-rank-info {
+        border-top: 2px solid;
+        padding-top: 8px;
+    }
+
+    .rank-index {
+        width: 30px;
+    }
+
+    .name {
+        flex: 1;
+    }
+
+    .score {
+        width: 50px;
+    }
+
+    .rank-info {
+        display: flex;
+
+        & > div {
+            padding: 0 6px;
+        }
+    }
+
+    .opt {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 60px;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #eee;
+        cursor: pointer;
+
+        .toggle-visible{
+            content: '';
+            display: block;
+            border-width: 28px 16px 28px 0;
+            border-color: transparent blue transparent transparent;
+            border-style: solid;
+        }
+    }
+
+    &.hidden {
+        transform: translate3d(-100%, -50%, 0);
+
+        .opt .toggle-visible {
+            border-width: 28px 0 28px 16px;
+            border-color: transparent transparent transparent blue;
+        }
+    }
+}

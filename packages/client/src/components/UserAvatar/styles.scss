@@ -1,0 +1,35 @@
+.mi-c-user-avatar {
+    position: relative;
+    padding-left: 80px;
+    width: 160px;
+    height: 80px;
+
+    .avatar-box {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80px;
+        height: 80px;
+        border: 2px solid #80c6df;
+        border-radius: 10px;
+        background-color: #fff;
+        box-sizing: border-box;
+    }
+
+    .hp {
+        background: red;
+    }
+
+    .ap {
+        background: yellow;
+    }
+
+    .hp-wrapper, .ap-wrapper {
+        //height: 20px;
+        border: 2px solid;
+
+        & > div {
+            height: 16px;
+        }
+    }
+}

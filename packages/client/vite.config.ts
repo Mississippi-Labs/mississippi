@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import path from 'path';
 
 export default defineConfig({
   server: {
@@ -12,4 +13,10 @@ export default defineConfig({
     minify: true,
     sourcemap: true,
   },
+  // base: './',
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  }
 });

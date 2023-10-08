@@ -1,0 +1,13 @@
+.mi-game {
+    position: relative;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+
+    .mi-game-user-avatar {
+        position: absolute;
+        left: 6px;
+        top: 6px;
+    }
+}
