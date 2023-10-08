@@ -2,13 +2,13 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Season } from "../codegen/Tables.sol";
-import { OwnableSystem } from "./OwnableSystem.sol";
+import { Season, GameConfig } from "../codegen/Tables.sol";
+import { GAME_CONFIG_KEY } from "../Constants.sol";
 
-contract SeasonSystem is OwnableSystem {
+contract GMSystem  {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
 
-    function getInfo() public view returns (uint256, uint256, uint256) {
+    function GetSeasonInfo() public view returns (uint256, uint256, uint256) {
         uint256 start = Season.getStart(MAP_KEY);
         uint256 end = Season.getEnd(MAP_KEY);
         uint256 no = Season.getNo(MAP_KEY);
@@ -16,7 +16,7 @@ contract SeasonSystem is OwnableSystem {
         return (start, end, no);
     }
 
-    function setInfo(uint256 start, uint256 end) public onlyOwner{
+    function SetSeasonInfo(uint256 start, uint256 end) public {
         require (start < end, "start must be less than end");
         
         uint256 now_end = Season.getEnd(MAP_KEY);
@@ -27,4 +27,10 @@ contract SeasonSystem is OwnableSystem {
         uint256 no = Season.getNo(MAP_KEY);
         Season.setNo(MAP_KEY, no+1);
     }
+
+    function SetMapMerkleRoot(bytes32 root) public {
+        GameConfig.setMerkleRoot(GAME_CONFIG_KEY, root);
+    }
+
+    
 }

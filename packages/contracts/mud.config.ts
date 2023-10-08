@@ -20,16 +20,16 @@ export default mudConfig({
         addr: "address",
       },
       schema: {
-        name: "string",
-        url: "string",
         suitId : "uint256",
         equipmentId : "uint256",
         x : "uint16",
         y : "uint16",
-        state : "PlayerState",
         hP : "uint256",
         oreBalance: "uint16",
         treasureBalance: "uint16",
+        state : "PlayerState",
+        name: "string",
+        url: "string",
       }
     },
     Ownable: {
@@ -37,19 +37,25 @@ export default mudConfig({
         owner: "address",
       }
     },
-    Game: {
+    GameConfig: {
+      dataStruct: false,
       schema: {
         merkleRoot: "bytes32",
-        maxAttackzDistance: "uint256",
-        maxMoveDistance: "uint256",
         battleId: "uint256",
         randomId: "uint256",
-        maxTimeLimit: "uint256",
-        maxUserLocationLockTime: "uint256",
         originX: "uint16",
         originY: "uint16",
         roomId: "uint256",
         boxId : "uint256",
+      }
+    },
+    BattleConfig: {
+      dataStruct: false,
+      schema: {
+        maxAttackzDistance: "uint256",
+        maxMoveDistance: "uint256",
+        maxTimeLimit: "uint256",
+        maxUserLocationLockTime: "uint256",
         maxBoxBindTime : "uint256",
         battlefieldPlayers: "address[]",
       }

@@ -21,6 +21,23 @@ extra_output_files = [
   "evm.bytecode"
 ]
 fs_permissions = [{ access = "read", path = "./"}]
+gas_reports = ["*"]
 
 [profile.lattice-testnet]
 eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
+
+
+[profile.arb-testnet]
+eth_rpc_url = "https://goerli-rollup.arbitrum.io/rpc"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.linea-testnet]
+eth_rpc_url = "https://linea-goerli.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.sepolia-testnet]
+eth_rpc_url = "https://sepolia.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
+optimizer = true
+optimizer_runs = 3000

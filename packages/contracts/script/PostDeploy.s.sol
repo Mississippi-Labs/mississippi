@@ -4,6 +4,8 @@ pragma solidity >=0.8.0;
 import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { IWorld } from "../src/codegen/world/IWorld.sol";
+import { GameConfigInit } from "./GameConfigInit.sol";
+import { BattleConfigInit } from "./BattleConfigInit.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -13,11 +15,11 @@ contract PostDeploy is Script {
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    // ------------------ EXAMPLES ------------------
-
-    // uint32 newValue = IWorld(worldAddress).getPos(10,10);
-    // console.log("Increment via IWorld:", newValue);
+    // ------------------ INIT ------------------
+    GameConfigInit.initGameConfig(IWorld(worldAddress));
+    BattleConfigInit.initGameConfig(IWorld(worldAddress));
 
     vm.stopBroadcast();
+
   }
 }
