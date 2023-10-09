@@ -1,28 +1,52 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { IPlayer } from '../Player';
-import MapCell from '../MapCell';
+import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
+import { bfs, simplifyMapData } from '@/utils/map';
+import useMerkel from '@/hooks/useMerkel';
 
 interface IProps {
   width: number;
   height: number;
   players: IPlayer[];
   data: number[][];
+  curId: number;
   vertexCoordinate: {
     x: number,
     y: number,
-  }
+  };
+  onPlayerMove: (paths: ICoordinate[], simpleMapData: number[][]) => void;
 }
 
 const Map = (props: IProps) => {
-  const { width, height, vertexCoordinate, data } = props;
+  const { width, height, vertexCoordinate, data = [], players, curId, onPlayerMove } = props;
   const { x: startX, y: startY } = vertexCoordinate;
 
   const staticData = useMemo(() => {
-    return Array(height).fill(0).map(_ => Array(width).fill(0));
+    return Array(height).fill(0).map(() => Array(width).fill(0));
   }, [width, height]);
 
-  const cellClassCache = useRef({});
+  const simpleMapData = useMemo(() => {
+    return simplifyMapData(data);
+  }, [data]);
+
+  const formatMovePath = useMerkel(simpleMapData);
+
+  const playerData = useMemo(() => {
+    const obj = {};
+    players.forEach((player) => {
+      obj[`${player.x}-${player.y}`] = player;
+    });
+    return obj;
+  }, [players]);
+
+  const cellClassCache = useRef<ICellClassCache>({});
+
+  const onMoveTo = (coordinate) => {
+    const { x, y} = players.find((player) => player.id === curId);
+    const paths = bfs(simpleMapData, { x, y }, coordinate).slice(1);
+    onPlayerMove(paths, formatMovePath(paths));
+  }
 
 
   if (data.length === 0) {
@@ -34,19 +58,23 @@ const Map = (props: IProps) => {
       <div className="mi-map-content">
       {
         staticData.map((row, rowIndex) => {
+          const y = startY + rowIndex
           return (
-            <div className="mi-map-row" key={startY + rowIndex}>
+            <div className="mi-map-row" key={y}>
               {
                 row.map((_, colIndex) => {
+                  const x = startX + colIndex;
                   return (
                     <MapCell
                       key={startX + colIndex}
                       coordinate={{
-                        x: startX + colIndex,
-                        y: startY + rowIndex
+                        x,
+                        y
                       }}
                       mapData={data}
-                      cellClassCache={cellClassCache}
+                      cellClassCache={cellClassCache.current}
+                      player={playerData[`${x}-${y}`]}
+                      onMoveTo={onMoveTo}
                     />
                   )
                 })

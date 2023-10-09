@@ -36,6 +36,7 @@ const AvatarSelector = (props: IProps) => {
               Avatars.map((avatar) => {
                 return (
                   <li
+                    key={avatar}
                     className={`avatar-item avatar-box avatar-${avatar}`}
                     onClick={() => {
                       setAvatar(avatar);

@@ -6,6 +6,9 @@ import UserAvatar from "@/components/UserAvatar";
 import { useLocation } from "react-router-dom";
 import "./styles.scss";
 import Rank from "@/components/Rank";
+import { CurIdMockData, PlayersMockData, RankMockData } from "@/mock/data";
+import { IPlayer } from "@/components/Player";
+import { uploadUserMove } from "@/service/user";
 import Bag from "@/components/Bag";
 
 const Game = () => {
@@ -14,6 +17,9 @@ const Game = () => {
     x: 0,
     y: 0,
   });
+
+  const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
+  const [players, setPlayers] = useState(PlayersMockData);
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -53,11 +59,30 @@ const Game = () => {
     });
   };
 
+  const movePlayer = (paths, merkelData) => {
+    let pathIndex = 0;
+    const curPlayerIndex = players.findIndex(
+      (item) => item.id === curPlayer!.id
+    );
+    const interval = setInterval(() => {
+      Object.assign(players[curPlayerIndex], paths[pathIndex]);
+      pathIndex++;
+      setPlayers([...players]);
+      if (pathIndex === paths.length) {
+        clearInterval(interval);
+      }
+    }, 300);
+    uploadUserMove(merkelData);
+  };
+
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
+
+    const player = players.find((item) => item.id === CurIdMockData);
+    setCurPlayer(player as IPlayer);
   }, []);
 
   return (
@@ -74,37 +99,15 @@ const Game = () => {
         />
       </div>
 
-      <Rank
-        data={[
-          {
-            name: "aaaa",
-            score: 100,
-            id: 1,
-          },
-          {
-            name: "aaaa1",
-            score: 99,
-            id: 2,
-          },
-          {
-            name: "aaaa2",
-            score: 50,
-            id: 3,
-          },
-          {
-            name: "aaaa3",
-            score: 5,
-            id: 4,
-          },
-        ]}
-        curId={3}
-      />
+      <Rank data={RankMockData} curId={CurIdMockData} />
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
-        players={[]}
+        players={players}
+        curId={CurIdMockData}
         data={renderMapData}
         vertexCoordinate={vertexCoordinate}
+        onPlayerMove={movePlayer}
       />
       <Bag />
     </div>

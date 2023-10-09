@@ -29,7 +29,7 @@ const Rank = (props: IProps) => {
         {
           data.map((item, index) => {
             return (
-              <li className="rank-info">
+              <li className="rank-info" key={item.id}>
                 <div className="rank-index">{index + 1}</div>
                 <div className="name">{item.name}</div>
                 <div className="score">{item.score}</div>
@@ -43,8 +43,8 @@ const Rank = (props: IProps) => {
         <div className="name">ME</div>
         <div className="score">{data[curIndex].score}</div>
       </div>
-      <div className="opt">
-        <div className="toggle-visible" onClick={toggleVisible}/>
+      <div className="opt" onClick={toggleVisible}>
+        <div className="toggle-visible"/>
       </div>
     </div>
   );

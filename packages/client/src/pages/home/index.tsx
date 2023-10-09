@@ -3,6 +3,7 @@ import { Col, Row, Button, Input, message } from 'antd';
 import './styles.scss';
 import { useNavigate } from 'react-router-dom';
 import AvatarSelector from '@/components/AvatarSelector';
+import { connect } from '@/service/connection';
 
 const Home = () => {
 
@@ -33,6 +34,7 @@ const Home = () => {
     });
   }
 
+
   return (
     <div className="mi-home-page">
       <div className="home-content">
@@ -59,6 +61,11 @@ const Home = () => {
           </Col>
           <Col span={6}>
             <AvatarSelector onChange={(value) => setAvatar(value)}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button onClick={connect}>Connect</Button>
           </Col>
         </Row>
       </div>
