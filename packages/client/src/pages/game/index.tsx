@@ -1,22 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MapConfig } from '@/config';
-import { loadMapData } from '@/utils';
-import Map from '@/components/Map';
-import UserAvatar from '@/components/UserAvatar';
-import { useLocation } from 'react-router-dom';
-import './styles.scss';
-import Rank from '@/components/Rank';
+import React, { useEffect, useRef, useState } from "react";
+import { MapConfig } from "@/config";
+import { loadMapData } from "@/utils";
+import Map from "@/components/Map";
+import UserAvatar from "@/components/UserAvatar";
+import { useLocation } from "react-router-dom";
+import "./styles.scss";
+import Rank from "@/components/Rank";
+import Bag from "@/components/Bag";
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
   const [vertexCoordinate, setVertexCoordinate] = useState({
     x: 0,
-    y: 0
+    y: 0,
   });
 
   const mapDataRef = useRef([]);
   const location = useLocation();
-  const { username = '', avatar = 'snake', roomId = '000000' } = location.state ?? {};
+  const {
+    username = "",
+    avatar = "snake",
+    roomId = "000000",
+  } = location.state ?? {};
 
   const onKeyDown = (e) => {
     const mapData = mapDataRef.current;
@@ -31,23 +36,28 @@ const Game = () => {
         vertexCoordinate.y = Math.max(0, vertexCoordinate.y - 1);
         break;
       case 39:
-        vertexCoordinate.x = Math.min(mapData[0].length - 1 - MapConfig.visualWidth, vertexCoordinate.x + 1);
+        vertexCoordinate.x = Math.min(
+          mapData[0].length - 1 - MapConfig.visualWidth,
+          vertexCoordinate.x + 1
+        );
         break;
       case 40:
-        vertexCoordinate.y = Math.min(mapData.length - 1 - MapConfig.visualHeight, vertexCoordinate.y + 1);
+        vertexCoordinate.y = Math.min(
+          mapData.length - 1 - MapConfig.visualHeight,
+          vertexCoordinate.y + 1
+        );
         break;
     }
     setVertexCoordinate({
-      ...vertexCoordinate
+      ...vertexCoordinate,
     });
-  }
+  };
 
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
-
   }, []);
 
   return (
@@ -67,24 +77,24 @@ const Game = () => {
       <Rank
         data={[
           {
-            name: 'aaaa',
+            name: "aaaa",
             score: 100,
-            id: 1
+            id: 1,
           },
           {
-            name: 'aaaa1',
+            name: "aaaa1",
             score: 99,
-            id: 2
+            id: 2,
           },
           {
-            name: 'aaaa2',
+            name: "aaaa2",
             score: 50,
-            id: 3
+            id: 3,
           },
           {
-            name: 'aaaa3',
+            name: "aaaa3",
             score: 5,
-            id: 4
+            id: 4,
           },
         ]}
         curId={3}
@@ -96,8 +106,9 @@ const Game = () => {
         data={renderMapData}
         vertexCoordinate={vertexCoordinate}
       />
+      <Bag />
     </div>
-  )
+  );
 };
 
 export default Game;
