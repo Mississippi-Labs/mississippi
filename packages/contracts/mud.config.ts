@@ -1,6 +1,29 @@
 import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
+  systems: {
+    BattleSystem: {
+      name: "battle",
+      openAccess: true,
+    },
+    GameSystem: {
+      name: "game",
+      openAccess: true,
+    },
+    GMSystem: {
+      name: "gm",
+      openAccess: false,
+      accessList: [],
+    },
+    PlayerSystem: {
+      name: "player",
+      openAccess: true,
+    },
+    RandomSystem: {
+      name: "random",
+      openAccess: true,
+    },
+  },
   enums: {
     BattleState: ["Inited", "Confirmed", "Revealed"],
     PlayerState: ["Idle", "Preparing", "Exploring", "Attacking"],
