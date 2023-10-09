@@ -26,7 +26,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.4
         name: Install pnpm
-        id: pnpm install --no-frozen-lockfile
+        id: pnpm-install
         with:
           version: 8
           run_install: false
@@ -46,7 +46,7 @@ jobs:
       #   run: git config --global url."https://".insteadOf git://
 
       - name: Install dependencies
-        run: pnpm install --loglevel verbose
+        run: pnpm install --loglevel verbose --no-frozen-lockfile
 
       - name: deploy on lattice testnet
         run: cd packages/contracts; pnpm run deploy:testnet
