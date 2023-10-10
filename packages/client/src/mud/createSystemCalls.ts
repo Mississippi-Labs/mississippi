@@ -19,7 +19,7 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
-    const tx = await worldContract.write.move(steps);
+    const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
     return getComponentValue(GameSystem, singletonEntity);
   };

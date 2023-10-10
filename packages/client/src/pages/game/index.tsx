@@ -10,6 +10,7 @@ import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 import { IPlayer } from '@/components/Player';
 import { uploadUserMove } from '@/service/user';
 import { useMUD } from '@/mud/MUDContext';
+import Fog from '@/components/Fog';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -96,6 +97,7 @@ const Game = () => {
         data={RankMockData}
         curId={CurIdMockData}
       />
+      {/*<Fog/>*/}
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
