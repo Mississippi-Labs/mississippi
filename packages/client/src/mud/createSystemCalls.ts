@@ -7,15 +7,25 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
-  { Counter }: ClientComponents
+  ClientComponents
 ) {
+  const { Counter, GameSystem } = ClientComponents;
+
+  console.log(ClientComponents, 'ClientComponents')
   const increment = async () => {
     const tx = await worldContract.write.increment();
     await waitForTransaction(tx);
     return getComponentValue(Counter, singletonEntity);
   };
 
+  const move = async (steps) => {
+    const tx = await worldContract.write.move(steps);
+    await waitForTransaction(tx);
+    return getComponentValue(GameSystem, singletonEntity);
+  };
+
   return {
     increment,
+    move
   };
 }

@@ -58,6 +58,7 @@ const useMerkel = (mapData) => {
       keccak256,
       { sortPairs: true }
     );
+    // console.log(merkel.current?.getHexRoot(), 'root')
   }, [mapData]);
 
   return formatMovePath;

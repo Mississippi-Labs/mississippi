@@ -1,6 +1,7 @@
 import { CellType } from '@/constants';
 import { ICoordinate } from '@/components/MapCell';
 import { IPlayer } from '@/components/Player';
+import MAP_CFG from '@/config/map';
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
   const { x: startX, y: startY} = startCoordinate;
@@ -25,12 +26,13 @@ const formatCsvToArray = (csv: string) => {
 }
 
 export const loadMapData = async () => {
-  const response = await fetch('/src/assets/map.csv');
-  const reader = response.body.getReader();
-  const result = await reader.read();
-  const decoder = new TextDecoder('utf-8');
-  const csv = decoder.decode(result.value);
-  return formatCsvToArray(csv);
+  // const response = await fetch('/src/assets/map2.csv');
+  // const reader = response.body.getReader();
+  // const result = await reader.read();
+  // const decoder = new TextDecoder('utf-8');
+  // const csv = decoder.decode(result.value);
+  // console.log(formatCsvToArray(csv))
+  return MAP_CFG;
 }
 
 const getNormalMovableCellClass = () => {
@@ -73,15 +75,15 @@ export const getCellClass = (data, coordinate) => {
   const wallIndexArr = Array(9).fill(0);
   const transforms = [];
 
-  const currentMovable = data[y][x] === CellType.movable;
-  const topMovable = !isTopCritical && (data[y - 1][x] === CellType.movable);
-  const bottomMovable = !isBottomCritical && (data[y + 1][x] === CellType.movable);
-  const leftMovable = !isLeftCritical && (data[y][x - 1] === CellType.movable);
-  const rightMovable = !isRightCritical && (data[y][x + 1] === CellType.movable);
-  const topLeftMovable = !(isTopCritical || isLeftCritical) && (data[y - 1][x - 1] === CellType.movable);
-  const topRightMovable = !(isTopCritical || isRightCritical) && (data[y - 1][x + 1] === CellType.movable);
-  const bottomLeftMovable = !(isBottomCritical || isLeftCritical) && (data[y + 1][x - 1] === CellType.movable);
-  const bottomRightMovable = !(isBottomCritical || isRightCritical) && (data[y + 1][x + 1] === CellType.movable);
+  const currentMovable = isMovable(data[y][x]);
+  const topMovable = !isTopCritical && isMovable(data[y - 1][x]);
+  const bottomMovable = !isBottomCritical && isMovable(data[y + 1][x]);
+  const leftMovable = !isLeftCritical && isMovable(data[y][x - 1]);
+  const rightMovable = !isRightCritical && isMovable(data[y][x + 1]);
+  const topLeftMovable = !(isTopCritical || isLeftCritical) && isMovable(data[y - 1][x - 1]);
+  const topRightMovable = !(isTopCritical || isRightCritical) && isMovable(data[y - 1][x + 1]);
+  const bottomLeftMovable = !(isBottomCritical || isLeftCritical) && isMovable(data[y + 1][x - 1]);
+  const bottomRightMovable = !(isBottomCritical || isRightCritical) && isMovable(data[y + 1][x + 1]);
 
   // 1. 当前格可用
   if (currentMovable) {
@@ -237,7 +239,7 @@ export const getCellClass = (data, coordinate) => {
 
 
 export const isMovable = (type) => {
-  return type === CellType.movable;
+  return type !== CellType.immovable;
 }
 
 export const bfs = (mapData: number[][], from: ICoordinate, to: ICoordinate) => {

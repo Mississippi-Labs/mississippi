@@ -9,6 +9,7 @@ import Rank from '@/components/Rank';
 import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 import { IPlayer } from '@/components/Player';
 import { uploadUserMove } from '@/service/user';
+import { useMUD } from '@/mud/MUDContext';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -19,6 +20,10 @@ const Game = () => {
 
   const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
   const [players, setPlayers] = useState(PlayersMockData);
+
+  const {
+    systemCalls: { move },
+  } = useMUD();
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -59,7 +64,7 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
-    uploadUserMove(merkelData);
+    move(merkelData);
   }
 
   useEffect(() => {
