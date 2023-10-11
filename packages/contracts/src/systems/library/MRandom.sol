@@ -2,11 +2,7 @@
 pragma solidity >=0.8.0;
 
 contract MRandom {
-     enum RandomState {
-        Inited,
-        Pending,
-        Confirmed
-    }
+     
     struct Random {
         uint256 blockNumber;
         address author;

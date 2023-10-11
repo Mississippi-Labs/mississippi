@@ -15,16 +15,7 @@ contract GameSystem is System {
     event MoveEvent(address indexed player, uint16 x, uint16 y);
     event AttackStart(address player, address target);
 
-    // constructor(bytes32 root) {
-    //     GameConfig.setMerkleRoot(GAME_CONFIG_KEY, root);
-    //     GameConfig.setMaxAttackzDistance(GAME_CONFIG_KEY, 10);
-    //     GameConfig.setMaxMoveDistance(GAME_CONFIG_KEY, 15);
-    //     GameConfig.setMaxTimeLimit(GAME_CONFIG_KEY, 120);
-    //     GameConfig.setMaxUserLocationLockTime(GAME_CONFIG_KEY, 120);
-    //     GameConfig.setOriginX(GAME_CONFIG_KEY, 100);
-    //     GameConfig.setOriginY(GAME_CONFIG_KEY, 100);
-    //     GameConfig.setMaxBoxBindTime(GAME_CONFIG_KEY, 120);
-    // }
+  
 
     modifier CheckContinuity(Move[] memory moveList) {
         // 验证行走轨迹合法且连续

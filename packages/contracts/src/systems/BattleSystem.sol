@@ -9,23 +9,21 @@ import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
 contract BattleSystem is System {
-    //  modifier onlyBattlePlayer(uint256 _battleId, BattleState _battleState) {
-    //     BattleListData memory battle = BattleList.get(_battleId);
 
-    //     BattleState battleState = battle.attacker == _msgSender()
-    //         ? battle.attackerState
-    //         : battle.defenderState;
-
-    //     require(
-    //         battle.attacker == _msgSender() || battle.defender == _msgSender(),
-    //         "You are not in this battle"
-    //     );
-    //     require(battleState == _battleState, "You are in the wrong state");
-
-    //     require(!battle.isEnd, "Battle is end");
-
-    //     _;
-    // }
+    function joinBattlefield(address _user) public {
+        // 加入战区,用户实际上是送到原点,状态改为探索中
+        // User storage player = Player[_user];
+        PlayerState playerState = Player.getState(_user);
+        require(
+            playerState == PlayerState.Preparing || playerState == PlayerState.Idle,
+            "You should in preparing state"
+        );
+        //实际上是送到原点//TODO通过常数设置原点参数
+        Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
+        Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
+        BattleConfig.pushBattlefieldPlayers(BATTLE_CONFIG_KEY, _user);
+        Player.setState(_user, PlayerState.Exploring);
+    }
 
     function checkBattlePlayer(BattleListData memory battle, BattleState _battleState) internal view  {
         // BattleListData memory battle = BattleList.get(_battleId);
