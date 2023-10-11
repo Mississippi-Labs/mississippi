@@ -19,7 +19,7 @@ contract TempRun is Script {
     // ------------------ INIT ------------------
     // GameConfigInit.setInitPosition(IWorld(0x2Bc1034975c3df48D6f3026802f372677844b85d));
     (uint256 x, uint256 y) = GameConfigInit.getPosition(IWorld(worldAddress));
-    console.log(" result =======");
+    console.log("======= result =======");
     console.log(x);
     console.log(y);
 
