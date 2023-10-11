@@ -15,10 +15,23 @@ library GameConfigInit {
             merkleRoot, //merkleRoot
             0, //battleId,
             0, //randomId,
-            100, //originX,
-            100, //originY,
+            4, //originX,
+            4, //originY,
             0, //roomId,
             0 //boxId,
         );
     }
+
+    function setInitPosition(IWorld _world) internal {
+        GameConfig.setOriginX(_world, GAME_CONFIG_KEY, 4);
+        GameConfig.setOriginY(_world, GAME_CONFIG_KEY, 4);
+    }
+
+    function getPosition(IWorld _world) internal view returns (uint256, uint256) {
+        uint256 x = GameConfig.getOriginX(_world, GAME_CONFIG_KEY);
+        uint256 y = GameConfig.getOriginY(_world, GAME_CONFIG_KEY);
+        return (x,y);
+    }
+
+
 }
