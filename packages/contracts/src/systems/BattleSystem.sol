@@ -10,20 +10,7 @@ import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
 contract BattleSystem is System {
 
-    function joinBattlefield(address _user) public {
-        // 加入战区,用户实际上是送到原点,状态改为探索中
-        // User storage player = Player[_user];
-        PlayerState playerState = Player.getState(_user);
-        require(
-            playerState == PlayerState.Preparing || playerState == PlayerState.Idle,
-            "You should in preparing state"
-        );
-        //实际上是送到原点//TODO通过常数设置原点参数
-        Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
-        Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
-        BattleConfig.pushBattlefieldPlayers(BATTLE_CONFIG_KEY, _user);
-        Player.setState(_user, PlayerState.Exploring);
-    }
+   
 
     function checkBattlePlayer(BattleListData memory battle, BattleState _battleState) internal view  {
         // BattleListData memory battle = BattleList.get(_battleId);
@@ -283,8 +270,26 @@ contract BattleSystem is System {
         }
     }
 
+    function getAttackResult(
+        uint256 _hp,
+        uint256 _attackPower
+    ) internal pure returns (uint256) {
+        // TODO 后期添加防御力抵消对方的攻击力
+        if (_attackPower > _hp) {
+            return 0;
+        }
+        return _hp - _attackPower;
+    }
+
     function initUserHP(address _user) public pure returns (uint256) {
         return 400;
+    }
+    function raiseUserHP(
+        uint256 _targetHP,
+        uint256 _percent,
+        address _user
+    ) public {
+        Player.setHP(_user, (_targetHP * _percent) / 100);
     }
 
     function loseGame(address _looser, address _winner) internal {
@@ -311,24 +316,6 @@ contract BattleSystem is System {
     }
 
 
-    function outBattlefield(address _user) internal {
-        // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
-        require(
-            Player.getState(_user) == PlayerState.Exploring,
-            "You should in exploring state"
-        );
-
-        Player.setHP(_user, initUserHP(_user));
-
-        for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
-            if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _user) {
-                BattleConfig.updateBattlefieldPlayers(BATTLE_CONFIG_KEY, i, BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY) - 1));
-                BattleConfig.popBattlefieldPlayers(BATTLE_CONFIG_KEY);
-                break;
-            }
-        }
-        Player.setState(_user, PlayerState.Preparing);
-    }
 
 
     function goHome() external {
@@ -345,6 +332,46 @@ contract BattleSystem is System {
         );
         outBattlefield(_msgSender());
         
+    }
+
+
+    function getAttackPower(
+        Buff _myBuff,
+        Buff _targetBuff,
+        uint256 _attackPower
+    ) internal pure returns (uint256) {
+        // TODO 后期添加防御力抵消对方的攻击力
+        if (compareBuff(_myBuff, _targetBuff) == 0) {
+            return (_attackPower * 7) / 10;
+        }
+        if (compareBuff(_myBuff, _targetBuff) == 2) {
+            return (_attackPower * 13) / 10;
+        }
+
+        return _attackPower;
+    }
+
+
+    function compareBuff(
+        Buff _myBuff,
+        Buff _targetBuff
+    ) internal pure returns (uint256) {
+        // 0表示失败,1表示相当,2表示胜利
+        if (
+            (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
+            (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
+        ) {
+            return 2;
+        }
+        if (
+            (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
+            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
+        ) {
+            return 0;
+        }
+        return 1;
     }
         
 }
