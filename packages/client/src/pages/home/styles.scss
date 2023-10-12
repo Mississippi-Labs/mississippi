@@ -141,22 +141,45 @@
             color: #fff;
 
             dl {
-                padding: 16px;
+                padding: 24px 16px;
                 border-radius: 10px;
                 background: #C69D72;
                 margin-bottom: 20px;
+                cursor: pointer;
             }
 
             dt {
+                position: relative;
                 font-size: 16px;
                 text-shadow: 0 4px 4px #00000040;
+
+                &:after {
+                    position: absolute;
+                    content: '';
+                    right: 20px;
+                    top: 0;
+                    border-width: 14px 10px;
+                    border-style: solid;
+                    border-color: #fff transparent transparent transparent;
+                    transition: all 0.3s;
+                    transform-origin: 50% 25%;
+                }
+
+                &.active:after {
+                    transform: rotate(180deg);
+                }
             }
 
             dd {
+                display: none;
                 font-size: 12px;
                 padding-top: 10px;
                 line-height: 2;
                 text-shadow: 0 4px 4px #00000040;
+            }
+
+            dt.active + dd {
+                display: block;
             }
         }
     }
