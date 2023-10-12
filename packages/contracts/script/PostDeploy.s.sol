@@ -6,6 +6,7 @@ import { console } from "forge-std/console.sol";
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 import { GameConfigInit } from "./GameConfigInit.sol";
 import { BattleConfigInit } from "./BattleConfigInit.sol";
+import { console } from "forge-std/console.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -14,6 +15,8 @@ contract PostDeploy is Script {
 
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
+
+    console.log(" ========== PostDeploy  ========== ");
 
     // ------------------ INIT ------------------
     GameConfigInit.initGameConfig(IWorld(worldAddress));

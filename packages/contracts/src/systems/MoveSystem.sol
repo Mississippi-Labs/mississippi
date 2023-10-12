@@ -3,6 +3,7 @@ pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import { console } from "forge-std/console.sol";
 
 import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock} from "@codegen/Tables.sol";
@@ -40,6 +41,7 @@ contract MoveSystem is System {
 
             uint16 x2 = i > 0 ? moveList[i - 1].x : Player.getX(_msgSender());
             uint16 y2 = i > 0 ? moveList[i - 1].y : Player.getY(_msgSender());
+            console.log(" step : ", i);
             require(
                 CommonUtils.isNear(moveList[i].x, x2, moveList[i].y, y2),
                 "invalied move"
