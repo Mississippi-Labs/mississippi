@@ -5,10 +5,8 @@ import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 import { GameConfigInit } from "./GameConfigInit.sol";
-import { BattleConfigInit } from "./BattleConfigInit.sol";
-import { console } from "forge-std/console.sol";
 
-contract PostDeploy is Script {
+contract TempRun is Script {
   function run(address worldAddress) external {
     // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -16,11 +14,14 @@ contract PostDeploy is Script {
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    console.log(" ========== PostDeploy  ========== ");
+    // address w = address(0x2Bc1034975c3df48D6f3026802f372677844b85d);
 
     // ------------------ INIT ------------------
-    GameConfigInit.initGameConfig(IWorld(worldAddress));
-    BattleConfigInit.initGameConfig(IWorld(worldAddress));
+    // GameConfigInit.setInitPosition(IWorld(0x2Bc1034975c3df48D6f3026802f372677844b85d));
+    (uint256 x, uint256 y) = GameConfigInit.getPosition(IWorld(worldAddress));
+    console.log("======= result =======");
+    console.log(x);
+    console.log(y);
 
     vm.stopBroadcast();
 

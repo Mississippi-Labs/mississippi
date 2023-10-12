@@ -19,16 +19,17 @@ export default mudConfig({
       name: "player",
       openAccess: true,
     },
-    RandomSystem: {
-      name: "random",
-      openAccess: true,
-    },
+    // RandomSystem: {
+    //   name: "random",
+    //   openAccess: true,
+    // },
   },
   enums: {
     BattleState: ["Inited", "Confirmed", "Revealed"],
     PlayerState: ["Idle", "Preparing", "Exploring", "Attacking"],
     ActionType: ["Attack", "Escape", "Props"],
     Buff: ["None", "Fire", "Water", "Wind"],
+    RandomState:["Inited","Pending","Confirmed"]
   },
   tables: {
     Season: {

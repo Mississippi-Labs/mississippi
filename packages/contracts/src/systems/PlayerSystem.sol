@@ -7,9 +7,7 @@ import { Player } from "../codegen/Tables.sol";
 contract PlayerSystem is System {
     bytes32 constant PLAYER_KEY = keccak256("Player-Key");
 
-    constructor(){
-        
-    }
+
 
     function getInfo(address addr) public view returns (string memory, string memory) {
         return (Player.getName(addr), Player.getUrl(addr));
@@ -20,4 +18,13 @@ contract PlayerSystem is System {
         Player.setName(addr, name);
         Player.setUrl(addr, url);
     }
+
+
+    function getPosition(address addr) public  view returns (uint16, uint16) {
+       uint16 x = Player.getX(addr);
+       uint16 y = Player.getY(addr);
+       return(x, y);
+    }
+
+
 }
