@@ -101,6 +101,9 @@ importers:
       sass:
         specifier: ^1.64.1
         version: 1.64.1
+      swiper:
+        specifier: ^10.3.1
+        version: 10.3.1
       viem:
         specifier: 1.6.0
         version: registry.npmmirror.com/viem@1.6.0(typescript@5.1.6)(zod@3.22.2)
@@ -4887,7 +4890,6 @@ packages:
 
   /regenerator-runtime@0.14.0:
     resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
-    dev: false
 
   /req-cwd@2.0.0:
     resolution: {integrity: sha512-ueoIoLo1OfB6b05COxAA9UpeoscNpYyM+BqYlA7H6LVF4hKGPXQQSSaD2YmvDVJMkk4UDpAHIeU1zG53IqjvlQ==}
@@ -5357,6 +5359,11 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /swiper@10.3.1:
+    resolution: {integrity: sha512-24Wk3YUdZHxjc9faID97GTu6xnLNia+adMt6qMTZG/HgdSUt4fS0REsGUXJOgpTED0Amh/j+gRGQxsLayJUlBQ==}
+    engines: {node: '>= 4.7.0'}
+    dev: false
 
   /sync-request@6.1.0:
     resolution: {integrity: sha512-8fjNkrNlNCrVc/av+Jn+xxqfCjYaBoHqCsDz6mt030UMxJGr+GSfCV1dQt2gRtlL63+VPidwDVLr7V2OcTSdRw==}
@@ -5840,7 +5847,7 @@ packages:
     resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
 
   github.com/dapphub/ds-test/e282159d5170298eb2455a6c05280ab5a73a4ef0:
-    resolution: {tarball: https://codeload.github.com/dapphub/ds-test/tar.gz/e282159d5170298eb2455a6c05280ab5a73a4ef0}
+    resolution: {commit: e282159d5170298eb2455a6c05280ab5a73a4ef0, repo: git+ssh://git@github.com/dapphub/ds-test.git, type: git}
     name: ds-test
     version: 1.0.0
     dev: true
@@ -5897,7 +5904,7 @@ packages:
     version: 7.22.11
     engines: {node: '>=6.9.0'}
     dependencies:
-      regenerator-runtime: registry.npmmirror.com/regenerator-runtime@0.14.0
+      regenerator-runtime: 0.14.0
     dev: true
 
   registry.npmmirror.com/@eslint/eslintrc@1.4.1:
@@ -9393,12 +9400,6 @@ packages:
     name: reduce-flatten
     version: 2.0.0
     engines: {node: '>=6'}
-
-  registry.npmmirror.com/regenerator-runtime@0.14.0:
-    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz}
-    name: regenerator-runtime
-    version: 0.14.0
-    dev: true
 
   registry.npmmirror.com/regexpp@2.0.1:
     resolution: {integrity: sha512-lv0M6+TkDVniA3aD1Eg0DVpfU/booSu7Eev3TDO/mZKHBfVjgCGTV4t4buppESEYDtkArYFOxTJWv6S5C+iaNw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/regexpp/-/regexpp-2.0.1.tgz}
