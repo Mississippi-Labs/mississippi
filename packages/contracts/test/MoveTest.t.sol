@@ -103,24 +103,28 @@ contract MoveTest is MudTest {
 
     moveList[0] = Move(5, 4, firstStepProof);
     moveList[1] = Move(6, 4, secondStepProof);
-    moveList[2] = Move(7, 4, secondStepProof);
-    moveList[3] = Move(7, 5, secondStepProof);
-    moveList[4] = Move(7, 6, secondStepProof);
+    moveList[2] = Move(7, 4, thirdStepProof);
+    moveList[3] = Move(7, 5, fourthStepProof);
+    moveList[4] = Move(7, 6, fifthStepProof);
 
-    
+    address tom = msg.sender;
+    console.log(" msg.Sender ", tom);
     vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
-
-    Player.setX(world, msg.sender, 4);
-    Player.setY(world, msg.sender, 4);
+    Player.setX(world, tom, 4);
+    Player.setY(world, tom, 4);
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
     GameConfig.setMerkleRoot(world, GAME_CONFIG_KEY, merkleRoot);
-
-    console.log(" player x : ", Player.getX(world, msg.sender));
-    console.log(" player y : ", Player.getY(world, msg.sender));
-    
-    world.move(moveList);
-
     vm.stopPrank();
+
+    console.log(" player x : ", Player.getX(world, tom));
+    console.log(" player y : ", Player.getY(world, tom));
+    console.log(" msg.Sender ", tom);
+    
+    vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+    world.move(moveList);
+    vm.stopPrank();
+
+   
   }
 
 }
