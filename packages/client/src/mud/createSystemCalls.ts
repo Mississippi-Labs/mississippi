@@ -9,7 +9,7 @@ export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
   ClientComponents
 ) {
-  const { Counter, GameSystem } = ClientComponents;
+  const { Counter, GameSystem, PlayerSystem } = ClientComponents;
 
   console.log(ClientComponents, 'ClientComponents')
   const increment = async () => {
@@ -23,6 +23,12 @@ export function createSystemCalls(
     await waitForTransaction(tx);
     return getComponentValue(GameSystem, singletonEntity);
   };
+
+  const getUserInfo = async () => {
+    const tx = await worldContract.write.move();
+    await waitForTransaction(tx);
+    return getComponentValue(GameSystem, singletonEntity);
+  }
 
   return {
     increment,

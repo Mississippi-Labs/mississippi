@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useComponentValue } from "@latticexyz/react";
 import { MapConfig } from '@/config';
 import { loadMapData } from '@/utils';
 import Map from '@/components/Map';
@@ -23,8 +24,14 @@ const Game = () => {
   const [players, setPlayers] = useState(PlayersMockData);
 
   const {
+    components,
     systemCalls: { move },
+    network
   } = useMUD();
+
+  // console.log(network.playerEntity, components);
+  const value = useComponentValue(components.Player, network.playerEntity);
+  console.log(value, 'value')
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -65,7 +72,8 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
-    move(merkelData);
+    console.log(merkelData, 'm')
+    // move(merkelData);
   }
 
   useEffect(() => {
