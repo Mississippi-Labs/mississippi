@@ -7,7 +7,6 @@ import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, BoxListData, BattleList, BattleListData, Player,  PlayerData, PlayerLocationLock, BoxList} from "../codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
-
 contract BattleSystem is System {
 
    
@@ -374,4 +373,22 @@ contract BattleSystem is System {
         return 1;
     }
         
+        function outBattlefield(address _user) internal {
+        // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
+        require(
+            Player.getState(_user) == PlayerState.Exploring,
+            "You should in exploring state"
+        );
+
+        Player.setHP(_user, initUserHP(_user));
+
+        for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
+            if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _user) {
+                BattleConfig.updateBattlefieldPlayers(BATTLE_CONFIG_KEY, i, BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY) - 1));
+                BattleConfig.popBattlefieldPlayers(BATTLE_CONFIG_KEY);
+                break;
+            }
+        }
+        Player.setState(_user, PlayerState.Preparing);
+    }
 }
