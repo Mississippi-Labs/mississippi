@@ -4,3 +4,4 @@ forge-std/=node_modules/forge-std/src/
 @src/=src/
 @systems/=src/systems/
 @codegen/=src/codegen/
+@library/=src/systems/library/

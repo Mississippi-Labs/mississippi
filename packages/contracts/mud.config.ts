@@ -19,10 +19,10 @@ export default mudConfig({
       name: "player",
       openAccess: true,
     },
-    RandomSystem: {
-      name: "random",
-      openAccess: true,
-    },
+    // RandomSystem: {
+    //   name: "random",
+    //   openAccess: true,
+    // },
   },
   enums: {
     BattleState: ["Inited", "Confirmed", "Revealed"],
