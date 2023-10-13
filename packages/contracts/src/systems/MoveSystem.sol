@@ -119,16 +119,16 @@ contract MoveSystem is System {
 
     
     function joinBattlefield(address _user) public {
-    // 加入战区,用户实际上是送到原点,状态改为探索中
-    PlayerState playerState = Player.getState(_user);
-    require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
-    //实际上是送到原点//TODO通过常数设置原点参数
-    // TODO似乎可以直接通过indexer获取,就不需要再次插入了
-    
-    Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
-    Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
-    // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
-    // Player.setState(_user, PlayerState.Exploring);
+        // 加入战区,用户实际上是送到原点,状态改为探索中
+        PlayerState playerState = Player.getState(_user);
+        require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
+        //实际上是送到原点//TODO通过常数设置原点参数
+        // TODO似乎可以直接通过indexer获取,就不需要再次插入了
+        
+        Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
+        Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
+        // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
+        // Player.setState(_user, PlayerState.Exploring);
   }
 
 

@@ -16,7 +16,7 @@ library GameConfigInit {
             0, //battleId,
             0, //randomId,
             4, //originX,
-            4, //originY,
+            5, //originY,
             0, //roomId,
             0 //boxId,
         );
