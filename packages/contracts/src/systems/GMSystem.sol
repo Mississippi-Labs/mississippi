@@ -32,5 +32,7 @@ contract GMSystem  {
         GameConfig.setMerkleRoot(GAME_CONFIG_KEY, root);
     }
 
+    function airdrop() public {}
+
     
 }

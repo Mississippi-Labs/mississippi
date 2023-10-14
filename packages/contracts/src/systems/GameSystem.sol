@@ -14,15 +14,6 @@ contract GameSystem is System {
   event MoveEvent(address indexed player, uint16 x, uint16 y);
   event AttackStart(address player, address target);
 
- 
-
-  
-
-
-  
-
-
-
   function settleBattle() external {}
 
   function createLootBox() external {}
@@ -31,12 +22,4 @@ contract GameSystem is System {
 
   function dropLoot() external {}
 
-  //------非战区空间部分
-
-  
-
-
-
-
-  
 }
