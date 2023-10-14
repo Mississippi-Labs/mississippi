@@ -19,6 +19,14 @@ export default mudConfig({
       name: "player",
       openAccess: true,
     },
+    MoveSystem: {
+      name: "move",
+      openAccess: true,
+    },
+    BoxSystem: {
+      name: "box",
+      openAccess: true,
+    },
     // RandomSystem: {
     //   name: "random",
     //   openAccess: true,
