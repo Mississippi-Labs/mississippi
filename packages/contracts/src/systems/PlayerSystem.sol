@@ -19,12 +19,19 @@ contract PlayerSystem is System {
         Player.setUrl(addr, url);
     }
 
+    function transfer(address addr, uint16 x, uint16 y) public {
+       Player.setX(addr, x);
+       Player.setY(addr, y);
+    }
+
 
     function getPosition(address addr) public  view returns (uint16, uint16) {
        uint16 x = Player.getX(addr);
        uint16 y = Player.getY(addr);
        return(x, y);
     }
+
+
 
 
 }
