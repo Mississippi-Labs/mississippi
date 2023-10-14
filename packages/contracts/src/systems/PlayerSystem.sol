@@ -31,6 +31,12 @@ contract PlayerSystem is System {
        return(x, y);
     }
 
+    function getSenderPosition() public  view returns (uint16, uint16) {
+       uint16 x = Player.getX(_msgSender());
+       uint16 y = Player.getY(_msgSender());
+       return(x, y);
+    }
+
 
 
 
