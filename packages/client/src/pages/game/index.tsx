@@ -11,6 +11,7 @@ import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 import { IPlayer } from '@/components/Player';
 import { uploadUserMove } from '@/service/user';
 import { useMUD } from '@/mud/MUDContext';
+import { getComponentValue } from "@latticexyz/recs";
 import Fog from '@/components/Fog';
 
 const Game = () => {
@@ -25,7 +26,7 @@ const Game = () => {
 
   const {
     components,
-    systemCalls: { move },
+    systemCalls: { move, getPosition },
     network
   } = useMUD();
 
@@ -72,7 +73,6 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
-    console.log(merkelData, 'm')
     // move(merkelData);
   }
 
@@ -84,7 +84,7 @@ const Game = () => {
 
     const player = players.find((item) => item.id === CurIdMockData);
     setCurPlayer(player as IPlayer);
-
+    // getPosition('0x35be872A3C94Bf581A9DA4c653CE734380b75B7D');
   }, []);
 
   return (

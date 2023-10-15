@@ -71,7 +71,7 @@ export async function setupNetwork() {
   return {
     world,
     components,
-    playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
+    playerEntity: encodeEntity({ addr: "address" }, { addr: burnerWalletClient.account.address }),
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,

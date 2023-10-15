@@ -28,7 +28,7 @@ export const PlayersMockData: IPlayer[] = [
   {
     id: 3,
     username: 'Me',
-    x: 4,
+    x: 5,
     y: 4,
   },
   {
