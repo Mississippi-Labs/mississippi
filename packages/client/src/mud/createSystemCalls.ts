@@ -9,7 +9,7 @@ export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
   ClientComponents
 ) {
-  const { Counter, GameSystem, PlayerSystem } = ClientComponents;
+  const { Counter, Player } = ClientComponents;
 
   console.log(ClientComponents, 'ClientComponents')
   const increment = async () => {
@@ -19,19 +19,26 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
+    console.log(worldContract)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
-    return getComponentValue(GameSystem, singletonEntity);
+    // const result = getComponentValue(Player, singletonEntity)
+    const result = getComponentValue(Player, '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D')
+    console.log(result)
+    return result;
+    // return getComponentValue(Player, singletonEntity);
   };
 
-  const getUserInfo = async () => {
-    const tx = await worldContract.write.move();
-    await waitForTransaction(tx);
-    return getComponentValue(GameSystem, singletonEntity);
+  const getPosition = async (address) => {
+    const tx = await worldContract.read.getPosition([address]);
+    const result = await waitForTransaction(tx);
+    console.log(result);
+    // return getComponentValue(GameSystem, singletonEntity);
   }
 
   return {
     increment,
-    move
+    move,
+    getPosition
   };
 }

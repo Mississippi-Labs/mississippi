@@ -26,23 +26,24 @@ const root = ReactDOM.createRoot(rootElement);
 
 
 // https://vitejs.dev/guide/env-and-mode.html
-// if (import.meta.env.DEV) {
-//   const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
-//   console.log(network.world, 'world');
-//   const s = new Set();
-//   network.world.components.forEach((c, index) => {
-//     s.add(c.id);
-//   })
-//   console.log(s.size, 'set');
-//   mountDevTools({
-//     config: mudConfig,
-//     publicClient: network.publicClient,
-//     walletClient: network.walletClient,
-//     latestBlock$: network.latestBlock$,
-//     blockStorageOperations$: network.blockStorageOperations$,
-//     worldAddress: network.worldContract.address,
-//     worldAbi: network.worldContract.abi,
-//     write$: network.write$,
-//     recsWorld: network.world,
-//   });
-// }
+if (import.meta.env.DEV) {
+  const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
+  const comp = [];
+  network.world.components.forEach((c) => {
+    if (comp.findIndex((item => item.id === c.id)) === -1) {
+      comp.push(c);
+    }
+  });
+  network.world.components = comp;
+  mountDevTools({
+    config: mudConfig,
+    publicClient: network.publicClient,
+    walletClient: network.walletClient,
+    latestBlock$: network.latestBlock$,
+    blockStorageOperations$: network.blockStorageOperations$,
+    worldAddress: network.worldContract.address,
+    worldAbi: network.worldContract.abi,
+    write$: network.write$,
+    recsWorld: network.world,
+  });
+}
