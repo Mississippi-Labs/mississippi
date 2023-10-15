@@ -19,19 +19,19 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
+    console.log('move', steps)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
-    return getComponentValue(GameSystem, singletonEntity);
   };
 
-  const getUserInfo = async () => {
-    const tx = await worldContract.write.move();
+  const joinBattlefield = async (addr) => {
+    const tx = await worldContract.write.joinBattlefield([addr]);
     await waitForTransaction(tx);
-    return getComponentValue(GameSystem, singletonEntity);
   }
 
   return {
     increment,
-    move
+    move,
+    joinBattlefield
   };
 }
