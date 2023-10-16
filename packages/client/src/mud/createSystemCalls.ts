@@ -19,8 +19,26 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
+<<<<<<< HEAD
     console.log('move', steps)
     const tx = await worldContract.write.move([steps]);
+=======
+    console.log(worldContract)
+    const tx = await worldContract.write.move([steps]);
+    await waitForTransaction(tx);
+    // const result = getComponentValue(Player, singletonEntity)
+    const result = getComponentValue(Player, '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D')
+    console.log(result)
+    return result;
+    // return getComponentValue(Player, singletonEntity);
+  };
+
+  const getPosition = async (address) => {
+    const tx = await worldContract.read.getPosition([address]);
+    const result = await waitForTransaction(tx);
+    console.log(result);
+    // return getComponentValue(GameSystem, singletonEntity);
+>>>>>>> 79480b45a422439a77d4380ef42b0c72297f51a7
     await waitForTransaction(tx);
   };
 
@@ -32,6 +50,10 @@ export function createSystemCalls(
   return {
     increment,
     move,
+<<<<<<< HEAD
+=======
+    getPosition,
+>>>>>>> 79480b45a422439a77d4380ef42b0c72297f51a7
     joinBattlefield
   };
 }

@@ -1,0 +1,112 @@
+@font-face {
+    font-family: MISS;
+    src: url('../../../assets/font/MISS.woff') format('woff');
+    font-style: normal;
+    font-weight: normal;
+    unicode-range: U+0025-00FF;
+}
+
+
+.home-header {
+    position: fixed;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 116px;
+    padding: 8px 30px 8px 8px;
+    font-family: MISS, sans-serif;
+    background: #020202;
+
+    .header-logo {
+        width: 129px;
+        height: 100px;
+    }
+
+    .play-btn {
+        width: 214px;
+        height: 72px;
+        font-size: 24px;
+        color: #fff;
+    }
+
+    .header-nav {
+        flex: 1;
+
+        .menu-lv1 {
+            display: flex;
+
+            &>li {
+                position: relative;
+            }
+
+            .menu-socials {
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 18px;
+                    right: 0;
+                    width: 21px;
+                    height: 12px;
+                    transform: rotate(180deg);
+                    transition: all 0.3s;
+                    background: url("../../assets/img/btn_3.png");
+                }
+
+                &:hover::after {
+                    transform: rotate(0);
+                }
+
+                &:hover {
+                    .menu-lv2 {
+                        display: block;
+                    }
+                }
+            }
+
+        }
+
+        .menu-lv2 {
+            display: none;
+            position: absolute;
+            left: 32px;
+            top: 99%;
+            padding: 10px;
+            width: 384px;
+            border-radius: 8px;
+            background: #412f50;
+
+            li {
+                position: relative;
+
+                img {
+                    position: absolute;
+                    right: 8px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    pointer-events: none;
+                }
+            }
+
+            a {
+                padding: 0 14px;
+                line-height: 60px;
+                border-radius: 8px;
+
+                &:hover {
+                    background: #543f66;
+                }
+            }
+        }
+
+        a {
+            display: block;
+            padding: 0 32px;
+            font-size: 20px;
+            line-height: 46px;
+            color: #fff;
+        }
+    }
+}
