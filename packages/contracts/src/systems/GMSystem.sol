@@ -5,7 +5,7 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { Season, GameConfig, BoxList} from "../codegen/Tables.sol";
 import { GAME_CONFIG_KEY } from "../Constants.sol";
 
-contract GMSystem  {
+contract GMSystem  is System {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
 
     // season 
