@@ -22,7 +22,6 @@ export function createSystemCalls(
     console.log('move', steps)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
-    return getComponentValue(GameSystem, singletonEntity);
   };
 
   const joinBattlefield = async (addr) => {
@@ -32,6 +31,7 @@ export function createSystemCalls(
 
   return {
     increment,
-    move
+    move,
+    joinBattlefield
   };
 }

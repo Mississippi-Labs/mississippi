@@ -3,11 +3,12 @@ pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import { console } from "forge-std/console.sol";
+ 
 
 import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock} from "@codegen/Tables.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
+import {console} from "forge-std/console.sol";
 import { CommonUtils } from "./library/CommonUtils.sol";
 import {Move} from "./Common.sol";
 
@@ -111,8 +112,8 @@ contract MoveSystem is System {
         BattleList.setAttacker(battleId, _msgSender());
         BattleList.setDefender(battleId, _targetAddress);
         BattleList.setTimestamp(battleId, block.timestamp);
-        BattleList.setAttackerHP(battleId, Player.getHP(_msgSender()));
-        BattleList.setDefenderHP(battleId, Player.getHP(_targetAddress));
+        BattleList.setAttackerHP(battleId, Player.getHp(_msgSender()));
+        BattleList.setDefenderHP(battleId, Player.getHp(_targetAddress));
 
         // battleId++;
         GameConfig.setBattleId(GAME_CONFIG_KEY, battleId + 1);

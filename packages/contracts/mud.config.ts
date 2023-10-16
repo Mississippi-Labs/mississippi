@@ -26,11 +26,7 @@ export default mudConfig({
     MoveSystem: {
       name: "move",
       openAccess: true,
-    },
-    // RandomSystem: {
-    //   name: "random",
-    //   openAccess: true,
-    // },
+    }
   },
   enums: {
     BattleState: ["Inited", "Confirmed", "Revealed"],
@@ -56,12 +52,13 @@ export default mudConfig({
         equipmentId : "uint256",
         x : "uint16",
         y : "uint16",
-        hP : "uint256",
+        hp : "uint256",
         oreBalance: "uint16",
         treasureBalance: "uint16",
         state : "PlayerState",
         name: "string",
         url: "string",
+        lastBattleTime: "uint256",
       }
     },
     Ownable: {
@@ -167,22 +164,11 @@ export default mudConfig({
         owner: "address",
       }
     }, 
-    Loot : {
-      keySchema: {
-        tokenId: "uint256"
-      },
+    GlobalConfig: {
+      dataStruct: false,
       schema: {
-        randomId: "uint256",
-        owner: "address",
-        state: "RandomState",
-        weapon: "string",
-        chest: "string",
-        head: "string",
-        waist: "string",
-        foot: "string",
-        hand: "string",
-        neck: "string",
-        ring: "string",
+        userContract: "address",
+        lootContract: "address"
       }
     }
   }
