@@ -42,7 +42,9 @@ contract MoveSystem is System {
             uint16 x2 = i > 0 ? moveList[i - 1].x : Player.getX(_msgSender());
             uint16 y2 = i > 0 ? moveList[i - 1].y : Player.getY(_msgSender());
             console.log(" step : ", i, x2, y2);
-            console.log(" move : ", moveList[i - 1].x, moveList[i - 1].y);
+            if (i > 1) {
+                console.log(" move : ", moveList[i - 1].x, moveList[i - 1].y);
+            }
             require(
                 CommonUtils.isNear(moveList[i].x, x2, moveList[i].y, y2),
                 "invalied move"
