@@ -19,26 +19,19 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
-    console.log(worldContract)
+    console.log('move', steps)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
-    // const result = getComponentValue(Player, singletonEntity)
-    const result = getComponentValue(Player, '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D')
-    console.log(result)
-    return result;
-    // return getComponentValue(Player, singletonEntity);
+    return getComponentValue(GameSystem, singletonEntity);
   };
 
-  const getPosition = async (address) => {
-    const tx = await worldContract.read.getPosition([address]);
-    const result = await waitForTransaction(tx);
-    console.log(result);
-    // return getComponentValue(GameSystem, singletonEntity);
+  const joinBattlefield = async (addr) => {
+    const tx = await worldContract.write.joinBattlefield([addr]);
+    await waitForTransaction(tx);
   }
 
   return {
     increment,
-    move,
-    getPosition
+    move
   };
 }
