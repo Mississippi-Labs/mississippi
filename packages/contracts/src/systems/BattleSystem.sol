@@ -197,6 +197,7 @@ contract BattleSystem is System {
   }
 
   function initUserHP(address _user) public pure returns (uint256) {
+    // TODO通过loot和user生成
     return 400;
   }
 
@@ -272,8 +273,9 @@ contract BattleSystem is System {
 
   function outBattlefield(address _user) internal {
     // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
+    // TODO,战败的时候判断state应该为fighting
     require(Player.getState(_user) == PlayerState.Exploring, "You should in exploring state");
-
+    // 
     Player.setHP(_user, initUserHP(_user));
 
     for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {

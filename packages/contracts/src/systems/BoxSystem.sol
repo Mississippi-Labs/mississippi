@@ -23,6 +23,7 @@ contract BoxSystem is System {
 
   function openBox(uint256 _boxId) external {
     // 宝箱打开时init内容物,根据自带randomId来实现随机
+    // TODO开宝箱的时候用户定身
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     require(BoxList.getDropTime(roomId, _boxId) != 0, "Invalid box");
@@ -38,8 +39,10 @@ contract BoxSystem is System {
     BoxList.setOpened(roomId, boxId, true);
     BoxList.setOpenTime(roomId, boxId, block.timestamp);
   }
-
+// TODO 少了一个reveal Box
+// 先开箱,再reveal,再view,弹出box的前端界面,最后collections
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) internal {
+    // TODO 少了丢弃逻辑,不能超过容量
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     require(BoxList.getDropTime(roomId, _boxId) != 0, "Invalid box");

@@ -12,7 +12,6 @@ contract GMSystem  {
         uint256 start = Season.getStart(MAP_KEY);
         uint256 end = Season.getEnd(MAP_KEY);
         uint256 no = Season.getNo(MAP_KEY);
-
         return (start, end, no);
     }
 
@@ -32,7 +31,26 @@ contract GMSystem  {
         GameConfig.setMerkleRoot(GAME_CONFIG_KEY, root);
     }
 
-    function airdrop() public {}
+    function startAirdrop() public {
+        // random r = randomList[randomId]
+        // r.author = msg.sender
+        // r.block = block.blocknumber
+        // randomId++;
+        // airdrop a = airdrop[airdropId];
+        // airdropId++;
+        // a.randomId = randomId;
+        // a.state = pending;
+    }
+
+    // function revealAirdrop(Move[] p) public {
+    //     // airdrop a = airdrop[airdropId];
+    //     // randomid = a.randomId
+    //     // // 通过函数获得真随机数
+    //     // // for循环空投3
+
+
+
+    // }
 
     
 }
