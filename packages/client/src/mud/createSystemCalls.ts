@@ -19,10 +19,6 @@ export function createSystemCalls(
   };
 
   const move = async (steps) => {
-<<<<<<< HEAD
-    console.log('move', steps)
-    const tx = await worldContract.write.move([steps]);
-=======
     console.log(worldContract)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
@@ -38,7 +34,6 @@ export function createSystemCalls(
     const result = await waitForTransaction(tx);
     console.log(result);
     // return getComponentValue(GameSystem, singletonEntity);
->>>>>>> 79480b45a422439a77d4380ef42b0c72297f51a7
     await waitForTransaction(tx);
   };
 
@@ -50,10 +45,7 @@ export function createSystemCalls(
   return {
     increment,
     move,
-<<<<<<< HEAD
-=======
     getPosition,
->>>>>>> 79480b45a422439a77d4380ef42b0c72297f51a7
     joinBattlefield
   };
 }
