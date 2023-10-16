@@ -166,6 +166,24 @@ export default mudConfig({
         opened: "bool",
         owner: "address",
       }
+    }, 
+    Loot : {
+      keySchema: {
+        tokenId: "uint256"
+      },
+      schema: {
+        randomId: "uint256",
+        owner: "address",
+        state: "RandomState",
+        weapon: "string",
+        chest: "string",
+        head: "string",
+        waist: "string",
+        foot: "string",
+        hand: "string",
+        neck: "string",
+        ring: "string",
+      }
     }
   }
 });

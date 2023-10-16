@@ -34,11 +34,18 @@ export function createSystemCalls(
     const result = await waitForTransaction(tx);
     console.log(result);
     // return getComponentValue(GameSystem, singletonEntity);
+    await waitForTransaction(tx);
+  };
+
+  const joinBattlefield = async (addr) => {
+    const tx = await worldContract.write.joinBattlefield([addr]);
+    await waitForTransaction(tx);
   }
 
   return {
     increment,
     move,
-    getPosition
+    getPosition,
+    joinBattlefield
   };
 }
