@@ -19,6 +19,14 @@ export default mudConfig({
       name: "player",
       openAccess: true,
     },
+    MoveSystem: {
+      name: "move",
+      openAccess: true,
+    },
+    BoxSystem: {
+      name: "box",
+      openAccess: true,
+    },
     // RandomSystem: {
     //   name: "random",
     //   openAccess: true,
@@ -157,6 +165,24 @@ export default mudConfig({
         openTime: "uint256",
         opened: "bool",
         owner: "address",
+      }
+    }, 
+    Loot : {
+      keySchema: {
+        tokenId: "uint256"
+      },
+      schema: {
+        randomId: "uint256",
+        owner: "address",
+        state: "RandomState",
+        weapon: "string",
+        chest: "string",
+        head: "string",
+        waist: "string",
+        foot: "string",
+        hand: "string",
+        neck: "string",
+        ring: "string",
       }
     }
   }

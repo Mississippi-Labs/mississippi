@@ -6,10 +6,10 @@ const worlds = worldsJson as Partial<Record<string, { address: string; blockNumb
 
 export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
-  // const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
+  const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
   // const chainId = 46508363;
-  const chainId = 421613;
-  console.log(supportedChains);
+  // const chainId = 421613;
+  // console.log(supportedChains);
   const chainIndex = supportedChains.findIndex((c) => c.id === chainId);
   const chain = supportedChains[chainIndex];
   if (!chain) {

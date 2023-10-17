@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useComponentValue } from "@latticexyz/react";
 import { MapConfig } from '@/config';
 import { loadMapData } from '@/utils';
 import Map from '@/components/Map';
@@ -10,6 +11,8 @@ import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
 import { IPlayer } from '@/components/Player';
 import { uploadUserMove } from '@/service/user';
 import { useMUD } from '@/mud/MUDContext';
+import { getComponentValue } from "@latticexyz/recs";
+import Fog from '@/components/Fog';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -22,8 +25,14 @@ const Game = () => {
   const [players, setPlayers] = useState(PlayersMockData);
 
   const {
-    systemCalls: { move },
+    components,
+    systemCalls: { move, getPosition },
+    network
   } = useMUD();
+
+  // console.log(network.playerEntity, components);
+  const value = useComponentValue(components.Player, network.playerEntity);
+  console.log(value, 'value')
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -64,7 +73,7 @@ const Game = () => {
         clearInterval(interval);
       }
     }, 300);
-    move(merkelData);
+    // move(merkelData);
   }
 
   useEffect(() => {
@@ -75,7 +84,7 @@ const Game = () => {
 
     const player = players.find((item) => item.id === CurIdMockData);
     setCurPlayer(player as IPlayer);
-
+    // getPosition('0x35be872A3C94Bf581A9DA4c653CE734380b75B7D');
   }, []);
 
   return (
@@ -96,6 +105,7 @@ const Game = () => {
         data={RankMockData}
         curId={CurIdMockData}
       />
+      {/*<Fog/>*/}
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}

@@ -71,7 +71,7 @@ export async function setupNetwork() {
   return {
     world,
     components,
-    playerEntity: encodeEntity({ address: "address" }, { address: burnerWalletClient.account.address }),
+    playerEntity: encodeEntity({ addr: "address" }, { addr: burnerWalletClient.account.address }),
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,
@@ -79,5 +79,6 @@ export async function setupNetwork() {
     waitForTransaction,
     worldContract,
     write$: write$.asObservable().pipe(share()),
+    account: burnerWalletClient.account.address
   };
 }

@@ -2,12 +2,13 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Season, GameConfig } from "../codegen/Tables.sol";
+import { Season, GameConfig, BoxList} from "../codegen/Tables.sol";
 import { GAME_CONFIG_KEY } from "../Constants.sol";
 
-contract GMSystem  {
+contract GMSystem  is System {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
 
+    // season 
     function GetSeasonInfo() public view returns (uint256, uint256, uint256) {
         uint256 start = Season.getStart(MAP_KEY);
         uint256 end = Season.getEnd(MAP_KEY);
@@ -15,20 +16,34 @@ contract GMSystem  {
         return (start, end, no);
     }
 
-    function SetSeasonInfo(uint256 start, uint256 end) public {
-        require (start < end, "start must be less than end");
+    function SetSeasonInfo(uint256 _start, uint256 _end) public {
+        require (_start < _end, "start must be less than end");
         
         uint256 now_end = Season.getEnd(MAP_KEY);
-        require (start > now_end, "start must be more than prev end");
+        require (_start > now_end, "start must be more than prev end");
 
-        Season.setStart(MAP_KEY, start);
-        Season.setEnd(MAP_KEY, end);
+        Season.setStart(MAP_KEY, _start);
+        Season.setEnd(MAP_KEY, _end);
         uint256 no = Season.getNo(MAP_KEY);
         Season.setNo(MAP_KEY, no+1);
     }
 
-    function SetMapMerkleRoot(bytes32 root) public {
-        GameConfig.setMerkleRoot(GAME_CONFIG_KEY, root);
+    // merkle root
+    function SetMapMerkleRoot(bytes32 _root) public {
+        GameConfig.setMerkleRoot(GAME_CONFIG_KEY, _root);
+    }
+
+    // create box 
+    function CreateBox(uint16 _x, uint16 _y) public {
+        uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
+        uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
+        BoxList.setX(roomId, boxId, _x);
+        BoxList.setY(roomId, boxId, _y);
+
+        uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
+        BoxList.setRandomId(roomId, boxId, randomId);
+        GameConfig.setRandomId(GAME_CONFIG_KEY, randomId + 1);
+        GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 
     function startAirdrop() public {

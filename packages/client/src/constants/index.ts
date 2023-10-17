@@ -1,5 +1,5 @@
 export const CellType = {
   immovable: 101,
-  movable: 100,
+  blank: 100,
   delivery: 102,
 }

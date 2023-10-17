@@ -3,6 +3,7 @@ pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import { console } from "forge-std/console.sol";
 
 import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock} from "@codegen/Tables.sol";
@@ -40,6 +41,10 @@ contract MoveSystem is System {
 
             uint16 x2 = i > 0 ? moveList[i - 1].x : Player.getX(_msgSender());
             uint16 y2 = i > 0 ? moveList[i - 1].y : Player.getY(_msgSender());
+            console.log(" step : ", i, x2, y2);
+            if (i > 1) {
+                console.log(" move : ", moveList[i].x, moveList[i].y);
+            }
             require(
                 CommonUtils.isNear(moveList[i].x, x2, moveList[i].y, y2),
                 "invalied move"
@@ -117,16 +122,16 @@ contract MoveSystem is System {
 
     
     function joinBattlefield(address _user) public {
-    // 加入战区,用户实际上是送到原点,状态改为探索中
-    PlayerState playerState = Player.getState(_user);
-    require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
-    //实际上是送到原点//TODO通过常数设置原点参数
-    // TODO似乎可以直接通过indexer获取,就不需要再次插入了
-    
-    Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
-    Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
-    // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
-    Player.setState(_user, PlayerState.Exploring);
+        // 加入战区,用户实际上是送到原点,状态改为探索中
+        PlayerState playerState = Player.getState(_user);
+        require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
+        //实际上是送到原点//TODO通过常数设置原点参数
+        // TODO似乎可以直接通过indexer获取,就不需要再次插入了
+        
+        Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
+        Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
+        // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
+        // Player.setState(_user, PlayerState.Exploring);
   }
 
 

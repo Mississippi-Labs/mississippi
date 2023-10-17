@@ -1,26 +1,23 @@
+
 .mi-home-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
+    background: url("../../assets/img/bg.jpg") no-repeat center / 100% 100%;
 
+    .play-btn {
+        position: relative;
+        color: #fff;
+        background: url("../../assets/img/btn_1.png") no-repeat center / 100% 100%;
+        text-shadow: #883360 2px 0 0, #883360 0 2px 0, #883360 -2px 0 0, #883360 0 -2px 0;
 
-    .home-content {
-        padding: 20px;
-        width: 800px;
-        height: 600px;
-        border: 2px solid;
+        &::after {
+            position: absolute;
+            top: -14px;
+            right: -18px;
+            content: '';
+            width: 124px;
+            height: 28px;
+            background: url("../../assets/img/comming.png") no-repeat center;
 
-        .ant-row {
-            margin-bottom: 30px;
         }
-
-        .ant-col {
-            padding: 0 20px;
-        }
-    }
-
-    h1 {
-        text-align: center;
     }
 }
