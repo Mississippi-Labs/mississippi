@@ -21,6 +21,7 @@ contract BattleSystem is System {
     require(!battle.isEnd, "Battle is end");
   }
 
+
   function confirmBattle(bytes32 _buffHash, uint256 _battleId) external {
     // 战斗是否有用户
     //战斗是否结束
@@ -46,6 +47,8 @@ contract BattleSystem is System {
     // TODO需要一个event通知前端验证buff
     emit BattleConfirmed(_battleId, _msgSender(), _buffHash);
   }
+
+
 
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
     // check battle
@@ -199,7 +202,7 @@ contract BattleSystem is System {
     return _hp - _attackPower;
   }
 
-  function initPlayerHp(address _player) public returns (uint256) {
+  function initPlayerHp(address _player) public view returns (uint256) {
       uint256 time = Player.getLastBattleTime(_player);
       uint256 hp = Player.getHp(_player);
 
@@ -209,7 +212,6 @@ contract BattleSystem is System {
       hp = hp + increase;
 
     return (hp > maxHp) ? maxHp : hp;
-  
   }
 
   function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
@@ -251,42 +253,11 @@ contract BattleSystem is System {
     outBattlefield(_msgSender());
   }
 
-  function getAttackPower(Buff _myBuff, Buff _targetBuff, uint256 _attackPower) internal pure returns (uint256) {
-    // TODO 后期添加防御力抵消对方的攻击力
-    if (compareBuff(_myBuff, _targetBuff) == 0) {
-      return (_attackPower * 7) / 10;
-    }
-    if (compareBuff(_myBuff, _targetBuff) == 2) {
-      return (_attackPower * 13) / 10;
-    }
-
-    return _attackPower;
-  }
-
-  function compareBuff(Buff _myBuff, Buff _targetBuff) internal pure returns (uint256) {
-    // 0表示失败,1表示相当,2表示胜利
-    if (
-      (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
-      (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
-      (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
-    ) {
-      return 2;
-    }
-    if (
-      (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
-      (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
-      (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
-    ) {
-      return 0;
-    }
-    return 1;
-  }
-
   function outBattlefield(address _player) internal {
     // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
     require(Player.getState(_player) == PlayerState.Exploring, "You should in exploring state");
 
-    // Player.setHp(_player, initPlayerHp(_player)); Todo: setting to atacker or defender hp 
+    Player.setHp(_player, initPlayerHp(_player)); //Todo: setting to atacker or defender hp 
     for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
       if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _player) {
         BattleConfig.updateBattlefieldPlayers(

@@ -56,9 +56,9 @@ export default mudConfig({
         oreBalance: "uint16",
         treasureBalance: "uint16",
         state : "PlayerState",
+        lastBattleTime: "uint256",
         name: "string",
         url: "string",
-        lastBattleTime: "uint256",
       }
     },
     Ownable: {
