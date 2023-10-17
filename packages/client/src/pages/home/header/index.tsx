@@ -5,7 +5,12 @@ import imgTelegram from '@/assets/img/icon_t.png';
 import imgTwitter from '@/assets/img/icon_tw.png';
 import imgDiscord from '@/assets/img/icon_d.png';
 
-const HomeHeader = () => {
+interface IProps {
+  onPlayBtnClick: () => void;
+  walletAddress: string;
+}
+
+const HomeHeader = (props: IProps) => {
   return (
     <div className="home-header">
       <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
@@ -33,7 +38,7 @@ const HomeHeader = () => {
         </ul>
       </nav>
 
-      <button className="play-btn">PLAY</button>
+      <button className="play-btn" onClick={props.onPlayBtnClick}>PLAY</button>
     </div>
   );
 };

@@ -1,23 +1,57 @@
 
+
 .mi-home-page {
     height: 100vh;
     background: url("../../assets/img/bg.jpg") no-repeat center / 100% 100%;
 
-    .play-btn {
+    .mi-section {
         position: relative;
-        color: #fff;
-        background: url("../../assets/img/btn_1.png") no-repeat center / 100% 100%;
-        text-shadow: #883360 2px 0 0, #883360 0 2px 0, #883360 -2px 0 0, #883360 0 -2px 0;
+        padding-top: 116px;
+        height: 100%;
 
-        &::after {
+        .play-btn {
             position: absolute;
-            top: -14px;
-            right: -18px;
-            content: '';
-            width: 124px;
-            height: 28px;
-            background: url("../../assets/img/comming.png") no-repeat center;
-
+            width: 360px;
+            height: 112px;
+            left: 50%;
+            bottom: 25%;
+            font-size: 30px;
+            transform: translate3d(-50%, 0, 0);
         }
+    }
+
+
+}
+
+.create-wallet-loading-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+
+    .create-wallet-loading-content {
+        font-size: 24px;
+        font-family: MISS, sans-serif;
+        color: #e16f39;
+    }
+}
+
+.create-wallet-successful-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+
+    .create-wallet-successful-content {
+        font-size: 24px;
+        font-family: MISS, sans-serif;
+        color: #e16f39;
+    }
+
+    button {
+        width: 220px;
+        height: 70px;
+        font-size: 32px;
     }
 }
