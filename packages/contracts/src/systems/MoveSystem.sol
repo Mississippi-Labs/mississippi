@@ -132,8 +132,6 @@ contract MoveSystem is System {
         Player.setX(_user, GameConfig.getOriginX(GAME_CONFIG_KEY));
         Player.setY(_user, GameConfig.getOriginY(GAME_CONFIG_KEY));
         // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
-        // Player.setState(_user, PlayerState.Exploring);
-  }
-
-
+        Player.setState(_user, PlayerState.Exploring);
+    }
 }

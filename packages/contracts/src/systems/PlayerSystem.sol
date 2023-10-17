@@ -40,9 +40,9 @@ contract PlayerSystem is System {
         address userAddress  = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
         User user = User(userAddress);
         require(user.ownerOf(tokenId) == _msgSender(), "You are not the owner of this NFT");
-        uint256 hp = user.getStructInfo(tokenId);
-        console.log("hp: ", hp);
-        Player.setHp(_msgSender(), hp);
+        // uint256 hp = user.getStructInfo(tokenId);
+        // console.log("hp: ", hp);
+        // Player.setHp(_msgSender(), hp);
     }
 
     function getUserInfo(uint256 tokenId) public view returns (uint256) {
