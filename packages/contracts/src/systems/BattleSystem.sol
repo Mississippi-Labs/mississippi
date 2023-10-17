@@ -203,15 +203,16 @@ contract BattleSystem is System {
   }
 
   function initPlayerHp(address _player) public view returns (uint256) {
-      uint256 time = Player.getLastBattleTime(_player);
-      uint256 hp = Player.getHp(_player);
+    //   uint256 time = Player.getLastBattleTime(_player);
+    //   uint256 hp = Player.getHp(_player);
 
-      uint256 elapsedTime = block.timestamp - time;
-      uint256 maxHp = 10000; // Todo: max hp slot 
-      uint256 increase = (elapsedTime / 10) / 100 * maxHp ; 
-      hp = hp + increase;
+    //   uint256 elapsedTime = block.timestamp - time;
+    //   uint256 maxHp = 10000; // Todo: max hp slot 
+    //   uint256 increase = (elapsedTime / 10) / 100 * maxHp ; 
+    //   hp = hp + increase;
 
-    return (hp > maxHp) ? maxHp : hp;
+    // return (hp > maxHp) ? maxHp : hp;
+    return 0;
   }
 
   function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
