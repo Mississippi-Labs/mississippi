@@ -4,8 +4,14 @@ import './styles.scss';
 import imgTelegram from '@/assets/img/icon_t.png';
 import imgTwitter from '@/assets/img/icon_tw.png';
 import imgDiscord from '@/assets/img/icon_d.png';
+import UserAddress from '@/components/UserAddress';
 
-const HomeHeader = () => {
+interface IProps {
+  onPlayBtnClick: () => void;
+  walletAddress: string;
+}
+
+const HomeHeader = (props: IProps) => {
   return (
     <div className="home-header">
       <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
@@ -33,7 +39,12 @@ const HomeHeader = () => {
         </ul>
       </nav>
 
-      <button className="play-btn">PLAY</button>
+      {
+        props.walletAddress ?
+          <UserAddress address={props.walletAddress} account={'0.1ETH'}/>
+          :
+          <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY</button>
+      }
     </div>
   );
 };

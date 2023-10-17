@@ -11,4 +11,22 @@
         left: 6px;
         top: 6px;
     }
+
+    .opt-wrapper {
+        position: absolute;
+        z-index: 11;
+        padding: 20px;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+
+        .mi-btn {
+            margin: 0 10px;
+            width: 128px;
+            height: 128px;
+            font-size: 32px;
+            background-image: url("../../assets/img/btn_5.png");
+        }
+    }
 }

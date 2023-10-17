@@ -105,7 +105,7 @@ const Game = () => {
         data={RankMockData}
         curId={CurIdMockData}
       />
-      {/*<Fog/>*/}
+      <Fog/>
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
@@ -115,6 +115,11 @@ const Game = () => {
         vertexCoordinate={vertexCoordinate}
         onPlayerMove={movePlayer}
       />
+      <div className="opt-wrapper">
+        <button className="mi-btn">Rank</button>
+        <button className="mi-btn">Help</button>
+        <button className="mi-btn">Info</button>
+      </div>
     </div>
   )
 };
