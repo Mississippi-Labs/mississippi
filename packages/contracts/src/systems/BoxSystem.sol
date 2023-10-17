@@ -22,9 +22,6 @@ contract BoxSystem is System {
   }
 
   function openBox(uint256 _boxId) external {
-    // check player strength 
-    require(Player.getStrength(msg.sender) >= 0, "Not enough strength");
-
     // 宝箱打开时init内容物,根据自带randomId来实现随机
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
@@ -46,6 +43,7 @@ contract BoxSystem is System {
   
 
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) internal {
+ 
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     require(BoxList.getDropTime(roomId, _boxId) != 0, "Invalid box");
@@ -57,6 +55,9 @@ contract BoxSystem is System {
       require(msg.sender == _box.owner, "The box is waiting for its opener, please wait");
     }
     require(_oreAmount <= _box.oreBalance && _treasureAmount <= _box.treasureBalance, "Invalid amount");
+    // check player strength 
+    require(Player.getOreBalance(_box.owner) + _oreAmount < Player.getStrength(msg.sender), "Not enough strength");
+
     BoxList.setOreBalance(roomId, boxId, _box.oreBalance - _oreAmount);
     BoxList.setTreasureBalance(roomId, boxId, _box.treasureBalance - _treasureAmount);
     Player.setOreBalance(_box.owner, _user.oreBalance + _oreAmount);
