@@ -173,7 +173,8 @@ export default mudConfig({
     GlobalConfig: {
       dataStruct: false,
       schema: {
-        userContract: "address"
+        userContract: "address",
+        lootContract: "address"
       }
     }
   }
