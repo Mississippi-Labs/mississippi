@@ -18,6 +18,10 @@
   border-radius: 10px;
   margin-top: 24px;
   font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 67px;
 }
 
 .main {
