@@ -1,4 +1,5 @@
 .user-address-wrapper {
+    position: relative;
     display: flex;
     padding: 20px;
     align-items: center;
@@ -16,5 +17,13 @@
 
     .user-address {
         padding: 0 20px;
+    }
+
+    .copy-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 17px;
+        height: 19px;
     }
 }
