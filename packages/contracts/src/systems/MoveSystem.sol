@@ -27,14 +27,6 @@ contract MoveSystem is System {
         PlayerLocationLock.set(_msgSender(), 0);
     }
 
-
-    function transfer(uint16 x, uint16 y) external {
-        //传送门,将用户在战区和非战区移动
-        // 将用户坐标随机转移到指定位置
-        Player.setX(_msgSender(), x);
-        Player.setY(_msgSender(), y);
-    }
-
     modifier CheckContinuity(Move[] memory moveList) {
         // 验证行走轨迹合法且连续
         uint8 prefer = 1;
@@ -134,4 +126,6 @@ contract MoveSystem is System {
         // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _user);
         Player.setState(_user, PlayerState.Exploring);
     }
+
+
 }
