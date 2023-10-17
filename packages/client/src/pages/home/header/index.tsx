@@ -4,6 +4,7 @@ import './styles.scss';
 import imgTelegram from '@/assets/img/icon_t.png';
 import imgTwitter from '@/assets/img/icon_tw.png';
 import imgDiscord from '@/assets/img/icon_d.png';
+import UserAddress from '@/components/UserAddress';
 
 interface IProps {
   onPlayBtnClick: () => void;
@@ -38,7 +39,12 @@ const HomeHeader = (props: IProps) => {
         </ul>
       </nav>
 
-      <button className="play-btn" onClick={props.onPlayBtnClick}>PLAY</button>
+      {
+        props.walletAddress ?
+          <UserAddress address={props.walletAddress} account={'0.1ETH'}/>
+          :
+          <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY</button>
+      }
     </div>
   );
 };

@@ -21,6 +21,32 @@
     }
 
 
+    .mint-section {
+        font-family: Arial, "Microsoft YaHei UI", sans-serif;
+        color: #fff;
+        background: #0C0B0B;
+
+        .mint-title {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .mint-desc {
+            margin: 0 auto;
+            width: 1100px;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 24px;
+            text-align: center;
+        }
+
+        .mint-wrapper {
+            width: 1280px;
+            margin: 0 auto;
+        }
+    }
 }
 
 .create-wallet-loading-wrapper {

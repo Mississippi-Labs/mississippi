@@ -3,11 +3,13 @@ import Header from '@/pages/home/header';
 import './styles.scss';
 import useModal from '@/hooks/useModal';
 import Loading from '@/components/Loading';
+import MintList from '@/config/mint';
 
 const Home = () => {
 
   const [hasInit, setHasInit] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
+  const [step, setStep] = useState('mint');
   const { Modal, open, close, setContent } = useModal({
     title: '',
   });
@@ -38,6 +40,7 @@ const Home = () => {
   
   const toMint = () => {
     close();
+    setStep('mint');
   }
 
   const play = () => {
@@ -54,9 +57,57 @@ const Home = () => {
         onPlayBtnClick={play}
         walletAddress={walletAddress}
       />
-      <section className="mi-section">
-        <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
-      </section>
+      {
+        step === 'play' && (
+          <section className="mi-section">
+            <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
+          </section>
+        )
+      }
+
+      {
+        step === 'mint' && (
+          <div className="mi-section mint-section">
+            <h2 className="mint-title">Mint Your Own Character</h2>
+            <p className="mint-desc">
+              You can select and combine elements from the left bar to create your own character. <br/>
+              After generation of your character, initial attributes will be randomly generated
+            </p>
+
+            <div className="mint-wrapper">
+              <div className="choose-unit-wrapper">
+                {
+                  MintList.map((item) => {
+                    return (
+                      <div className="mint-row" key={item.name}>
+
+                      </div>
+                    )
+                  })
+                }
+              </div>
+
+              <div className="preview-wrapper">
+                <div className="preview-box">
+
+                </div>
+
+                <div className="init-name-wrapper">
+                  <label htmlFor="username">Name You Character</label>
+                  <input type="text" className="username" id="username"/>
+                </div>
+
+                <div className="opt-wrapper">
+                  <button className="mi-btn">mint player</button>
+                  <button className="mi-btn">mint and go</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        )
+      }
+
       <Modal/>
     </div>
   );
