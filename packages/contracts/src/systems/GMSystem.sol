@@ -2,8 +2,8 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Season, GameConfig, BoxList} from "../codegen/Tables.sol";
-import { GAME_CONFIG_KEY } from "../Constants.sol";
+import { Season, GameConfig, BoxList, GlobalConfig} from "../codegen/Tables.sol";
+import { GAME_CONFIG_KEY, GLOBAL_CONFIG_KEY } from "../Constants.sol";
 
 contract GMSystem  is System {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
@@ -17,6 +17,7 @@ contract GMSystem  is System {
         return (start, end, no);
     }
 
+    // set season info 
     function SetSeasonInfo(uint256 _start, uint256 _end) public {
         require (_start < _end, "start must be less than end");
         
@@ -47,5 +48,9 @@ contract GMSystem  is System {
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 
-    
+    // set loot user 
+    function SetUserLoot(address _user, address _loot) public {
+        GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
+        GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _loot);
+    }
 }

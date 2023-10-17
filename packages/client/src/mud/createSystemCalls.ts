@@ -18,14 +18,10 @@ export function createSystemCalls(
     return getComponentValue(Counter, singletonEntity);
   };
 
-  const move = async (steps) => {
+  const move = async (steps: any) => {
     console.log(worldContract)
     const tx = await worldContract.write.move([steps]);
     await waitForTransaction(tx);
-    // const result = getComponentValue(Player, singletonEntity)
-    const result = getComponentValue(Player, '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D')
-    console.log(result)
-    return result;
     // return getComponentValue(Player, singletonEntity);
   };
 
@@ -37,8 +33,19 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const joinBattlefield = async (addr) => {
+  const joinBattlefield = async (addr: any) => {
+    console.log(addr)
     const tx = await worldContract.write.joinBattlefield([addr]);
+    await waitForTransaction(tx);
+  }
+
+  const transfer = async (transferData: any) => {
+    const tx = await worldContract.write.transfer([...transferData]);
+    await waitForTransaction(tx);
+  }
+
+  const battleInvitation = async (addr: any, steps: any) => {
+    const tx = await worldContract.write.battleInvitation([addr, steps]);
     await waitForTransaction(tx);
   }
 
@@ -46,6 +53,8 @@ export function createSystemCalls(
     increment,
     move,
     getPosition,
-    joinBattlefield
+    joinBattlefield,
+    transfer,
+    battleInvitation
   };
 }
