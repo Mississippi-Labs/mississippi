@@ -5,6 +5,7 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { useLocation } from 'react-router-dom';
 import { useMUD } from '@/mud/MUDContext';
 import { main } from '../../utils/createMerkelTree';
+import { ethers } from 'ethers';
 import './index.scss';
 
 const Test = () => {
@@ -13,7 +14,7 @@ const Test = () => {
   const [battleData, setBattleData] = useState([]);
 
   const {
-    components: { Player, GameConfig },
+    components: { Player, GameConfig, BattleList },
     systemCalls: { move, joinBattlefield, transfer, battleInvitation },
     network
   } = useMUD();
@@ -21,8 +22,24 @@ const Test = () => {
   const { account } = network;
   console.log(network, 'account')
 
+  // PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 转账
+  // let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+  // let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+  // let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
+  // console.log(wallet, 'wallet')
+  // // 转账到0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44
+  // wallet.sendTransaction({
+  //   to: '0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44',
+  //   value: ethers.utils.parseEther('1')
+  // }).then(res => {
+  //   console.log(res, 'res')
+  // })
+
   const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
   console.log(GameData, 'GameData')
+
+  const Battles = useEntityQuery([Has(BattleList)]).map((entity) => getComponentValue(BattleList, entity));
+  console.log(Battles, 'Battles')
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
   // console.log(GameConfig, 'GameConfig')
   const players = useEntityQuery([Has(Player)]).map((entity) => {
@@ -118,6 +135,32 @@ const Test = () => {
         }
 
       </div>
+      {
+        Battles.map((item, index) => (<div key={index} className='battle-item'>
+          <h6>战场信息</h6>
+          <div className='info-w'>
+            <div className='battle-section'>
+              <p>攻击者信息</p>
+              <div>地址： {item?.attacker}</div>
+              <div>Action： {item?.attackerAction}</div>
+              <div>Arg： {item?.attackerArg}</div>
+              <div>BuffHash： {item?.attackerBuffHash}</div>
+              <div>HP： {item?.attackerHP}</div>
+              <div>State： {item?.attackerState}</div>
+            </div>
+            <div className='battle-section'>
+              <p>被攻击者信息</p>
+              <div>地址： {item?.defender}</div>
+              <div>Action： {item?.defenderAction}</div>
+              <div>Arg： {item?.defenderArg}</div>
+              <div>BuffHash： {item?.defenderBuffHash}</div>
+              <div>HP： {item?.defenderHP}</div>
+              <div>State： {item?.defenderState}</div>
+            </div>
+          </div>
+          
+        </div>))
+      }
       <div className="main">
         <div className="section">
           <div className="title">加入游戏</div>
