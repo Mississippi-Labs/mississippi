@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
+import { BattleListData } from "../../codegen/Tables.sol";
 
 library BattleUtils {
     function compareBuff(
@@ -52,4 +53,16 @@ library BattleUtils {
 
         return _attackPower;
     }
+
+    function checkBattlePlayer(BattleListData memory _battle, address _msgSender,  
+        BattleState _battleState) internal pure {
+            
+        BattleState battleState = _battle.attacker == _msgSender ? _battle.attackerState : _battle.defenderState;
+
+        require(_battle.attacker == _msgSender || _battle.defender == _msgSender, "You are not in this _battle");
+        require(battleState == _battleState, "You are in the wrong state");
+
+        require(!_battle.isEnd, "Battle is end");
+  }
+
 }

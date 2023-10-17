@@ -53,10 +53,16 @@ export default mudConfig({
         x : "uint16",
         y : "uint16",
         hp : "uint256",
+        attack : "uint256",
+        attackRange : "uint256",
+        speed : "uint256",
+        strength : "uint256",
+        space : "uint256",
         oreBalance: "uint16",
         treasureBalance: "uint16",
         state : "PlayerState",
         lastBattleTime: "uint256",
+        maxHp: "uint256",
         name: "string",
         url: "string",
       }
@@ -167,8 +173,7 @@ export default mudConfig({
     GlobalConfig: {
       dataStruct: false,
       schema: {
-        userContract: "address",
-        lootContract: "address"
+        userContract: "address"
       }
     }
   }

@@ -22,6 +22,9 @@ contract BoxSystem is System {
   }
 
   function openBox(uint256 _boxId) external {
+    // check player strength 
+    require(Player.getStrength(msg.sender) >= 0, "Not enough strength");
+
     // 宝箱打开时init内容物,根据自带randomId来实现随机
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
@@ -38,6 +41,9 @@ contract BoxSystem is System {
     BoxList.setOpened(roomId, boxId, true);
     BoxList.setOpenTime(roomId, boxId, block.timestamp);
   }
+
+  //Todo: add reveal box 
+  
 
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) internal {
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
