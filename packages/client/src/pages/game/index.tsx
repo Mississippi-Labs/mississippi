@@ -125,7 +125,7 @@ const Game = () => {
 
 
   return (
-    <div className="mi-game" onKeyDown={onKeyDown} tabIndex={0}>
+    <div className="mi-game" tabIndex={0}>
       <div className="mi-game-user-avatar">
         <UserAvatar
           username={username}
