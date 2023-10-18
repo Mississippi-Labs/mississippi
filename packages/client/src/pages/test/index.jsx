@@ -41,8 +41,15 @@ const Test = () => {
   const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
   console.log(GameData, 'GameData')
 
-  const Battles = useEntityQuery([Has(BattleList)]).map((entity) => getComponentValue(BattleList, entity));
-  console.log(Battles, 'Battles')
+  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
+    let id = decodeEntity({ battleId: "uint256" }, entity);
+    let battle = getComponentValue(BattleList, entity)
+    console.log(battle, 'battle', id, entity)
+    battle.id = id.battleId.toString()
+    battle.nonce = crypto.randomUUID()
+    return battle;
+  });
+  console.log(battles, 'battles')
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
   // console.log(GameConfig, 'GameConfig')
   const players = useEntityQuery([Has(Player)]).map((entity) => {
@@ -127,8 +134,16 @@ const Test = () => {
 
   const confirmBattleFun = () => {
     // console.log(confirmBattleData, 'confirmBattle')
-    let hash = getProofHash(confirmBattleData[0], confirmBattleData[1], '0');
-    console.log(hash, 'hash')
+    let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
+    if (battle) {
+      let action = confirmBattleData[0]
+      let arg = confirmBattleData[1]
+      let nonce = battle.nonce
+      let hash = getProofHash(action, arg, nonce);
+      console.log(hash, 'hash')
+      confirmBattle(hash, battle.id);
+    }
+    // console.log(hash, 'hash')
   }
 
   const joinBattlefieldFun = () => {
@@ -140,14 +155,10 @@ const Test = () => {
   }
 
   const getProofHash = (action, arg, nonce) => {
-    return Buffer.from(
-      solidityKeccak256(
-          ["string", "string", "string"],
-          [action, arg, nonce]
-        )
-        .slice(2),
-      "hex"
-    );
+    return solidityKeccak256(
+      ["string", "string", "string"],
+      [action, arg, nonce]
+    )
   }
 
   return (
@@ -166,8 +177,8 @@ const Test = () => {
 
       </div>
       {
-        Battles.map((item, index) => (<div key={index} className='battle-item'>
-          <h6>战场信息</h6>
+        battles.map((item, index) => (<div key={index} className='battle-item'>
+          <h6>战场信息(id: {item.id})</h6>
           <div style={{marginTop: '12px', fontSize: '12px'}}>胜利者：{item.winner}</div>
           <div className='info-w'>
             <div className='battle-section'>
@@ -193,6 +204,11 @@ const Test = () => {
         </div>))
       }
       <div className="main">
+        <div className="section">
+          <div className="title">初始化玩家</div>
+          <div className="input"></div>
+          <div className="btn" onClick={joinBattlefieldFun}>确认</div>
+        </div>
         <div className="section">
           <div className="title">加入游戏</div>
           <div className="input"></div>
