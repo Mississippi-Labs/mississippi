@@ -37,7 +37,6 @@ library MRandom {
 
   function choice(uint8 rand, string[] memory sourceArray) internal pure returns (string memory) {
     string memory output = sourceArray[rand % sourceArray.length];
-
     return output;
   }
 }
