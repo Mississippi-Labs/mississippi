@@ -9,7 +9,7 @@ const Home = () => {
 
   const [hasInit, setHasInit] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
-  const [step, setStep] = useState('mint');
+  const [step, setStep] = useState('play');
   const { Modal, open, close, setContent } = useModal({
     title: '',
   });

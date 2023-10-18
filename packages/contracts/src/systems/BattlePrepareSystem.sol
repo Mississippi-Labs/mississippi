@@ -41,7 +41,7 @@ contract BattlePrepareSystem is System {
             moveList.length > 0 && moveList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
             "invalid attack distance"
         );
-        require(moveList.length <= Player.getSpace(_msgSender()), "exceed player space");
+        // require(moveList.length <= Player.getSpace(_msgSender()), "exceed player space"); //Todo: temp remove
 
         require(
             Player.getState(_msgSender()) == PlayerState.Exploring &&

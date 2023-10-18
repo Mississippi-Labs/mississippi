@@ -36,7 +36,19 @@ export const PlayersMockData: IPlayer[] = [
     username: 'other',
     x: 18,
     y: 10,
-  }
+  },
+  {
+    id: 6,
+    username: 'other2',
+    x: 18,
+    y: 13,
+  },
+  {
+    id: 8,
+    username: 'other3',
+    x: 18,
+    y: 13,
+  },
 ];
 
 export const CurIdMockData = 3;
