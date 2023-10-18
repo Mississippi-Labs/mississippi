@@ -6,6 +6,7 @@ import { console } from "forge-std/console.sol";
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 import { GameConfigInit } from "./GameConfigInit.sol";
 import { BattleConfigInit } from "./BattleConfigInit.sol";
+import { GlobalConfigInit } from "./GlobalConfigInit.sol";
 import { console } from "forge-std/console.sol";
 
 contract PostDeploy is Script {
@@ -20,7 +21,8 @@ contract PostDeploy is Script {
 
     // ------------------ INIT ------------------
     GameConfigInit.initGameConfig(IWorld(worldAddress));
-    BattleConfigInit.initGameConfig(IWorld(worldAddress));
+    BattleConfigInit.initBattleConfig(IWorld(worldAddress));
+    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress));
 
     vm.stopBroadcast();
 

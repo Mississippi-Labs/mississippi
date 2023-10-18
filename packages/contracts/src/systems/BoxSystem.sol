@@ -23,6 +23,7 @@ contract BoxSystem is System {
 
   function openBox(uint256 _boxId) external {
     // 宝箱打开时init内容物,根据自带randomId来实现随机
+    // TODO开宝箱的时候用户定身
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     require(BoxList.getDropTime(roomId, _boxId) != 0, "Invalid box");

@@ -21,12 +21,4 @@ contract GameSystem is System {
 
   function dropLoot() external {}
 
-  //------非战区空间部分
-
-  
-
-
-
-
-  
 }
