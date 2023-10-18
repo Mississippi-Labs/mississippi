@@ -2,8 +2,8 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Season, GameConfig, BoxList} from "../codegen/Tables.sol";
-import { GAME_CONFIG_KEY } from "../Constants.sol";
+import { Season, GameConfig, BoxList, GlobalConfig} from "../codegen/Tables.sol";
+import { GAME_CONFIG_KEY, GLOBAL_CONFIG_KEY } from "../Constants.sol";
 
 contract GMSystem  is System {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
@@ -16,6 +16,7 @@ contract GMSystem  is System {
         return (start, end, no);
     }
 
+    // set season info 
     function SetSeasonInfo(uint256 _start, uint256 _end) public {
         require (_start < _end, "start must be less than end");
         
@@ -46,26 +47,9 @@ contract GMSystem  is System {
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 
-    function startAirdrop() public {
-        // random r = randomList[randomId]
-        // r.author = msg.sender
-        // r.block = block.blocknumber
-        // randomId++;
-        // airdrop a = airdrop[airdropId];
-        // airdropId++;
-        // a.randomId = randomId;
-        // a.state = pending;
+    // set user contract address 
+    function SetUserContract(address _user) public {
+        GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
     }
-
-    // function revealAirdrop(Move[] p) public {
-    //     // airdrop a = airdrop[airdropId];
-    //     // randomid = a.randomId
-    //     // // 通过函数获得真随机数
-    //     // // for循环空投3
-
-
-
-    // }
-
     
 }

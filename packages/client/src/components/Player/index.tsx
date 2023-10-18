@@ -1,5 +1,7 @@
 import React from 'react';
 import './styles.scss';
+import { CurIdMockData } from '@/mock/data';
+import Fog from '@/components/Fog';
 
 export interface IPlayer {
   x: number;
@@ -13,6 +15,9 @@ const Player = (props: IPlayer) => {
     <div className="mi-player">
       <div className="player-name">{props.username}</div>
       <div className="player-body avatar-box avatar-panda"/>
+      {
+        props.id === CurIdMockData && <Fog />
+      }
     </div>
   );
 };

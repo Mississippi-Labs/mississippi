@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { IPlayer } from '../Player';
 import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
@@ -22,6 +22,8 @@ const Map = (props: IProps) => {
   const { width, height, vertexCoordinate, data = [], players, curId, onPlayerMove } = props;
   const { x: startX, y: startY } = vertexCoordinate;
 
+  const [prevActionCoordinate, setPrevActionCoordinate] = useState({ x: -1, y: -1});
+
   const staticData = useMemo(() => {
     return Array(height).fill(0).map(() => Array(width).fill(0));
   }, [width, height]);
@@ -35,7 +37,11 @@ const Map = (props: IProps) => {
   const playerData = useMemo(() => {
     const obj = {};
     players.forEach((player) => {
-      obj[`${player.x}-${player.y}`] = player;
+      if (obj[`${player.x}-${player.y}`]) {
+        obj[`${player.x}-${player.y}`].push(player)
+      } else {
+        obj[`${player.x}-${player.y}`] = [player];
+      }
     });
     return obj;
   }, [players]);
@@ -71,9 +77,11 @@ const Map = (props: IProps) => {
                         x,
                         y
                       }}
+                      prevActionCoordinate={prevActionCoordinate}
+                      onExeAction={setPrevActionCoordinate}
                       mapData={data}
                       cellClassCache={cellClassCache.current}
-                      player={playerData[`${x}-${y}`]}
+                      players={playerData[`${x}-${y}`]}
                       onMoveTo={onMoveTo}
                     />
                   )

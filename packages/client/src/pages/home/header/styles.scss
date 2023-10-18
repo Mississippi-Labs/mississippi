@@ -1,11 +1,3 @@
-@font-face {
-    font-family: MISS;
-    src: url('../../../assets/font/MISS.woff') format('woff');
-    font-style: normal;
-    font-weight: normal;
-    unicode-range: U+0025-00FF;
-}
-
 
 .home-header {
     position: fixed;
@@ -29,7 +21,6 @@
         width: 214px;
         height: 72px;
         font-size: 24px;
-        color: #fff;
     }
 
     .header-nav {
@@ -52,7 +43,7 @@
                     height: 12px;
                     transform: rotate(180deg);
                     transition: all 0.3s;
-                    background: url("../../assets/img/btn_3.png");
+                    background: url("../../../assets/img/btn_3.png");
                 }
 
                 &:hover::after {

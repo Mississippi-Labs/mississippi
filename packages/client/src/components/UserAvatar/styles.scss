@@ -1,7 +1,7 @@
 .mi-c-user-avatar {
     position: relative;
     padding-left: 80px;
-    width: 160px;
+    //width: 160px;
     height: 80px;
 
     .avatar-box {
@@ -31,5 +31,9 @@
         & > div {
             height: 16px;
         }
+    }
+
+    .user-address-wrapper {
+        padding: 10px;
     }
 }

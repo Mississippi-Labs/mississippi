@@ -8,49 +8,12 @@ import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
 contract BattleSystem is System {
-  function checkBattlePlayer(BattleListData memory battle, BattleState _battleState) internal view {
-    // BattleListData memory battle = BattleList.get(_battleId);
-
-    BattleState battleState = battle.attacker == _msgSender() ? battle.attackerState : battle.defenderState;
-
-    require(battle.attacker == _msgSender() || battle.defender == _msgSender(), "You are not in this battle");
-    require(battleState == _battleState, "You are in the wrong state");
-
-    require(!battle.isEnd, "Battle is end");
-  }
-
-  function confirmBattle(bytes32 _buffHash, uint256 _battleId) external {
-    // 战斗是否有用户
-    //战斗是否结束
-    //是否已超时
-
-    BattleListData memory battle = BattleList.get(_battleId);
-    checkBattlePlayer(battle, BattleState.Inited);
-
-    require(block.timestamp - battle.timestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
-    // 战斗是否已经选择buff
-    BattleState _battleState = battle.attacker == _msgSender() ? battle.attackerState : battle.defenderState;
-
-    require(_battleState == BattleState.Inited, "You have already selected buff");
-    // 当前实现方法非常不优雅,使用两个额外存储槽来存储用户的选择
-    if (battle.attacker == _msgSender()) {
-      BattleList.setAttackerBuffHash(_battleId, _buffHash);
-      BattleList.setAttackerState(_battleId, BattleState.Confirmed);
-    } else {
-      BattleList.setDefenderBuffHash(_battleId, _buffHash);
-      BattleList.setDefenderState(_battleId, BattleState.Confirmed);
-    }
-
-    // TODO需要一个event通知前端验证buff
-  }
-
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
     // check battle
     BattleListData memory battle = BattleList.get(_battleId);
-    checkBattlePlayer(battle, BattleState.Confirmed);
+    BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Confirmed);
 
-    // TODO揭示阶段也应该添加时间限制
-    // address attacker = BattleList.getAttacker(_battleId);
+    // TODO 揭示阶段也应该添加时间限制 //Todo ???
 
     bytes32 moveHash = battle.attacker == _msgSender()
       ? BattleList.getAttackerBuffHash(_battleId)
@@ -76,10 +39,13 @@ contract BattleSystem is System {
   function revealWinner(uint256 _battleId) public {
     // 结算战斗
     BattleListData memory battle = BattleList.get(_battleId);
-    checkBattlePlayer(battle, BattleState.Revealed);
+    BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Revealed);
 
-    uint256 attackerFirepower = 100;
-    uint256 defenderFirepower = 100;
+   
+
+    //set attack 
+    uint256 attackerFirepower = Player.getAttack(battle.attacker);
+    uint256 defenderFirepower = Player.getAttack(battle.defender);
 
     // address attacker = BattleList.getAttacker(_battleId);
     // address defender = BattleList.getDefender(_battleId);
@@ -107,10 +73,11 @@ contract BattleSystem is System {
         battle.winner = winner; //Todo: temmorary solution
         battle.isEnd = true;
         loseGame(looser, winner);
-        Player.setHP(winner, initUserHP(winner));
+
+        // Todo:  setHP  // 胜利者解除战斗形态,血量恢复20%
+        // Player.setHp(winner, initPlayerHp(winner));
 
         // TODO这里应该跟一个清算函数
-        // 胜利者解除战斗形态,血量恢复20%
         // 失败者传送到非战区,血量回满
       }
     }
@@ -196,13 +163,8 @@ contract BattleSystem is System {
     return _hp - _attackPower;
   }
 
-  function initUserHP(address _user) public pure returns (uint256) {
-    // TODO通过loot和user生成
-    return 400;
-  }
-
-  function raiseUserHP(uint256 _targetHP, uint256 _percent, address _user) public {
-    Player.setHP(_user, (_targetHP * _percent) / 100);
+  function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
+    Player.setHp(_player, (_targetHP * _percent) / 100);
   }
 
   function loseGame(address _looser, address _winner) internal {
@@ -240,46 +202,15 @@ contract BattleSystem is System {
     outBattlefield(_msgSender());
   }
 
-  function getAttackPower(Buff _myBuff, Buff _targetBuff, uint256 _attackPower) internal pure returns (uint256) {
-    // TODO 后期添加防御力抵消对方的攻击力
-    if (compareBuff(_myBuff, _targetBuff) == 0) {
-      return (_attackPower * 7) / 10;
-    }
-    if (compareBuff(_myBuff, _targetBuff) == 2) {
-      return (_attackPower * 13) / 10;
-    }
-
-    return _attackPower;
-  }
-
-  function compareBuff(Buff _myBuff, Buff _targetBuff) internal pure returns (uint256) {
-    // 0表示失败,1表示相当,2表示胜利
-    if (
-      (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
-      (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
-      (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
-    ) {
-      return 2;
-    }
-    if (
-      (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
-      (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
-      (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
-    ) {
-      return 0;
-    }
-    return 1;
-  }
-
-  function outBattlefield(address _user) internal {
+  function outBattlefield(address _player) internal {
     // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
-    // TODO,战败的时候判断state应该为fighting
-    require(Player.getState(_user) == PlayerState.Exploring, "You should in exploring state");
-    // 
-    Player.setHP(_user, initUserHP(_user));
+    require(Player.getState(_player) == PlayerState.Exploring, "You should in exploring state");
+
+    // Player.setHp(_player, initPlayerHp(_player)); //Todo: setting to atacker or defender hp 
+    Player.setHp(_player, Player.getMaxHp(_player));
 
     for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
-      if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _user) {
+      if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _player) {
         BattleConfig.updateBattlefieldPlayers(
           BATTLE_CONFIG_KEY,
           i,
@@ -292,6 +223,7 @@ contract BattleSystem is System {
         break;
       }
     }
-    Player.setState(_user, PlayerState.Preparing);
+    Player.setState(_player, PlayerState.Preparing);
+    Player.setLastBattleTime(_player, block.timestamp);
   }
 }

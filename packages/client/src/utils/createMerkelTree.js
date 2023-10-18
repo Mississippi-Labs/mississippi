@@ -1,6 +1,7 @@
 import { MerkleTree } from "merkletreejs";
 import { solidityKeccak256, keccak256 } from 'ethers/lib/utils';
 import { Buffer } from "buffer";
+import { bfs } from './map'
 
 let map_info = [];
 let line = Array.from({ length: 100 }, () => 1);
@@ -56,12 +57,18 @@ const merkleTree = new MerkleTree(
   keccak256,
   { sortPairs: true }
 );
-export const main = (steps) => {
+export const main = (from, to) => {
   let root = merkleTree.getHexRoot();
   console.log("Map Merkle Tree Root:", root);
   // 这里可以直接手写走的节点,注意不能包含开始点,且每一步走的地方都必须是可以移动端
-  console.log("总移动步数", steps.length);
-  let steps_list = move(steps);
+  let steps = bfs(map_info, from, to);
+  // 删除第一个
+  steps.shift();
+  let steps_arr = steps.map((item) => {
+    return [item.x, item.y];
+  })
+  console.log("总移动步数", steps_arr.length);
+  let steps_list = move(steps_arr);
   console.log("生成的传入文件", steps_list);
   return steps_list
 }

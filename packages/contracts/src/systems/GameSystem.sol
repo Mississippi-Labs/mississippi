@@ -12,7 +12,6 @@ contract GameSystem is System {
   bytes32 constant GAME_KEY = keccak256("Game-Key");
   event NewRandom(uint256 randomId, address author);
   event MoveEvent(address indexed player, uint16 x, uint16 y);
-  event AttackStart(address player, address target);
 
   function settleBattle() external {}
 
