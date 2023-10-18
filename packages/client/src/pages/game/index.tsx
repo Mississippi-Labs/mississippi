@@ -1,24 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { useComponentValue } from "@latticexyz/react";
-import { MapConfig } from '@/config';
-import { loadMapData } from '@/utils';
-import Map from '@/components/Map';
-import UserAvatar from '@/components/UserAvatar';
-import { useLocation } from 'react-router-dom';
-import './styles.scss';
-import Rank from '@/components/Rank';
-import { CurIdMockData, PlayersMockData, RankMockData } from '@/mock/data';
-import { IPlayer } from '@/components/Player';
-import { uploadUserMove } from '@/service/user';
-import { useMUD } from '@/mud/MUDContext';
+import { MapConfig } from "@/config";
+import { loadMapData } from "@/utils";
+import Map from "@/components/Map";
+import UserAvatar from "@/components/UserAvatar";
+import { useLocation } from "react-router-dom";
+import "./styles.scss";
+import Rank from "@/components/Rank";
+import { CurIdMockData, PlayersMockData, RankMockData } from "@/mock/data";
+import { IPlayer } from "@/components/Player";
+import { uploadUserMove } from "@/service/user";
+import { useMUD } from "@/mud/MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
-import Fog from '@/components/Fog';
+import Fog from "@/components/Fog";
+import Battle from "@/components/Battle";
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
   const [vertexCoordinate, setVertexCoordinate] = useState({
     x: 0,
-    y: 0
+    y: 0,
   });
 
   const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
@@ -27,16 +28,20 @@ const Game = () => {
   const {
     components,
     systemCalls: { move, getPosition },
-    network
+    network,
   } = useMUD();
 
   // console.log(network.playerEntity, components);
   const value = useComponentValue(components.Player, network.playerEntity);
-  console.log(value, 'value')
+  console.log(value, "value");
 
   const mapDataRef = useRef([]);
   const location = useLocation();
-  const { username = '', avatar = 'snake', roomId = '000000' } = location.state ?? {};
+  const {
+    username = "",
+    avatar = "snake",
+    roomId = "000000",
+  } = location.state ?? {};
 
   const onKeyDown = (e) => {
     const mapData = mapDataRef.current;
@@ -51,20 +56,28 @@ const Game = () => {
         vertexCoordinate.y = Math.max(0, vertexCoordinate.y - 1);
         break;
       case 39:
-        vertexCoordinate.x = Math.min(mapData[0].length - 1 - MapConfig.visualWidth, vertexCoordinate.x + 1);
+        vertexCoordinate.x = Math.min(
+          mapData[0].length - 1 - MapConfig.visualWidth,
+          vertexCoordinate.x + 1
+        );
         break;
       case 40:
-        vertexCoordinate.y = Math.min(mapData.length - 1 - MapConfig.visualHeight, vertexCoordinate.y + 1);
+        vertexCoordinate.y = Math.min(
+          mapData.length - 1 - MapConfig.visualHeight,
+          vertexCoordinate.y + 1
+        );
         break;
     }
     setVertexCoordinate({
-      ...vertexCoordinate
+      ...vertexCoordinate,
     });
   };
-  
+
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
-    const curPlayerIndex = players.findIndex(item => item.id === curPlayer!.id);
+    const curPlayerIndex = players.findIndex(
+      (item) => item.id === curPlayer!.id
+    );
     const interval = setInterval(() => {
       Object.assign(players[curPlayerIndex], paths[pathIndex]);
       pathIndex++;
@@ -74,7 +87,7 @@ const Game = () => {
       }
     }, 300);
     // move(merkelData);
-  }
+  };
 
   useEffect(() => {
     loadMapData().then((csv) => {
@@ -101,11 +114,8 @@ const Game = () => {
         />
       </div>
 
-      <Rank
-        data={RankMockData}
-        curId={CurIdMockData}
-      />
-      <Fog/>
+      <Rank data={RankMockData} curId={CurIdMockData} />
+      <Fog />
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
@@ -115,13 +125,14 @@ const Game = () => {
         vertexCoordinate={vertexCoordinate}
         onPlayerMove={movePlayer}
       />
+      <Battle />
       <div className="opt-wrapper">
         <button className="mi-btn">Rank</button>
         <button className="mi-btn">Help</button>
         <button className="mi-btn">Info</button>
       </div>
     </div>
-  )
+  );
 };
 
 export default Game;
