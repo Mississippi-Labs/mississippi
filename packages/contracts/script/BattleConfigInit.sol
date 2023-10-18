@@ -7,7 +7,7 @@ import {BattleConfig} from "../src/codegen/Tables.sol";
 import { BATTLE_CONFIG_KEY } from "../src/Constants.sol";
 
 library BattleConfigInit {
-    function initGameConfig(IWorld _world) internal {
+    function initBattleConfig(IWorld _world) internal {
         address[] memory players;
         BattleConfig.set(
             _world,
