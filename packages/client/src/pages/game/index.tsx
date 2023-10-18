@@ -12,7 +12,6 @@ import { IPlayer } from '@/components/Player';
 import { uploadUserMove } from '@/service/user';
 import { useMUD } from '@/mud/MUDContext';
 import { getComponentValue } from "@latticexyz/recs";
-import Fog from '@/components/Fog';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { IPlayer } from '../Player';
 import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
@@ -21,6 +21,8 @@ interface IProps {
 const Map = (props: IProps) => {
   const { width, height, vertexCoordinate, data = [], players, curId, onPlayerMove } = props;
   const { x: startX, y: startY } = vertexCoordinate;
+
+  const [prevActionCoordinate, setPrevActionCoordinate] = useState({ x: -1, y: -1});
 
   const staticData = useMemo(() => {
     return Array(height).fill(0).map(() => Array(width).fill(0));
@@ -75,6 +77,8 @@ const Map = (props: IProps) => {
                         x,
                         y
                       }}
+                      prevActionCoordinate={prevActionCoordinate}
+                      onExeAction={setPrevActionCoordinate}
                       mapData={data}
                       cellClassCache={cellClassCache.current}
                       players={playerData[`${x}-${y}`]}
