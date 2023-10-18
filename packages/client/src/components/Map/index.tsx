@@ -35,7 +35,11 @@ const Map = (props: IProps) => {
   const playerData = useMemo(() => {
     const obj = {};
     players.forEach((player) => {
-      obj[`${player.x}-${player.y}`] = player;
+      if (obj[`${player.x}-${player.y}`]) {
+        obj[`${player.x}-${player.y}`].push(player)
+      } else {
+        obj[`${player.x}-${player.y}`] = [player];
+      }
     });
     return obj;
   }, [players]);
@@ -73,7 +77,7 @@ const Map = (props: IProps) => {
                       }}
                       mapData={data}
                       cellClassCache={cellClassCache.current}
-                      player={playerData[`${x}-${y}`]}
+                      players={playerData[`${x}-${y}`]}
                       onMoveTo={onMoveTo}
                     />
                   )

@@ -27,12 +27,12 @@ interface IProps {
   coordinate: ICoordinate,
   mapData: number[][];
   cellClassCache: ICellClassCache;
-  player?: IPlayer;
+  players?: IPlayer[];
   onMoveTo: (ICoordinate) => void;
 }
 
 const MapCell = (props: IProps) => {
-  const { coordinate: { x, y}, mapData, cellClassCache, player, onMoveTo } = props;
+  const { coordinate: { x, y}, mapData, cellClassCache, players, onMoveTo } = props;
   if (!cellClassCache[`${y}-${x}`]) {
     cellClassCache[`${y}-${x}`] = getCellClass(mapData, { x, y});
   }
@@ -42,7 +42,7 @@ const MapCell = (props: IProps) => {
   const onContextMenu = (e) => {
     e.preventDefault();
     const curMapDataType = mapData[y][x];
-    if (isMovable(curMapDataType) && !player) {
+    if (isMovable(curMapDataType)) {
       onMoveTo({ x, y});
     }
 
@@ -67,8 +67,9 @@ const MapCell = (props: IProps) => {
           })
         }
       </div>
+
       {
-        player && <Player {...player}/>
+        players && players.map((player) => <Player {...player}/>)
       }
     </div>
   );
