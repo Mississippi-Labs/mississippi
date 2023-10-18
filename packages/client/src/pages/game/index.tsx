@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useComponentValue } from "@latticexyz/react";
-import { MapConfig } from '@/config';
+import { LimitSpace, MapConfig } from '@/config';
 import { loadMapData } from '@/utils';
 import Map from '@/components/Map';
 import UserAvatar from '@/components/UserAvatar';
@@ -38,34 +38,35 @@ const Game = () => {
   const location = useLocation();
   const { username = '', avatar = 'snake', roomId = '000000' } = location.state ?? {};
 
-  const onKeyDown = (e) => {
-    const mapData = mapDataRef.current;
-    if (mapData.length === 0 || e.keyCode < 37 || e.keyCode > 40) {
-      return;
-    }
-    switch (e.keyCode) {
-      case 37:
-        vertexCoordinate.x = Math.max(0, vertexCoordinate.x - 1);
-        break;
-      case 38:
-        vertexCoordinate.y = Math.max(0, vertexCoordinate.y - 1);
-        break;
-      case 39:
-        vertexCoordinate.x = Math.min(mapData[0].length - 1 - MapConfig.visualWidth, vertexCoordinate.x + 1);
-        break;
-      case 40:
-        vertexCoordinate.y = Math.min(mapData.length - 1 - MapConfig.visualHeight, vertexCoordinate.y + 1);
-        break;
-    }
-    setVertexCoordinate({
-      ...vertexCoordinate
-    });
-  };
+  // const onKeyDown = (e) => {
+  //   const mapData = mapDataRef.current;
+  //   if (mapData.length === 0 || e.keyCode < 37 || e.keyCode > 40) {
+  //     return;
+  //   }
+  //   switch (e.keyCode) {
+  //     case 37:
+  //       vertexCoordinate.x = Math.max(0, vertexCoordinate.x - 1);
+  //       break;
+  //     case 38:
+  //       vertexCoordinate.y = Math.max(0, vertexCoordinate.y - 1);
+  //       break;
+  //     case 39:
+  //       vertexCoordinate.x = Math.min(mapData[0].length - 1 - MapConfig.visualWidth, vertexCoordinate.x + 1);
+  //       break;
+  //     case 40:
+  //       vertexCoordinate.y = Math.min(mapData.length - 1 - MapConfig.visualHeight, vertexCoordinate.y + 1);
+  //       break;
+  //   }
+  //   setVertexCoordinate({
+  //     ...vertexCoordinate
+  //   });
+  // };
   
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
     const curPlayerIndex = players.findIndex(item => item.id === curPlayer!.id);
     const interval = setInterval(() => {
+      triggerVertexUpdate(paths[pathIndex], players[curPlayerIndex]);
       Object.assign(players[curPlayerIndex], paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
@@ -74,6 +75,41 @@ const Game = () => {
       }
     }, 300);
     // move(merkelData);
+  }
+
+  const triggerVertexUpdate = (cur, before) => {
+    const xDegree = cur.x - before.x;
+    const yDegree = cur.y - before.y;
+    const mapData = mapDataRef.current;
+    if (xDegree === 1) {
+      const limitExceeded = cur.x - vertexCoordinate.x > LimitSpace.x;
+      const lessBoundary = vertexCoordinate.x + MapConfig.visualWidth < mapData[0].length - 1;
+      if (limitExceeded && lessBoundary) {
+        vertexCoordinate.x++;
+      }
+    } else if (xDegree === -1) {
+      const limitExceeded = cur.x - vertexCoordinate.x < LimitSpace.x;
+      const lessBoundary = vertexCoordinate.x > 0;
+      if (limitExceeded && lessBoundary) {
+        vertexCoordinate.x--;
+      }
+    } else if (yDegree === 1) {
+      const limitExceeded = cur.y - vertexCoordinate.y > LimitSpace.y;
+      const lessBoundary = vertexCoordinate.y + MapConfig.visualHeight < mapData.length - 1;
+      if (limitExceeded && lessBoundary) {
+        vertexCoordinate.y++;
+      }
+    } else if (yDegree === -1) {
+      const limitExceeded = cur.y - vertexCoordinate.y < LimitSpace.y;
+      const lessBoundary = vertexCoordinate.y > 0;
+      if (limitExceeded && lessBoundary) {
+        vertexCoordinate.y--;
+      }
+    }
+
+    setVertexCoordinate({
+      ...vertexCoordinate
+    });
   }
 
   useEffect(() => {
@@ -86,6 +122,7 @@ const Game = () => {
     setCurPlayer(player as IPlayer);
     // getPosition('0x35be872A3C94Bf581A9DA4c653CE734380b75B7D');
   }, []);
+
 
   return (
     <div className="mi-game" onKeyDown={onKeyDown} tabIndex={0}>
@@ -105,7 +142,7 @@ const Game = () => {
         data={RankMockData}
         curId={CurIdMockData}
       />
-      <Fog/>
+      {/*<Fog/>*/}
       <Map
         width={MapConfig.visualWidth}
         height={MapConfig.visualHeight}
