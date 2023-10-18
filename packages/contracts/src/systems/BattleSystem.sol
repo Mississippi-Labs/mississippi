@@ -10,6 +10,7 @@ import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 contract BattleSystem is System {
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
     // check battle
+    // TODO  揭示后全局event提示已经揭示(battle_id,address)
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Confirmed);
 
@@ -37,7 +38,9 @@ contract BattleSystem is System {
   }
 
   function revealWinner(uint256 _battleId) public {
-    // 结算战斗
+    // 结算战斗TODO revealWinner之后event
+    // TODO 战斗全局结束后有event
+    // TODO 战斗结束后如果没有人战败,也发一个event,表示当前局战斗结束了,但是整场战斗没有结束
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Revealed);
 

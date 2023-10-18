@@ -13,7 +13,6 @@ contract GMSystem  is System {
         uint256 start = Season.getStart(MAP_KEY);
         uint256 end = Season.getEnd(MAP_KEY);
         uint256 no = Season.getNo(MAP_KEY);
-
         return (start, end, no);
     }
 
