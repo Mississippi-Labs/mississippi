@@ -78,7 +78,7 @@ contract BattlePrepareSystem is System {
         //是否已超时
 
         BattleListData memory battle = BattleList.get(_battleId);
-        BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Confirmed);
+        BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Inited);
 
         require(block.timestamp - battle.timestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
         // 战斗是否已经选择buff
