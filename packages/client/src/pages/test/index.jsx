@@ -6,16 +6,19 @@ import { useLocation } from 'react-router-dom';
 import { useMUD } from '@/mud/MUDContext';
 import { main } from '../../utils/createMerkelTree';
 import { ethers } from 'ethers';
+import { solidityKeccak256, keccak256 } from 'ethers/lib/utils';
+import { Buffer } from "buffer";
 import './index.scss';
 
 const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);
   const [battleData, setBattleData] = useState([]);
+  const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 'None']);
 
   const {
     components: { Player, GameConfig, BattleList },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle },
     network
   } = useMUD();
 
@@ -86,6 +89,14 @@ const Test = () => {
     setBattleData(battle);
   }
 
+  const confirmBattleChange = (e, i) => {
+    console.log(e.target.value, i)
+    let value = e.target.value
+    let confirmBattle = [...confirmBattleData];
+    confirmBattle[i] = value;
+    setConfirmBattleData(confirmBattle);
+  }
+
   const movePlayer = () => {
     console.log(stepData, 'move')
     let player = players.find(item => item.isMe);
@@ -112,12 +123,31 @@ const Test = () => {
       let merkelData = main(from, to);
       battleInvitation(tragePlayer.addr, merkelData);
     }
-    
+  }
+
+  const confirmBattleFun = () => {
+    // console.log(confirmBattleData, 'confirmBattle')
+    let hash = getProofHash(confirmBattleData[0], confirmBattleData[1], '0');
+    console.log(hash, 'hash')
   }
 
   const joinBattlefieldFun = () => {
     console.log(account, 'account')
     joinBattlefield(account);
+  }
+
+  const revealBattleFun = () => {
+  }
+
+  const getProofHash = (action, arg, nonce) => {
+    return Buffer.from(
+      solidityKeccak256(
+          ["string", "string", "string"],
+          [action, arg, nonce]
+        )
+        .slice(2),
+      "hex"
+    );
   }
 
   return (
@@ -138,6 +168,7 @@ const Test = () => {
       {
         Battles.map((item, index) => (<div key={index} className='battle-item'>
           <h6>战场信息</h6>
+          <div style={{marginTop: '12px', fontSize: '12px'}}>胜利者：{item.winner}</div>
           <div className='info-w'>
             <div className='battle-section'>
               <p>攻击者信息</p>
@@ -186,10 +217,32 @@ const Test = () => {
         <div className="section">
           <div className="title">攻击</div>
           <div className="input">
-            <input type="text" onChange={(e) => battleChange(e, 0)} placeholder='x' />
+            <input type="text" onChange={() => battleChange(e, 0)} placeholder='x' />
             <input type="text" onChange={(e) => battleChange(e, 1)} placeholder='y' />
           </div>
           <div className="btn" onClick={battleInvitationFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">攻击策略</div>
+          <div className="input">
+            <select onChange={(e) => confirmBattleChange(e, 0)}>
+              <option value="Attack">Attack</option>
+              <option value="Escape">Escape</option>
+              <option value="Props">Props</option>
+            </select>
+            <select>
+              <option value="None">None</option>
+              <option value="Fire">Fire</option>
+              <option value="Water">Water</option>
+              <option value="Wind">Wind</option>
+            </select>
+          </div>
+          <div className="btn" onClick={confirmBattleFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">攻击结果</div>
+          <div className="input"></div>
+          <div className="btn" onClick={revealBattleFun}>确认</div>
         </div>
       </div>
     </div>

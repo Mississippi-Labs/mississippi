@@ -49,12 +49,17 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   }
 
+  const confirmBattle = async (buffHash: any, battleId: any) => {
+    const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
+    await waitForTransaction(tx);
+  }
   return {
     increment,
     move,
     getPosition,
     joinBattlefield,
     transfer,
-    battleInvitation
+    battleInvitation,
+    confirmBattle
   };
 }

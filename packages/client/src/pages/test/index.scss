@@ -61,6 +61,17 @@
       box-sizing: border-box;
       outline: none;
     }
+    select {
+      border: 1px solid #f9f9fa;
+      background: none;
+      width: 48% !important;
+      height: 32px;
+      border-radius: 4px;
+      padding: 0 8px;
+      box-sizing: border-box;
+      outline: none;
+      box-shadow: none;
+    }
   }
   .btn {
     margin-top: 12px;
