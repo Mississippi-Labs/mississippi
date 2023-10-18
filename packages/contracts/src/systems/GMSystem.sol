@@ -48,9 +48,9 @@ contract GMSystem  is System {
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 
-    // set loot user 
-    function SetUserLoot(address _user, address _loot) public {
+    // set user contract address 
+    function SetUserContract(address _user) public {
         GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
-        GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _loot);
     }
+    
 }

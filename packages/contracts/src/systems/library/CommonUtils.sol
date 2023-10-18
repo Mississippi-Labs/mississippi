@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import {console} from "forge-std/console.sol";
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
 import { Move } from "../Common.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../../Constants.sol";
-
 import { Player, GameConfig, BattleListData, BattleList } from "../../codegen/Tables.sol";
+import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+
 
 library CommonUtils {
   function abs_substruction(uint16 a, uint16 b) internal pure returns (uint16) {
@@ -41,8 +43,6 @@ library CommonUtils {
     }
   }
 
-  
-
   function onlyBattlePlayer(uint256 _battleId, BattleState _battleState) internal view returns (bool) {
     bool r = true;
     BattleListData memory battle = BattleList.get(_battleId);
@@ -54,5 +54,31 @@ library CommonUtils {
 
     r = !battle.isEnd;
     return r;
+  }
+
+  function CheckContinuity(address _msgSender, Move[] memory moveList) internal view  {
+      // 验证行走轨迹合法且连续
+      uint8 prefer = 1;
+      for (uint256 i; i < moveList.length; i++) {
+
+          uint16 x2 = i > 0 ? moveList[i - 1].x : Player.getX(_msgSender);
+          uint16 y2 = i > 0 ? moveList[i - 1].y : Player.getY(_msgSender);
+          console.log(" step : ", i, x2, y2);
+          if (i > 1) {
+              console.log(" move : ", moveList[i].x, moveList[i].y);
+          }
+          require(
+              CommonUtils.isNear(moveList[i].x, x2, moveList[i].y, y2),
+              "invalied move"
+          );
+          // 判断用户每一个移动连续性以及合法性,不能超出1格, 不能斜着走,不能原地踏步
+          Move memory info = moveList[i];
+          //prefer的意思是可以通行
+          bytes32 leaf = keccak256(
+              abi.encodePacked(info.x, ",", info.y, ",", prefer)
+          );
+          bool isValidLeaf = MerkleProof.verify(info.proof, GameConfig.getMerkleRoot(GAME_CONFIG_KEY), leaf);
+          require(isValidLeaf, "bad position");
+      }
   }
 }

@@ -36,23 +36,24 @@ contract PlayerSystem is System {
     }
 
     function selectUserNft(uint256 tokenId) public {
+        address sender = _msgSender();
         // Player.selectNft(_msgSender(), tokenId);
         address userAddress  = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
         User user = User(userAddress);
-        require(user.ownerOf(tokenId) == _msgSender(), "You are not the owner of this NFT");
-        // uint256 hp = user.getStructInfo(tokenId);
-        // console.log("hp: ", hp);
-        // Player.setHp(_msgSender(), hp);
+        require(user.ownerOf(tokenId) == sender, "You are not the owner of this NFT");
+        (uint256 hp, uint256 attack ,uint256 attackRange, uint256 speed, uint256 strength,uint256 space) = user.getStructInfo(tokenId);
+        Player.setMaxHp(sender, hp);
+        Player.setHp(sender, hp);
+        Player.setAttack(sender, attack);
+        Player.setAttackRange(sender, attackRange);
+        Player.setSpeed(sender, speed);
+        Player.setStrength(sender, strength);
+        Player.setSpace(sender, space);
     }
 
-    function getUserInfo(uint256 tokenId) public view returns (uint256) {
+    function getUserInfo(uint256 tokenId) public view returns (uint256,uint256,uint256,uint256,uint256,uint256) {
         address userAddress  = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
         User user = User(userAddress);
-        user.getStructInfo(tokenId);
-        return 0;
-    }
-
-    function getLootInfo(uint256 tokenId) public pure returns (uint256) {
-        return 0;
-    }
+        return user.getStructInfo(tokenId);
+    }  
 }
