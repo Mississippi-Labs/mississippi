@@ -38,6 +38,7 @@ contract BoxSystem is System {
     BoxList.setTreasureBalance(roomId, boxId, treasureBalance);
     BoxList.setOpened(roomId, boxId, true);
     BoxList.setOpenTime(roomId, boxId, block.timestamp);
+    BoxList.setOpenTime(roomId, boxId, block.timestamp);
   }
 
   //Todo: add reveal box 
