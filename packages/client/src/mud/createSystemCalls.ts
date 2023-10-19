@@ -49,12 +49,29 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   }
 
+  const confirmBattle = async (buffHash: any, battleId: any) => {
+    const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
+    await waitForTransaction(tx);
+  }
+
+  const revealBattle = async (battleId: any, action: any, arg: any, nonce: any) => {
+    const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce]);
+    await waitForTransaction(tx);
+  }
+
+  const selectUserNft = async (tokenId: any) => {
+    const tx = await worldContract.write.selectUserNft([tokenId]);
+    await waitForTransaction(tx);
+  }
   return {
     increment,
     move,
     getPosition,
     joinBattlefield,
     transfer,
-    battleInvitation
+    battleInvitation,
+    confirmBattle,
+    selectUserNft,
+    revealBattle
   };
 }
