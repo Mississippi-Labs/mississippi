@@ -6,7 +6,7 @@ import { MudTest } from "@latticexyz/store/src/MudTest.sol";
 import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
 
 import { IWorld } from "../src/codegen/world/IWorld.sol";
-import { Move } from "../src/systems/Common.sol";
+import { Position } from "../src/systems/Common.sol";
 import { GAME_CONFIG_KEY } from "../src/Constants.sol";
 import { Player, GameConfig } from "../src/codegen/Tables.sol";
 
@@ -28,7 +28,7 @@ contract MoveTest is MudTest {
   }
 
   function testMove() public {
-    Move[] memory moveList = new Move[](5); 
+    Position[] memory moveList = new Position[](5); 
     bytes32[] memory firstStepProof = new bytes32[](12);    
     firstStepProof[0] = 0x3c553fde73077fda8f45fda2de51b8686c9a1fb3f28dd09b33a5b09e3a07bb1a;
     firstStepProof[1] = 0x738d9a75efec0d2ae8a1c1b95f790abedbb9b2ae7cfcda3cb2fd7a439a983fff;
@@ -101,11 +101,11 @@ contract MoveTest is MudTest {
     fifthStepProof[11] = 0x320198d7c3c91650c38ed06892226e026e1f2141520371bdf190d4876287a043;
     
 
-    moveList[0] = Move(5, 4, firstStepProof);
-    moveList[1] = Move(6, 4, secondStepProof);
-    moveList[2] = Move(7, 4, thirdStepProof);
-    moveList[3] = Move(7, 5, fourthStepProof);
-    moveList[4] = Move(7, 6, fifthStepProof);
+    moveList[0] = Position(5, 4, firstStepProof);
+    moveList[1] = Position(6, 4, secondStepProof);
+    moveList[2] = Position(7, 4, thirdStepProof);
+    moveList[3] = Position(7, 5, fourthStepProof);
+    moveList[4] = Position(7, 6, fifthStepProof);
 
     address tom = msg.sender;
     console.log(" msg.Sender ", tom);

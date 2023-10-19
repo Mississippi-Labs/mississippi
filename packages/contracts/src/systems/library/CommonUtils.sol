@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import {console} from "forge-std/console.sol";
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
-import { Move } from "../Common.sol";
+import { Position } from "../Common.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../../Constants.sol";
 import { Player, GameConfig, BattleListData, BattleList } from "../../codegen/Tables.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
@@ -56,7 +56,7 @@ library CommonUtils {
     return r;
   }
 
-  function CheckContinuity(address _msgSender, Move[] memory moveList) internal view  {
+  function CheckContinuity(address _msgSender, Position[] memory moveList) internal view  {
       // 验证行走轨迹合法且连续
       uint8 prefer = 1;
       for (uint256 i; i < moveList.length; i++) {
@@ -72,7 +72,7 @@ library CommonUtils {
               "invalied move"
           );
           // 判断用户每一个移动连续性以及合法性,不能超出1格, 不能斜着走,不能原地踏步
-          Move memory info = moveList[i];
+          Position memory info = moveList[i];
           //prefer的意思是可以通行
           bytes32 leaf = keccak256(
               abi.encodePacked(info.x, ",", info.y, ",", prefer)

@@ -2,12 +2,15 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
+import { BattleState, Buff, PlayerState, BattleEndType } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "../codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
 contract BattleSystem is System {
+  event BattleReveal(uint256 battleId, address sender);
+  event BattleEnd(uint256 battleId, BattleEndType endType, address winner);
+
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
     // check battle
     // TODO  揭示后全局event提示已经揭示(battle_id,address)
@@ -16,12 +19,12 @@ contract BattleSystem is System {
 
     // TODO 揭示阶段也应该添加时间限制 //Todo ???
 
-    bytes32 moveHash = battle.attacker == _msgSender()
+    bytes32 buffHash = battle.attacker == _msgSender()
       ? BattleList.getAttackerBuffHash(_battleId)
       : BattleList.getDefenderBuffHash(_battleId);
 
     bytes32 proofHash = keccak256(abi.encodePacked(_action, _arg, _nonce));
-    require(moveHash == proofHash, "Invalid move hash proof");
+    require(buffHash == proofHash, "Invalid buff hash proof");
     if (battle.attacker == _msgSender()) {
       BattleList.setAttackerAction(_battleId, _action);
       BattleList.setAttackerArg(_battleId, _arg);
@@ -35,6 +38,7 @@ contract BattleSystem is System {
       // 结算战斗
       revealWinner(_battleId);
     }
+    emit BattleReveal(_battleId, _msgSender());
   }
 
   function revealWinner(uint256 _battleId) public {
@@ -43,8 +47,6 @@ contract BattleSystem is System {
     // TODO 战斗结束后如果没有人战败,也发一个event,表示当前局战斗结束了,但是整场战斗没有结束
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Revealed);
-
-   
 
     //set attack 
     uint256 attackerFirepower = Player.getAttack(battle.attacker);
@@ -82,6 +84,8 @@ contract BattleSystem is System {
 
         // TODO这里应该跟一个清算函数
         // 失败者传送到非战区,血量回满
+
+        emit BattleEnd(_battleId, BattleEndType.NormalEnd, winner);
       }
     }
 
@@ -93,7 +97,7 @@ contract BattleSystem is System {
       BattleList.setIsEnd(_battleId, true);
       BattleList.setWinner(_battleId, address(0));
 
-      return;
+      emit BattleEnd(_battleId, BattleEndType.AllEscape, address(0));
     }
     if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("attack")) {
       Buff attackerBuff = Buff(battle.defenderArg);
@@ -122,6 +126,8 @@ contract BattleSystem is System {
           // battle.isEnd = true;
           BattleList.setWinner(_battleId, battle.defender);
           BattleList.setIsEnd(_battleId, true);
+
+          emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
         }
       }
     }
@@ -151,10 +157,15 @@ contract BattleSystem is System {
           battle.winner = battle.attacker;
           battle.isEnd = true;
 
+          emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
           // BattleList.setWinner(_battleId, battle.attacker);
           // BattleList.setIsEnd(_battleId, true);
         }
       }
+    }
+
+    if (!battle.isEnd) {
+      emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
     }
   }
 

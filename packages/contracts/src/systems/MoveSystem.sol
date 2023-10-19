@@ -10,7 +10,7 @@ import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxLis
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 import {console} from "forge-std/console.sol";
 import { CommonUtils } from "./library/CommonUtils.sol";
-import {Move} from "./Common.sol";
+import {Position} from "./Common.sol";
 
 contract MoveSystem is System {
     event MoveEvent(address indexed player, uint16 x, uint16 y);
@@ -26,7 +26,7 @@ contract MoveSystem is System {
         PlayerLocationLock.set(_msgSender(), 0);
     }
 
-    function move(Move[] memory moveList) external {
+    function move(Position[] memory moveList) external {
         require(
             moveList.length > 0 && moveList.length <= BattleConfig.getMaxMoveDistance(BATTLE_CONFIG_KEY),
             "invalid move distance"
