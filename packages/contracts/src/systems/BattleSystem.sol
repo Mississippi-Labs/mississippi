@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
+import { BattleState, Buff, PlayerState, BattleEndType } from "../codegen/Types.sol";
 import { GameConfig, BattleConfig, BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "../codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
 contract BattleSystem is System {
   event BattleReveal(uint256 battleId, address sender);
-  event BattleEnd(uint256 battleId, address winner);
+  event BattleEnd(uint256 battleId, BattleEndType endType, address winner);
 
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
     // check battle
