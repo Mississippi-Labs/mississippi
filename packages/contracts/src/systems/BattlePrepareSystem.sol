@@ -8,7 +8,7 @@ import { GameConfig, BattleConfig,  BattleList, BattleListData, Player,
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { CommonUtils } from "./library/CommonUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
-import {Move} from "./Common.sol";
+import {Position} from "./Common.sol";
 
 contract BattlePrepareSystem is System {
     event AttackStart(address player, address target);
@@ -31,17 +31,17 @@ contract BattlePrepareSystem is System {
 
     function battleInvitation(
         address _targetAddress,
-        Move[] memory moveList
+        Position[] memory positionList
     ) external {
         // 攻击,首先确定地图x,y上有具体用户,其次确定用户之间最短距离proof为10
         // 需要考虑一个格子上有多个用户的情况//一个格子只能有一个人
         // 判断对战双方的状态是否是Exploring
 
         require(
-            moveList.length > 0 && moveList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
+            positionList.length > 0 && positionList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
             "invalid attack distance"
         );
-        // require(moveList.length <= Player.getSpace(_msgSender()), "exceed player space"); //Todo: temp remove
+        // require(positionList.length <= Player.getSpace(_msgSender()), "exceed player space"); //Todo: temp remove
 
         require(
             Player.getState(_msgSender()) == PlayerState.Exploring &&
@@ -49,12 +49,12 @@ contract BattlePrepareSystem is System {
             "Each player must be in exploring state"
         );
         require(
-            Player.getX(_targetAddress) == moveList[moveList.length - 1].x &&
-                Player.getY(_targetAddress) == moveList[moveList.length - 1].y,
+            Player.getX(_targetAddress) == positionList[positionList.length - 1].x &&
+                Player.getY(_targetAddress) == positionList[positionList.length - 1].y,
             "Target must be in the end of continuity"
         );
         // check continuity
-        CommonUtils.CheckContinuity(_msgSender(), moveList);
+        CommonUtils.CheckContinuity(_msgSender(), positionList);
 
         Player.setState(_msgSender(), PlayerState.Attacking);
         Player.setState(_targetAddress, PlayerState.Attacking);

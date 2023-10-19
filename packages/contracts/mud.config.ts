@@ -33,7 +33,8 @@ export default mudConfig({
     PlayerState: ["Idle", "Preparing", "Exploring", "Attacking"],
     ActionType: ["Attack", "Escape", "Props"],
     Buff: ["None", "Fire", "Water", "Wind"],
-    RandomState:["Inited","Pending","Confirmed"]
+    RandomState:["Inited","Pending","Confirmed"],
+    BattleEndType: ["NormalEnd", "AllEscape", "RoundEnd"],
   },
   tables: {
     Season: {

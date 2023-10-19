@@ -6,7 +6,7 @@ import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerklePr
 import { GameConfig } from "@codegen/Tables.sol";
 import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
 import { BattleListData, BattleList, Player, PlayerData, PlayerLocationLock, BoxListData, BoxList, RandomList, RandomListData } from "../codegen/Tables.sol";
-import { Move } from "./Common.sol";
+import { Position } from "./Common.sol";
 
 contract GameSystem is System {
   bytes32 constant GAME_KEY = keccak256("Game-Key");
