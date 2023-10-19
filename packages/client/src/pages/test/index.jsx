@@ -6,8 +6,8 @@ import { useLocation } from 'react-router-dom';
 import { useMUD } from '@/mud/MUDContext';
 import { main } from '../../utils/createMerkelTree';
 import { ethers } from 'ethers';
-import { solidityKeccak256, keccak256 } from 'ethers/lib/utils';
-import { Buffer } from "buffer";
+import { solidityKeccak256 } from 'ethers/lib/utils';
+import { getRandomStr } from '../../utils/utils';
 import './index.scss';
 
 const Test = () => {
@@ -15,10 +15,11 @@ const Test = () => {
   const [transferData, setTransferData] = useState([]);
   const [battleData, setBattleData] = useState([]);
   const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 'None']);
+  const [battlesData, setBattlesData] = useState([]);
 
   const {
     components: { Player, GameConfig, BattleList },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle },
     network
   } = useMUD();
 
@@ -46,7 +47,6 @@ const Test = () => {
     let battle = getComponentValue(BattleList, entity)
     console.log(battle, 'battle', id, entity)
     battle.id = id.battleId.toString()
-    battle.nonce = crypto.randomUUID()
     return battle;
   });
   console.log(battles, 'battles')
@@ -89,7 +89,7 @@ const Test = () => {
   }
 
   const battleChange = (e, i) => {
-    console.log(e)
+    console.log(e.target.value)
     let value = e.target.value
     let battle = [...battleData];
     battle[i] = +value;
@@ -102,6 +102,10 @@ const Test = () => {
     let confirmBattle = [...confirmBattleData];
     confirmBattle[i] = value;
     setConfirmBattleData(confirmBattle);
+  }
+
+  const selectUserNftFun = () => {
+    selectUserNft(1);
   }
 
   const movePlayer = () => {
@@ -135,13 +139,28 @@ const Test = () => {
   const confirmBattleFun = () => {
     // console.log(confirmBattleData, 'confirmBattle')
     let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
-    if (battle) {
+    let battlesDataTemp = [...battlesData];
+    let battleItem = battlesDataTemp.find(item => item.id == battle.id);
+    if (battle && !battleItem) {
       let action = confirmBattleData[0]
       let arg = confirmBattleData[1]
-      let nonce = battle.nonce
-      let hash = getProofHash(action, arg, nonce);
+      let nonce = getRandomStr(18)
+      let actionHex = ethers.utils.formatBytes32String(action);
+      let argHex = ethers.utils.formatBytes32String(arg);
+      let nonceHex = ethers.utils.formatBytes32String(nonce);
+      let hash = getProofHash(actionHex, argHex, nonceHex);
       console.log(hash, 'hash')
+      console.log(actionHex, argHex, nonceHex, 'actionHex, argHex, nonceHex')
       confirmBattle(hash, battle.id);
+      battlesDataTemp.push({
+        id: battle.id,
+        action: actionHex,
+        arg: argHex,
+        nonce: nonceHex
+      })
+      setBattlesData(battlesDataTemp)
+    } else {
+      alert('已经确认过了')
     }
     // console.log(hash, 'hash')
   }
@@ -152,11 +171,15 @@ const Test = () => {
   }
 
   const revealBattleFun = () => {
+    let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
+    let bettleItem = battlesData.filter(item => item.id == battle.id)[0]
+    console.log(bettleItem, 'bettleItem')
+    revealBattle(battle.id, bettleItem.action, bettleItem.arg, bettleItem.nonce);
   }
 
   const getProofHash = (action, arg, nonce) => {
     return solidityKeccak256(
-      ["string", "string", "string"],
+      ["bytes32", "bytes32", "bytes32"],
       [action, arg, nonce]
     )
   }
@@ -185,18 +208,18 @@ const Test = () => {
               <p>攻击者信息</p>
               <div>地址： {item?.attacker}</div>
               <div>Action： {item?.attackerAction}</div>
-              <div>Arg： {item?.attackerArg}</div>
+              <div>Arg： {item?.attackerArg.toString()}</div>
               <div>BuffHash： {item?.attackerBuffHash}</div>
-              <div>HP： {item?.attackerHP}</div>
+              <div>HP： {item?.attackerHP.toString()}</div>
               <div>State： {item?.attackerState}</div>
             </div>
             <div className='battle-section'>
               <p>被攻击者信息</p>
               <div>地址： {item?.defender}</div>
               <div>Action： {item?.defenderAction}</div>
-              <div>Arg： {item?.defenderArg}</div>
+              <div>Arg： {item?.defenderArg.toString()}</div>
               <div>BuffHash： {item?.defenderBuffHash}</div>
-              <div>HP： {item?.defenderHP}</div>
+              <div>HP： {item?.defenderHP.toString()}</div>
               <div>State： {item?.defenderState}</div>
             </div>
           </div>
@@ -207,7 +230,7 @@ const Test = () => {
         <div className="section">
           <div className="title">初始化玩家</div>
           <div className="input"></div>
-          <div className="btn" onClick={joinBattlefieldFun}>确认</div>
+          <div className="btn" onClick={selectUserNftFun}>确认</div>
         </div>
         <div className="section">
           <div className="title">加入游戏</div>
@@ -233,7 +256,7 @@ const Test = () => {
         <div className="section">
           <div className="title">攻击</div>
           <div className="input">
-            <input type="text" onChange={() => battleChange(e, 0)} placeholder='x' />
+            <input type="text" onChange={(e) => battleChange(e, 0)} placeholder='x' />
             <input type="text" onChange={(e) => battleChange(e, 1)} placeholder='y' />
           </div>
           <div className="btn" onClick={battleInvitationFun}>确认</div>
@@ -256,7 +279,7 @@ const Test = () => {
           <div className="btn" onClick={confirmBattleFun}>确认</div>
         </div>
         <div className="section">
-          <div className="title">攻击结果</div>
+          <div className="title">揭示结果</div>
           <div className="input"></div>
           <div className="btn" onClick={revealBattleFun}>确认</div>
         </div>
