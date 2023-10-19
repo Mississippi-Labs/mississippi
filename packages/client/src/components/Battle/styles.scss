@@ -1,0 +1,83 @@
+.mi-battle-wrap {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.mi-battle {
+  background: rgba(65, 47, 80, 0.95);
+  box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 24px 20px;
+
+  .mi-battle-character {
+    background: #fff;
+    display: flex;
+    column-gap: 180px;
+    position: relative;
+
+    .mi-battle-info-icon {
+      position: absolute;
+    }
+
+    .mi-battle-character-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: center;
+
+      img {
+        margin-top: 90px;
+        width: 280px;
+      }
+
+      .mi-battle-character-card-hp {
+        position: absolute;
+        width: 160px;
+        height: 30px;
+        border-radius: 6px;
+        border: 4px solid #2d2d2d;
+        top: 120px;
+      }
+    }
+
+    .mi-battle-character-info {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 0 12px;
+      padding-bottom: 12px;
+
+      .character-info {
+        color: #000;
+      }
+    }
+  }
+
+  .mi-battle-action {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+
+    .action {
+      img {
+        width: 64px;
+        height: 64px;
+      }
+
+      .action-title {
+        background: #fff;
+        font-size: 26px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+    }
+  }
+}
