@@ -155,6 +155,7 @@ const Game = () => {
         data={renderMapData}
         vertexCoordinate={vertexCoordinate}
         onPlayerMove={movePlayer}
+
       />
       <Battle />
       <div className="opt-wrapper">
