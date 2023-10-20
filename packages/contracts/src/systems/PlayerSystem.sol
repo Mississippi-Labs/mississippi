@@ -56,7 +56,7 @@ contract PlayerSystem is System {
         User user = User(userAddress);
         return user.getStructInfo(tokenId);
     }  
-    function ping() public pure returns (string memory) {
+    function ping2() public pure returns (string memory) {
         return "pong";
     }
 }
