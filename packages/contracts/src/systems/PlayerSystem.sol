@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Player, GlobalConfig } from "../codegen/Tables.sol";
+import { Player, GlobalConfig } from "@codegen/Tables.sol";
 import { GLOBAL_CONFIG_KEY, PLAYER_KEY } from "../Constants.sol";
 import { User, Loot } from "./library/Interface.sol";
 import { console } from "forge-std/console.sol";
@@ -56,4 +56,7 @@ contract PlayerSystem is System {
         User user = User(userAddress);
         return user.getStructInfo(tokenId);
     }  
+    function ping() public pure returns (string memory) {
+        return "pong";
+    }
 }

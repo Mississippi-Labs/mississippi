@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Season, GameConfig, BoxList, GlobalConfig} from "../codegen/Tables.sol";
+import { Season, GameConfig, BoxList, GlobalConfig} from "@codegen/Tables.sol";
 import { GAME_CONFIG_KEY, GLOBAL_CONFIG_KEY } from "../Constants.sol";
 
 contract GMSystem  is System {
@@ -51,5 +51,7 @@ contract GMSystem  is System {
     function SetUserContract(address _user) public {
         GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
     }
+
+    
     
 }
