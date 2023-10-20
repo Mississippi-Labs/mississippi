@@ -3,6 +3,7 @@ import { CellType } from '../../constants';
 import { getCellClass, isMovable } from '@/utils';
 import './styles.scss';
 import Player, { IPlayer } from '@/components/Player';
+import { DELIVERY } from '@/config/map';
 
 interface ITransform {
   index: number;
@@ -38,6 +39,7 @@ const MapCell = (props: IProps) => {
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
+  const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
   if (!cellClassCache[`${y}-${x}`]) {
     cellClassCache[`${y}-${x}`] = getCellClass(mapData, { x, y});
@@ -106,6 +108,10 @@ const MapCell = (props: IProps) => {
           })
         }
       </div>
+
+      {
+        isDelivery && <div className={'cell-map-delivery'}/>
+      }
 
       {
         players && players.map((player) => <Player {...player}/>)
