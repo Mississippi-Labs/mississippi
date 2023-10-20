@@ -41,9 +41,6 @@ contract GMSystem  is System {
         BoxList.setX(roomId, boxId, _x);
         BoxList.setY(roomId, boxId, _y);
 
-        uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
-        BoxList.setRandomId(roomId, boxId, randomId);
-        GameConfig.setRandomId(GAME_CONFIG_KEY, randomId + 1);
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 
