@@ -14,8 +14,9 @@ contract BattlePrepareSystem is System {
     event AttackStart(address player, address target);
     event BattleConfirmed(uint256 battleId, address sender, bytes32 buffHash);
     
-    function joinBattlefield(address _player) public {
+    function joinBattlefield() public {
         // 加入战区,用户实际上是送到原点,状态改为探索中
+        address _player = msg.sender;
         PlayerState playerState = Player.getState(_player);
         require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
         //实际上是送到原点//TODO通过常数设置原点参数
