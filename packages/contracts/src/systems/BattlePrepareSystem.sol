@@ -16,16 +16,16 @@ contract BattlePrepareSystem is System {
     
     function joinBattlefield() public {
         // 加入战区,用户实际上是送到原点,状态改为探索中
-        address _player = msg.sender;
-        PlayerState playerState = Player.getState(_player);
+        address player = _msgSender();
+        PlayerState playerState = Player.getState(player);
         require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
         //实际上是送到原点//TODO通过常数设置原点参数
         // TODO似乎可以直接通过indexer获取,就不需要再次插入了
         
-        Player.setX(_player, GameConfig.getOriginX(GAME_CONFIG_KEY));
-        Player.setY(_player, GameConfig.getOriginY(GAME_CONFIG_KEY));
-        Player.setState(_player, PlayerState.Exploring);
-        Player.setHp(_player, initPlayerHp(_player));
+        Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
+        Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
+        Player.setState(player, PlayerState.Exploring);
+        Player.setHp(player, initPlayerHp(player));
 
         // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _player);
     }
