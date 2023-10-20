@@ -19,7 +19,7 @@ contract BattlePrepareSystem is System {
         address player = _msgSender();
         PlayerState playerState = Player.getState(player);
         require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
-        //实际上是送到原点//TODO通过常数设置原点参数
+        //实际上是送到原点
         // TODO似乎可以直接通过indexer获取,就不需要再次插入了
         
         Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
