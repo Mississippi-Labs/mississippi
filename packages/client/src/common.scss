@@ -38,7 +38,14 @@ button {
 }
 
 .mi-modal.ant-modal .ant-modal-content {
-    background: #412F50F2;
+    //background: #412F50F2;
+    width: 562px;
+    height: 392px;
+    background: url("./assets/img/dialog.png") no-repeat center / 100% 100%;
+
+    .ant-modal-body {
+        height: 100%;
+    }
 }
 
 @font-face {
@@ -52,7 +59,16 @@ button {
 .mi-btn {
     position: relative;
     font-family: MISS, sans-serif;
-    color: #fff;
-    background: url("./assets/img/btn_1.png") no-repeat center / 100% 100%;
-    text-shadow: #883360 2px 0 0, #883360 0 2px 0, #883360 -2px 0 0, #883360 0 -2px 0;
+    color: #5D2E1C;
+    background: url("./assets/img/btn.png") no-repeat center / 100% 100%;
+    //text-shadow: #883360 2px 0 0, #883360 0 2px 0, #883360 -2px 0 0, #883360 0 -2px 0;
+}
+
+.mi-input {
+    padding: 0 20px;
+    font-size: 20px;
+    border: 0;
+    outline: 0;
+    color: #5D2E1C;
+    background: url("./assets/img/btn.png") no-repeat center / 100% 100%;
 }

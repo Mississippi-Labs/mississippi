@@ -1,0 +1,21 @@
+.mi-user-package {
+    width: 366px;
+
+    .package-items-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .package-item {
+        margin-bottom: 14px;
+        width: 62px;
+        height: 62px;
+        background: #FFF5E9;
+        border: 6px solid transparent;
+
+        &:nth-child(-n+3) {
+            border-color: #DCC7AF;
+        }
+    }
+}

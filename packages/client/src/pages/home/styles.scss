@@ -11,54 +11,76 @@
 
         .play-btn {
             position: absolute;
-            width: 360px;
-            height: 112px;
+            width: 210px;
+            height: 66px;
             left: 50%;
             bottom: 25%;
-            font-size: 30px;
+            font-size: 24px;
             transform: translate3d(-50%, 0, 0);
         }
     }
 
 
     .mint-section {
-        font-family: Arial, "Microsoft YaHei UI", sans-serif;
-        color: #fff;
-        background: #0C0B0B;
+
+        font-family: MISS, Arial, "Microsoft YaHei UI", sans-serif;
+        color: #BC8C61;
+        background: rgba(0, 0, 0, 0.6);
+
+        .mint-box {
+            padding-top: 24px;
+            width: 1200px;
+            margin: 0 auto;
+        }
 
         .mint-title {
+            margin-bottom: 18px;
             font-size: 32px;
             font-weight: 700;
             line-height: 40px;
-            text-align: center;
         }
 
-        .mint-desc {
-            margin: 0 auto;
-            width: 1100px;
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 24px;
-            text-align: center;
+        .mi-btn {
+            display: block;
+            margin: 36px auto;
+            width: 238px;
+            height: 66px;
+            font-size: 32px;
         }
 
-        .mint-wrapper {
-            width: 1280px;
-            margin: 0 auto;
-        }
     }
 }
 
-.create-wallet-loading-wrapper {
+.create-wallet-wrapper {
+    padding: 40px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
 
-    .create-wallet-loading-content {
-        font-size: 24px;
+    .create-wallet-content {
+        padding: 20px;
+        font-size: 20px;
         font-family: MISS, sans-serif;
-        color: #e16f39;
+        text-align: center;
+        color: #5D2E1C;
+    }
+
+    .mint-name {
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 245px;
+            height: 45px;
+            background: url("../../assets/img/btn.png") no-repeat center / 100% 100%;
+        }
+
+        button {
+            font-size: 24px;
+            width: 170px;
+            height: 45px;
+        }
     }
 }
 
