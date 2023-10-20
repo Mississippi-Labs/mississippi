@@ -1,0 +1,80 @@
+.mi-userinfo-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .left-main-content {
+        width: 768px;
+    }
+
+    .user-detail-wrapper {
+        height: 378px;
+    }
+
+    .user-detail-wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .user-appearance-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 338px;
+        height: 100%;
+        background: url("../../assets/img/user_bg.png") no-repeat center / 100% 100%;
+
+        .user-appearance {
+            width: 222px;
+        }
+    }
+
+    .loot-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .loot-detail {
+        width: 180px;
+        height: 180px;
+        border: 1px solid #FFF5E9;
+        background: #000;
+        color: #FFF5E9;
+    }
+
+    .user-attr-wrapper {
+        width: 213px;
+        font-size: 26px;
+
+        dl {
+            display: flex;
+        }
+
+        dt {
+            margin-right: 10px;
+        }
+
+        .base-attr {
+            margin-right: 10px;
+            color: #fff;
+        }
+
+        .extra-attr {
+            color: red;
+
+            &::before {
+                content: '+';
+            }
+        }
+    }
+
+    .mi-user-package {
+        margin-bottom: 24px;
+    }
+}

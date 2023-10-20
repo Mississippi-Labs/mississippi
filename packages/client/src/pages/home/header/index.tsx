@@ -43,7 +43,7 @@ const HomeHeader = (props: IProps) => {
         props.walletAddress ?
           <UserAddress address={props.walletAddress} account={'0.1ETH'}/>
           :
-          <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY</button>
+          <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY NOW</button>
       }
     </div>
   );
