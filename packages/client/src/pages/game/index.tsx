@@ -53,29 +53,7 @@ const Game = () => {
     console.log(e);
     setStartBattleData(false);
     if (e == 1) {
-      console.log('win');
-      const curPlayer = players.find((item) => item.id === curId);
-      curPlayer.gem += 3;
-      setPlayers([...players]);
-      setContent(
-        <div className={'mi-modal-content-wrapper'}>
-          <div className="mi-modal-content">
-            Congrats,you got 3 gems!
-
-            <div className="mi-treasure-chest-wrapper">
-              <TreasureChest
-                opening={false}
-              />
-            </div>
-          </div>
-          <div className="mi-modal-footer">
-            <button className="mi-btn" onClick={() => {
-              close();
-            }}>OK</button>
-          </div>
-        </div>
-      );
-      open();
+      getWinTreasureChest(3)
     } else if (e == 2) {
       console.log('lose');
     }

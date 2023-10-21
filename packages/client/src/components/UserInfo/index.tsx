@@ -40,30 +40,30 @@ const UserInfo = (props: IProps) => {
 
             </div>
           </div>
-          <div className="user-attr-wrapper">
+          <div className={`user-attr-wrapper ${minting ? '' : 'loaded'}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">100</span><span className="extra-attr">100</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 100}</span><span className="extra-attr">100</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
-              <dd><span className="base-attr">20</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 20}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>AttackRange</dt>
-              <dd><span className="base-attr">5</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 5}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>Speed</dt>
-              <dd><span className="base-attr">2</span><span className="extra-attr">2</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 2}</span><span className="extra-attr">2</span></dd>
             </dl>
             <dl>
               <dt>Strength</dt>
-              <dd><span className="base-attr">20</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 20}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>Space</dt>
-              <dd><span className="base-attr">10</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{minting ? 0 : 10}</span><span className="extra-attr">1</span></dd>
             </dl>
           </div>
         </div>
