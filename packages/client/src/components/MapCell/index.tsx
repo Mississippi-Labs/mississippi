@@ -43,7 +43,7 @@ const MapCell = (props: IProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, openTreasureChest } = useContext(GameContext);
+  const { mapData, openTreasureChest, setStartBattleData } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
@@ -85,6 +85,7 @@ const MapCell = (props: IProps) => {
       case 'info':
         break;
       case 'attack':
+        setStartBattleData(true);
         break;
     }
   }
