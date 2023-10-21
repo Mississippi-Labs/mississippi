@@ -8,6 +8,7 @@
     }
 
     .package-item {
+        position: relative;
         margin-bottom: 14px;
         width: 62px;
         height: 62px;
@@ -16,6 +17,19 @@
 
         &:nth-child(-n+3) {
             border-color: #DCC7AF;
+        }
+
+        .package-item-gem {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .package-item-count {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-family: Arial, "Microsoft YaHei UI", sans-serif;
         }
     }
 }

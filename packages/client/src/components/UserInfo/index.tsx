@@ -2,25 +2,18 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UserPackage from '@/components/UserPackage';
 import Appearance from '@/components/Appearance';
-import Duck from '@/config/duck';
 
-interface IProps {
+export interface IUserInfo {
   head: string;
   clothes: string;
   handheld: string;
-  minting: boolean;
+  minting?: boolean;
+  gem: number;
 }
 
-const UserInfo = (props: IProps) => {
+const UserInfo = (props: IUserInfo) => {
 
-  const { handheld, head, clothes, minting } = props;
-
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false)
-  //   }, 2000)
-  // }, [])
+  const { handheld, head, clothes, minting = false, gem } = props;
 
   return (
     <div className={'mi-userinfo-wrapper'}>
@@ -70,6 +63,7 @@ const UserInfo = (props: IProps) => {
       </div>
       <div className="right-main-content">
         <UserPackage
+          gem={gem}
           title={'User Package'}
         />
         <UserPackage

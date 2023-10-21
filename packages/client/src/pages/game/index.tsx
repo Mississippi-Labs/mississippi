@@ -16,6 +16,8 @@ import Battle from "@/components/Battle";
 import GameContext from '@/context';
 import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
+import UserInfo from '@/components/UserInfo';
+import UserInfoDialog from '@/components/UserInfoDialog';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -27,8 +29,10 @@ const Game = () => {
   const [players, setPlayers] = useState(PlayersMockData);
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
+  const curPlayer = players.find((item) => item.id === curId);
 
   const [startBattleData, setStartBattleData] = useState(false);
+  const [userInfoVisible, setUserInfoVisible] = useState(false);
 
   const {
     components,
@@ -49,6 +53,7 @@ const Game = () => {
     head,
   } = location.state ?? {};
 
+
   const finishBattle = (e: any) => {
     console.log(e);
     setStartBattleData(false);
@@ -61,12 +66,9 @@ const Game = () => {
 
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
-    const curPlayerIndex = players.findIndex(
-      (item) => item.id === curId
-    );
     const interval = setInterval(() => {
-      triggerVertexUpdate(paths[pathIndex], players[curPlayerIndex]);
-      Object.assign(players[curPlayerIndex], paths[pathIndex]);
+      triggerVertexUpdate(paths[pathIndex], curPlayer);
+      Object.assign(curPlayer, paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
       if (pathIndex === paths.length) {
@@ -82,7 +84,6 @@ const Game = () => {
     setTreasureChest([...treasureChest]);
 
     setTimeout(() => {
-      const curPlayer = players.find((item) => item.id === curId);
       curPlayer.gem += treasureChest[targetIndex].gem;
       setPlayers([...players]);
       setContent(
@@ -108,7 +109,6 @@ const Game = () => {
   }
 
   const getWinTreasureChest = (gem = 1) => {
-    const curPlayer = players.find((item) => item.id === curId);
     curPlayer.gem += gem;
     setContent(
       <div className={'mi-modal-content-wrapper'}>
@@ -170,18 +170,12 @@ const Game = () => {
       mapDataRef.current = csv;
     });
 
-    const curPlayerIndex = players.findIndex(
-      (item) => item.id === curId
-    );
-
-    players[curPlayerIndex].equip = {
+    curPlayer.equip = {
       clothes,
       handheld,
       head,
     }
-
-    players[curPlayerIndex].username = username;
-
+    curPlayer.username = username;
     setPlayers([...players]);
 
   }, []);
@@ -225,8 +219,23 @@ const Game = () => {
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
           <button className="mi-btn">Help</button>
-          <button className="mi-btn">Info</button>
+          <button className="mi-btn" onClick={() => {
+            setUserInfoVisible(true)
+          }}>Info</button>
         </div>
+        {
+          userInfoVisible && (
+            <UserInfoDialog
+              visible={userInfoVisible}
+              onClose={() => {
+                setUserInfoVisible(false);
+              }}
+              gem={curPlayer.gem}
+              {...curPlayer.equip}
+            />
+          )
+        }
+
         <Modal />
       </div>
     </GameContext.Provider>
