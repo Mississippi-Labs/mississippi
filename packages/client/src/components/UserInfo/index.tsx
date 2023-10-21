@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UserPackage from '@/components/UserPackage';
-import userImg from '@/assets/img/duck_default.png';
+import Appearance from '@/components/Appearance';
+import Duck from '@/config/duck';
 
 const UserInfo = () => {
+
+  const [clothes, setClothes] = useState<string>();
+  const [handheld, setHandheld] = useState<string>();
+  const [head, setHead] = useState<string>();
+
+  useEffect(() => {
+    setClothes(Duck.Clothes[~~(Math.random() * Duck.Clothes.length)]);
+    setHandheld(Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)]);
+    setHead(Duck.Head[~~(Math.random() * Duck.Head.length)]);
+  }, [])
+
   return (
     <div className={'mi-userinfo-wrapper'}>
       <div className="left-main-content">
         <h3>User info</h3>
         <div className="user-detail-wrapper">
           <div className="user-appearance-wrapper">
-            <img src={userImg} alt="" className={'user-appearance'}/>
+            <div className="user-appearance-box">
+              <Appearance clothes={clothes} handheld={handheld} head={head}/>
+            </div>
           </div>
           <div className="loot-wrapper">
             <div className="loot-detail">

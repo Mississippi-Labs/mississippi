@@ -52,3 +52,5 @@ export const PlayersMockData: IPlayer[] = [
 ];
 
 export const CurIdMockData = 3;
+
+export const UserAddress = '0X1234567894519845184814';
