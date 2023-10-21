@@ -28,6 +28,8 @@ const Game = () => {
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
 
+  const [startBattleData, setStartBattleData] = useState(false);
+
   const {
     components,
     systemCalls: { move, getPosition },
@@ -165,7 +167,8 @@ const Game = () => {
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         treasureChest,
-        openTreasureChest
+        openTreasureChest,
+        setStartBattleData
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -188,7 +191,9 @@ const Game = () => {
           height={MapConfig.visualHeight}
           vertexCoordinate={vertexCoordinate}
         />
-        {/*<Battle />*/}
+        {
+          startBattleData ? <Battle /> : null
+        }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
           <button className="mi-btn">Help</button>
@@ -197,7 +202,6 @@ const Game = () => {
         <Modal />
       </div>
     </GameContext.Provider>
-
   );
 };
 
