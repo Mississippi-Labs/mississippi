@@ -18,7 +18,7 @@ import button5 from "@/assets/img/battle/Button5.png";
 import btnBg from "@/assets/img/battle/btn-bg.svg";
 import "./styles.scss";
 
-export default function Battle() {
+export default function Battle(props) {
   const [selectActionData, setSelectActionData] = useState('');
   const [selectTacticData, setSelectTacticData] = useState('');
   const [player2LossData, setPlayer2LossData] = useState(0);
@@ -58,6 +58,7 @@ export default function Battle() {
           // console.log(player2ResidualData)
           if (player2ResidualData - .4 <= 0) {
             setConfirmBattleData([]);
+            props.finishBattle(1);
             return
           }
           setTimeout(() => {
@@ -69,6 +70,7 @@ export default function Battle() {
               if (player1ResidualData - .4 <= 0) {
                 setPlayer1ResidualData(0);
                 setConfirmBattleData([]);
+                props.finishBattle(2);
                 return
               } else {
                 setPlayer1ResidualData(player1ResidualData - .4);
@@ -181,7 +183,7 @@ export default function Battle() {
               </div>
             </div>
             <div className="action">
-              <div className="action-hint">Opponent making a move</div>
+              <div className="action-hint">Select your action and tactic</div>
               <div
                 style={{
                   marginTop: "12px",
