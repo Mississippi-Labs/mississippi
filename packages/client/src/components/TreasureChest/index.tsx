@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './styles.scss';
 
 export interface ITreasureChest {
-  id: number | string;
-  x: number;
-  y: number;
-  gem: number;
+  id?: number | string;
+  x?: number;
+  y?: number;
+  gem?: number;
   opening?: boolean;
 }
 
