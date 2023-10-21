@@ -15,7 +15,7 @@ const UserAddress = (props: IProps) => {
   const addressTxt = `${address.slice(0, 6)}...${address.slice(-4)}`;
 
   const onCopy = () => {
-    message.success('Copy successfully');
+    message.success('Successfully copied');
   }
 
   return (
