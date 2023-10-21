@@ -183,7 +183,7 @@ export default function Battle(props) {
               </div>
             </div>
             <div className="action">
-              <div className="action-hint">Opponent making a move</div>
+              <div className="action-hint">Select your action and tactic</div>
               <div
                 style={{
                   marginTop: "12px",
