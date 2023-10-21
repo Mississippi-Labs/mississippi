@@ -24,6 +24,8 @@ const Game = () => {
   const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
   const [players, setPlayers] = useState(PlayersMockData);
 
+  const [startBattleData, setStartBattleData] = useState(false);
+
   const {
     components,
     systemCalls: { move, getPosition },
@@ -157,7 +159,9 @@ const Game = () => {
         onPlayerMove={movePlayer}
 
       />
-      <Battle />
+      {
+        startBattleData ? <Battle /> : null
+      }
       <div className="opt-wrapper">
         <button className="mi-btn">Rank</button>
         <button className="mi-btn">Help</button>
