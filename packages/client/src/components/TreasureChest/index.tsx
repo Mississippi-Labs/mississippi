@@ -7,7 +7,6 @@ export interface ITreasureChest {
   y: number;
   gem: number;
   opening?: boolean;
-  onOpen?: () => void;
 }
 
 const TreasureChest = (props: ITreasureChest) => {

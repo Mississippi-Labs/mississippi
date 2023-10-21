@@ -15,6 +15,7 @@ import { getComponentValue } from "@latticexyz/recs";
 import Battle from "@/components/Battle";
 import GameContext from '@/context';
 import useModal from '@/hooks/useModal';
+import TreasureChest from '@/components/TreasureChest';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -76,6 +77,13 @@ const Game = () => {
         <div className={'mi-modal-content-wrapper'}>
           <div className="mi-modal-content">
             Congrats,you got {treasureChest[targetIndex].gem} gems!
+
+            <div className="mi-treasure-chest-wrapper">
+              <TreasureChest
+                {...treasureChest[targetIndex]}
+                opening={false}
+              />
+            </div>
           </div>
           <div className="mi-modal-footer">
             <button className="mi-btn" onClick={() => {

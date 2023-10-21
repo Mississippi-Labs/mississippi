@@ -87,6 +87,13 @@ button {
         //font-family: MISS, sans-serif;
         text-align: center;
         color: #5D2E1C;
+
+        .mi-treasure-chest-wrapper {
+            position: relative;
+            margin: 20px auto;
+            width: 116px;
+            height: 116px;
+        }
     }
 
     .mi-modal-footer {

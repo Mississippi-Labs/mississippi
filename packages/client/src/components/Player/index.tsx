@@ -20,7 +20,6 @@ export interface IPlayer {
 const Player = (props: IPlayer) => {
 
   const { username, id, equip, gem = 0 } = props;
-  console.log(id, gem)
   return (
     <div className="mi-player">
       <div className="player-info">
@@ -31,7 +30,6 @@ const Player = (props: IPlayer) => {
 
       </div>
       <Appearance {...equip} />
-      {/*<div className="player-body avatar-box avatar-panda"/>*/}
       {
         id === CurIdMockData && <Fog />
       }
