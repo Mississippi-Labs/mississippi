@@ -4,17 +4,15 @@ import UserPackage from '@/components/UserPackage';
 import Appearance from '@/components/Appearance';
 import Duck from '@/config/duck';
 
-const UserInfo = () => {
+interface IProps {
+  head: string;
+  clothes: string;
+  handheld: string;
+}
 
-  const [clothes, setClothes] = useState<string>();
-  const [handheld, setHandheld] = useState<string>();
-  const [head, setHead] = useState<string>();
+const UserInfo = (props: IProps) => {
 
-  useEffect(() => {
-    setClothes(Duck.Clothes[~~(Math.random() * Duck.Clothes.length)]);
-    setHandheld(Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)]);
-    setHead(Duck.Head[~~(Math.random() * Duck.Head.length)]);
-  }, [])
+  const { handheld, head, clothes } = props;
 
   return (
     <div className={'mi-userinfo-wrapper'}>

@@ -1,6 +1,8 @@
 import React from 'react';
 import './styles.scss';
 import UserAddress from '@/components/UserAddress';
+import Player from '@/components/Player';
+import Appearance from '@/components/Appearance';
 
 interface IProps {
   avatar: string;
@@ -18,7 +20,9 @@ const UserAvatar = (props: IProps) => {
 
   return (
     <div className="mi-c-user-avatar">
-      <div className={`avatar-box avatar-${avatar}`}/>
+      <div className={`avatar-box`}>
+        <Appearance {...props}/>
+      </div>
 
       <UserAddress address={'0x12324b4in4lkn2424124421'} account={'0.1ETH'}/>
       {/*<div className="hp-wrapper">*/}

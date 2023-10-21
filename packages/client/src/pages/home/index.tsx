@@ -9,6 +9,7 @@ import UserInfo from '@/components/UserInfo';
 import { UserAddress } from '@/mock/data';
 import { UserAddressKey } from '@/config';
 import { useNavigate } from 'react-router-dom';
+import Duck from '@/config/duck';
 
 const Home = () => {
 
@@ -27,6 +28,12 @@ const Home = () => {
     //   setWalletAddress(address);
     // }
   }, []);
+
+  const [clothes, setClothes] = useState<string>();
+  const [handheld, setHandheld] = useState<string>();
+  const [head, setHead] = useState<string>();
+  const [username, setUsername] = useState<string>();
+
 
   const createWallet = () => {
     setContent(
@@ -60,10 +67,31 @@ const Home = () => {
       message.error('Please input your username');
       return;
     }
+    setUsername(usernameRef.current.value);
     setWalletAddress(UserAddress);
     localStorage.setItem('mi_user_address', UserAddress)
     close();
     setStep('mint');
+  }
+
+  const mintAndGo = () => {
+    const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
+    const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
+    const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
+    setClothes(clothes);
+    setHandheld(handheld);
+    setHead(head);
+
+    setTimeout(() => {
+      navigate('/game', {
+        state: {
+          username,
+          clothes,
+          handheld,
+          head,
+        }
+      });
+    }, 3000)
   }
 
   const play = () => {
@@ -104,10 +132,8 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo/>
-              <button className="mi-btn" onClick={() => {
-                navigate('/game');
-              }}>MINT AND GO</button>
+              <UserInfo clothes={clothes} handheld={handheld} head={head}/>
+              <button className="mi-btn" onClick={mintAndGo}>MINT AND GO</button>
             </div>
           </div>
         )

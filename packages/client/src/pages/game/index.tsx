@@ -41,10 +41,10 @@ const Game = () => {
   const location = useLocation();
   const {
     username = "",
-    avatar = "snake",
-    roomId = "000000",
+    clothes,
+    handheld,
+    head,
   } = location.state ?? {};
-
 
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
@@ -69,17 +69,20 @@ const Game = () => {
     setTreasureChest([...treasureChest]);
 
     setTimeout(() => {
-      treasureChest.splice(targetIndex, 1);
-      setTreasureChest([...treasureChest]);
-
-      // const str = `Congrats,you got ${treasureChest[targetIndex].gem} gems!`
+      const curPlayer = players.find((item) => item.id === curId);
+      curPlayer.gem += treasureChest[targetIndex].gem;
+      setPlayers([...players]);
       setContent(
         <div className={'mi-modal-content-wrapper'}>
           <div className="mi-modal-content">
             Congrats,you got {treasureChest[targetIndex].gem} gems!
           </div>
           <div className="mi-modal-footer">
-            <button className="mi-btn" onClick={close}>OK</button>
+            <button className="mi-btn" onClick={() => {
+              treasureChest.splice(targetIndex, 1);
+              setTreasureChest([...treasureChest]);
+              close();
+            }}>OK</button>
           </div>
         </div>
       );
@@ -130,7 +133,20 @@ const Game = () => {
       mapDataRef.current = csv;
     });
 
-    // getPosition('0x35be872A3C94Bf581A9DA4c653CE734380b75B7D');
+    const curPlayerIndex = players.findIndex(
+      (item) => item.id === curId
+    );
+
+    players[curPlayerIndex].equip = {
+      clothes,
+      handheld,
+      head,
+    }
+
+    players[curPlayerIndex].username = username;
+
+    setPlayers([...players]);
+
   }, []);
 
   return (
@@ -148,12 +164,13 @@ const Game = () => {
         <div className="mi-game-user-avatar">
           <UserAvatar
             username={username}
-            roomId={roomId}
-            avatar={avatar}
             hp={100}
             maxHp={120}
             ap={50}
             maxAp={100}
+            clothes={clothes}
+            handheld={handheld}
+            head={head}
           />
         </div>
 
