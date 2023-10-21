@@ -157,7 +157,7 @@ const Game = () => {
         onPlayerMove={movePlayer}
 
       />
-      <Battle />
+      {/*<Battle />*/}
       <div className="opt-wrapper">
         <button className="mi-btn">Rank</button>
         <button className="mi-btn">Help</button>

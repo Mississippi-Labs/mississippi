@@ -30,24 +30,44 @@ export const PlayersMockData: IPlayer[] = [
     username: 'Me',
     x: 5,
     y: 4,
+    equip: {
+      head: 'ChristmasHat',
+      handheld: 'Beer',
+      clothes: 'Chain'
+    },
   },
   {
     id: 1,
     username: 'other',
     x: 18,
     y: 10,
+    equip: {
+      head: 'HiTechGlasses',
+      handheld: 'Guitar',
+      clothes: 'Niddle'
+    },
   },
   {
     id: 6,
     username: 'other2',
     x: 18,
     y: 13,
+    equip: {
+      head: 'Robber',
+      handheld: 'Shield',
+      clothes: 'Deliver'
+    },
   },
   {
     id: 8,
     username: 'other3',
     x: 18,
     y: 13,
+    equip: {
+      head: 'Turban',
+      handheld: 'Wand',
+      clothes: 'Shirt'
+    },
   },
 ];
 
