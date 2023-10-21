@@ -9,6 +9,7 @@ export interface IPlayer {
   y: number;
   id: number;
   username: string;
+  gem?: number;
   equip: {
     head: string;
     handheld: string;
@@ -18,11 +19,13 @@ export interface IPlayer {
 
 const Player = (props: IPlayer) => {
 
-  const { username, id, equip } = props;
+  const { username, id, equip, gem = 0 } = props;
   return (
     <div className="mi-player">
       <div className="player-info">
-        <span className="gem-num">24</span>
+        {
+          gem > 0 && <span className="gem-num">24</span>
+        }
         <span className="player-username">{username}</span>
 
       </div>

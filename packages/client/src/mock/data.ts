@@ -1,4 +1,5 @@
 import { IPlayer } from '@/components/Player';
+import { ITreasureChest } from '@/components/TreasureChest';
 
 export const RankMockData = [
   {
@@ -74,3 +75,19 @@ export const PlayersMockData: IPlayer[] = [
 export const CurIdMockData = 3;
 
 export const UserAddress = '0X1234567894519845184814';
+
+export const TreasureChestMockData: ITreasureChest[] = [
+  {
+    id: 1,
+    x: 6,
+    y: 6,
+    gem: 3
+  },
+  {
+    id: 2,
+    x: 17,
+    y: 12,
+    gem: 5
+  }
+];
+

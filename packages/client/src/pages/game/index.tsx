@@ -7,12 +7,13 @@ import UserAvatar from "@/components/UserAvatar";
 import { useLocation } from "react-router-dom";
 import "./styles.scss";
 import Rank from "@/components/Rank";
-import { CurIdMockData, PlayersMockData, RankMockData } from "@/mock/data";
+import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
 import { IPlayer } from "@/components/Player";
 import { uploadUserMove } from "@/service/user";
 import { useMUD } from "@/mud/MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
 import Battle from "@/components/Battle";
+import GameContext from '@/context';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -83,6 +84,10 @@ const Game = () => {
     // move(merkelData);
   };
 
+  const openTreasureChest = () => {
+
+  }
+
   const triggerVertexUpdate = (cur, before) => {
     const xDegree = cur.x - before.x;
     const yDegree = cur.y - before.y;
@@ -132,38 +137,44 @@ const Game = () => {
   }, []);
 
   return (
-    <div className="mi-game" tabIndex={0}>
-      <div className="mi-game-user-avatar">
-        <UserAvatar
-          username={username}
-          roomId={roomId}
-          avatar={avatar}
-          hp={100}
-          maxHp={120}
-          ap={50}
-          maxAp={100}
+    <GameContext.Provider
+      value={{
+        curId: CurIdMockData,
+        players,
+        mapData: renderMapData,
+        onPlayerMove: movePlayer,
+        treasureChest: TreasureChestMockData,
+        onOpenTreasureChest: openTreasureChest
+      }}
+    >
+      <div className="mi-game" tabIndex={0}>
+        <div className="mi-game-user-avatar">
+          <UserAvatar
+            username={username}
+            roomId={roomId}
+            avatar={avatar}
+            hp={100}
+            maxHp={120}
+            ap={50}
+            maxAp={100}
+          />
+        </div>
+
+        <Rank data={RankMockData} curId={CurIdMockData} />
+        <Map
+          width={MapConfig.visualWidth}
+          height={MapConfig.visualHeight}
+          vertexCoordinate={vertexCoordinate}
         />
+        {/*<Battle />*/}
+        <div className="opt-wrapper">
+          <button className="mi-btn">Rank</button>
+          <button className="mi-btn">Help</button>
+          <button className="mi-btn">Info</button>
+        </div>
       </div>
+    </GameContext.Provider>
 
-      <Rank data={RankMockData} curId={CurIdMockData} />
-      {/*<Fog/>*/}
-      <Map
-        width={MapConfig.visualWidth}
-        height={MapConfig.visualHeight}
-        players={players}
-        curId={CurIdMockData}
-        data={renderMapData}
-        vertexCoordinate={vertexCoordinate}
-        onPlayerMove={movePlayer}
-
-      />
-      {/*<Battle />*/}
-      <div className="opt-wrapper">
-        <button className="mi-btn">Rank</button>
-        <button className="mi-btn">Help</button>
-        <button className="mi-btn">Info</button>
-      </div>
-    </div>
   );
 };
 
