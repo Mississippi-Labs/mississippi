@@ -32,7 +32,7 @@ interface IProps {
   players?: IPlayer[];
   treasureChest?: ITreasureChest[];
   onMoveTo: (ICoordinate) => void;
-  onOpenTreasureChest: (id: number) => void;
+  openTreasureChest: (id: number) => void;
   prevActionCoordinate: ICoordinate;
   onExeAction: (ICoordinate) => void;
 }
@@ -43,7 +43,7 @@ const MapCell = (props: IProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, onOpenTreasureChest } = useContext(GameContext);
+  const { mapData, openTreasureChest } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
@@ -64,6 +64,10 @@ const MapCell = (props: IProps) => {
 
   const onClick = () => {
     onExeAction({ x, y});
+    if (treasureChest) {
+      openTreasureChest(treasureChest[0].id);
+      return;
+    }
     if (!players || players?.length === 0) {
       return;
     }

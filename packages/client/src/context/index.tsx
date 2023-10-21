@@ -2,13 +2,16 @@ import { createContext } from 'react';
 import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
 
 const GameContext = createContext({
-  CurIdMockData,
-  PlayersMockData,
-  RankMockData,
-  TreasureChestMockData,
-  setCount: () => {
+  curId: CurIdMockData,
+  players: PlayersMockData,
+  mapData: [[]],
+  onPlayerMove: () => {
     //
   },
+  treasureChest: [],
+  openTreasureChest: () => {
+    //
+  }
 });
 
 export default GameContext;

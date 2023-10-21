@@ -14,6 +14,7 @@ import { useMUD } from "@/mud/MUDContext";
 import { getComponentValue } from "@latticexyz/recs";
 import Battle from "@/components/Battle";
 import GameContext from '@/context';
+import useModal from '@/hooks/useModal';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -22,8 +23,9 @@ const Game = () => {
     y: 0,
   });
 
-  const [curPlayer, setCurPlayer] = useState<null | IPlayer>(null);
   const [players, setPlayers] = useState(PlayersMockData);
+  const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
+  const curId = CurIdMockData;
 
   const {
     components,
@@ -31,9 +33,9 @@ const Game = () => {
     network,
   } = useMUD();
 
-  // console.log(network.playerEntity, components);
-  const value = useComponentValue(components.Player, network.playerEntity);
-  console.log(value, "value");
+  const { Modal, open, close, setContent } = useModal({
+    title: '',
+  });
 
   const mapDataRef = useRef([]);
   const location = useLocation();
@@ -43,34 +45,11 @@ const Game = () => {
     roomId = "000000",
   } = location.state ?? {};
 
-  // const onKeyDown = (e) => {
-  //   const mapData = mapDataRef.current;
-  //   if (mapData.length === 0 || e.keyCode < 37 || e.keyCode > 40) {
-  //     return;
-  //   }
-  //   switch (e.keyCode) {
-  //     case 37:
-  //       vertexCoordinate.x = Math.max(0, vertexCoordinate.x - 1);
-  //       break;
-  //     case 38:
-  //       vertexCoordinate.y = Math.max(0, vertexCoordinate.y - 1);
-  //       break;
-  //     case 39:
-  //       vertexCoordinate.x = Math.min(mapData[0].length - 1 - MapConfig.visualWidth, vertexCoordinate.x + 1);
-  //       break;
-  //     case 40:
-  //       vertexCoordinate.y = Math.min(mapData.length - 1 - MapConfig.visualHeight, vertexCoordinate.y + 1);
-  //       break;
-  //   }
-  //   setVertexCoordinate({
-  //     ...vertexCoordinate
-  //   });
-  // };
 
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
     const curPlayerIndex = players.findIndex(
-      (item) => item.id === curPlayer!.id
+      (item) => item.id === curId
     );
     const interval = setInterval(() => {
       triggerVertexUpdate(paths[pathIndex], players[curPlayerIndex]);
@@ -84,8 +63,28 @@ const Game = () => {
     // move(merkelData);
   };
 
-  const openTreasureChest = () => {
+  const openTreasureChest = (id) => {
+    const targetIndex = treasureChest.findIndex(item => item.id === id);
+    treasureChest[targetIndex].opening = true;
+    setTreasureChest([...treasureChest]);
 
+    setTimeout(() => {
+      treasureChest.splice(targetIndex, 1);
+      setTreasureChest([...treasureChest]);
+
+      // const str = `Congrats,you got ${treasureChest[targetIndex].gem} gems!`
+      setContent(
+        <div className={'mi-modal-content-wrapper'}>
+          <div className="mi-modal-content">
+            Congrats,you got {treasureChest[targetIndex].gem} gems!
+          </div>
+          <div className="mi-modal-footer">
+            <button className="mi-btn" onClick={close}>OK</button>
+          </div>
+        </div>
+      );
+      open();
+    }, 3000);
   }
 
   const triggerVertexUpdate = (cur, before) => {
@@ -131,20 +130,18 @@ const Game = () => {
       mapDataRef.current = csv;
     });
 
-    const player = players.find((item) => item.id === CurIdMockData);
-    setCurPlayer(player as IPlayer);
     // getPosition('0x35be872A3C94Bf581A9DA4c653CE734380b75B7D');
   }, []);
 
   return (
     <GameContext.Provider
       value={{
-        curId: CurIdMockData,
+        curId,
         players,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
-        treasureChest: TreasureChestMockData,
-        onOpenTreasureChest: openTreasureChest
+        treasureChest,
+        openTreasureChest
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -172,6 +169,7 @@ const Game = () => {
           <button className="mi-btn">Help</button>
           <button className="mi-btn">Info</button>
         </div>
+        <Modal />
       </div>
     </GameContext.Provider>
 
