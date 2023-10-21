@@ -103,6 +103,7 @@ export default function Battle(props) {
                 battle1.classList.remove('back');
                 setPlayer1LossData(0);
                 setConfirmBattleData([]);
+                setConfirmBattle2Data([]);
                 setRoundData(roundData + 1);
               }, 400);
             }, 400);

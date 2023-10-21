@@ -25,7 +25,7 @@ const Game = () => {
   });
 
   const [players, setPlayers] = useState(PlayersMockData);
-  const [curPlayer, setCurPlayer] = useState(null);
+  const [curPlayerState, setCurPlayerState] = useState(null);
   const [targetPlayer, setTargetPlayer] = useState(null);
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
@@ -58,29 +58,8 @@ const Game = () => {
     setStartBattleData(false);
     if (e == 1) {
       console.log('win');
-      const curPlayer = players.find((item) => item.id === curId);
-      curPlayer.gem += targetPlayer.gem;
-      setPlayers([...players]);
-      setContent(
-        <div className={'mi-modal-content-wrapper'}>
-          <div className="mi-modal-content">
-            Congrats,you got {targetPlayer.gem} gems!
-
-            <div className="mi-treasure-chest-wrapper">
-              <TreasureChest
-                opening={false}
-              />
-            </div>
-          </div>
-          <div className="mi-modal-footer">
-            <button className="mi-btn" onClick={() => {
-              setTargetPlayer(null);
-              close();
-            }}>OK</button>
-          </div>
-        </div>
-      );
-      open();
+      getWinTreasureChest(targetPlayer.gem)
+      setTargetPlayer(null);
     } else if (e == 2) {
       console.log('lose');
     }
@@ -107,7 +86,7 @@ const Game = () => {
     let curPlayerData = players.find((item) => item.id === curId);
     let targetPlayerData = players.find((item) => item.x === x && item.y === y);
     if (curPlayerData && targetPlayerData) {
-      setCurPlayer(curPlayerData);
+      setCurPlayerState(curPlayerData);
       setTargetPlayer(targetPlayerData);
       setStartBattleData(true);
     }
@@ -128,10 +107,7 @@ const Game = () => {
             Congrats,you got {treasureChest[targetIndex].gem} gems!
 
             <div className="mi-treasure-chest-wrapper">
-              <TreasureChest
-                {...treasureChest[targetIndex]}
-                opening={false}
-              />
+              <TreasureChest/>
             </div>
           </div>
           <div className="mi-modal-footer">
@@ -145,6 +121,29 @@ const Game = () => {
       );
       open();
     }, 3000);
+  }
+
+  const getWinTreasureChest = (gem = 1) => {
+    const curPlayer = players.find((item) => item.id === curId);
+    curPlayer.gem += gem;
+    const targetPlayerData = players.find((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
+    targetPlayerData.gem -= gem;
+    setPlayers([...players]);
+    setContent(
+      <div className={'mi-modal-content-wrapper'}>
+        <div className="mi-modal-content">
+          Congrats,you got {gem} gems!
+
+          <div className="mi-treasure-chest-wrapper">
+            <TreasureChest/>
+          </div>
+        </div>
+        <div className="mi-modal-footer">
+          <button className="mi-btn" onClick={close}>OK</button>
+        </div>
+      </div>
+    );
+    open();
   }
 
   const triggerVertexUpdate = (cur, before) => {
@@ -215,7 +214,8 @@ const Game = () => {
         onPlayerMove: movePlayer,
         treasureChest,
         openTreasureChest,
-        setStartBattle
+        setStartBattle,
+        getWinTreasureChest
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -239,7 +239,7 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle curPlayer={curPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={curPlayerState} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>

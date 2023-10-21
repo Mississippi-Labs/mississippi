@@ -77,7 +77,14 @@
             color: #fff;
         }
 
+        &.loaded {
+            .extra-attr {
+                visibility: visible;
+            }
+        }
+
         .extra-attr {
+            visibility: hidden;
             color: red;
 
             &::before {
