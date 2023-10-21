@@ -27,9 +27,13 @@ const Game = () => {
   });
 
   const [players, setPlayers] = useState(PlayersMockData);
+  const [curPlayerState, setCurPlayerState] = useState(null);
+  const [targetPlayer, setTargetPlayer] = useState(null);
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
   const curPlayer = players.find((item) => item.id === curId);
+
+  // let curPlayer, targetPlayer
 
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
@@ -58,7 +62,9 @@ const Game = () => {
     console.log(e);
     setStartBattleData(false);
     if (e == 1) {
-      getWinTreasureChest(3)
+      console.log('win');
+      getWinTreasureChest(targetPlayer.gem)
+      setTargetPlayer(null);
     } else if (e == 2) {
       console.log('lose');
     }
@@ -77,6 +83,16 @@ const Game = () => {
     }, 300);
     // move(merkelData);
   };
+
+  const setStartBattle = ({x, y}) => {
+    let curPlayerData = players.find((item) => item.id === curId);
+    let targetPlayerData = players.find((item) => item.x === x && item.y === y);
+    if (curPlayerData && targetPlayerData) {
+      setCurPlayerState(curPlayerData);
+      setTargetPlayer(targetPlayerData);
+      setStartBattleData(true);
+    }
+  }
 
   const openTreasureChest = (id) => {
     const targetIndex = treasureChest.findIndex(item => item.id === id);
@@ -110,6 +126,9 @@ const Game = () => {
 
   const getWinTreasureChest = (gem = 1) => {
     curPlayer.gem += gem;
+    const targetPlayerData = players.find((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
+    targetPlayerData.gem -= gem;
+    setPlayers([...players]);
     setContent(
       <div className={'mi-modal-content-wrapper'}>
         <div className="mi-modal-content">
@@ -189,8 +208,8 @@ const Game = () => {
         onPlayerMove: movePlayer,
         treasureChest,
         openTreasureChest,
-        getWinTreasureChest,
-        setStartBattleData
+        setStartBattle,
+        getWinTreasureChest
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -214,7 +233,7 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={curPlayerState} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>

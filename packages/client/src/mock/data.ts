@@ -43,7 +43,7 @@ export const PlayersMockData: IPlayer[] = [
     username: 'Piter',
     x: 18,
     y: 10,
-    gem: 0,
+    gem: 2,
     equip: {
       head: 'HiTechGlasses',
       handheld: 'Guitar',
@@ -53,7 +53,7 @@ export const PlayersMockData: IPlayer[] = [
   {
     id: 6,
     username: 'Tom',
-    gem: 0,
+    gem: 5,
     x: 18,
     y: 13,
     equip: {
@@ -67,7 +67,7 @@ export const PlayersMockData: IPlayer[] = [
     username: 'Stone',
     x: 18,
     y: 13,
-    gem: 0,
+    gem: 8,
     equip: {
       head: 'Turban',
       handheld: 'Wand',
