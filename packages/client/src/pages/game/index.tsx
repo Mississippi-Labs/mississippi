@@ -49,6 +49,38 @@ const Game = () => {
     head,
   } = location.state ?? {};
 
+  const finishBattle = (e: any) => {
+    console.log(e);
+    setStartBattleData(false);
+    if (e == 1) {
+      console.log('win');
+      const curPlayer = players.find((item) => item.id === curId);
+      curPlayer.gem += 3;
+      setPlayers([...players]);
+      setContent(
+        <div className={'mi-modal-content-wrapper'}>
+          <div className="mi-modal-content">
+            Congrats,you got 3 gems!
+
+            <div className="mi-treasure-chest-wrapper">
+              <TreasureChest
+                opening={false}
+              />
+            </div>
+          </div>
+          <div className="mi-modal-footer">
+            <button className="mi-btn" onClick={() => {
+              close();
+            }}>OK</button>
+          </div>
+        </div>
+      );
+      open();
+    } else if (e == 2) {
+      console.log('lose');
+    }
+  }
+
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
     const curPlayerIndex = players.findIndex(
@@ -192,7 +224,7 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle /> : null
+          startBattleData ? <Battle finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
