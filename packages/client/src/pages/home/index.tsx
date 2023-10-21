@@ -20,6 +20,8 @@ const Home = () => {
     title: '',
   });
 
+  const [minting, setMinting] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,6 +84,8 @@ const Home = () => {
     setHandheld(handheld);
     setHead(head);
 
+    setMinting(false);
+
     setTimeout(() => {
       navigate('/game', {
         state: {
@@ -132,7 +136,7 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo clothes={clothes} handheld={handheld} head={head}/>
+              <UserInfo clothes={clothes} handheld={handheld} head={head} minting={minting}/>
               <button className="mi-btn" onClick={mintAndGo}>MINT AND GO</button>
             </div>
           </div>

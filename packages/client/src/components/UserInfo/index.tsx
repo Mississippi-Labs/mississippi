@@ -8,11 +8,19 @@ interface IProps {
   head: string;
   clothes: string;
   handheld: string;
+  minting: boolean;
 }
 
 const UserInfo = (props: IProps) => {
 
-  const { handheld, head, clothes } = props;
+  const { handheld, head, clothes, minting } = props;
+
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 2000)
+  // }, [])
 
   return (
     <div className={'mi-userinfo-wrapper'}>
@@ -24,7 +32,7 @@ const UserInfo = (props: IProps) => {
               <Appearance clothes={clothes} handheld={handheld} head={head}/>
             </div>
           </div>
-          <div className="loot-wrapper">
+          <div className={`loot-wrapper ${minting ? '' : 'loaded'}`}>
             <div className="loot-detail">
 
             </div>
