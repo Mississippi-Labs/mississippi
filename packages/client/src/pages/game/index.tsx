@@ -18,6 +18,7 @@ import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfo from '@/components/UserInfo';
 import UserInfoDialog from '@/components/UserInfoDialog';
+import { DELIVERY } from '@/config/map';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -79,16 +80,48 @@ const Game = () => {
       setPlayers([...players]);
       if (pathIndex === paths.length) {
         clearInterval(interval);
+        const target = paths[pathIndex - 1];
+        const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
+        if (isDelivery) {
+          submitGem();
+        }
       }
     }, 300);
     // move(merkelData);
   };
 
+  const submitGem = () => {
+    setUserInfoVisible(true);
+
+    setTimeout(() => {
+      if (curPlayer.gem > 0) {
+        setContent(
+          <div className={'mi-modal-content-wrapper'}>
+            <div className="mi-modal-content">
+              Congrats,you submitted {curPlayer.gem} gems!
+
+              <div className="mi-treasure-chest-wrapper">
+                <TreasureChest/>
+              </div>
+            </div>
+            <div className="mi-modal-footer">
+              <button className="mi-btn" onClick={() => {
+                close();
+                curPlayer.gem = 0;
+                setPlayers([...players]);
+              }}>OK</button>
+            </div>
+          </div>
+        );
+        open();
+      }
+    }, 1000);
+  }
+
   const setStartBattle = ({x, y}) => {
-    let curPlayerData = players.find((item) => item.id === curId);
     let targetPlayerData = players.find((item) => item.x === x && item.y === y);
-    if (curPlayerData && targetPlayerData) {
-      setCurPlayerState(curPlayerData);
+    if (curPlayer && targetPlayerData) {
+      setCurPlayerState(curPlayer);
       setTargetPlayer(targetPlayerData);
       setStartBattleData(true);
     }
