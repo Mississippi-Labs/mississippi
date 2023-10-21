@@ -58,6 +58,9 @@
         &.back {
           transform: translateX(-30px);
         }
+        img {
+          transform: scaleX(-1);
+        }
       }
 
       &.battle-2 {

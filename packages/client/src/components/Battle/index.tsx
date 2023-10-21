@@ -16,6 +16,7 @@ import button5 from "@/assets/img/battle/Button5.png";
 
 // import tactic from "@/assets/img/battle/tactic.svg";
 import btnBg from "@/assets/img/battle/btn-bg.svg";
+import Appearance from '@/components/Appearance';
 import "./styles.scss";
 
 export default function Battle(props) {
@@ -24,9 +25,12 @@ export default function Battle(props) {
   const [player2LossData, setPlayer2LossData] = useState(0);
   const [player1LossData, setPlayer1LossData] = useState(0);
   const [confirmBattleData, setConfirmBattleData] = useState([]);
+  const [confirmBattle2Data, setConfirmBattle2Data] = useState([]);
 
   const [player2ResidualData, setPlayer2ResidualData] = useState(1);
   const [player1ResidualData, setPlayer1ResidualData] = useState(1);
+
+  const [roundData, setRoundData] = useState(1);
 
   const setSelectAction = (img: any) => {
     setSelectActionData(img);
@@ -39,26 +43,44 @@ export default function Battle(props) {
     let battle1 = document.querySelector('.battle-1');
     let battle2 = document.querySelector('.battle-2');
     setConfirmBattleData([selectActionData, selectTacticData])
+    let scale1 = 0
+    let scale2 = 0
+    if (roundData == 1) {
+      setConfirmBattle2Data([attackButton, rock])
+      scale1 = 0.4
+      scale2 = 0.4
+    }
+    if (roundData == 2) {
+      setConfirmBattle2Data([attackButton, scissors])
+      scale1 = 0.2
+      scale2 = 0.0001
+    }
+    if (roundData == 3) {
+      setConfirmBattle2Data([attackButton, paper])
+      scale1 = 0.0001
+      scale2 = 0.6
+    }
     if (battle1 && battle2) {
       battle1.classList.add('attack');
       setTimeout(() => {
         battle1.classList.remove('attack');
         battle2.classList.add('back');
-        setPlayer2LossData(.4);
+        setPlayer2LossData(scale2);
         // setPlayer2ResidualData(player2ResidualData - .4);
-        if (player2ResidualData - .4 <= 0) {
+        if (player2ResidualData - scale2 <= 0) {
           setPlayer2ResidualData(0);
         } else {
-          setPlayer2ResidualData(player2ResidualData - .4);
+          setPlayer2ResidualData(player2ResidualData - scale2);
         }
 
         setTimeout(() => {
           battle2.classList.remove('back');
           setPlayer2LossData(0);
           // console.log(player2ResidualData)
-          if (player2ResidualData - .4 <= 0) {
+          if (player2ResidualData - scale2 <= 0) {
             setConfirmBattleData([]);
-            props.finishBattle(1);
+            setConfirmBattle2Data([]);
+            setTimeout(() => {props.finishBattle(1);}, 600)
             return
           }
           setTimeout(() => {
@@ -66,19 +88,22 @@ export default function Battle(props) {
             setTimeout(() => {
               battle2.classList.remove('attack');
               battle1.classList.add('back');
-              setPlayer1LossData(.4);
-              if (player1ResidualData - .4 <= 0) {
+              setPlayer1LossData(scale1);
+              if (player1ResidualData - scale1 <= 0) {
                 setPlayer1ResidualData(0);
                 setConfirmBattleData([]);
+                setConfirmBattle2Data([]);
                 props.finishBattle(2);
+                setTimeout(() => {props.finishBattle(1);}, 200)
                 return
               } else {
-                setPlayer1ResidualData(player1ResidualData - .4);
+                setPlayer1ResidualData(player1ResidualData - scale1);
               }
               setTimeout(() => {
                 battle1.classList.remove('back');
                 setPlayer1LossData(0);
                 setConfirmBattleData([]);
+                setRoundData(roundData + 1);
               }, 400);
             }, 400);
           }, 1000)
@@ -115,24 +140,25 @@ export default function Battle(props) {
                     }}
                   ></div>
                   {
-                    player1LossData ? <div className="hp-loss">-{(50 * player1LossData).toFixed(0)}</div> : null
+                    player1LossData ? <div className="hp-loss">-{(100 * player1LossData).toFixed(0)}</div> : null
                   }
                 </div>
-                <img
+                <Appearance {...props.curPlayer.equip} />
+                {/* <img
                   src={duck}
                   style={{
                     transform: "scaleX(-1)",
                   }}
                   alt=""
-                />
+                /> */}
               </div>
               <div className="mi-battle-character-card battle-2" style={{ marginRight: '90px' }}>
                 <div className="mi-battle-character-card-hp">
                   {
-                    confirmBattleData.length && confirmBattleData[0] ? (
+                    confirmBattle2Data.length && confirmBattle2Data[0] ? (
                       <div className="confirm-info">
-                        <img src={confirmBattleData[0]} alt="" />
-                        <img src={confirmBattleData[1]} alt="" />
+                        <img src={confirmBattle2Data[0]} alt="" />
+                        <img src={confirmBattle2Data[1]} alt="" />
                       </div>
                     ) : ''
                   }
@@ -149,19 +175,19 @@ export default function Battle(props) {
                     }}
                   ></div>
                   {
-                    player2LossData ? <div className="hp-loss">-{(50 * player2LossData).toFixed(0)}</div> : null
+                    player2LossData ? <div className="hp-loss">-{(100 * player2LossData).toFixed(0)}</div> : null
                   }
                   {/* <div className="hp-loss">-{160 * player2LossData}</div> */}
                 </div>
-                <img src={duck} alt="" />
+                <Appearance {...props.targetPlayer.equip} />
               </div>
               <div className="mi-battle-character-info">
                 <div className="character-info self">
-                  <div>HP : {(50 * player1ResidualData).toFixed(0)}/50</div>
+                  <div>HP : {(100 * player1ResidualData).toFixed(0)}/100</div>
                   <div>ATK : 20</div>
                 </div>
                 <div className="character-info opponent">
-                  <div>HP : {(50 * player2ResidualData).toFixed(0)}/50</div>
+                  <div>HP : {(100 * player2ResidualData).toFixed(0)}/100</div>
                   <div>ATK : 20</div>
                 </div>
               </div>
