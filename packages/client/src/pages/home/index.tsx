@@ -107,7 +107,7 @@ const Home = () => {
               <UserInfo/>
               <button className="mi-btn" onClick={() => {
                 navigate('/game');
-              }}>mint and go</button>
+              }}>MINT AND GO</button>
             </div>
           </div>
         )

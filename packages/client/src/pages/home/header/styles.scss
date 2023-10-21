@@ -10,6 +10,7 @@
     height: 116px;
     padding: 8px 30px 8px 8px;
     font-family: MISS, sans-serif;
+    //font-family: Arbutus, Arial, sans-serif;
     background: #020202;
 
     .header-logo {
@@ -20,7 +21,7 @@
     .play-btn {
         width: 210px;
         height: 66px;
-        font-size: 24px;
+        font-size: 16px;
     }
 
     .header-nav {
@@ -95,7 +96,7 @@
         a {
             display: block;
             padding: 0 32px;
-            font-size: 20px;
+            font-size: 16px;
             line-height: 46px;
             color: #fff;
         }
