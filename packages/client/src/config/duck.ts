@@ -18,8 +18,8 @@ const Duck = {
   HandHeld: [
     'Beer',           'BigNo1',
     'BowlNChopstick', 'Camera',
-    'Controller',     'DIckCup',
-    'DumbBell',       'FuckFuck',
+    'Controller',
+    'DumbBell',
     'GoldenWatch',    'Guitar',
     'Lighter',        'Mic',
     'Painting',       'Phone',
