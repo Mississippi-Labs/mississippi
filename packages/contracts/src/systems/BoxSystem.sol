@@ -9,18 +9,6 @@ import { CommonUtils } from "@library/CommonUtils.sol";
 import { MRandom } from "@library/MRandom.sol";
 
 contract BoxSystem is System {
-  function creatBox(uint16 _x, uint16 _y) internal {
-    uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
-    uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
-    BoxList.setX(roomId, boxId, _x);
-    BoxList.setY(roomId, boxId, _y);
-
-    uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
-    BoxList.setRandomId(roomId, boxId, randomId);
-    GameConfig.setRandomId(GAME_CONFIG_KEY, randomId + 1);
-    GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
-  }
-
   function openBox(uint256 _boxId) external {
     // 宝箱打开时init内容物,根据自带randomId来实现随机
     // TODO开宝箱的时候用户定身
@@ -31,6 +19,20 @@ contract BoxSystem is System {
     PlayerData memory _user = Player.get(_box.owner);
     require(CommonUtils.isNear(_box.x, _user.x, _box.y, _user.y), "You are not near the box");
     require(_box.opened == false, "Box is opened");
+
+    uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
+    BoxList.setRandomId(roomId, boxId, randomId);
+    GameConfig.setRandomId(GAME_CONFIG_KEY, randomId + 1);
+
+
+  }
+
+  //Todo: add reveal box 
+  function revealBox() external {
+    uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
+    uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
+    BoxListData memory _box = BoxList.get(roomId, boxId);
+
     uint8[] memory randomNumberList = MRandom.getRandom(_box.randomId, 2);
     uint8 oreBalance = CommonUtils.dice(randomNumberList[0], 20, 10, 1);
     uint8 treasureBalance = CommonUtils.dice(randomNumberList[1], 80, 10, 1);
@@ -40,12 +42,8 @@ contract BoxSystem is System {
     BoxList.setOpenTime(roomId, boxId, block.timestamp);
     BoxList.setOpenTime(roomId, boxId, block.timestamp);
   }
-
-  //Todo: add reveal box 
   
-
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) internal {
- 
     uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     require(BoxList.getDropTime(roomId, _boxId) != 0, "Invalid box");
