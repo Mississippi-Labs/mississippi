@@ -64,7 +64,20 @@ const Game = () => {
     setStartBattleData(false);
     if (e == 1) {
       console.log('win');
-      getWinTreasureChest(targetPlayer.gem)
+      let treasureChestData = treasureChest
+      console.log(treasureChestData, treasureChestData[treasureChestData.length - 1]);
+      let item = {
+        id: treasureChestData.length ? treasureChestData[treasureChestData.length - 1].id + 1 : 1,
+        x: targetPlayer.x,
+        y: targetPlayer.y,
+        gem: targetPlayer.gem
+      }
+      treasureChestData.push(item)
+      let targetPlayerIndex = players.findIndex((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
+      players.splice(targetPlayerIndex, 1);
+      setTreasureChest([...treasureChestData]);
+      setPlayers([...players]);
+      // getWinTreasureChest(targetPlayer.gem)
       setTargetPlayer(null);
     } else if (e == 2) {
       console.log('lose');
