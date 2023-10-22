@@ -15,7 +15,7 @@ library GameConfigInit {
             _world,
             GAME_CONFIG_KEY, //key
             merkleRoot, //merkleRoot
-            0, //battleId,
+            1, //battleId,
             0, //randomId,
             4, //originX,
             5, //originY,
