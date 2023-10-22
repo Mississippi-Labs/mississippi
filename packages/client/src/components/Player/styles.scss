@@ -2,12 +2,32 @@
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 
+    .player-info {
+        position: absolute;
+        display: flex;
+        font-size: 16px;
+        font-family: MISS, sans-serif;
+        bottom: 100%;
+    }
+
+    .gem-num {
+        margin-right: 10px;
+        color: #f00;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
+
+    .player-username {
+        color: #000;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
+
     .player-body {
-        flex: 1;
+        //flex: 1;
         //background: url("");
     }
 }

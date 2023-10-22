@@ -1,38 +1,46 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import { IPlayer } from '../Player';
 import MapCell, { ICellClassCache, ICoordinate } from '../MapCell';
 import './styles.scss';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
+import { ITreasureChest } from '@/components/TreasureChest';
+import GameContext from '@/context';
 
 interface IProps {
   width: number;
   height: number;
-  players: IPlayer[];
-  data: number[][];
-  curId: number;
-  vertexCoordinate: {
-    x: number,
-    y: number,
-  };
-  onPlayerMove: (paths: ICoordinate[], simpleMapData: number[][]) => void;
+  vertexCoordinate: ICoordinate;
 }
 
 const Map = (props: IProps) => {
-  const { width, height, vertexCoordinate, data = [], players, curId, onPlayerMove } = props;
+  const { width, height, vertexCoordinate } = props;
   const { x: startX, y: startY } = vertexCoordinate;
 
   const [prevActionCoordinate, setPrevActionCoordinate] = useState({ x: -1, y: -1});
+  const { onPlayerMove, players, treasureChest = [], curId, mapData } = useContext(GameContext);
 
   const staticData = useMemo(() => {
     return Array(height).fill(0).map(() => Array(width).fill(0));
   }, [width, height]);
 
   const simpleMapData = useMemo(() => {
-    return simplifyMapData(data);
-  }, [data]);
+    return simplifyMapData(mapData);
+  }, [mapData]);
 
   const formatMovePath = useMerkel(simpleMapData);
+
+  const treasureChestData = useMemo(() => {
+    const obj = {};
+    treasureChest.forEach((player) => {
+      if (obj[`${player.x}-${player.y}`]) {
+        obj[`${player.x}-${player.y}`].push(player)
+      } else {
+        obj[`${player.x}-${player.y}`] = [player];
+      }
+    });
+    return obj;
+  }, [treasureChest]);
 
   const playerData = useMemo(() => {
     const obj = {};
@@ -55,7 +63,7 @@ const Map = (props: IProps) => {
   }
 
 
-  if (data.length === 0) {
+  if (mapData.length === 0) {
     return <div className="mi-map-wrapper"/>
   }
 
@@ -79,9 +87,9 @@ const Map = (props: IProps) => {
                       }}
                       prevActionCoordinate={prevActionCoordinate}
                       onExeAction={setPrevActionCoordinate}
-                      mapData={data}
                       cellClassCache={cellClassCache.current}
                       players={playerData[`${x}-${y}`]}
+                      treasureChest={treasureChestData[`${x}-${y}`]}
                       onMoveTo={onMoveTo}
                     />
                   )

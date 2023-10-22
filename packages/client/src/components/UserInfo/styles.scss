@@ -3,7 +3,7 @@
     justify-content: space-between;
 
     h3 {
-        font-size: 28px;
+        font-size: 14px;
         margin-bottom: 8px;
     }
 
@@ -28,8 +28,9 @@
         height: 100%;
         background: url("../../assets/img/user_bg.png") no-repeat center / 100% 100%;
 
-        .user-appearance {
-            width: 222px;
+        .user-appearance-box {
+            width: 256px;
+            height: 256px;
         }
     }
 
@@ -38,6 +39,16 @@
         justify-content: space-between;
         flex-direction: column;
         height: 100%;
+
+        &.loaded {
+            .loot-detail:nth-child(1) {
+                background: url("../../assets/img/loot1.png") no-repeat center / 100%;
+            }
+
+            .loot-detail:nth-child(2) {
+                background: url("../../assets/img/loot2.png") no-repeat center / 100%;
+            }
+        }
     }
 
     .loot-detail {
@@ -50,7 +61,8 @@
 
     .user-attr-wrapper {
         width: 213px;
-        font-size: 26px;
+        font-size: 13px;
+        line-height: 2;
 
         dl {
             display: flex;
@@ -65,7 +77,14 @@
             color: #fff;
         }
 
+        &.loaded {
+            .extra-attr {
+                visibility: visible;
+            }
+        }
+
         .extra-attr {
+            visibility: hidden;
             color: red;
 
             &::before {

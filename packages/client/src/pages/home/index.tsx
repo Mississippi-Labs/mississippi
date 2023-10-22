@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '@/pages/home/header';
 import './styles.scss';
 import useModal from '@/hooks/useModal';
@@ -6,16 +6,36 @@ import Loading from '@/components/Loading';
 import MintList from '@/config/mint';
 import { message } from 'antd';
 import UserInfo from '@/components/UserInfo';
+import { UserAddress } from '@/mock/data';
+import { UserAddressKey } from '@/config';
+import { useNavigate } from 'react-router-dom';
+import Duck from '@/config/duck';
 
 const Home = () => {
 
-  const [hasInit, setHasInit] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
-  const [step, setStep] = useState('mint');
+  const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
   const { Modal, open, close, setContent } = useModal({
     title: '',
   });
+
+  const [minting, setMinting] = useState(true);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // const address = localStorage.getItem(UserAddressKey);
+    // if (address) {
+    //   setWalletAddress(address);
+    // }
+  }, []);
+
+  const [clothes, setClothes] = useState<string>();
+  const [handheld, setHandheld] = useState<string>();
+  const [head, setHead] = useState<string>();
+  const [username, setUsername] = useState<string>();
+
 
   const createWallet = () => {
     setContent(
@@ -49,17 +69,51 @@ const Home = () => {
       message.error('Please input your username');
       return;
     }
-    console.log(usernameRef.current.value, 'username');
-    setWalletAddress('0X1234567894519845184814');
+    setUsername(usernameRef.current.value);
+    setWalletAddress(UserAddress);
+    localStorage.setItem('mi_user_address', UserAddress)
     close();
     setStep('mint');
   }
 
+  const mintAndGo = () => {
+    const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
+    const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
+    const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
+    setClothes(clothes);
+    setHandheld(handheld);
+    setHead(head);
+
+    setMinting(false);
+
+    setTimeout(() => {
+      navigate('/game', {
+        state: {
+          username,
+          clothes,
+          handheld,
+          head,
+        }
+      });
+    }, 3000)
+  }
+
   const play = () => {
-    if (hasInit) {
-      return;
-    }
-    setHasInit(true);
+    // if (walletAddress) {
+    //   setContent(
+    //     <div className="create-wallet-wrapper">
+    //       <div className="create-wallet-content">
+    //         You have successfully created a wallet.Name your character and start your journey!
+    //       </div>
+    //       <div className="mint-name">
+    //         <input type="text" className="mi-input" ref={usernameRef} />
+    //         <button className="mi-btn" onClick={toMint}>OK</button>
+    //       </div>
+    //     </div>
+    //   );
+    //   open();
+    //   return;
+    // }
     createWallet();
   }
 
@@ -82,40 +136,9 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo/>
-              <button className="mi-btn">mint and go</button>
+              <UserInfo clothes={clothes} handheld={handheld} head={head} minting={minting}/>
+              <button className="mi-btn" onClick={mintAndGo}>MINT AND GO</button>
             </div>
-
-            {/*<div className="mint-wrapper">*/}
-            {/*  <div className="choose-unit-wrapper">*/}
-            {/*    {*/}
-            {/*      MintList.map((item) => {*/}
-            {/*        return (*/}
-            {/*          <div className="mint-row" key={item.name}>*/}
-
-            {/*          </div>*/}
-            {/*        )*/}
-            {/*      })*/}
-            {/*    }*/}
-            {/*  </div>*/}
-
-            {/*  <div className="preview-wrapper">*/}
-            {/*    <div className="preview-box">*/}
-
-            {/*    </div>*/}
-
-            {/*    <div className="init-name-wrapper">*/}
-            {/*      <label htmlFor="username">Name You Character</label>*/}
-            {/*      <input type="text" className="username" id="username"/>*/}
-            {/*    </div>*/}
-
-            {/*    <div className="opt-wrapper">*/}
-            {/*      <button className="mi-btn">mint player</button>*/}
-            {/*      */}
-            {/*    </div>*/}
-
-            {/*  </div>*/}
-            {/*</div>*/}
           </div>
         )
       }

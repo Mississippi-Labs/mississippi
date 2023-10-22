@@ -15,7 +15,7 @@
             height: 66px;
             left: 50%;
             bottom: 25%;
-            font-size: 24px;
+            font-size: 16px;
             transform: translate3d(-50%, 0, 0);
         }
     }
@@ -35,7 +35,7 @@
 
         .mint-title {
             margin-bottom: 18px;
-            font-size: 32px;
+            font-size: 16px;
             font-weight: 700;
             line-height: 40px;
         }
@@ -45,7 +45,7 @@
             margin: 36px auto;
             width: 238px;
             height: 66px;
-            font-size: 32px;
+            font-size: 16px;
         }
 
     }
@@ -60,7 +60,8 @@
 
     .create-wallet-content {
         padding: 20px;
-        font-size: 20px;
+        font-size: 16px;
+        line-height: 2;
         font-family: MISS, sans-serif;
         text-align: center;
         color: #5D2E1C;
@@ -77,7 +78,7 @@
         }
 
         button {
-            font-size: 24px;
+            font-size: 16px;
             width: 170px;
             height: 45px;
         }
@@ -100,6 +101,6 @@
     button {
         width: 220px;
         height: 70px;
-        font-size: 32px;
+        font-size: 16px;
     }
 }

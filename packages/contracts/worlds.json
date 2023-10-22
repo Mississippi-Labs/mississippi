@@ -4,7 +4,11 @@
     "blockNumber": 27950347
   },
   "31337": {
+<<<<<<< HEAD
     "address": "0xdccF554708B72d0fe9500cBfc1595cDBE3d66e5a"
+=======
+    "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+>>>>>>> 3632bdf236218fda9fe05670479b392d22475b1f
   },
   "421613": {
     "address": "0x2Bc1034975c3df48D6f3026802f372677844b85d",

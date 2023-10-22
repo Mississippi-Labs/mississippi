@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CellType } from '../../constants';
 import { getCellClass, isMovable } from '@/utils';
 import './styles.scss';
 import Player, { IPlayer } from '@/components/Player';
 import { DELIVERY } from '@/config/map';
+import TreasureChest, { ITreasureChest } from '@/components/TreasureChest';
+import GameContext from '@/context';
 
 interface ITransform {
   index: number;
@@ -26,19 +28,23 @@ export interface ICoordinate {
 
 interface IProps {
   coordinate: ICoordinate,
-  mapData: number[][];
   cellClassCache: ICellClassCache;
   players?: IPlayer[];
+  treasureChest?: ITreasureChest[];
   onMoveTo: (ICoordinate) => void;
+  openTreasureChest: (id: number) => void;
   prevActionCoordinate: ICoordinate;
   onExeAction: (ICoordinate) => void;
 }
 
 const MapCell = (props: IProps) => {
-  const { coordinate: { x, y}, mapData, cellClassCache, players, onMoveTo, onExeAction, prevActionCoordinate } = props;
+  const { coordinate: { x, y}, cellClassCache, treasureChest, players, onMoveTo, onExeAction, prevActionCoordinate } = props;
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
+
+  const { mapData, openTreasureChest, setStartBattle } = useContext(GameContext);
+
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
   if (!cellClassCache[`${y}-${x}`]) {
@@ -58,6 +64,10 @@ const MapCell = (props: IProps) => {
 
   const onClick = () => {
     onExeAction({ x, y});
+    if (treasureChest) {
+      openTreasureChest(treasureChest[0].id);
+      return;
+    }
     if (!players || players?.length === 0) {
       return;
     }
@@ -75,6 +85,7 @@ const MapCell = (props: IProps) => {
       case 'info':
         break;
       case 'attack':
+        setStartBattle({x, y});
         break;
     }
   }
@@ -114,7 +125,11 @@ const MapCell = (props: IProps) => {
       }
 
       {
-        players && players.map((player) => <Player {...player}/>)
+        treasureChest && treasureChest.map((item) => <TreasureChest {...item} key={item.id} />)
+      }
+
+      {
+        players && players.map((player) => <Player key={player.id} {...player}/>)
       }
       {
         menuVisible && (

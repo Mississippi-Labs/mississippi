@@ -1,0 +1,21 @@
+.mi-userinfo-dialog {
+    position: fixed;
+    z-index: 999;
+    width: 1298px;
+    height: 585px;
+    padding: 36px 66px;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    font-family: MISS, sans-serif;
+    color: #BC8C61;
+    border: 6px solid #451B0B;
+    background: #000;
+
+    .close-btn {
+        display: block;
+        margin: 32px auto 0;
+        width: 158px;
+        height: 42px;
+    }
+}
