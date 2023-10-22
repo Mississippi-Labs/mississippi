@@ -35,8 +35,8 @@ console.log("leafs.length", leafs.length);
 // 其中value为0或1,表示该位置是否可以走,默认0不可走,1以及以后数字可以约定分别代表不同的可行性
 function generateLeaf(x, y, value) {
   return Buffer.from(
-    ethers
-      .solidityPackedKeccak256(
+    ethers.utils
+      .solidityKeccak256(
         ["uint16", "string", "uint16", "string", "uint8"],
         [x, ",", y, ",", value]
       )
@@ -55,8 +55,9 @@ const merkleTree = new MerkleTree(
   keccak256,
   { sortPairs: true }
 );
+let root = merkleTree.getHexRoot();
 function main() {
-  let root = merkleTree.getHexRoot();
+  
   console.log("Map Merkle Tree Root:", root);
 
   let steps = [
