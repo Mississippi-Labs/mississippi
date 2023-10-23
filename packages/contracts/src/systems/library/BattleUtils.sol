@@ -10,7 +10,7 @@ library BattleUtils {
         Buff _myBuff,
         Buff _targetBuff
     ) internal pure returns (uint256) {
-        // 0表示失败,1表示相当,2表示胜利
+        // 0: fail , 1: equal , 2: success
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
             (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||

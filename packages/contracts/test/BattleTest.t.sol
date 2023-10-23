@@ -14,16 +14,15 @@ import { Buff, BattleState } from "../src/codegen/Types.sol";
 
 contract BattleTest is MudTest {
     IWorld public world;
+    address bob = address(1);
+    address alice = address(2);
 
     function setUp() public override {
         super.setUp();
         world = IWorld(worldAddress);
     }
 
-    function testBattleInvitation() public {
-        address bob = address(1);
-        address alice = address(2);
-
+    function GloabalInit() internal {
         // game init 
         vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
         bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
@@ -31,16 +30,9 @@ contract BattleTest is MudTest {
         GameConfig.setOriginY(world, GAME_CONFIG_KEY, 4);
         GameConfig.setMerkleRoot(world, GAME_CONFIG_KEY, merkleRoot);
         vm.stopPrank();
+    }
 
-        // join game 
-        vm.startPrank(bob);
-        world.joinBattlefield();
-        vm.stopPrank();
-
-        vm.startPrank(alice);
-        world.joinBattlefield();
-        vm.stopPrank();
-
+    function PlayerInit() internal {
         // player property init 
         vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
         // init bob property
@@ -61,11 +53,30 @@ contract BattleTest is MudTest {
         Player.setStrength(alice, 5);
         Player.setSpace(alice, 5);
         vm.stopPrank();
+    }
 
+    function GameInit() internal {
+        // join game 
+        vm.startPrank(bob);
+        world.joinBattlefield();
+        vm.stopPrank();
+
+        vm.startPrank(alice);
+        world.joinBattlefield();
+        vm.stopPrank();
+
+       
         // bob move
         vm.startPrank(bob);
         world.move(positions());
         vm.stopPrank();
+    }
+
+/*
+    function testBattleNormalAttack() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
 
         // alice attack bob 
         vm.startPrank(alice);
@@ -104,17 +115,194 @@ contract BattleTest is MudTest {
         world.revealBattle(1, action2, arg2, nonce2);
         vm.stopPrank();
 
-        vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
-        BattleState attackerState = BattleList.getAttackerState(1);
-        BattleState defenderState = BattleList.getDefenderState(1);
-        console.logUint(uint(attackerState));
-        console.logUint(uint(defenderState));
+        // vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+        // BattleState attackerState = BattleList.getAttackerState(1);
+        // BattleState defenderState = BattleList.getDefenderState(1);
+        // console.logUint(uint(attackerState));
+        // console.logUint(uint(defenderState));
+        // vm.stopPrank();
+    }
+*/
 
-        
-        // console.log("attacker state: %d", bytes32(attackerState));
-        // console.log("defender state:  %s", defenderState);
+/*
+    function testBattleNormalEndAttack() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
+
+        vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+        Player.setAttack(bob, 200);
+        vm.stopPrank();
+
+        // alice attack bob 
+        vm.startPrank(alice);
+        world.battleInvitation(bob, positions());
+        vm.stopPrank();
+
+        // vm.warp(block.timestamp + 100);
+
+        // bob confirm 
+        vm.startPrank(bob);
+        bytes32 action = bytes32("attack");
+        uint256 arg = 1;
+        bytes32 nonce = bytes32("1");
+        bytes32 buffHash = keccak256(abi.encodePacked(action, arg, nonce));
+        world.confirmBattle(buffHash, 1);
+        vm.stopPrank();
+
+        // alice confirm 
+        vm.startPrank(alice);
+        bytes32 action2 = bytes32("attack");
+        uint256 arg2 = 2;
+        bytes32 nonce2 = bytes32("1");
+        bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
+        world.confirmBattle(buffHash2, 1);
+        vm.stopPrank();
+
+        // bob revealBattle 
+        console.log(" bob revealBattle");
+        vm.startPrank(bob);
+        world.revealBattle(1, action, arg, nonce);
+        vm.stopPrank();
+
+        // alice revealBattle 
+        console.log(" alice revealBattle");
+        vm.startPrank(alice);
+        world.revealBattle(1, action2, arg2, nonce2);
         vm.stopPrank();
     }
+*/
+
+/*
+    function testBattleAllEscape() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
+
+        // alice attack bob 
+        vm.startPrank(alice);
+        world.battleInvitation(bob, positions());
+        vm.stopPrank();
+
+        // bob confirm 
+        vm.startPrank(bob);
+        bytes32 action = bytes32("escape");
+        uint256 arg = 1;
+        bytes32 nonce = bytes32("1");
+        bytes32 buffHash = keccak256(abi.encodePacked(action, arg, nonce));
+        world.confirmBattle(buffHash, 1);
+        vm.stopPrank();
+
+        // alice confirm 
+        vm.startPrank(alice);
+        bytes32 action2 = bytes32("escape");
+        uint256 arg2 = 2;
+        bytes32 nonce2 = bytes32("1");
+        bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
+        world.confirmBattle(buffHash2, 1);
+        vm.stopPrank();
+
+        // bob revealBattle 
+        console.log(" bob revealBattle");
+        vm.startPrank(bob);
+        world.revealBattle(1, action, arg, nonce);
+        vm.stopPrank();
+
+        // alice revealBattle 
+        console.log(" alice revealBattle");
+        vm.startPrank(alice);
+        world.revealBattle(1, action2, arg2, nonce2);
+        vm.stopPrank();
+    }
+*/
+
+/*
+    function testBattleAttackerEscape() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
+
+        // alice attack bob 
+        vm.startPrank(alice);
+        world.battleInvitation(bob, positions());
+        vm.stopPrank();
+
+        // bob confirm 
+        vm.startPrank(bob);
+        bytes32 action = bytes32("attack");
+        uint256 arg = 1;
+        bytes32 nonce = bytes32("1");
+        bytes32 buffHash = keccak256(abi.encodePacked(action, arg, nonce));
+        world.confirmBattle(buffHash, 1);
+        vm.stopPrank();
+
+        // alice confirm 
+        vm.startPrank(alice);
+        bytes32 action2 = bytes32("escape");
+        uint256 arg2 = 2;
+        bytes32 nonce2 = bytes32("1");
+        bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
+        world.confirmBattle(buffHash2, 1);
+        vm.stopPrank();
+
+        // bob revealBattle 
+        console.log(" bob revealBattle");
+        vm.startPrank(bob);
+        world.revealBattle(1, action, arg, nonce);
+        vm.stopPrank();
+
+        // alice revealBattle 
+        console.log(" alice revealBattle");
+        vm.startPrank(alice);
+        world.revealBattle(1, action2, arg2, nonce2);
+        vm.stopPrank();
+    }
+*/
+
+    function testBattleDefenderEscape() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
+
+        // alice attack bob 
+        vm.startPrank(alice);
+        world.battleInvitation(bob, positions());
+        vm.stopPrank();
+
+        // bob confirm 
+        vm.startPrank(bob);
+        bytes32 action = bytes32("escape");
+        uint256 arg = 1;
+        bytes32 nonce = bytes32("1");
+        bytes32 buffHash = keccak256(abi.encodePacked(action, arg, nonce));
+        world.confirmBattle(buffHash, 1);
+        vm.stopPrank();
+
+        // alice confirm 
+        vm.startPrank(alice);
+        bytes32 action2 = bytes32("attack");
+        uint256 arg2 = 2;
+        bytes32 nonce2 = bytes32("1");
+        bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
+        world.confirmBattle(buffHash2, 1);
+        vm.stopPrank();
+
+        // bob revealBattle 
+        console.log(" bob revealBattle");
+        vm.startPrank(bob);
+        world.revealBattle(1, action, arg, nonce);
+        vm.stopPrank();
+
+        // alice revealBattle 
+        console.log(" alice revealBattle");
+        vm.startPrank(alice);
+        world.revealBattle(1, action2, arg2, nonce2);
+        vm.stopPrank();
+    }
+
+
+
+
 
     function positions() public pure returns(Position[] memory) {
         Position[] memory moveList = new Position[](5); 

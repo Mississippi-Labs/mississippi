@@ -16,11 +16,11 @@ library GameConfigInit {
             GAME_CONFIG_KEY, //key
             merkleRoot, //merkleRoot
             1, //battleId,
-            0, //randomId,
+            1, //randomId,
             4, //originX,
             5, //originY,
-            0, //roomId,
-            0 //boxId,
+            1, //roomId,
+            1 //boxId,
         );
     }
 

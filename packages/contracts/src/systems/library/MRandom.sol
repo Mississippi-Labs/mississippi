@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import {console} from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { BattleState, Buff, PlayerState } from "@codegen/Types.sol";
 import { GameConfig, BattleConfig, RandomList, RandomListData, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock } from "@codegen/Tables.sol";
@@ -10,8 +11,9 @@ import { CommonUtils } from "@library/CommonUtils.sol";
 library MRandom {
   event NewRandom(uint256 randomId, address author);
 
-  function getRandom(uint256 _randomId, uint256 _count) internal view returns (uint8[] memory) {
-    require(msg.sender == RandomList.getAuthor(_randomId), "only random creator can get random");
+  function getRandom(address sender, uint256 _randomId, uint256 _count) internal view returns (uint8[] memory) {
+    console.log(" author ", RandomList.getAuthor(_randomId), sender);
+    require(sender == RandomList.getAuthor(_randomId), "only random creator can get random");
     uint8[] memory randomNumberList = new uint8[](_count);
     RandomListData memory r = RandomList.get(_randomId);
     require(block.number >= r.blockNumber + 2, "too early to get random seed");
