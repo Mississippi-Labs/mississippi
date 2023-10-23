@@ -34,7 +34,9 @@ contract BattleSystem is System {
       BattleList.setDefenderArg(_battleId, _arg);
       BattleList.setDefenderState(_battleId, BattleState.Revealed);
     }
-    if (battle.attackerState == BattleState.Revealed && battle.defenderState == BattleState.Revealed) {
+    // if (battle.attackerState == BattleState.Revealed && battle.defenderState == BattleState.Revealed) {
+    if (BattleList.getAttackerState(_battleId) == BattleState.Revealed 
+      && BattleList.getDefenderState(_battleId) == BattleState.Revealed) {
       // 结算战斗
       revealWinner(_battleId);
     }
@@ -51,6 +53,8 @@ contract BattleSystem is System {
     //set attack 
     uint256 attackerFirepower = Player.getAttack(battle.attacker);
     uint256 defenderFirepower = Player.getAttack(battle.defender);
+    Buff attackerBuff = Buff(battle.defenderArg);
+    Buff defenderBuff = Buff(battle.defenderArg);
 
     // address attacker = BattleList.getAttacker(_battleId);
     // address defender = BattleList.getDefender(_battleId);
@@ -61,8 +65,7 @@ contract BattleSystem is System {
     if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("attack")) {
       // Buff attackerBuff = Buff(battle.attackerArg);
       // Buff defenderBuff = Buff(battle.defenderArg);
-      Buff attackerBuff = Buff(battle.attackerArg);
-      Buff defenderBuff = Buff(battle.defenderArg);
+
       // 任意攻击buff都强于None
       uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
       uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
@@ -89,6 +92,7 @@ contract BattleSystem is System {
       }
     }
 
+
     if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("escape")) {
       // 双方都逃走,则战斗结束(这里应该都传送到更远地方)
       // battle.isEnd = true;
@@ -100,8 +104,8 @@ contract BattleSystem is System {
       emit BattleEnd(_battleId, BattleEndType.AllEscape, address(0));
     }
     if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("attack")) {
-      Buff attackerBuff = Buff(battle.defenderArg);
-      Buff defenderBuff = Buff(battle.defenderArg);
+      // Buff attackerBuff = Buff(battle.defenderArg);
+      // Buff defenderBuff = Buff(battle.defenderArg);
       // 任意攻击buff都强于None
       if (attackerBuff == defenderBuff || BattleUtils.compareBuff(attackerBuff, defenderBuff) == 2) {
         // 逃跑成功
@@ -132,8 +136,8 @@ contract BattleSystem is System {
       }
     }
     if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("escape")) {
-      Buff attackerBuff = Buff(battle.attackerArg);
-      Buff defenderBuff = Buff(battle.defenderArg);
+      // Buff attackerBuff = Buff(battle.attackerArg);
+      // Buff defenderBuff = Buff(battle.defenderArg);
       // 任意攻击buff都强于None
       if (attackerBuff == defenderBuff || BattleUtils.compareBuff(defenderBuff, attackerBuff) == 2) {
         // 逃跑成功
@@ -169,6 +173,37 @@ contract BattleSystem is System {
     }
   }
 
+  function attackerAttackDenfenderEscape(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff, uint defenderFirepower) internal {
+    // 任意攻击buff都强于None
+    if (attackerBuff == defenderBuff || BattleUtils.compareBuff(attackerBuff, defenderBuff) == 2) {
+      // 逃跑成功
+      Player.setState(battle.attacker, PlayerState.Exploring);
+      Player.setState(battle.defender, PlayerState.Exploring);
+      // PlayerLocationLock[battle.defender] = block.timestamp; //将被逃跑方禁锢一段时间
+      PlayerLocationLock.set(battle.defender, block.timestamp);
+    } else {
+      // 逃跑失败,被动挨打
+      uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
+      // battle.attackerHP = BattleUtils.getAttackResult(
+      //     battle.attackerHP,
+      //     defenderAttackPower
+      // );
+      // if (battle.attackerHP == 0) {
+      //     battle.winer = battle.defender;
+      //     battle.isEnd = true;
+      // }
+      BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
+      if (BattleList.getAttackerHP(_battleId) == 0) {
+        // battle.winer = battle.defender;
+        // battle.isEnd = true;
+        BattleList.setWinner(_battleId, battle.defender);
+        BattleList.setIsEnd(_battleId, true);
+
+        emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
+      }
+    }
+  }
+
   function getAttackResult(uint256 _hp, uint256 _attackPower) internal pure returns (uint256) {
     // TODO 后期添加防御力抵消对方的攻击力
     if (_attackPower > _hp) {
@@ -185,7 +220,7 @@ contract BattleSystem is System {
     // 游戏失败,将用户脱离战区,血量回满
     // TODO 背包系统,宝物系统
 
-    outBattlefield(_looser);
+    BattleUtils.outBattlefield(_looser);
     PlayerData memory losser = Player.get(_looser);
     uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
     BoxListData memory box;
@@ -204,40 +239,5 @@ contract BattleSystem is System {
     GameConfig.setRoomId(GAME_CONFIG_KEY, boxId + 1);
   }
 
-  function goHome() external {
-    // 回家,将用户脱离战区,血量回满
 
-    PlayerData memory player = Player.get(_msgSender());
-    require(player.state == PlayerState.Exploring, "You should in exploring state");
-    require(
-      player.x == GameConfig.getOriginX(GAME_CONFIG_KEY) && player.y == GameConfig.getOriginY(GAME_CONFIG_KEY),
-      "You are not in the origin point"
-    );
-    outBattlefield(_msgSender());
-  }
-
-  function outBattlefield(address _player) internal {
-    // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
-    require(Player.getState(_player) == PlayerState.Exploring, "You should in exploring state");
-
-    // Player.setHp(_player, initPlayerHp(_player)); //Todo: setting to atacker or defender hp 
-    Player.setHp(_player, Player.getMaxHp(_player));
-
-    for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
-      if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _player) {
-        BattleConfig.updateBattlefieldPlayers(
-          BATTLE_CONFIG_KEY,
-          i,
-          BattleConfig.getItemBattlefieldPlayers(
-            BATTLE_CONFIG_KEY,
-            BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY) - 1
-          )
-        );
-        BattleConfig.popBattlefieldPlayers(BATTLE_CONFIG_KEY);
-        break;
-      }
-    }
-    Player.setState(_player, PlayerState.Preparing);
-    Player.setLastBattleTime(_player, block.timestamp);
-  }
 }

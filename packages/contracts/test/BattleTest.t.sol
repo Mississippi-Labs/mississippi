@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
+import {console} from "forge-std/console.sol";
 import "forge-std/Test.sol";
 import { MudTest } from "@latticexyz/store/src/MudTest.sol";
 import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
@@ -8,8 +9,8 @@ import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/ge
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 import { Position } from "../src/systems/Common.sol";
 import { GAME_CONFIG_KEY } from "../src/Constants.sol";
-import { Player, GameConfig } from "../src/codegen/Tables.sol";
-import { Buff } from "../src/codegen/Types.sol";
+import { Player, GameConfig, BattleList } from "../src/codegen/Tables.sol";
+import { Buff, BattleState } from "../src/codegen/Types.sol";
 
 contract BattleTest is MudTest {
     IWorld public world;
@@ -38,6 +39,27 @@ contract BattleTest is MudTest {
 
         vm.startPrank(alice);
         world.joinBattlefield();
+        vm.stopPrank();
+
+        // player property init 
+        vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+        // init bob property
+        Player.setMaxHp(bob, 200);
+        Player.setHp(bob, 200);
+        Player.setAttack(bob, 10);
+        Player.setAttackRange(bob, 5);
+        Player.setSpeed(bob, 5);
+        Player.setStrength(bob, 5);
+        Player.setSpace(bob, 5);
+
+        // init alice property
+        Player.setMaxHp(alice, 200);
+        Player.setHp(alice, 200);
+        Player.setAttack(alice, 10);
+        Player.setAttackRange(alice, 5);
+        Player.setSpeed(alice, 5);
+        Player.setStrength(alice, 5);
+        Player.setSpace(alice, 5);
         vm.stopPrank();
 
         // bob move
@@ -80,6 +102,17 @@ contract BattleTest is MudTest {
         console.log(" alice revealBattle");
         vm.startPrank(alice);
         world.revealBattle(1, action2, arg2, nonce2);
+        vm.stopPrank();
+
+        vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+        BattleState attackerState = BattleList.getAttackerState(1);
+        BattleState defenderState = BattleList.getDefenderState(1);
+        console.logUint(uint(attackerState));
+        console.logUint(uint(defenderState));
+
+        
+        // console.log("attacker state: %d", bytes32(attackerState));
+        // console.log("defender state:  %s", defenderState);
         vm.stopPrank();
     }
 
