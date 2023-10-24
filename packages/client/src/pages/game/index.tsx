@@ -19,6 +19,7 @@ import TreasureChest from '@/components/TreasureChest';
 import UserInfo from '@/components/UserInfo';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
+import { updatePlayerPosition } from '@/utils/player';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -88,7 +89,7 @@ const Game = () => {
     let pathIndex = 0;
     const interval = setInterval(() => {
       triggerVertexUpdate(paths[pathIndex], curPlayer);
-      Object.assign(curPlayer, paths[pathIndex]);
+      updatePlayerPosition(curPlayer, paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
       if (pathIndex === paths.length) {
