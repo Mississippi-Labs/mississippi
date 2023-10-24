@@ -37,12 +37,12 @@ interface IProps {
 }
 
 const MapCell = (props: IProps) => {
-  const { coordinate: { x, y}, cellClassCache, treasureChest, players, onMoveTo, onExeAction, prevActionCoordinate } = props;
+  const { coordinate: { x, y}, cellClassCache, treasureChest = [], players = [], onMoveTo, onExeAction, prevActionCoordinate } = props;
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, openTreasureChest, setStartBattle, showUserInfo } = useContext(GameContext);
+  const { mapData, openTreasureChest, setStartBattle, showUserInfo, curId } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
@@ -56,6 +56,10 @@ const MapCell = (props: IProps) => {
     onExeAction({ x, y});
     e.preventDefault();
     const curMapDataType = mapData[y][x];
+    if (players.length > 0 || treasureChest.length > 0) {
+      onClick();
+      return;
+    }
     if (isMovable(curMapDataType)) {
       onMoveTo({ x, y});
     }
@@ -63,11 +67,11 @@ const MapCell = (props: IProps) => {
 
   const onClick = () => {
     onExeAction({ x, y});
-    if (treasureChest) {
+    if (treasureChest.length > 0) {
       openTreasureChest(treasureChest[0].id);
       return;
     }
-    if (!players || players?.length === 0) {
+    if (players.length === 0) {
       return;
     }
     setMenuVisible(true);
@@ -77,7 +81,7 @@ const MapCell = (props: IProps) => {
   const exeAction = (e, action) => {
     e.stopPropagation();
     setMenuVisible(false);
-    const activePlayer = players!.find((item) => item.id === activePlayerId);
+    const activePlayer = players.find((item) => item.id === activePlayerId);
     switch (action) {
       case 'move':
         onMoveTo({x, y});
@@ -126,20 +130,20 @@ const MapCell = (props: IProps) => {
       }
 
       {
-        treasureChest && treasureChest.map((item) => <TreasureChest {...item} key={item.id} />)
+        treasureChest.map((item) => <TreasureChest {...item} key={item.id} />)
       }
 
       {
-        players && players.map((player) => <Player key={player.id} {...player}/>)
+        players.map((player) => <Player key={player.id} {...player}/>)
       }
       {
         menuVisible && (
           <div className="mi-cell-user-menu">
             {
-              players?.length > 1 && (
+              players.length > 1 && (
                 <ul className="mi-cell-username-list">
                   {
-                    players?.slice(0, 3).map((player) => {
+                    players.slice(0, 3).map((player) => {
                       return (
                         <li
                           key={player.id}
@@ -157,12 +161,20 @@ const MapCell = (props: IProps) => {
             }
             
             <ul className="mi-cell-action-menu">
-              <li>
-                <button className="mi-btn" onClick={(e) => exeAction(e, 'move')}>move</button>
-              </li>
-              <li>
-                <button className="mi-btn" onClick={(e) => exeAction(e, 'attack')}>attack</button>
-              </li>
+              {
+                activePlayerId !== curId && (
+                  <li>
+                    <button className="mi-btn" onClick={(e) => exeAction(e, 'move')}>move</button>
+                  </li>
+                )
+              }
+              {
+                activePlayerId !== curId && (
+                  <li>
+                    <button className="mi-btn" onClick={(e) => exeAction(e, 'attack')}>attack</button>
+                  </li>
+                )
+              }
               <li>
                 <button className="mi-btn" onClick={(e) => exeAction(e, 'info')}>info</button>
               </li>
