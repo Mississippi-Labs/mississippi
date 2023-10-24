@@ -23,7 +23,7 @@ contract BoxTest is MudTest {
 
     function testOpenBox() public {
         vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
-        world.CreateBox(5,4, 4, 5);
+        world.CreateBox(5,4);
         Player.setX(bob, 4);
         Player.setY(bob, 4);
         Player.setStrength(bob, 5);
