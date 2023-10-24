@@ -20,6 +20,7 @@ import UserInfo from '@/components/UserInfo';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
 import { updatePlayerPosition } from '@/utils/player';
+import { triggerVertexUpdate } from '@/utils/map';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -88,7 +89,7 @@ const Game = () => {
   const movePlayer = (paths, merkelData) => {
     let pathIndex = 0;
     const interval = setInterval(() => {
-      triggerVertexUpdate(paths[pathIndex], curPlayer);
+      setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
@@ -193,42 +194,6 @@ const Game = () => {
     open();
   }
 
-  const triggerVertexUpdate = (cur, before) => {
-    const xDegree = cur.x - before.x;
-    const yDegree = cur.y - before.y;
-    const mapData = mapDataRef.current;
-    if (xDegree === 1) {
-      const limitExceeded = cur.x - vertexCoordinate.x > LimitSpace.x;
-      const lessBoundary =
-        vertexCoordinate.x + MapConfig.visualWidth < mapData[0].length - 1;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.x++;
-      }
-    } else if (xDegree === -1) {
-      const limitExceeded = cur.x - vertexCoordinate.x < LimitSpace.x;
-      const lessBoundary = vertexCoordinate.x > 0;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.x--;
-      }
-    } else if (yDegree === 1) {
-      const limitExceeded = cur.y - vertexCoordinate.y > LimitSpace.y;
-      const lessBoundary =
-        vertexCoordinate.y + MapConfig.visualHeight < mapData.length - 1;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.y++;
-      }
-    } else if (yDegree === -1) {
-      const limitExceeded = cur.y - vertexCoordinate.y < LimitSpace.y;
-      const lessBoundary = vertexCoordinate.y > 0;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.y--;
-      }
-    }
-
-    setVertexCoordinate({
-      ...vertexCoordinate,
-    });
-  };
 
   useEffect(() => {
     loadMapData().then((csv) => {
