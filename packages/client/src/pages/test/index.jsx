@@ -14,12 +14,12 @@ const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);
   const [battleData, setBattleData] = useState([]);
-  const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 'None']);
+  const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 1]);
   const [battlesData, setBattlesData] = useState([]);
 
   const {
-    components: { Player, GameConfig, BattleList },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle },
+    components: { Player, GameConfig, BattleList, BoxList },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections },
     network
   } = useMUD();
 
@@ -50,6 +50,17 @@ const Test = () => {
     return battle;
   });
   console.log(battles, 'battles')
+
+  const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
+    let id = decodeEntity({ boxId: "uint256" }, entity);
+    let box = getComponentValue(BoxList, entity)
+    console.log(box, 'box', id)
+    box.id = id.boxId.toString()
+    return box;
+  });
+  console.log(boxs, 'boxs')
+
+
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
   // console.log(GameConfig, 'GameConfig')
   const players = useEntityQuery([Has(Player)]).map((entity) => {
@@ -97,10 +108,10 @@ const Test = () => {
   }
 
   const confirmBattleChange = (e, i) => {
-    console.log(e.target.value, i)
-    let value = e.target.value
+    let value = i == 1 ? +e.target.value : e.target.value
     let confirmBattle = [...confirmBattleData];
     confirmBattle[i] = value;
+    console.log(confirmBattle)
     setConfirmBattleData(confirmBattle);
   }
 
@@ -137,7 +148,7 @@ const Test = () => {
   }
 
   const confirmBattleFun = () => {
-    // console.log(confirmBattleData, 'confirmBattle')
+    console.log(confirmBattleData, 'confirmBattle')
     let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
     let battlesDataTemp = [...battlesData];
     let battleItem = battlesDataTemp.find(item => item.id == battle.id);
@@ -145,8 +156,9 @@ const Test = () => {
       let action = confirmBattleData[0]
       let arg = confirmBattleData[1]
       let nonce = getRandomStr(18)
+      console.log(nonce, arg)
       let actionHex = ethers.utils.formatBytes32String(action);
-      let argHex = ethers.utils.formatBytes32String(arg);
+      let argHex = ethers.utils.formatBytes32String(arg.toString());
       let nonceHex = ethers.utils.formatBytes32String(nonce);
       let hash = getProofHash(actionHex, argHex, nonceHex);
       console.log(hash, 'hash')
@@ -269,11 +281,10 @@ const Test = () => {
               <option value="Escape">Escape</option>
               <option value="Props">Props</option>
             </select>
-            <select>
-              <option value="None">None</option>
-              <option value="Fire">Fire</option>
-              <option value="Water">Water</option>
-              <option value="Wind">Wind</option>
+            <select onChange={(e) => confirmBattleChange(e, 1)}>
+              <option value="1">Fire</option>
+              <option value="2">Water</option>
+              <option value="3">Wind</option>
             </select>
           </div>
           <div className="btn" onClick={confirmBattleFun}>确认</div>

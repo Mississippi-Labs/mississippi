@@ -62,6 +62,21 @@ export function createSystemCalls(
     const tx = await worldContract.write.selectUserNft([tokenId]);
     await waitForTransaction(tx);
   }
+
+  const openBox = async (tokenId: any) => {
+    const tx = await worldContract.write.openBox([tokenId]);
+    await waitForTransaction(tx);
+  }
+
+  const revealBox = async (_boxId: any) => {
+    const tx = await worldContract.write.revealBox([_boxId]);
+    await waitForTransaction(tx);
+  }
+
+  const getCollections = async (_boxId: any, _oreAmount: any, _treasureAmount: any) => {
+    const tx = await worldContract.write.getCollections([_boxId, _oreAmount, _treasureAmount]);
+    await waitForTransaction(tx);
+  }
   return {
     increment,
     move,
@@ -71,6 +86,9 @@ export function createSystemCalls(
     battleInvitation,
     confirmBattle,
     selectUserNft,
-    revealBattle
+    revealBattle,
+    openBox,
+    getCollections,
+    revealBox
   };
 }
