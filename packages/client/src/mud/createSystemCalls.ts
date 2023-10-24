@@ -33,9 +33,8 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const joinBattlefield = async (addr: any) => {
-    console.log(addr)
-    const tx = await worldContract.write.joinBattlefield([addr]);
+  const joinBattlefield = async () => {
+    const tx = await worldContract.write.joinBattlefield();
     await waitForTransaction(tx);
   }
 

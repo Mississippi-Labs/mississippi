@@ -26,8 +26,11 @@
     "@latticexyz/store": "2.0.0-next.4",
     "@latticexyz/world": "2.0.0-next.4",
     "@openzeppelin/contracts": "^4.9.3",
+    "abi-decoder": "^2.4.0",
     "dotenv": "^16.3.1",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.3.10"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^10.2.0",

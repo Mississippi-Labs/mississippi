@@ -2,14 +2,15 @@
 pragma solidity >=0.8.0;
 
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
-import { BattleListData } from "../../codegen/Tables.sol";
+import { BattleListData, Player, BattleConfig } from "../../codegen/Tables.sol";
+import { BATTLE_CONFIG_KEY } from "../../Constants.sol";
 
 library BattleUtils {
     function compareBuff(
         Buff _myBuff,
         Buff _targetBuff
     ) internal pure returns (uint256) {
-        // 0表示失败,1表示相当,2表示胜利
+        // 0: fail , 1: equal , 2: success
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
             (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
@@ -63,6 +64,30 @@ library BattleUtils {
         require(battleState == _battleState, "You are in the wrong state");
 
         require(!_battle.isEnd, "Battle is end");
-  }
+    }
 
+    function outBattlefield(address _player) internal {
+        // 脱离战区,则将用户血量回满,坐标不变,状态改为准备中
+        require(Player.getState(_player) == PlayerState.Exploring, "You should in exploring state");
+
+        // Player.setHp(_player, initPlayerHp(_player)); //Todo: setting to atacker or defender hp 
+        Player.setHp(_player, Player.getMaxHp(_player));
+
+        for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
+        if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _player) {
+            BattleConfig.updateBattlefieldPlayers(
+            BATTLE_CONFIG_KEY,
+            i,
+            BattleConfig.getItemBattlefieldPlayers(
+                BATTLE_CONFIG_KEY,
+                BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY) - 1
+            )
+            );
+            BattleConfig.popBattlefieldPlayers(BATTLE_CONFIG_KEY);
+            break;
+        }
+        }
+        Player.setState(_player, PlayerState.Preparing);
+        Player.setLastBattleTime(_player, block.timestamp);
+    }
 }

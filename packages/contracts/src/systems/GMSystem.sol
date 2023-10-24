@@ -29,18 +29,21 @@ contract GMSystem  is System {
         Season.setNo(MAP_KEY, no+1);
     }
 
+    event RenewMapMerkeRoot(bytes32 root);
     // merkle root
     function SetMapMerkleRoot(bytes32 _root) public {
         GameConfig.setMerkleRoot(GAME_CONFIG_KEY, _root);
+        emit RenewMapMerkeRoot(_root);
     }
 
     // create box 
     function CreateBox(uint16 _x, uint16 _y) public {
-        uint256 roomId = GameConfig.getRoomId(GAME_CONFIG_KEY);
         uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
-        BoxList.setX(roomId, boxId, _x);
-        BoxList.setY(roomId, boxId, _y);
-
+        BoxList.setX(boxId, _x);
+        BoxList.setY(boxId, _y);
+        BoxList.setDropTime(boxId, block.timestamp);
+        // BoxList.setOreBalance(boxId, _oreBalance);
+        // BoxList.setTreasureBalance(boxId, _treasureBalance);
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 

@@ -45,5 +45,6 @@ contract MoveSystem is System {
             moveList[moveList.length - 1].x,
             moveList[moveList.length - 1].y
         );
+        
     }
 }

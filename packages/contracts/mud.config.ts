@@ -12,8 +12,8 @@ export default mudConfig({
     },
     GMSystem: {
       name: "gm",
-      openAccess: false,
-      accessList: [],
+      // TODO,测试,正式需要关闭
+      openAccess: true
     },
     PlayerSystem: {
       name: "player",
@@ -155,7 +155,6 @@ export default mudConfig({
     },
     BoxList : {
       keySchema: {
-        roomId: "uint256",
         boxId: "uint256",
       },
       schema: {

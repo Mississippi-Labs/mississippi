@@ -19,7 +19,7 @@ contract BattlePrepareSystem is System {
         address player = _msgSender();
         PlayerState playerState = Player.getState(player);
         require(playerState == PlayerState.Preparing || playerState == PlayerState.Idle, "You should in preparing state");
-        //实际上是送到原点//TODO通过常数设置原点参数
+        //实际上是送到原点
         // TODO似乎可以直接通过indexer获取,就不需要再次插入了
         
         Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
@@ -28,6 +28,18 @@ contract BattlePrepareSystem is System {
         Player.setHp(player, initPlayerHp(player));
 
         // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _player);
+    }
+
+     function goHome() external {
+        // 回家,将用户脱离战区,血量回满
+
+        PlayerData memory player = Player.get(_msgSender());
+        require(player.state == PlayerState.Exploring, "You should in exploring state");
+        require(
+        player.x == GameConfig.getOriginX(GAME_CONFIG_KEY) && player.y == GameConfig.getOriginY(GAME_CONFIG_KEY),
+        "You are not in the origin point"
+        );
+        BattleUtils.outBattlefield(_msgSender());
     }
 
     function battleInvitation(

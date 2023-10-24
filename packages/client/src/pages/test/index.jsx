@@ -167,7 +167,7 @@ const Test = () => {
 
   const joinBattlefieldFun = () => {
     console.log(account, 'account')
-    joinBattlefield(account);
+    joinBattlefield();
   }
 
   const revealBattleFun = () => {
