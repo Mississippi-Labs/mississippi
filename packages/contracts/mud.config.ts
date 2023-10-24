@@ -156,7 +156,6 @@ export default mudConfig({
     },
     BoxList : {
       keySchema: {
-        roomId: "uint256",
         boxId: "uint256",
       },
       schema: {

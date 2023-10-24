@@ -6,3 +6,10 @@ struct Position {
     uint16 y;
     bytes32[] proof;
 }
+
+// struct BattleParam {
+//     uint256 attackerPower;
+//     uint256 defenderPower;
+//     Buff attackerBuff;
+//     Buff defenderBuff;
+// }
