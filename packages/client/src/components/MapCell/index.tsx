@@ -32,7 +32,6 @@ interface IProps {
   players?: IPlayer[];
   treasureChest?: ITreasureChest[];
   onMoveTo: (ICoordinate) => void;
-  openTreasureChest: (id: number) => void;
   prevActionCoordinate: ICoordinate;
   onExeAction: (ICoordinate) => void;
 }
@@ -43,7 +42,7 @@ const MapCell = (props: IProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, openTreasureChest, setStartBattle } = useContext(GameContext);
+  const { mapData, openTreasureChest, setStartBattle, showUserInfo } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
 
@@ -78,14 +77,16 @@ const MapCell = (props: IProps) => {
   const exeAction = (e, action) => {
     e.stopPropagation();
     setMenuVisible(false);
+    const activePlayer = players!.find((item) => item.id === activePlayerId);
     switch (action) {
       case 'move':
         onMoveTo({x, y});
         break;
       case 'info':
+        showUserInfo(activePlayer);
         break;
       case 'attack':
-        setStartBattle({x, y});
+        setStartBattle(activePlayer);
         break;
     }
   }

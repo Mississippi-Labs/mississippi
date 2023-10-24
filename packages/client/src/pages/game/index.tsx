@@ -30,8 +30,8 @@ const Game = () => {
   });
 
   const [players, setPlayers] = useState(PlayersMockData);
-  const [curPlayerState, setCurPlayerState] = useState(null);
   const [targetPlayer, setTargetPlayer] = useState(null);
+  const [userInfoPlayer, setUserInfoPlayer] = useState();
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
   const curPlayer = players.find((item) => item.id === curId);
@@ -105,6 +105,11 @@ const Game = () => {
     // move(merkelData);
   };
 
+  const showUserInfo = (player) => {
+    setUserInfoPlayer(player);
+    setUserInfoVisible(true);
+  }
+
   const submitGem = () => {
     setUserInfoVisible(true);
 
@@ -133,13 +138,9 @@ const Game = () => {
     }, 1000);
   }
 
-  const setStartBattle = ({x, y}) => {
-    let targetPlayerData = players.find((item) => item.x === x && item.y === y);
-    if (curPlayer && targetPlayerData) {
-      setCurPlayerState(curPlayer);
-      setTargetPlayer(targetPlayerData);
-      setStartBattleData(true);
-    }
+  const setStartBattle = (player) => {
+    setTargetPlayer(player);
+    setStartBattleData(true);
   }
 
   const openTreasureChest = (id) => {
@@ -218,6 +219,7 @@ const Game = () => {
         players,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
+        showUserInfo,
         treasureChest,
         openTreasureChest,
         setStartBattle,
@@ -245,13 +247,13 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle curPlayer={curPlayerState} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={curPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
           <button className="mi-btn">Help</button>
           <button className="mi-btn" onClick={() => {
-            setUserInfoVisible(true)
+            showUserInfo(curPlayer);
           }}>Info</button>
         </div>
         {
@@ -261,8 +263,8 @@ const Game = () => {
               onClose={() => {
                 setUserInfoVisible(false);
               }}
-              gem={curPlayer.gem}
-              {...curPlayer.equip}
+              gem={userInfoPlayer.gem}
+              {...userInfoPlayer.equip}
             />
           )
         }
