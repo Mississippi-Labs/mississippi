@@ -31,7 +31,7 @@ const Game = () => {
 
   const [players, setPlayers] = useState(PlayersMockData);
   const [targetPlayer, setTargetPlayer] = useState(null);
-  const [userInfoPlayer, setUserInfoPlayer] = useState();
+  const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
   const curPlayer = players.find((item) => item.id === curId);
@@ -52,6 +52,7 @@ const Game = () => {
   });
 
   const mapDataRef = useRef([]);
+  const moveInterval = useRef<NodeJS.Timeout>();
   const location = useLocation();
   const {
     username = "",
@@ -87,17 +88,19 @@ const Game = () => {
   }
 
   const movePlayer = (paths, merkelData) => {
+    clearInterval(moveInterval.current);
     let pathIndex = 0;
-    const interval = setInterval(() => {
+    moveInterval.current = setInterval(() => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
       if (pathIndex === paths.length) {
-        clearInterval(interval);
+        clearInterval(moveInterval.current);
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
+          setUserInfoPlayer(curPlayer);
           submitGem();
         }
       }
