@@ -1,7 +1,7 @@
 const { ethers } = require("ethers");
 require("dotenv").config();
 const { exec } = require("child_process");
-const abiDecoder = require('abi-decoder');
+const abiDecoder = require("abi-decoder");
 
 const privateKey = process.env.PRIVATE_KEY;
 
@@ -9,11 +9,11 @@ const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
 
 const wallet = new ethers.Wallet(privateKey, provider);
 console.log("测试钱包地址:", wallet.address);
-  const contractInfo = require("../worlds.json");
-  const contractAddress = contractInfo["31337"].address;
-  const contractABI = require("../out/IWorld.sol/IWorld.abi.json");
+const contractInfo = require("../worlds.json");
+const contractAddress = contractInfo["31337"].address;
+const contractABI = require("../out/IWorld.sol/IWorld.abi.json");
 
-  console.log("测试合约地址:", contractAddress);
+console.log("测试合约地址:", contractAddress);
 async function buildABI() {
   console.log("正在编译合约...");
   return new Promise((resolve, reject) => {
@@ -49,7 +49,6 @@ async function deploy() {
   });
 }
 async function getContract() {
-  
   const contract = new ethers.Contract(contractAddress, contractABI, wallet);
   return contract;
 }
@@ -59,43 +58,40 @@ function getStr(bytes32Value) {
   return stringValue;
 }
 
-function getMudEvent(args){
-    console.log(args)
-    let name = getStr(args[0]);
-    console.log(name)
-    abiDecoder.addABI(contractABI);
-    const decodedData = abiDecoder.decodeMethod(args.data);
-    let a = args[1].forEach((e) => {
-        console.log(e)
-        return getStr(e);
-    })
-    console.log(a)
-console.log(decodedData); 
-    // let i = bytesToString(args[3]);
-    
-    // console.log(a)
-    console.log(args[2])
-    console.log(i)
-    
+function getMudEvent(args) {
+  console.log(args);
+  let name = getStr(args[0]);
+  console.log(name);
+  abiDecoder.addABI(contractABI);
+  const decodedData = abiDecoder.decodeMethod(args.data);
+  let a = args[1].forEach((e) => {
+    console.log("!",e);
+    return getStr(e);
+  });
+  console.log(a);
+  console.log(decodedData);
+  // let i = bytesToString(args[3]);
+
+  // console.log(a)
+  console.log(args[2]);
+  console.log(i);
 }
 async function run(name, func) {
   let a = await func;
   let b = await a.wait();
   console.log(name);
   b.events.forEach((e) => {
-  
-    if ( e.event =="StoreSetField") {
-    console.log("\x1b[32m%s\x1b[0m", e.eventSignature);
-    // console.log(e.args, e.args.length);
-    getMudEvent(e.args)
+    if (e.event == "StoreSetField") {
+      console.log("\x1b[32m%s\x1b[0m", e.eventSignature);
+      // console.log(e.args, e.args.length);
+      getMudEvent(e.args);
     }
   });
-
 }
 
-async function call(name,func) {
+async function call(name, func) {
   let a = await func;
-  console.log(name,":",a);
+  console.log(name, ":", a);
   return a;
 }
 
@@ -106,4 +102,5 @@ module.exports = {
   run,
   call,
   wallet,
+  getStr
 };
