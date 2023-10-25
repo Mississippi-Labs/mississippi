@@ -8,7 +8,7 @@ import { GLOBAL_CONFIG_KEY } from "../src/Constants.sol";
 
 library GlobalConfigInit {
     function initGlobalConfig(IWorld _world) internal {
-        address userContract = 0x0d9B17c2A22539101797db13EAE7d38A8f8A511F;
+        address userContract = 0x685c65e0c699EC5E52877D2E133d87103d5fa393;
         GlobalConfig.setUserContract(
             _world,
             GLOBAL_CONFIG_KEY, //key
