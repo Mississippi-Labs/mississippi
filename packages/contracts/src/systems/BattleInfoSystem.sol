@@ -14,4 +14,9 @@ contract BattleInfoSystem is System {
         require(battle.attacker == addr || battle.defender == addr, "not the battle player");
         return battle.attacker == addr ? battle.attackerHP : battle.defenderHP;
     }
+
+
+    function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
+        Player.setHp(_player, (_targetHP * _percent) / 100);
+    }
 }
