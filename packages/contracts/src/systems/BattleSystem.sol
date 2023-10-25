@@ -54,7 +54,6 @@ contract BattleSystem is System {
     uint256 defenderFirepower = Player.getAttack(battle.defender);
     Buff attackerBuff = Buff(battle.defenderArg);
     Buff defenderBuff = Buff(battle.defenderArg);
-
     if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("attack")) {
        allAttack(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower, defenderFirepower);
     } else if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("escape")) {
@@ -68,6 +67,10 @@ contract BattleSystem is System {
     if (!battle.isEnd) {
       console.log(" round end ");
       emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
+      BattleList.setDefenderState(_battleId, BattleState.Inited);
+      BattleList.setAttackerState(_battleId, BattleState.Inited);
+      
+
     } else {
       // set explore state
       Player.setState(battle.attacker, PlayerState.Exploring);
