@@ -12,8 +12,8 @@ export default mudConfig({
     },
     GMSystem: {
       name: "gm",
-      // TODO,测试,正式需要关闭
-      openAccess: true
+      openAccess: false,
+      accessList: [],
     },
     PlayerSystem: {
       name: "player",
