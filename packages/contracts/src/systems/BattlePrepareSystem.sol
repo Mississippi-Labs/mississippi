@@ -26,13 +26,10 @@ contract BattlePrepareSystem is System {
         Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
         Player.setState(player, PlayerState.Exploring);
         Player.setHp(player, initPlayerHp(player));
-
-        // GameConfig.pushBattlefieldPlayers(GAME_CONFIG_KEY, _player);
     }
 
      function goHome() external {
         // 回家,将用户脱离战区,血量回满
-
         PlayerData memory player = Player.get(_msgSender());
         require(player.state == PlayerState.Exploring, "You should in exploring state");
         require(
