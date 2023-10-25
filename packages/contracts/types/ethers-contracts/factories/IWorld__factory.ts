@@ -543,6 +543,30 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "_battleId",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "addr",
+        type: "address",
+      },
+    ],
+    name: "getBattlePlayerHp",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_boxId",
         type: "uint256",
       },

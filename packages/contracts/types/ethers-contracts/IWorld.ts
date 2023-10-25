@@ -54,6 +54,7 @@ export interface IWorldInterface extends utils.Interface {
     "deleteRecord(bytes32,bytes32[],bytes32)": FunctionFragment;
     "dropLoot()": FunctionFragment;
     "emitEphemeralRecord(bytes32,bytes32[],bytes,bytes32)": FunctionFragment;
+    "getBattlePlayerHp(uint256,address)": FunctionFragment;
     "getCollections(uint256,uint16,uint16)": FunctionFragment;
     "getField(bytes32,bytes32[],uint8,bytes32)": FunctionFragment;
     "getFieldLength(bytes32,bytes32[],uint8,bytes32)": FunctionFragment;
@@ -113,6 +114,7 @@ export interface IWorldInterface extends utils.Interface {
       | "deleteRecord"
       | "dropLoot"
       | "emitEphemeralRecord"
+      | "getBattlePlayerHp"
       | "getCollections"
       | "getField"
       | "getFieldLength"
@@ -211,6 +213,10 @@ export interface IWorldInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BytesLike>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBattlePlayerHp",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "getCollections",
@@ -502,6 +508,10 @@ export interface IWorldInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "dropLoot", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "emitEphemeralRecord",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBattlePlayerHp",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -804,6 +814,12 @@ export interface IWorld extends BaseContract {
       valueSchema: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    getBattlePlayerHp(
+      _battleId: PromiseOrValue<BigNumberish>,
+      addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getCollections(
       _boxId: PromiseOrValue<BigNumberish>,
@@ -1140,6 +1156,12 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getBattlePlayerHp(
+    _battleId: PromiseOrValue<BigNumberish>,
+    addr: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getCollections(
     _boxId: PromiseOrValue<BigNumberish>,
     _oreAmount: PromiseOrValue<BigNumberish>,
@@ -1470,6 +1492,12 @@ export interface IWorld extends BaseContract {
       valueSchema: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getBattlePlayerHp(
+      _battleId: PromiseOrValue<BigNumberish>,
+      addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getCollections(
       _boxId: PromiseOrValue<BigNumberish>,
@@ -1836,6 +1864,12 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getBattlePlayerHp(
+      _battleId: PromiseOrValue<BigNumberish>,
+      addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getCollections(
       _boxId: PromiseOrValue<BigNumberish>,
       _oreAmount: PromiseOrValue<BigNumberish>,
@@ -2166,6 +2200,12 @@ export interface IWorld extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       valueSchema: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getBattlePlayerHp(
+      _battleId: PromiseOrValue<BigNumberish>,
+      addr: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getCollections(

@@ -87,8 +87,8 @@ export function createSystemCalls(
   }
 
   const getBattlePlayerHp = async (battleId: any, addr: any) => {
-    const tx = await worldContract.write.getBattlePlayerHp([battleId, addr]);
-    await waitForTransaction(tx);
+    const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
+    return data
   }
   return {
     increment,
