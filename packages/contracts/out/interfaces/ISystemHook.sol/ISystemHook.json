@@ -1,0 +1,434 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "msgSender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "systemAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "funcSelectorAndArgs",
+          "type": "bytes"
+        }
+      ],
+      "name": "onAfterCallSystem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "msgSender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "systemAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "funcSelectorAndArgs",
+          "type": "bytes"
+        }
+      ],
+      "name": "onBeforeCallSystem",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "onAfterCallSystem(address,address,bytes)": "172f5b11",
+    "onBeforeCallSystem(address,address,bytes)": "81351e6b"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"msgSender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"systemAddress\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"funcSelectorAndArgs\",\"type\":\"bytes\"}],\"name\":\"onAfterCallSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"msgSender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"systemAddress\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"funcSelectorAndArgs\",\"type\":\"bytes\"}],\"name\":\"onBeforeCallSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/tiyosheng/project/jetable/mississippi/node_modules/.pnpm/@latticexyz+world@2.0.0-next.4_typescript@5.1.6/node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol\":\"ISystemHook\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"/Users/tiyosheng/project/jetable/mississippi/node_modules/.pnpm/@latticexyz+world@2.0.0-next.4_typescript@5.1.6/node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol\":{\"keccak256\":\"0x1dc2adc81b6e82cd5c1040f5885b2b762647166ff1114ee0c79cd478bd8ce5da\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://77e5f86a4cf46f35d4514c9c3a8f47dfa359d8a7fbf726636010296e6955a1f0\",\"dweb:/ipfs/QmPePQhXzCnF4kmTvjcQwwJQZuNPuvnEtkJKccrvRErG6B\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.13+commit.abaa5c0e"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "msgSender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "systemAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "funcSelectorAndArgs",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "onAfterCallSystem"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "msgSender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "systemAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "funcSelectorAndArgs",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "onBeforeCallSystem"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@codegen/=src/codegen/",
+        "@latticexyz/=node_modules/@latticexyz/",
+        "@library/=src/systems/library/",
+        "@openzeppelin/=node_modules/@openzeppelin/",
+        "@src/=src/",
+        "@systems/=src/systems/",
+        "ds-test/=node_modules/ds-test/src/",
+        "forge-std/=node_modules/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 3000
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "/Users/tiyosheng/project/jetable/mississippi/node_modules/.pnpm/@latticexyz+world@2.0.0-next.4_typescript@5.1.6/node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol": "ISystemHook"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "/Users/tiyosheng/project/jetable/mississippi/node_modules/.pnpm/@latticexyz+world@2.0.0-next.4_typescript@5.1.6/node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol": {
+        "keccak256": "0x1dc2adc81b6e82cd5c1040f5885b2b762647166ff1114ee0c79cd478bd8ce5da",
+        "urls": [
+          "bzz-raw://77e5f86a4cf46f35d4514c9c3a8f47dfa359d8a7fbf726636010296e6955a1f0",
+          "dweb:/ipfs/QmPePQhXzCnF4kmTvjcQwwJQZuNPuvnEtkJKccrvRErG6B"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "/Users/tiyosheng/project/jetable/mississippi/node_modules/.pnpm/@latticexyz+world@2.0.0-next.4_typescript@5.1.6/node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol",
+    "id": 19695,
+    "exportedSymbols": {
+      "ISystemHook": [
+        19694
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:284:30",
+    "nodes": [
+      {
+        "id": 19675,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:30",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 19694,
+        "nodeType": "ContractDefinition",
+        "src": "58:257:30",
+        "nodes": [
+          {
+            "id": 19684,
+            "nodeType": "FunctionDefinition",
+            "src": "84:113:30",
+            "nodes": [],
+            "functionSelector": "81351e6b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onBeforeCallSystem",
+            "nameLocation": "93:18:30",
+            "parameters": {
+              "id": 19682,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 19677,
+                  "mutability": "mutable",
+                  "name": "msgSender",
+                  "nameLocation": "120:9:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19684,
+                  "src": "112:17:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 19676,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "112:7:30",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 19679,
+                  "mutability": "mutable",
+                  "name": "systemAddress",
+                  "nameLocation": "139:13:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19684,
+                  "src": "131:21:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 19678,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "131:7:30",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 19681,
+                  "mutability": "mutable",
+                  "name": "funcSelectorAndArgs",
+                  "nameLocation": "167:19:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19684,
+                  "src": "154:32:30",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 19680,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "154:5:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "111:76:30"
+            },
+            "returnParameters": {
+              "id": 19683,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "196:0:30"
+            },
+            "scope": 19694,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 19693,
+            "nodeType": "FunctionDefinition",
+            "src": "201:112:30",
+            "nodes": [],
+            "functionSelector": "172f5b11",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onAfterCallSystem",
+            "nameLocation": "210:17:30",
+            "parameters": {
+              "id": 19691,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 19686,
+                  "mutability": "mutable",
+                  "name": "msgSender",
+                  "nameLocation": "236:9:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19693,
+                  "src": "228:17:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 19685,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "228:7:30",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 19688,
+                  "mutability": "mutable",
+                  "name": "systemAddress",
+                  "nameLocation": "255:13:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19693,
+                  "src": "247:21:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 19687,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "247:7:30",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 19690,
+                  "mutability": "mutable",
+                  "name": "funcSelectorAndArgs",
+                  "nameLocation": "283:19:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 19693,
+                  "src": "270:32:30",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 19689,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "270:5:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "227:76:30"
+            },
+            "returnParameters": {
+              "id": 19692,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "312:0:30"
+            },
+            "scope": 19694,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISystemHook",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          19694
+        ],
+        "name": "ISystemHook",
+        "nameLocation": "68:11:30",
+        "scope": 19695,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 30
+}

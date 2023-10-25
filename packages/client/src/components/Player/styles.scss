@@ -12,7 +12,17 @@
         display: flex;
         font-size: 16px;
         font-family: MISS, sans-serif;
+        left: 0;
         bottom: 100%;
+        width: 100%;
+    }
+
+    .mi-appearance-wrapper {
+        transform: scale(1.8);
+
+        &.appearance-right {
+            transform: rotateY(180deg) scale(1.8);
+        }
     }
 
     .gem-num {
@@ -22,7 +32,9 @@
     }
 
     .player-username {
+        flex: 1;
         color: #000;
+        text-align: center;
         text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
     }
 

@@ -1,0 +1,653 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "src/codegen/Tables.sol",
+    "id": 81014,
+    "exportedSymbols": {
+      "BattleConfig": [
+        83360
+      ],
+      "BattleConfigTableId": [
+        81085
+      ],
+      "BattleList": [
+        87868
+      ],
+      "BattleListData": [
+        83440
+      ],
+      "BattleListTableId": [
+        83405
+      ],
+      "Board": [
+        88956
+      ],
+      "BoardData": [
+        87925
+      ],
+      "BoardTableId": [
+        87920
+      ],
+      "BoxList": [
+        91980
+      ],
+      "BoxListData": [
+        89020
+      ],
+      "BoxListTableId": [
+        88999
+      ],
+      "GameConfig": [
+        93988
+      ],
+      "GameConfigTableId": [
+        92032
+      ],
+      "GlobalConfig": [
+        94886
+      ],
+      "GlobalConfigTableId": [
+        94031
+      ],
+      "MapBoard": [
+        96216
+      ],
+      "MapBoardTableId": [
+        94929
+      ],
+      "Ownable": [
+        96701
+      ],
+      "OwnableTableId": [
+        96259
+      ],
+      "Player": [
+        102856
+      ],
+      "PlayerData": [
+        96782
+      ],
+      "PlayerLocationLock": [
+        103404
+      ],
+      "PlayerLocationLockTableId": [
+        102899
+      ],
+      "PlayerTableId": [
+        96746
+      ],
+      "RandomList": [
+        104438
+      ],
+      "RandomListData": [
+        103452
+      ],
+      "RandomListTableId": [
+        103447
+      ],
+      "Season": [
+        105606
+      ],
+      "SeasonData": [
+        104488
+      ],
+      "SeasonTableId": [
+        104481
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:1004:120",
+    "nodes": [
+      {
+        "id": 80971,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:120",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 80975,
+        "nodeType": "ImportDirective",
+        "src": "107:72:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/Season.sol",
+        "file": "./tables/Season.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 105607,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80972,
+              "name": "Season",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 105606,
+              "src": "116:6:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80973,
+              "name": "SeasonData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 104488,
+              "src": "124:10:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80974,
+              "name": "SeasonTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 104481,
+              "src": "136:13:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80979,
+        "nodeType": "ImportDirective",
+        "src": "180:72:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/Player.sol",
+        "file": "./tables/Player.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 102857,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80976,
+              "name": "Player",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 102856,
+              "src": "189:6:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80977,
+              "name": "PlayerData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 96782,
+              "src": "197:10:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80978,
+              "name": "PlayerTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 96746,
+              "src": "209:13:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80982,
+        "nodeType": "ImportDirective",
+        "src": "253:63:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/Ownable.sol",
+        "file": "./tables/Ownable.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 96702,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80980,
+              "name": "Ownable",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 96701,
+              "src": "262:7:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80981,
+              "name": "OwnableTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 96259,
+              "src": "271:14:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80985,
+        "nodeType": "ImportDirective",
+        "src": "317:72:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/GameConfig.sol",
+        "file": "./tables/GameConfig.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 93989,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80983,
+              "name": "GameConfig",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 93988,
+              "src": "326:10:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80984,
+              "name": "GameConfigTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 92032,
+              "src": "338:17:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80988,
+        "nodeType": "ImportDirective",
+        "src": "390:78:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/BattleConfig.sol",
+        "file": "./tables/BattleConfig.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 83361,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80986,
+              "name": "BattleConfig",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 83360,
+              "src": "399:12:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80987,
+              "name": "BattleConfigTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 81085,
+              "src": "413:19:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80992,
+        "nodeType": "ImportDirective",
+        "src": "469:68:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/Board.sol",
+        "file": "./tables/Board.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 88957,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80989,
+              "name": "Board",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 88956,
+              "src": "478:5:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80990,
+              "name": "BoardData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 87925,
+              "src": "485:9:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80991,
+              "name": "BoardTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 87920,
+              "src": "496:12:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80995,
+        "nodeType": "ImportDirective",
+        "src": "538:66:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/MapBoard.sol",
+        "file": "./tables/MapBoard.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 96217,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80993,
+              "name": "MapBoard",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 96216,
+              "src": "547:8:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80994,
+              "name": "MapBoardTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 94929,
+              "src": "557:15:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 80999,
+        "nodeType": "ImportDirective",
+        "src": "605:88:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/RandomList.sol",
+        "file": "./tables/RandomList.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 104439,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 80996,
+              "name": "RandomList",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 104438,
+              "src": "614:10:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80997,
+              "name": "RandomListData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 103452,
+              "src": "626:14:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 80998,
+              "name": "RandomListTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 103447,
+              "src": "642:17:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 81003,
+        "nodeType": "ImportDirective",
+        "src": "694:88:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/BattleList.sol",
+        "file": "./tables/BattleList.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 87878,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 81000,
+              "name": "BattleList",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 87868,
+              "src": "703:10:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81001,
+              "name": "BattleListData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 83440,
+              "src": "715:14:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81002,
+              "name": "BattleListTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 83405,
+              "src": "731:17:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 81006,
+        "nodeType": "ImportDirective",
+        "src": "783:96:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/PlayerLocationLock.sol",
+        "file": "./tables/PlayerLocationLock.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 103405,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 81004,
+              "name": "PlayerLocationLock",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 103404,
+              "src": "792:18:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81005,
+              "name": "PlayerLocationLockTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 102899,
+              "src": "812:25:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 81010,
+        "nodeType": "ImportDirective",
+        "src": "880:76:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/BoxList.sol",
+        "file": "./tables/BoxList.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 91990,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 81007,
+              "name": "BoxList",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 91980,
+              "src": "889:7:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81008,
+              "name": "BoxListData",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 89020,
+              "src": "898:11:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81009,
+              "name": "BoxListTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 88999,
+              "src": "911:14:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 81013,
+        "nodeType": "ImportDirective",
+        "src": "957:78:120",
+        "nodes": [],
+        "absolutePath": "src/codegen/tables/GlobalConfig.sol",
+        "file": "./tables/GlobalConfig.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 81014,
+        "sourceUnit": 94887,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 81011,
+              "name": "GlobalConfig",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 94886,
+              "src": "966:12:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          },
+          {
+            "foreign": {
+              "id": 81012,
+              "name": "GlobalConfigTableId",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 94031,
+              "src": "980:19:120",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 120
+}

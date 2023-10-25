@@ -59,8 +59,11 @@ export function createSystemCalls(
   }
 
   const selectUserNft = async (tokenId: any) => {
+    console.log(tokenId, 'tokenId')
     const tx = await worldContract.write.selectUserNft([tokenId]);
+    console.log(new Date().getTime(), tx, 'tx')
     await waitForTransaction(tx);
+    console.log(new Date().getTime(), tx, 'tx')
   }
 
   const openBox = async (boxId: any) => {
@@ -82,6 +85,11 @@ export function createSystemCalls(
     const tx = await worldContract.write.CreateBox([x, y]);
     await waitForTransaction(tx);
   }
+
+  const getBattlePlayerHp = async (battleId: any, addr: any) => {
+    const tx = await worldContract.write.getBattlePlayerHp([battleId, addr]);
+    await waitForTransaction(tx);
+  }
   return {
     increment,
     move,
@@ -95,6 +103,7 @@ export function createSystemCalls(
     openBox,
     getCollections,
     revealBox,
-    CreateBox
+    CreateBox,
+    getBattlePlayerHp
   };
 }

@@ -10,6 +10,8 @@ import { solidityKeccak256 } from 'ethers/lib/utils';
 import { getRandomStr } from '../../utils/utils';
 import './index.scss';
 
+const abi = [{"inputs":[{"internalType":"uint256","name":"_waitBlockCount","type":"uint256"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_notRevealedInfo","type":"string"},{"internalType":"string","name":"_revealedDesc","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"randomId","type":"uint256"},{"indexed":false,"internalType":"address","name":"author","type":"address"}],"name":"NewRandom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"randomId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"randomList","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"address","name":"author","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"revealNFT","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"userList","outputs":[{"internalType":"uint256","name":"randomId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"HP","type":"uint256"},{"internalType":"uint256","name":"Attack","type":"uint256"},{"internalType":"uint256","name":"AttackRange","type":"uint256"},{"internalType":"uint256","name":"Speed","type":"uint256"},{"internalType":"uint256","name":"Strength","type":"uint256"},{"internalType":"uint256","name":"Space","type":"uint256"},{"internalType":"enum MRandom.RandomState","name":"state","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waitBlockCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+
 const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);
@@ -18,9 +20,10 @@ const Test = () => {
   const [battlesData, setBattlesData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [boxId, setBoxId] = useState([]);
+  const [revealNFTData, setRevealNFTData] = useState([]);
 
   const {
-    components: { Player, GameConfig, BattleList, BoxList },
+    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
     systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox },
     network
   } = useMUD();
@@ -44,6 +47,9 @@ const Test = () => {
   const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
   console.log(GameData, 'GameData')
 
+  const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
+  console.log(GlobalConfigData, 'GlobalConfigData')
+
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle = getComponentValue(BattleList, entity)
@@ -52,6 +58,12 @@ const Test = () => {
     return battle;
   });
   console.log(battles, 'battles')
+  battles.forEach(item => {
+    if (item.attackerState == 2 && item.defenderState == 2) {
+      let hp = getBattlePlayerHp(item.id, account)
+      console.log(hp, 'hp')
+    }
+  })
 
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
     let id = decodeEntity({ boxId: "uint256" }, entity);
@@ -60,7 +72,6 @@ const Test = () => {
     return box;
   });
   console.log(boxs, 'boxs')
-
 
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
   // console.log(GameConfig, 'GameConfig')
@@ -84,6 +95,33 @@ const Test = () => {
   // console.log(playerData, 'playerData')
   console.log(account, 'account')
 
+  const mintFun = () => {
+    let privateKey = network.privateKey
+    let provider = new ethers.providers.JsonRpcProvider('https://follower.testnet-chain.linfra.xyz')
+    let wallet = new ethers.Wallet(privateKey, provider)
+    console.log(wallet)
+    let userContractAddress = '0x685c65e0c699EC5E52877D2E133d87103d5fa393'
+    let userContract = new ethers.Contract(userContractAddress, abi, wallet)
+    console.log(userContract)
+    userContract.mint().then(async res => {
+      console.log(res, 'res')
+      await res.wait()
+    })
+  }
+  
+  const revealNFTFun = () => {
+    let privateKey = network.privateKey
+    let provider = new ethers.providers.JsonRpcProvider('https://follower.testnet-chain.linfra.xyz')
+    let wallet = new ethers.Wallet(privateKey, provider)
+    console.log(wallet)
+    let userContractAddress = '0x685c65e0c699EC5E52877D2E133d87103d5fa393'
+    let userContract = new ethers.Contract(userContractAddress, abi, wallet)
+    userContract.revealNFT(revealNFTData).then(async res => {
+      console.log(res)
+      await res.wait()
+    })
+  }
+
   const stepChange = (e, i) => {
     console.log(e)
     let value = e.target.value
@@ -96,6 +134,12 @@ const Test = () => {
     console.log(e)
     let value = e.target.value
     setBoxId(value);
+  }
+
+  const tokenIdChange = (e) => {
+    console.log(e)
+    let value = e.target.value
+    setRevealNFTData(value);
   }
 
   const boxChange = (e, i) => {
@@ -131,7 +175,7 @@ const Test = () => {
   }
 
   const selectUserNftFun = () => {
-    selectUserNft(1);
+    selectUserNft(revealNFTData);
   }
 
   const movePlayer = () => {
@@ -284,6 +328,18 @@ const Test = () => {
         </div>))
       }
       <div className="main">
+        <div className="section">
+          <div className="title">mintNFT</div>
+          <div className="input"></div>
+          <div className="btn" onClick={mintFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">revealNFT</div>
+          <div className="input">
+          <input type="text" onChange={tokenIdChange} placeholder='tokenId' />
+          </div>
+          <div className="btn" onClick={revealNFTFun}>确认</div>
+        </div>
         <div className="section">
           <div className="title">初始化玩家</div>
           <div className="input"></div>

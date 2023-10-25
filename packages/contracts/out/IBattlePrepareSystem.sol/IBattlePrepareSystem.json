@@ -1,0 +1,652 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_targetAddress",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint16",
+              "name": "x",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "y",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "proof",
+              "type": "bytes32[]"
+            }
+          ],
+          "internalType": "struct Position[]",
+          "name": "positionList",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "battleInvitation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_buffHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_battleId",
+          "type": "uint256"
+        }
+      ],
+      "name": "confirmBattle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "goHome",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_player",
+          "type": "address"
+        }
+      ],
+      "name": "initPlayerHp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "joinBattlefield",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "battleInvitation(address,(uint16,uint16,bytes32[])[])": "68747c41",
+    "confirmBattle(bytes32,uint256)": "62ca2162",
+    "goHome()": "9055c111",
+    "initPlayerHp(address)": "864924d6",
+    "joinBattlefield()": "9ebfc58a"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_targetAddress\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"},{\"internalType\":\"bytes32[]\",\"name\":\"proof\",\"type\":\"bytes32[]\"}],\"internalType\":\"struct Position[]\",\"name\":\"positionList\",\"type\":\"tuple[]\"}],\"name\":\"battleInvitation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_buffHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"confirmBattle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"goHome\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"}],\"name\":\"initPlayerHp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"joinBattlefield\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IBattlePrepareSystem.sol\":\"IBattlePrepareSystem\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/codegen/world/IBattlePrepareSystem.sol\":{\"keccak256\":\"0xf879dd7c48f63abb4fc274002ef1f072df1cf903f8b7af04760eab1c3976148b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://042882e2a02b030ffa8a881f40458ec6c6740b751a94a81231d7322b6b622a4d\",\"dweb:/ipfs/QmUXAdDwfJ5MtE4AufNAMbNWPeh8zQdrjXLiPKXcSojfVa\"]},\"src/systems/Common.sol\":{\"keccak256\":\"0x25b1b37460f5741acb0549e81117b148505f656a8f93a0aff47720167e92e4e0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3c0ecd5e7ac72fb5f98f794ddb82bba865cf7fd72d95a19e7e6a51f6dd214983\",\"dweb:/ipfs/QmYPRFyZN6eWs9xCnU9k5Yz9vErMdHPyxBKP7UXwAsJ6gc\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.13+commit.abaa5c0e"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_targetAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "struct Position[]",
+              "name": "positionList",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "x",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "y",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "bytes32[]",
+                  "name": "proof",
+                  "type": "bytes32[]"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "battleInvitation"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_buffHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_battleId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "confirmBattle"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "goHome"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_player",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "initPlayerHp",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "joinBattlefield"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@codegen/=src/codegen/",
+        "@latticexyz/=node_modules/@latticexyz/",
+        "@library/=src/systems/library/",
+        "@openzeppelin/=node_modules/@openzeppelin/",
+        "@src/=src/",
+        "@systems/=src/systems/",
+        "ds-test/=node_modules/ds-test/src/",
+        "forge-std/=node_modules/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 3000
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/codegen/world/IBattlePrepareSystem.sol": "IBattlePrepareSystem"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/codegen/world/IBattlePrepareSystem.sol": {
+        "keccak256": "0xf879dd7c48f63abb4fc274002ef1f072df1cf903f8b7af04760eab1c3976148b",
+        "urls": [
+          "bzz-raw://042882e2a02b030ffa8a881f40458ec6c6740b751a94a81231d7322b6b622a4d",
+          "dweb:/ipfs/QmUXAdDwfJ5MtE4AufNAMbNWPeh8zQdrjXLiPKXcSojfVa"
+        ],
+        "license": "MIT"
+      },
+      "src/systems/Common.sol": {
+        "keccak256": "0x25b1b37460f5741acb0549e81117b148505f656a8f93a0aff47720167e92e4e0",
+        "urls": [
+          "bzz-raw://3c0ecd5e7ac72fb5f98f794ddb82bba865cf7fd72d95a19e7e6a51f6dd214983",
+          "dweb:/ipfs/QmYPRFyZN6eWs9xCnU9k5Yz9vErMdHPyxBKP7UXwAsJ6gc"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/codegen/world/IBattlePrepareSystem.sol",
+    "id": 105641,
+    "exportedSymbols": {
+      "IBattlePrepareSystem": [
+        105640
+      ],
+      "Position": [
+        107722
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:480:134",
+    "nodes": [
+      {
+        "id": 105608,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:134",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 105610,
+        "nodeType": "ImportDirective",
+        "src": "107:54:134",
+        "nodes": [],
+        "absolutePath": "src/systems/Common.sol",
+        "file": "./../../systems/Common.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 105641,
+        "sourceUnit": 107723,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 105609,
+              "name": "Position",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 107722,
+              "src": "116:8:134",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 105640,
+        "nodeType": "ContractDefinition",
+        "src": "163:348:134",
+        "nodes": [
+          {
+            "id": 105613,
+            "nodeType": "FunctionDefinition",
+            "src": "198:36:134",
+            "nodes": [],
+            "functionSelector": "9ebfc58a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "joinBattlefield",
+            "nameLocation": "207:15:134",
+            "parameters": {
+              "id": 105611,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "222:2:134"
+            },
+            "returnParameters": {
+              "id": 105612,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "233:0:134"
+            },
+            "scope": 105640,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 105616,
+            "nodeType": "FunctionDefinition",
+            "src": "238:27:134",
+            "nodes": [],
+            "functionSelector": "9055c111",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "goHome",
+            "nameLocation": "247:6:134",
+            "parameters": {
+              "id": 105614,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "253:2:134"
+            },
+            "returnParameters": {
+              "id": 105615,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "264:0:134"
+            },
+            "scope": 105640,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 105625,
+            "nodeType": "FunctionDefinition",
+            "src": "269:91:134",
+            "nodes": [],
+            "functionSelector": "68747c41",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "battleInvitation",
+            "nameLocation": "278:16:134",
+            "parameters": {
+              "id": 105623,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 105618,
+                  "mutability": "mutable",
+                  "name": "_targetAddress",
+                  "nameLocation": "303:14:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105625,
+                  "src": "295:22:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 105617,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "295:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 105622,
+                  "mutability": "mutable",
+                  "name": "positionList",
+                  "nameLocation": "337:12:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105625,
+                  "src": "319:30:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_Position_$107722_memory_ptr_$dyn_memory_ptr",
+                    "typeString": "struct Position[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 105620,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 105619,
+                        "name": "Position",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 107722,
+                        "src": "319:8:134"
+                      },
+                      "referencedDeclaration": 107722,
+                      "src": "319:8:134",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Position_$107722_storage_ptr",
+                        "typeString": "struct Position"
+                      }
+                    },
+                    "id": 105621,
+                    "nodeType": "ArrayTypeName",
+                    "src": "319:10:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_Position_$107722_storage_$dyn_storage_ptr",
+                      "typeString": "struct Position[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "294:56:134"
+            },
+            "returnParameters": {
+              "id": 105624,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "359:0:134"
+            },
+            "scope": 105640,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 105632,
+            "nodeType": "FunctionDefinition",
+            "src": "364:70:134",
+            "nodes": [],
+            "functionSelector": "62ca2162",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "confirmBattle",
+            "nameLocation": "373:13:134",
+            "parameters": {
+              "id": 105630,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 105627,
+                  "mutability": "mutable",
+                  "name": "_buffHash",
+                  "nameLocation": "395:9:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105632,
+                  "src": "387:17:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 105626,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "387:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 105629,
+                  "mutability": "mutable",
+                  "name": "_battleId",
+                  "nameLocation": "414:9:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105632,
+                  "src": "406:17:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 105628,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "406:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "386:38:134"
+            },
+            "returnParameters": {
+              "id": 105631,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "433:0:134"
+            },
+            "scope": 105640,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 105639,
+            "nodeType": "FunctionDefinition",
+            "src": "438:71:134",
+            "nodes": [],
+            "functionSelector": "864924d6",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "initPlayerHp",
+            "nameLocation": "447:12:134",
+            "parameters": {
+              "id": 105635,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 105634,
+                  "mutability": "mutable",
+                  "name": "_player",
+                  "nameLocation": "468:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105639,
+                  "src": "460:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 105633,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "460:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "459:17:134"
+            },
+            "returnParameters": {
+              "id": 105638,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 105637,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 105639,
+                  "src": "500:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 105636,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "500:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "499:9:134"
+            },
+            "scope": 105640,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IBattlePrepareSystem",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          105640
+        ],
+        "name": "IBattlePrepareSystem",
+        "nameLocation": "173:20:134",
+        "scope": 105641,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 134
+}

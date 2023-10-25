@@ -19,6 +19,8 @@ import TreasureChest from '@/components/TreasureChest';
 import UserInfo from '@/components/UserInfo';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
+import { updatePlayerPosition } from '@/utils/player';
+import { triggerVertexUpdate } from '@/utils/map';
 
 const Game = () => {
   const [renderMapData, setRenderMapData] = useState([]);
@@ -28,8 +30,8 @@ const Game = () => {
   });
 
   const [players, setPlayers] = useState(PlayersMockData);
-  const [curPlayerState, setCurPlayerState] = useState(null);
   const [targetPlayer, setTargetPlayer] = useState(null);
+  const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
   const curPlayer = players.find((item) => item.id === curId);
@@ -50,6 +52,7 @@ const Game = () => {
   });
 
   const mapDataRef = useRef([]);
+  const moveInterval = useRef<NodeJS.Timeout>();
   const location = useLocation();
   const {
     username = "",
@@ -85,23 +88,30 @@ const Game = () => {
   }
 
   const movePlayer = (paths, merkelData) => {
+    clearInterval(moveInterval.current);
     let pathIndex = 0;
-    const interval = setInterval(() => {
-      triggerVertexUpdate(paths[pathIndex], curPlayer);
-      Object.assign(curPlayer, paths[pathIndex]);
+    moveInterval.current = setInterval(() => {
+      setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
+      updatePlayerPosition(curPlayer, paths[pathIndex]);
       pathIndex++;
       setPlayers([...players]);
       if (pathIndex === paths.length) {
-        clearInterval(interval);
+        clearInterval(moveInterval.current);
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
+          setUserInfoPlayer(curPlayer);
           submitGem();
         }
       }
     }, 300);
     // move(merkelData);
   };
+
+  const showUserInfo = (player) => {
+    setUserInfoPlayer(player);
+    setUserInfoVisible(true);
+  }
 
   const submitGem = () => {
     setUserInfoVisible(true);
@@ -131,13 +141,9 @@ const Game = () => {
     }, 1000);
   }
 
-  const setStartBattle = ({x, y}) => {
-    let targetPlayerData = players.find((item) => item.x === x && item.y === y);
-    if (curPlayer && targetPlayerData) {
-      setCurPlayerState(curPlayer);
-      setTargetPlayer(targetPlayerData);
-      setStartBattleData(true);
-    }
+  const setStartBattle = (player) => {
+    setTargetPlayer(player);
+    setStartBattleData(true);
   }
 
   const openTreasureChest = (id) => {
@@ -192,42 +198,6 @@ const Game = () => {
     open();
   }
 
-  const triggerVertexUpdate = (cur, before) => {
-    const xDegree = cur.x - before.x;
-    const yDegree = cur.y - before.y;
-    const mapData = mapDataRef.current;
-    if (xDegree === 1) {
-      const limitExceeded = cur.x - vertexCoordinate.x > LimitSpace.x;
-      const lessBoundary =
-        vertexCoordinate.x + MapConfig.visualWidth < mapData[0].length - 1;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.x++;
-      }
-    } else if (xDegree === -1) {
-      const limitExceeded = cur.x - vertexCoordinate.x < LimitSpace.x;
-      const lessBoundary = vertexCoordinate.x > 0;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.x--;
-      }
-    } else if (yDegree === 1) {
-      const limitExceeded = cur.y - vertexCoordinate.y > LimitSpace.y;
-      const lessBoundary =
-        vertexCoordinate.y + MapConfig.visualHeight < mapData.length - 1;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.y++;
-      }
-    } else if (yDegree === -1) {
-      const limitExceeded = cur.y - vertexCoordinate.y < LimitSpace.y;
-      const lessBoundary = vertexCoordinate.y > 0;
-      if (limitExceeded && lessBoundary) {
-        vertexCoordinate.y--;
-      }
-    }
-
-    setVertexCoordinate({
-      ...vertexCoordinate,
-    });
-  };
 
   useEffect(() => {
     loadMapData().then((csv) => {
@@ -252,6 +222,7 @@ const Game = () => {
         players,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
+        showUserInfo,
         treasureChest,
         openTreasureChest,
         setStartBattle,
@@ -279,13 +250,13 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle curPlayer={curPlayerState} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={curPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
           <button className="mi-btn">Help</button>
           <button className="mi-btn" onClick={() => {
-            setUserInfoVisible(true)
+            showUserInfo(curPlayer);
           }}>Info</button>
         </div>
         {
@@ -295,8 +266,8 @@ const Game = () => {
               onClose={() => {
                 setUserInfoVisible(false);
               }}
-              gem={curPlayer.gem}
-              {...curPlayer.equip}
+              gem={userInfoPlayer.gem}
+              {...userInfoPlayer.equip}
             />
           )
         }

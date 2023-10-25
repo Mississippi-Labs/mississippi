@@ -1,0 +1,367 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "src/Constants.sol",
+    "id": 80970,
+    "exportedSymbols": {
+      "BATTLE_CONFIG_KEY": [
+        80959
+      ],
+      "GAME_CONFIG_KEY": [
+        80954
+      ],
+      "GLOBAL_CONFIG_KEY": [
+        80964
+      ],
+      "PLAYER_KEY": [
+        80969
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:262:119",
+    "nodes": [
+      {
+        "id": 80949,
+        "nodeType": "PragmaDirective",
+        "src": "32:24:119",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 80954,
+        "nodeType": "VariableDeclaration",
+        "src": "58:56:119",
+        "nodes": [],
+        "constant": true,
+        "mutability": "constant",
+        "name": "GAME_CONFIG_KEY",
+        "nameLocation": "75:15:119",
+        "scope": 80970,
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {
+          "typeIdentifier": "t_bytes32",
+          "typeString": "bytes32"
+        },
+        "typeName": {
+          "id": 80950,
+          "name": "bytes32",
+          "nodeType": "ElementaryTypeName",
+          "src": "58:7:119",
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "value": {
+          "arguments": [
+            {
+              "hexValue": "47616d652d4b6579",
+              "id": 80952,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "103:10:119",
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_155015ae9c496f0f6fd931019b5913c67e630cdcf50b1101aeda4bb69f21060e",
+                "typeString": "literal_string \"Game-Key\""
+              },
+              "value": "Game-Key"
+            }
+          ],
+          "expression": {
+            "argumentTypes": [
+              {
+                "typeIdentifier": "t_stringliteral_155015ae9c496f0f6fd931019b5913c67e630cdcf50b1101aeda4bb69f21060e",
+                "typeString": "literal_string \"Game-Key\""
+              }
+            ],
+            "id": 80951,
+            "name": "keccak256",
+            "nodeType": "Identifier",
+            "overloadedDeclarations": [],
+            "referencedDeclaration": -8,
+            "src": "93:9:119",
+            "typeDescriptions": {
+              "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
+              "typeString": "function (bytes memory) pure returns (bytes32)"
+            }
+          },
+          "id": 80953,
+          "isConstant": false,
+          "isLValue": false,
+          "isPure": true,
+          "kind": "functionCall",
+          "lValueRequested": false,
+          "names": [],
+          "nodeType": "FunctionCall",
+          "src": "93:21:119",
+          "tryCall": false,
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "visibility": "internal"
+      },
+      {
+        "id": 80959,
+        "nodeType": "VariableDeclaration",
+        "src": "116:60:119",
+        "nodes": [],
+        "constant": true,
+        "mutability": "constant",
+        "name": "BATTLE_CONFIG_KEY",
+        "nameLocation": "133:17:119",
+        "scope": 80970,
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {
+          "typeIdentifier": "t_bytes32",
+          "typeString": "bytes32"
+        },
+        "typeName": {
+          "id": 80955,
+          "name": "bytes32",
+          "nodeType": "ElementaryTypeName",
+          "src": "116:7:119",
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "value": {
+          "arguments": [
+            {
+              "hexValue": "426174746c652d4b6579",
+              "id": 80957,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "163:12:119",
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_d1339036fc56bed2f5d5cf59ecb6aa2cb46611189a4a1a96a51eec50fc76ee24",
+                "typeString": "literal_string \"Battle-Key\""
+              },
+              "value": "Battle-Key"
+            }
+          ],
+          "expression": {
+            "argumentTypes": [
+              {
+                "typeIdentifier": "t_stringliteral_d1339036fc56bed2f5d5cf59ecb6aa2cb46611189a4a1a96a51eec50fc76ee24",
+                "typeString": "literal_string \"Battle-Key\""
+              }
+            ],
+            "id": 80956,
+            "name": "keccak256",
+            "nodeType": "Identifier",
+            "overloadedDeclarations": [],
+            "referencedDeclaration": -8,
+            "src": "153:9:119",
+            "typeDescriptions": {
+              "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
+              "typeString": "function (bytes memory) pure returns (bytes32)"
+            }
+          },
+          "id": 80958,
+          "isConstant": false,
+          "isLValue": false,
+          "isPure": true,
+          "kind": "functionCall",
+          "lValueRequested": false,
+          "names": [],
+          "nodeType": "FunctionCall",
+          "src": "153:23:119",
+          "tryCall": false,
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "visibility": "internal"
+      },
+      {
+        "id": 80964,
+        "nodeType": "VariableDeclaration",
+        "src": "178:60:119",
+        "nodes": [],
+        "constant": true,
+        "mutability": "constant",
+        "name": "GLOBAL_CONFIG_KEY",
+        "nameLocation": "195:17:119",
+        "scope": 80970,
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {
+          "typeIdentifier": "t_bytes32",
+          "typeString": "bytes32"
+        },
+        "typeName": {
+          "id": 80960,
+          "name": "bytes32",
+          "nodeType": "ElementaryTypeName",
+          "src": "178:7:119",
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "value": {
+          "arguments": [
+            {
+              "hexValue": "476c6f62616c2d4b6579",
+              "id": 80962,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "225:12:119",
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_822086c599a5bfa62207b887712fdf03aec5fc7466738d92b8b70ebca88bcbd2",
+                "typeString": "literal_string \"Global-Key\""
+              },
+              "value": "Global-Key"
+            }
+          ],
+          "expression": {
+            "argumentTypes": [
+              {
+                "typeIdentifier": "t_stringliteral_822086c599a5bfa62207b887712fdf03aec5fc7466738d92b8b70ebca88bcbd2",
+                "typeString": "literal_string \"Global-Key\""
+              }
+            ],
+            "id": 80961,
+            "name": "keccak256",
+            "nodeType": "Identifier",
+            "overloadedDeclarations": [],
+            "referencedDeclaration": -8,
+            "src": "215:9:119",
+            "typeDescriptions": {
+              "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
+              "typeString": "function (bytes memory) pure returns (bytes32)"
+            }
+          },
+          "id": 80963,
+          "isConstant": false,
+          "isLValue": false,
+          "isPure": true,
+          "kind": "functionCall",
+          "lValueRequested": false,
+          "names": [],
+          "nodeType": "FunctionCall",
+          "src": "215:23:119",
+          "tryCall": false,
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "visibility": "internal"
+      },
+      {
+        "id": 80969,
+        "nodeType": "VariableDeclaration",
+        "src": "240:53:119",
+        "nodes": [],
+        "constant": true,
+        "mutability": "constant",
+        "name": "PLAYER_KEY",
+        "nameLocation": "257:10:119",
+        "scope": 80970,
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {
+          "typeIdentifier": "t_bytes32",
+          "typeString": "bytes32"
+        },
+        "typeName": {
+          "id": 80965,
+          "name": "bytes32",
+          "nodeType": "ElementaryTypeName",
+          "src": "240:7:119",
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "value": {
+          "arguments": [
+            {
+              "hexValue": "506c617965722d4b6579",
+              "id": 80967,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "string",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "280:12:119",
+              "typeDescriptions": {
+                "typeIdentifier": "t_stringliteral_13e4e5b83baf141d32eef1c5f97059962e52bb57f4d8e53710ce7582c302d4eb",
+                "typeString": "literal_string \"Player-Key\""
+              },
+              "value": "Player-Key"
+            }
+          ],
+          "expression": {
+            "argumentTypes": [
+              {
+                "typeIdentifier": "t_stringliteral_13e4e5b83baf141d32eef1c5f97059962e52bb57f4d8e53710ce7582c302d4eb",
+                "typeString": "literal_string \"Player-Key\""
+              }
+            ],
+            "id": 80966,
+            "name": "keccak256",
+            "nodeType": "Identifier",
+            "overloadedDeclarations": [],
+            "referencedDeclaration": -8,
+            "src": "270:9:119",
+            "typeDescriptions": {
+              "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
+              "typeString": "function (bytes memory) pure returns (bytes32)"
+            }
+          },
+          "id": 80968,
+          "isConstant": false,
+          "isLValue": false,
+          "isPure": true,
+          "kind": "functionCall",
+          "lValueRequested": false,
+          "names": [],
+          "nodeType": "FunctionCall",
+          "src": "270:23:119",
+          "tryCall": false,
+          "typeDescriptions": {
+            "typeIdentifier": "t_bytes32",
+            "typeString": "bytes32"
+          }
+        },
+        "visibility": "internal"
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 119
+}

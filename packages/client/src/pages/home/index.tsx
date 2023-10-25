@@ -10,6 +10,7 @@ import { UserAddress } from '@/mock/data';
 import { UserAddressKey } from '@/config';
 import { useNavigate } from 'react-router-dom';
 import Duck from '@/config/duck';
+import { delay } from '@/utils';
 
 const Home = () => {
 
@@ -20,7 +21,7 @@ const Home = () => {
     title: '',
   });
 
-  const [minting, setMinting] = useState(true);
+  const [minting, setMinting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -80,13 +81,14 @@ const Home = () => {
     const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
     const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
     const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
-    setClothes(clothes);
-    setHandheld(handheld);
-    setHead(head);
 
-    setMinting(false);
+    setMinting(true);
 
-    setTimeout(() => {
+    delay(1000).then(() => {
+      setClothes(clothes);
+      setHandheld(handheld);
+      setHead(head);
+    }).delay(3000).then(() => {
       navigate('/game', {
         state: {
           username,
@@ -95,7 +97,8 @@ const Home = () => {
           head,
         }
       });
-    }, 3000)
+    })
+
   }
 
   const play = () => {
@@ -136,8 +139,10 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo clothes={clothes} handheld={handheld} head={head} minting={minting}/>
-              <button className="mi-btn" onClick={mintAndGo}>MINT AND GO</button>
+              <UserInfo clothes={clothes} handheld={handheld} head={head}/>
+              <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
+                {minting ? 'Loading...' : 'MINT AND GO'}
+              </button>
             </div>
           </div>
         )

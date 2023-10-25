@@ -1,0 +1,13 @@
+out/
+cache/
+node_modules/
+bindings/
+artifacts/
+abi/
+types/
+broadcast/
+.env
+.DS_Store
+worlds.json
+# Ignore MUD deploy artifacts
+deploys/**/*.json

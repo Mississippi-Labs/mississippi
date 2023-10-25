@@ -79,6 +79,7 @@ export async function setupNetwork() {
     waitForTransaction,
     worldContract,
     write$: write$.asObservable().pipe(share()),
-    account: burnerWalletClient.account.address
+    account: burnerWalletClient.account.address,
+    privateKey: networkConfig.privateKey,
   };
 }
