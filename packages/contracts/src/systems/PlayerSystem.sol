@@ -58,7 +58,8 @@ contract PlayerSystem is System {
         User user = User(userAddress);
         return user.getStructInfo(tokenId);
     }  
-   function initUserInfo() external {
+
+    function initUserInfo() external {
     // !!仅用于测试
         address _player = msg.sender;
         Player.setX(_player, 0);

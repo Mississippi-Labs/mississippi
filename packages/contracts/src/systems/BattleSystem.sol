@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-// import { console } from "forge-std/console.sol";
+import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { BattleState, Buff, PlayerState, BattleEndType } from "@codegen/Types.sol";
 import { GameConfig, BattleConfig, BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
@@ -64,6 +64,7 @@ contract BattleSystem is System {
     }
 
     if (!battle.isEnd) {
+      console.log(" round end");
       emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
     } else {
       // set explore state
