@@ -59,8 +59,36 @@ export function createSystemCalls(
   }
 
   const selectUserNft = async (tokenId: any) => {
+    console.log(tokenId, 'tokenId')
     const tx = await worldContract.write.selectUserNft([tokenId]);
+    console.log(new Date().getTime(), tx, 'tx')
     await waitForTransaction(tx);
+    console.log(new Date().getTime(), tx, 'tx')
+  }
+
+  const openBox = async (boxId: any) => {
+    const tx = await worldContract.write.openBox([boxId]);
+    await waitForTransaction(tx);
+  }
+
+  const revealBox = async (boxId: any) => {
+    const tx = await worldContract.write.revealBox([boxId]);
+    await waitForTransaction(tx);
+  }
+
+  const getCollections = async (boxId: any, oreAmount: any, treasureAmount: any) => {
+    const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
+    await waitForTransaction(tx);
+  }
+
+  const CreateBox = async (x: any, y: any) => {
+    const tx = await worldContract.write.CreateBox([x, y]);
+    await waitForTransaction(tx);
+  }
+
+  const getBattlePlayerHp = async (battleId: any, addr: any) => {
+    const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
+    return data
   }
   return {
     increment,
@@ -71,6 +99,11 @@ export function createSystemCalls(
     battleInvitation,
     confirmBattle,
     selectUserNft,
-    revealBattle
+    revealBattle,
+    openBox,
+    getCollections,
+    revealBox,
+    CreateBox,
+    getBattlePlayerHp
   };
 }
