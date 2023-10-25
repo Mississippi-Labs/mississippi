@@ -38,7 +38,7 @@ contract BattleTest is MudTest {
         // init bob property
         Player.setMaxHp(bob, 200);
         Player.setHp(bob, 200);
-        Player.setAttack(bob, 10);
+        Player.setAttack(bob, 36);
         Player.setAttackRange(bob, 5);
         Player.setSpeed(bob, 5);
         Player.setStrength(bob, 5);
@@ -47,7 +47,7 @@ contract BattleTest is MudTest {
         // init alice property
         Player.setMaxHp(alice, 200);
         Player.setHp(alice, 200);
-        Player.setAttack(alice, 10);
+        Player.setAttack(alice, 3);
         Player.setAttackRange(alice, 5);
         Player.setSpeed(alice, 5);
         Player.setStrength(alice, 5);
@@ -72,7 +72,7 @@ contract BattleTest is MudTest {
         vm.stopPrank();
     }
 
-/*
+
     function testBattleNormalAttack() public {
         GloabalInit();
         PlayerInit();
@@ -122,7 +122,7 @@ contract BattleTest is MudTest {
         // console.logUint(uint(defenderState));
         // vm.stopPrank();
     }
-*/
+
 
 /*
     function testBattleNormalEndAttack() public {
@@ -259,6 +259,7 @@ contract BattleTest is MudTest {
     }
 */
 
+/*
     function testBattleDefenderEscape() public {
         GloabalInit();
         PlayerInit();
@@ -299,8 +300,7 @@ contract BattleTest is MudTest {
         world.revealBattle(1, action2, arg2, nonce2);
         vm.stopPrank();
     }
-
-
+*/
 
 
 
