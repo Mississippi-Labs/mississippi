@@ -56,6 +56,10 @@ button {
     unicode-range: U+0025-00FF;
 }
 
+button[disabled] {
+    cursor: not-allowed;
+}
+
 .mi-btn {
     position: relative;
     font-family: MISS, sans-serif;

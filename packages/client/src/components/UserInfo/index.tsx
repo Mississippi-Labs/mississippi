@@ -7,13 +7,14 @@ export interface IUserInfo {
   head: string;
   clothes: string;
   handheld: string;
-  minting?: boolean;
-  gem: number;
+  gem?: number;
 }
 
 const UserInfo = (props: IUserInfo) => {
 
-  const { handheld, head, clothes, minting = false, gem } = props;
+  const { handheld, head, clothes, gem = 0 } = props;
+  const lootHasLoaded = handheld && head && clothes;
+  console.log(handheld, head, clothes, lootHasLoaded);
 
   return (
     <div className={'mi-userinfo-wrapper'}>
@@ -25,7 +26,7 @@ const UserInfo = (props: IUserInfo) => {
               <Appearance clothes={clothes} handheld={handheld} head={head}/>
             </div>
           </div>
-          <div className={`loot-wrapper ${minting ? '' : 'loaded'}`}>
+          <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <div className="loot-detail">
 
             </div>
@@ -33,30 +34,30 @@ const UserInfo = (props: IUserInfo) => {
 
             </div>
           </div>
-          <div className={`user-attr-wrapper ${minting ? '' : 'loaded'}`}>
+          <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{minting ? 0 : 100}</span><span className="extra-attr">100</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 100 : 0}</span><span className="extra-attr">100</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
-              <dd><span className="base-attr">{minting ? 0 : 20}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 20 : 0}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>AttackRange</dt>
-              <dd><span className="base-attr">{minting ? 0 : 5}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 5 : 0}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>Speed</dt>
-              <dd><span className="base-attr">{minting ? 0 : 2}</span><span className="extra-attr">2</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 2 : 0}</span><span className="extra-attr">2</span></dd>
             </dl>
             <dl>
               <dt>Strength</dt>
-              <dd><span className="base-attr">{minting ? 0 : 20}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 20 : 0}</span><span className="extra-attr">1</span></dd>
             </dl>
             <dl>
               <dt>Space</dt>
-              <dd><span className="base-attr">{minting ? 0 : 10}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? 10 : 0}</span><span className="extra-attr">1</span></dd>
             </dl>
           </div>
         </div>
