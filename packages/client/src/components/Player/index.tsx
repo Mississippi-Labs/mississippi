@@ -4,12 +4,15 @@ import { CurIdMockData } from '@/mock/data';
 import Fog from '@/components/Fog';
 import Appearance from '@/components/Appearance';
 
+export type PlayerToward = 'Left' | 'Right';
+
 export interface IPlayer {
   x: number;
   y: number;
   id: number;
   username: string;
   gem: number;
+  toward?: PlayerToward;
   equip: {
     head: string;
     handheld: string;
@@ -19,7 +22,7 @@ export interface IPlayer {
 
 const Player = (props: IPlayer) => {
 
-  const { username, id, equip, gem = 0 } = props;
+  const { username, id, equip, gem = 0, toward } = props;
   return (
     <div className="mi-player">
       <div className="player-info">
@@ -29,7 +32,7 @@ const Player = (props: IPlayer) => {
         <span className="player-username">{username}</span>
 
       </div>
-      <Appearance {...equip} />
+      <Appearance toward={toward as PlayerToward} {...equip} />
       {
         id === CurIdMockData && <Fog />
       }
