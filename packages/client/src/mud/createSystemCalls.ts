@@ -63,18 +63,23 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   }
 
-  const openBox = async (tokenId: any) => {
-    const tx = await worldContract.write.openBox([tokenId]);
+  const openBox = async (boxId: any) => {
+    const tx = await worldContract.write.openBox([boxId]);
     await waitForTransaction(tx);
   }
 
-  const revealBox = async (_boxId: any) => {
-    const tx = await worldContract.write.revealBox([_boxId]);
+  const revealBox = async (boxId: any) => {
+    const tx = await worldContract.write.revealBox([boxId]);
     await waitForTransaction(tx);
   }
 
-  const getCollections = async (_boxId: any, _oreAmount: any, _treasureAmount: any) => {
-    const tx = await worldContract.write.getCollections([_boxId, _oreAmount, _treasureAmount]);
+  const getCollections = async (boxId: any, oreAmount: any, treasureAmount: any) => {
+    const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
+    await waitForTransaction(tx);
+  }
+
+  const CreateBox = async (x: any, y: any) => {
+    const tx = await worldContract.write.CreateBox([x, y]);
     await waitForTransaction(tx);
   }
   return {
@@ -89,6 +94,7 @@ export function createSystemCalls(
     revealBattle,
     openBox,
     getCollections,
-    revealBox
+    revealBox,
+    CreateBox
   };
 }

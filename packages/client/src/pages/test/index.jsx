@@ -16,10 +16,12 @@ const Test = () => {
   const [battleData, setBattleData] = useState([]);
   const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 1]);
   const [battlesData, setBattlesData] = useState([]);
+  const [boxData, setBoxData] = useState([]);
+  const [boxId, setBoxId] = useState([]);
 
   const {
     components: { Player, GameConfig, BattleList, BoxList },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox },
     network
   } = useMUD();
 
@@ -54,7 +56,6 @@ const Test = () => {
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
     let id = decodeEntity({ boxId: "uint256" }, entity);
     let box = getComponentValue(BoxList, entity)
-    console.log(box, 'box', id)
     box.id = id.boxId.toString()
     return box;
   });
@@ -89,6 +90,20 @@ const Test = () => {
     let step = [...stepData];
     step[i] = +value;
     setStepData(step);
+  }
+
+  const boxIdChange = (e) => {
+    console.log(e)
+    let value = e.target.value
+    setBoxId(value);
+  }
+
+  const boxChange = (e, i) => {
+    console.log(e)
+    let value = e.target.value
+    let box = [...boxData];
+    box[i] = +value;
+    setBoxData(box);
   }
 
   const transferChange = (e, i) => {
@@ -141,7 +156,6 @@ const Test = () => {
       let player = players.find(item => item.isMe);
       let from = {x: player.x, y: player.y}
       let to = {x: battleData[0], y: battleData[1]}
-      console.log(from, to, 'from, to')
       let merkelData = main(from, to);
       battleInvitation(tragePlayer.addr, merkelData);
     }
@@ -158,16 +172,13 @@ const Test = () => {
       let nonce = getRandomStr(18)
       console.log(nonce, arg)
       let actionHex = ethers.utils.formatBytes32String(action);
-      let argHex = ethers.utils.formatBytes32String(arg.toString());
       let nonceHex = ethers.utils.formatBytes32String(nonce);
-      let hash = getProofHash(actionHex, argHex, nonceHex);
-      console.log(hash, 'hash')
-      console.log(actionHex, argHex, nonceHex, 'actionHex, argHex, nonceHex')
+      let hash = getProofHash(actionHex, arg, nonceHex);
       confirmBattle(hash, battle.id);
       battlesDataTemp.push({
         id: battle.id,
         action: actionHex,
-        arg: argHex,
+        arg: arg,
         nonce: nonceHex
       })
       setBattlesData(battlesDataTemp)
@@ -178,7 +189,6 @@ const Test = () => {
   }
 
   const joinBattlefieldFun = () => {
-    console.log(account, 'account')
     joinBattlefield();
   }
 
@@ -189,9 +199,26 @@ const Test = () => {
     revealBattle(battle.id, bettleItem.action, bettleItem.arg, bettleItem.nonce);
   }
 
+  const CreateBoxFun = () => {
+    CreateBox(boxData[0], boxData[1]);
+  }
+
+  const openBoxFun = () => {
+    openBox(boxId);
+  }
+
+  const revealBoxFun = () => {
+    revealBox(boxId);
+  }
+
+  const getCollectionsFun = () => {
+    let box = boxs.find(item => item.id == boxId);
+    getCollections(boxId, box.oreBalance, box.treasureBalance);
+  }
+
   const getProofHash = (action, arg, nonce) => {
     return solidityKeccak256(
-      ["bytes32", "bytes32", "bytes32"],
+      ["bytes32", "uint256", "bytes32"],
       [action, arg, nonce]
     )
   }
@@ -206,6 +233,24 @@ const Test = () => {
         {
           players.map((item, index) => (<div key={index}>
             <h6>用户信息 {item.isMe ? '(自己)' : ''}</h6>
+            <div style={{ marginTop: '8px' }}>addr: {item.addr}</div>
+            <div style={{ marginTop: '8px' }}>hp: {item.hp.toString()}</div>
+            <div style={{ marginTop: '8px' }}>oreBalance: {item.oreBalance.toString()}</div>
+            <div style={{ marginTop: '8px' }}>treasureBalance: {item.treasureBalance.toString()}</div>
+            <div style={{ marginTop: '8px' }}>坐标：{item?.x || 0}，{item?.y || 0}</div>
+          </div>))
+        }
+
+      </div>
+      <div className="hd">
+        {
+          boxs.map((item, index) => (<div key={index}>
+            <h6>宝箱信息</h6>
+            <div style={{ marginTop: '8px' }}>id: {item.id}</div>
+            <div style={{ marginTop: '8px' }}>opened: {item.opened.toString()}</div>
+            <div style={{ marginTop: '8px' }}>owner: {item.owner}</div>
+            <div style={{ marginTop: '8px' }}>oreBalance: {item.opened ? item.oreBalance : '--'}</div>
+            <div style={{ marginTop: '8px' }}>treasureBalance:  {item.opened ? item.treasureBalance : '--'}</div>
             <div style={{ marginTop: '8px' }}>坐标：{item?.x || 0}，{item?.y || 0}</div>
           </div>))
         }
@@ -293,6 +338,35 @@ const Test = () => {
           <div className="title">揭示结果</div>
           <div className="input"></div>
           <div className="btn" onClick={revealBattleFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">创建宝箱</div>
+          <div className="input">
+            <input type="text" onChange={(e) => boxChange(e, 0)} placeholder='x' />
+            <input type="text" onChange={(e) => boxChange(e, 1)} placeholder='y' />
+          </div>
+          <div className="btn" onClick={CreateBoxFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">打开宝箱</div>
+          <div className="input">
+            <input type="text" onChange={boxIdChange} placeholder='boxId' />
+          </div>
+          <div className="btn" onClick={openBoxFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">揭示宝箱</div>
+          <div className="input">
+            <input type="text" value={boxId} disabled placeholder='boxId' />
+          </div>
+          <div className="btn" onClick={revealBoxFun}>确认</div>
+        </div>
+        <div className="section">
+          <div className="title">获取宝物</div>
+          <div className="input">
+            <input type="text" value={boxId} disabled placeholder='boxId' />
+          </div>
+          <div className="btn" onClick={getCollectionsFun}>确认</div>
         </div>
       </div>
     </div>
