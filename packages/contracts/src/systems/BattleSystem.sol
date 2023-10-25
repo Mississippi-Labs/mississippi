@@ -38,6 +38,8 @@ contract BattleSystem is System {
    if (BattleList.getAttackerState(_battleId) == BattleState.Revealed 
       && BattleList.getDefenderState(_battleId) == BattleState.Revealed) {
       // reveal 
+      // console.log("reveal battle");
+      // revert("asdfasfd");
       revealWinner(_battleId);
     }
     emit BattleReveal(_battleId, _msgSender());
@@ -64,7 +66,7 @@ contract BattleSystem is System {
     }
 
     if (!battle.isEnd) {
-      console.log(" round end");
+      console.log(" round end ");
       emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
     } else {
       // set explore state
@@ -148,18 +150,6 @@ contract BattleSystem is System {
         emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
       }
     }
-  }
-
-  function getAttackResult(uint256 _hp, uint256 _attackPower) internal pure returns (uint256) {
-    // TODO 后期添加防御力抵消对方的攻击力
-    if (_attackPower > _hp) {
-      return 0;
-    }
-    return _hp - _attackPower;
-  }
-
-  function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
-    Player.setHp(_player, (_targetHP * _percent) / 100);
   }
 
   function loseGame(address _looser, address _winner) internal {
