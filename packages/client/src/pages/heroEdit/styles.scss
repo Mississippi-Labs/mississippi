@@ -1,0 +1,35 @@
+.mi-hero-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+
+    .hero-preview {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        background: #fff;
+
+        .hero-comp {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .HEAD {
+            background-image: url("../../assets/img/hero/Head/Human.png");
+            //background-origin: 64px 832px;
+        }
+    }
+
+
+    canvas, img {
+        image-rendering: optimizeSpeed;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: pixelated;
+        -ms-interpolation-mode: nearest-neighbor;
+    }
+}

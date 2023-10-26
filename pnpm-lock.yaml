@@ -6638,7 +6638,7 @@ packages:
       sc-istanbul: 0.4.6
       semver: 7.5.4
       shelljs: 0.8.5
-      web3-utils: 1.10.2
+      web3-utils: 1.10.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7269,6 +7269,7 @@ packages:
       number-to-bn: 1.7.0
       randombytes: 2.1.0
       utf8: 3.0.0
+    dev: false
 
   /web3-utils@1.10.3:
     resolution: {integrity: sha512-OqcUrEE16fDBbGoQtZXWdavsPzbGIDc5v3VrRTZ0XrIpefC/viZ1ZU9bGEemazyS0catk/3rkOOxpzTfY+XsyQ==}
@@ -7282,7 +7283,6 @@ packages:
       number-to-bn: 1.7.0
       randombytes: 2.1.0
       utf8: 3.0.0
-    dev: false
 
   /which@1.3.1:
     resolution: {integrity: sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==}
