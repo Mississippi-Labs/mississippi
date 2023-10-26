@@ -42,7 +42,7 @@ contract BattleSystem is System {
       // console.log("reveal battle");
       revealWinner(_battleId);
     }
-    emit BattleReveal(_battleId, _msgSender());
+    // emit BattleReveal(_battleId, _msgSender());
   }
 
   function revealWinner(uint256 _battleId) public {
