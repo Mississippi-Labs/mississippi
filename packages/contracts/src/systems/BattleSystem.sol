@@ -13,6 +13,7 @@ contract BattleSystem is System {
   event BattleEnd(uint256 battleId, BattleEndType endType, address winner);
 
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
+    require(_action == bytes32("attack") || _action == bytes32("escape"), "invalid action");
     // check battle
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Confirmed);
