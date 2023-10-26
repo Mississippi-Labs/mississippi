@@ -18,7 +18,7 @@ const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);
   const [battleData, setBattleData] = useState([]);
-  const [confirmBattleData, setConfirmBattleData] = useState(['Attack', 1]);
+  const [confirmBattleData, setConfirmBattleData] = useState(['attack', 1]);
   const [battlesData, setBattlesData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [boxId, setBoxId] = useState([]);
@@ -40,7 +40,7 @@ const Test = () => {
   // console.log(wallet, 'wallet')
   // // 转账到0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44
   // wallet.sendTransaction({
-  //   to: '0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44',
+  //   to: '0x74F750d72009B2a70aAe2F934B0F0C1F4015A037',
   //   value: ethers.utils.parseEther('1')
   // }).then(res => {
   //   console.log(res, 'res')
@@ -103,6 +103,7 @@ const Test = () => {
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
     let userContractAddress = contractAddress
+    console.log("userContractAddress",userContractAddress)
     let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     console.log(userContract)
     userContract.mint().then(async res => {
@@ -388,8 +389,8 @@ const Test = () => {
           <div className="title">攻击策略</div>
           <div className="input">
             <select onChange={(e) => confirmBattleChange(e, 0)}>
-              <option value="Attack">Attack</option>
-              <option value="Escape">Escape</option>
+              <option value="attack">Attack</option>
+              <option value="escape">Escape</option>
               <option value="Props">Props</option>
             </select>
             <select onChange={(e) => confirmBattleChange(e, 1)}>

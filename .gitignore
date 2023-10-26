@@ -3,3 +3,11 @@ node_modules
 packages/contracts/src/codegen/
 pnpm-lock.yaml
 packages/contracts/worlds.json
+.DS_Store
+# worlds.json
+packages/contracts/deploys/**/*.json
+packages/contracts/cache/*
+packages/contracts/out/*
+packages/contracts/node_modules/*
+packages/contracts/broadcast/*
+packages/contracts/types/*
