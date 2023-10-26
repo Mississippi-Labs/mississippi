@@ -40,7 +40,6 @@ contract BattleSystem is System {
       && BattleList.getDefenderState(_battleId) == BattleState.Revealed) {
       // reveal 
       // console.log("reveal battle");
-      // revert("asdfasfd");
       revealWinner(_battleId);
     }
     emit BattleReveal(_battleId, _msgSender());
@@ -65,17 +64,19 @@ contract BattleSystem is System {
         attackerAttackDenfenderEscape(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower);
     }
 
-    if (!battle.isEnd) {
+    if (!BattleList.getIsEnd(_battleId)) {
       console.log(" round end ");
-      emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
+      // emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
       BattleList.setDefenderState(_battleId, BattleState.Inited);
       BattleList.setAttackerState(_battleId, BattleState.Inited);
-      
-
     } else {
       // set explore state
-      Player.setState(battle.attacker, PlayerState.Exploring);
-      Player.setState(battle.defender, PlayerState.Exploring);
+      if (Player.getState(battle.attacker) == PlayerState.Attacking) {
+        Player.setState(battle.attacker, PlayerState.Exploring);
+      }
+      if (Player.getState(battle.defender) == PlayerState.Attacking) {
+        Player.setState(battle.defender, PlayerState.Exploring);
+      }
     }
   }
 
@@ -97,14 +98,14 @@ contract BattleSystem is System {
         BattleList.setIsEnd(_battleId, true);
         loseGame(looser, winner);
 
-        emit BattleEnd(_battleId, BattleEndType.NormalEnd, winner);
+        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, winner);
       } 
   }
   
   function allEscape(uint _battleId) internal {
       BattleList.setIsEnd(_battleId, true);
       BattleList.setWinner(_battleId, address(0));
-      emit BattleEnd(_battleId, BattleEndType.AllEscape, address(0));
+      // emit BattleEnd(_battleId, BattleEndType.AllEscape, address(0));
   }
 
   function attackerEscapeDenfenderAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, 
@@ -118,7 +119,7 @@ contract BattleSystem is System {
         PlayerLocationLock.set(battle.attacker, block.timestamp);
         // console.log(" escape --- 2");
 
-        emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
+        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
       } else {
         // escape fail, cause hurt
         uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
@@ -127,7 +128,7 @@ contract BattleSystem is System {
           BattleList.setWinner(_battleId, battle.defender);
           BattleList.setIsEnd(_battleId, true);
 
-          emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
+          // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
         }
       }
   }
