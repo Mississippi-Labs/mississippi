@@ -9,7 +9,7 @@ import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/ge
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 import { Position } from "../src/systems/Common.sol";
 import { GAME_CONFIG_KEY } from "../src/Constants.sol";
-import { Player, GameConfig, BattleList } from "../src/codegen/Tables.sol";
+import { Player, GameConfig, BattleList, BattleListData } from "../src/codegen/Tables.sol";
 import { Buff, BattleState } from "../src/codegen/Types.sol";
 
 contract BattleTest is MudTest {
@@ -115,12 +115,23 @@ contract BattleTest is MudTest {
         world.revealBattle(1, action2, arg2, nonce2);
         vm.stopPrank();
 
-        // vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
-        // BattleState attackerState = BattleList.getAttackerState(1);
+        vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+        BattleListData memory battle = BattleList.get(1);
+        console.log("attacker hp: ", battle.attackerHP);
+        console.log("attacker hp: ", battle.defenderHP);
+        vm.stopPrank();
+
+
+        vm.startPrank(alice);
+        uint hp = world.getBattlePlayerHp(1, alice);
+        console.log("alice hp: ", hp);
+        vm.stopPrank();
         // BattleState defenderState = BattleList.getDefenderState(1);
         // console.logUint(uint(attackerState));
         // console.logUint(uint(defenderState));
         // vm.stopPrank();
+
+
     }
 
 

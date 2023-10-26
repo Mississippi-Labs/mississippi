@@ -387,9 +387,9 @@ const Test = () => {
           <div className="title">攻击策略</div>
           <div className="input">
             <select onChange={(e) => confirmBattleChange(e, 0)}>
-              <option value="Attack">Attack</option>
-              <option value="Escape">Escape</option>
-              <option value="Props">Props</option>
+              <option value="attack">Attack</option>
+              <option value="escape">Escape</option>
+              <option value="props">Props</option>
             </select>
             <select onChange={(e) => confirmBattleChange(e, 1)}>
               <option value="1">Fire</option>

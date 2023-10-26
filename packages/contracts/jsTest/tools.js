@@ -59,22 +59,11 @@ function getStr(bytes32Value) {
 }
 
 function getMudEvent(args) {
-  console.log(args);
+  console.log("args",args);
   let name = getStr(args[0]);
-  console.log(name);
-  abiDecoder.addABI(contractABI);
-  const decodedData = abiDecoder.decodeMethod(args.data);
-  let a = args[1].forEach((e) => {
-    console.log("!",e);
-    return getStr(e);
-  });
-  console.log(a);
-  console.log(decodedData);
-  // let i = bytesToString(args[3]);
-
-  // console.log(a)
+  console.log("name:",name);
+ 
   console.log(args[2]);
-  console.log(i);
 }
 async function run(name, func) {
   let a = await func;
