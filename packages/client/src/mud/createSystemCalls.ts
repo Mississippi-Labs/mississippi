@@ -38,8 +38,8 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   }
 
-  const transfer = async (transferData: any) => {
-    const tx = await worldContract.write.transfer([...transferData]);
+  const transfer = async (addr: any, transferData: any) => {
+    const tx = await worldContract.write.transfer([addr, ...transferData]);
     await waitForTransaction(tx);
   }
 
