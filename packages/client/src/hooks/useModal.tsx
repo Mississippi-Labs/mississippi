@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Modal } from 'antd';
 
-function useModal(config) {
+function useModal(config = { title: '' }) {
   // 控制弹窗显示的状态
   const [visible, setVisible] = useState(false);
   // 弹窗的内容

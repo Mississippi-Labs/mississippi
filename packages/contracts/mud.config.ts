@@ -12,8 +12,7 @@ export default mudConfig({
     },
     GMSystem: {
       name: "gm",
-      openAccess: false,
-      accessList: [],
+      openAccess: true,
     },
     PlayerSystem: {
       name: "player",

@@ -3,6 +3,7 @@ import './App.scss';
 import Game from './pages/game';
 import Test from './pages/test';
 import Home from '@/pages/home';
+import HeroEdit from '@/pages/heroEdit';
 
 export const App = () => {
 
@@ -15,6 +16,7 @@ export const App = () => {
             <Route index element={<Home />} />
             <Route path="game" element={<Game />} />
             <Route path="test" element={<Test />} />
+            <Route path="heroEdit" element={<HeroEdit />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -31,7 +31,7 @@ contract MoveSystem is System {
             moveList.length > 0 && moveList.length <= BattleConfig.getMaxMoveDistance(BATTLE_CONFIG_KEY),
             "invalid move distance"
         );
-        // require(moveList.length <= Player.getSpeed(_msgSender()), "exceed player speed");
+        require(moveList.length <= Player.getSpeed(_msgSender()), "exceed player speed");
         // check player lock 
         require(PlayerLocationLock.get(_msgSender()) == 0, "You are locked");
         // check continuity
