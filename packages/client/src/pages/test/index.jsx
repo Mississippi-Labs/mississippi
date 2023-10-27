@@ -100,7 +100,7 @@ const Test = () => {
     let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
-    let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
     let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     console.log(userContract)
     userContract.mint().then(async res => {
@@ -117,7 +117,7 @@ const Test = () => {
     let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
-    let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
     let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     userContract.revealNFT(revealNFTData).then(async res => {
       console.log(res)
