@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useComponentValue } from "@latticexyz/react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
+import { Has, getComponentValue } from '@latticexyz/recs';
+import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
@@ -9,57 +11,82 @@ import "./styles.scss";
 import Rank from "@/components/Rank";
 import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
 import { IPlayer } from "@/components/Player";
-import { uploadUserMove } from "@/service/user";
 import { useMUD } from "@/mud/MUDContext";
-import { getComponentValue } from "@latticexyz/recs";
 import Battle from "@/components/Battle";
 import GameContext from '@/context';
 import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
-import UserInfo from '@/components/UserInfo';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
 import { updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
 
 const Game = () => {
+  const {
+    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
+    systemCalls: { move, getPosition },
+    network,
+  } = useMUD();
+
+  const mudPlayers = useEntityQuery([Has(Player)]).map((entity) => {
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    const player = getComponentValue(Player, entity);
+    player.isMe = address.toLocaleLowerCase() == account.toLocaleLowerCase();
+    player.addr = address
+    return player;
+  });
+
   const [renderMapData, setRenderMapData] = useState([]);
   const [vertexCoordinate, setVertexCoordinate] = useState({
     x: 0,
     y: 0,
   });
 
-  const [players, setPlayers] = useState(PlayersMockData);
+  const [players, setPlayers] = useState([]);
   const [targetPlayer, setTargetPlayer] = useState(null);
   const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
   const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
   const curId = CurIdMockData;
-  const curPlayer = players.find((item) => item.id === curId);
-
-  // let curPlayer, targetPlayer
 
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
 
-  const {
-    components,
-    systemCalls: { move, getPosition },
-    network,
-  } = useMUD();
+  const { account } = network;
 
-  const { Modal, open, close, setContent } = useModal({
-    title: '',
-  });
+  const curPlayer = players.find(player => player.isMe);
+
+  const { Modal, open, close, setContent } = useModal();
 
   const mapDataRef = useRef([]);
   const moveInterval = useRef<NodeJS.Timeout>();
   const location = useLocation();
+
   const {
     username = "",
     clothes,
     handheld,
     head,
   } = location.state ?? {};
+
+  useEffect(() => {
+    loadMapData().then((csv) => {
+      setRenderMapData(csv);
+      mapDataRef.current = csv;
+    });
+
+    curPlayer.equip = {
+      clothes,
+      handheld,
+      head,
+    }
+    curPlayer.username = username;
+    setPlayers([...players]);
+
+  }, []);
+
+  useEffect(() => {
+    setPlayers(mudPlayers);
+  }, [mudPlayers]);
 
 
   const finishBattle = (e: any) => {
@@ -79,7 +106,7 @@ const Game = () => {
       let targetPlayerIndex = players.findIndex((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
       players.splice(targetPlayerIndex, 1);
       setTreasureChest([...treasureChestData]);
-      setPlayers([...players]);
+      // setPlayers([...players]);
       // getWinTreasureChest(targetPlayer.gem)
       setTargetPlayer(null);
     } else if (e == 2) {
@@ -105,7 +132,7 @@ const Game = () => {
         }
       }
     }, 300);
-    // move(merkelData);
+    move(merkelData);
   };
 
   const showUserInfo = (player) => {
@@ -199,21 +226,7 @@ const Game = () => {
   }
 
 
-  useEffect(() => {
-    loadMapData().then((csv) => {
-      setRenderMapData(csv);
-      mapDataRef.current = csv;
-    });
 
-    curPlayer.equip = {
-      clothes,
-      handheld,
-      head,
-    }
-    curPlayer.username = username;
-    setPlayers([...players]);
-
-  }, []);
 
   return (
     <GameContext.Provider
