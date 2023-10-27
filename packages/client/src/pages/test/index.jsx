@@ -38,7 +38,7 @@ const Test = () => {
   // console.log(wallet, 'wallet')
   // // 转账到0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44
   // wallet.sendTransaction({
-  //   to: '0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44',
+  //   to: '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D',
   //   value: ethers.utils.parseEther('1')
   // }).then(res => {
   //   console.log(res, 'res')
@@ -100,7 +100,8 @@ const Test = () => {
     let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
-    let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    // let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
     let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     console.log(userContract)
     userContract.mint().then(async res => {
@@ -117,7 +118,8 @@ const Test = () => {
     let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
-    let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    // let userContractAddress = '0x2498e8059929e18e2a2cED4e32ef145fa2F4a744'
+    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
     let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     userContract.revealNFT(revealNFTData).then(async res => {
       console.log(res)

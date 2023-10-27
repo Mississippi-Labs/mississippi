@@ -55,6 +55,8 @@ const Game = () => {
 
   const curPlayer = players.find(player => player.isMe);
 
+  console.log(curPlayer, 'curPlayer', mudPlayers)
+
   const { Modal, open, close, setContent } = useModal();
 
   const mapDataRef = useRef([]);
@@ -74,18 +76,21 @@ const Game = () => {
       mapDataRef.current = csv;
     });
 
-    curPlayer.equip = {
-      clothes,
-      handheld,
-      head,
+    if (curPlayer) {
+      curPlayer.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+      curPlayer.username = username;
     }
-    curPlayer.username = username;
-    setPlayers([...players]);
+
+    // setPlayers([...players]);
 
   }, []);
 
   useEffect(() => {
-    setPlayers(mudPlayers);
+    // setPlayers(mudPlayers);
   }, [mudPlayers]);
 
 
