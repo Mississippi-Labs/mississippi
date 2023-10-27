@@ -9,6 +9,7 @@ import UserAddress from '@/components/UserAddress';
 interface IProps {
   onPlayBtnClick: () => void;
   walletAddress: string;
+  walletBalance: string;
 }
 
 const HomeHeader = (props: IProps) => {
@@ -41,7 +42,7 @@ const HomeHeader = (props: IProps) => {
 
       {
         props.walletAddress ?
-          <UserAddress address={props.walletAddress} account={'0.1ETH'}/>
+          <UserAddress address={props.walletAddress} account={props.walletBalance + 'ETH'}/>
           :
           <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY NOW</button>
       }
