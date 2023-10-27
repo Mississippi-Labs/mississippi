@@ -10,7 +10,8 @@ import { solidityKeccak256 } from 'ethers/lib/utils';
 import { getRandomStr } from '../../utils/utils';
 import './index.scss';
 
-const abi = [{"inputs":[{"internalType":"uint256","name":"_waitBlockCount","type":"uint256"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_notRevealedInfo","type":"string"},{"internalType":"string","name":"_revealedDesc","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"randomId","type":"uint256"},{"indexed":false,"internalType":"address","name":"author","type":"address"}],"name":"NewRandom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"randomId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"randomList","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"address","name":"author","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"revealNFT","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"userList","outputs":[{"internalType":"uint256","name":"randomId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"HP","type":"uint256"},{"internalType":"uint256","name":"Attack","type":"uint256"},{"internalType":"uint256","name":"AttackRange","type":"uint256"},{"internalType":"uint256","name":"Speed","type":"uint256"},{"internalType":"uint256","name":"Strength","type":"uint256"},{"internalType":"uint256","name":"Space","type":"uint256"},{"internalType":"enum MRandom.RandomState","name":"state","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waitBlockCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+const abi = [{"inputs":[{"internalType":"uint256","name":"_waitBlockCount","type":"uint256"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_notRevealedInfo","type":"string"},{"internalType":"string","name":"_revealedDesc","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"}],"name":"ERC721IncorrectOwner","type":"error"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ERC721InsufficientApproval","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC721InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"operator","type":"address"}],"name":"ERC721InvalidOperator","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"ERC721InvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC721InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC721InvalidSender","type":"error"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ERC721NonexistentToken","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"randomId","type":"uint256"},{"indexed":false,"internalType":"address","name":"author","type":"address"}],"name":"NewRandom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"getStructInfo","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getUserTokenIdList","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"randomId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"randomList","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"address","name":"author","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"revealNFT","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"userList","outputs":[{"internalType":"uint256","name":"randomId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"HP","type":"uint256"},{"internalType":"uint256","name":"Attack","type":"uint256"},{"internalType":"uint256","name":"AttackRange","type":"uint256"},{"internalType":"uint256","name":"Speed","type":"uint256"},{"internalType":"uint256","name":"Strength","type":"uint256"},{"internalType":"uint256","name":"Space","type":"uint256"},{"internalType":"enum MRandom.RandomState","name":"state","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waitBlockCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+let userContract
 
 const Test = () => {
   const [stepData, setStepData] = useState([]);
@@ -21,6 +22,7 @@ const Test = () => {
   const [boxData, setBoxData] = useState([]);
   const [boxId, setBoxId] = useState([]);
   const [revealNFTData, setRevealNFTData] = useState([]);
+  const [nftListData, setNftListData] = useState([]);
 
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
@@ -49,6 +51,15 @@ const Test = () => {
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
+
+  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
+    let privateKey = network.privateKey
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let userContractAddress = GlobalConfigData[0].userContract
+    userContract = new ethers.Contract(userContractAddress, abi, wallet)
+  }
 
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
@@ -92,33 +103,27 @@ const Test = () => {
     return player;
   });
   console.log('players', players)
-  // console.log(playerData, 'playerData')
-  console.log(account, 'account')
+
+  const getNftList = async () => {
+    let nftList = await userContract.getUserTokenIdList()
+    nftList = nftList.map(e => e.toString())
+    console.log(nftList)
+    setNftListData(nftList)
+  }
 
   const mintFun = () => {
-    let privateKey = network.privateKey
-    let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
-    let wallet = new ethers.Wallet(privateKey, provider)
-    console.log(wallet)
-    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-    let userContract = new ethers.Contract(userContractAddress, abi, wallet)
-    console.log(userContract)
+    console.log(1, userContract)
     userContract.mint().then(async res => {
-      console.log(res, 'res')
       await res.wait()
-      userContract.tokenId().then(res => {
-        console.log(res, 'tokenId')
-      })
+      console.log(res)
+      getNftList()
+      // userContract.tokenId().then(res => {
+      //   console.log(res, 'tokenId')
+      // })
     })
   }
   
   const revealNFTFun = () => {
-    let privateKey = network.privateKey
-    let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
-    let wallet = new ethers.Wallet(privateKey, provider)
-    console.log(wallet)
-    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-    let userContract = new ethers.Contract(userContractAddress, abi, wallet)
     userContract.revealNFT(revealNFTData).then(async res => {
       console.log(res)
       await res.wait()
@@ -141,7 +146,7 @@ const Test = () => {
 
   const tokenIdChange = (e) => {
     console.log(e)
-    let value = e.target.value
+    let value = +e.target.value
     setRevealNFTData(value);
   }
 
@@ -344,14 +349,25 @@ const Test = () => {
         </div>
         <div className="section">
           <div className="title">revealNFT</div>
+          
           <div className="input">
-          <input type="text" onChange={tokenIdChange} placeholder='tokenId' />
+          <select value={revealNFTData} onChange={tokenIdChange}>
+            {
+              nftListData.map((item, index) => (<option key={index} value={item}>{item}</option>))
+            }
+          </select>
           </div>
           <div className="btn" onClick={revealNFTFun}>确认</div>
         </div>
         <div className="section">
           <div className="title">初始化玩家</div>
-          <div className="input"></div>
+          <div className="input">
+            <select value={revealNFTData} onChange={tokenIdChange}>
+              {
+                nftListData.map((item, index) => (<option key={index} value={item}>{item}</option>))
+              }
+            </select>
+          </div>
           <div className="btn" onClick={selectUserNftFun}>确认</div>
         </div>
         <div className="section">
