@@ -40,8 +40,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --loglevel verbose --no-frozen-lockfile
 
-      # - name: deploy on lattice testnet
-      #   run: cd packages/contracts; pnpm run deploy:testnet
+      - name: deploy on lattice testnet
+        run: cd packages/contracts; pnpm run deploy:testnet
 
       - name: build
         run: pnpm build
@@ -63,4 +63,14 @@ jobs:
           # The name of the branch you want to deploy to
           branch: feat-mvp
           # The working directory in which to run Wrangler
+      
+      - name: Vercel Action
+        uses: amondnet/vercel-action@v25
+
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.ORG_ID}} #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
+          working-directory: ./packages/client/dist
+          scope: ${{secrets.TEAM_SLUG}}
           
