@@ -54,15 +54,15 @@ const Home = () => {
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
 
-  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
+  // if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(privateKey, provider)
     console.log(wallet)
-    let userContractAddress = GlobalConfigData[0].userContract
+    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3' // GlobalConfigData[0].userContract
     userContract = new ethers.Contract(userContractAddress, abi, wallet)
-  }
+  // }
 
   const createWallet = () => {
     setContent(
@@ -115,9 +115,9 @@ const Home = () => {
         let tx = await userContract.mint()
         await tx.wait()
         console.log(tx, 'tx')
-        let tokenIds = await userContract.getUserTokenIdList()
-        console.log(tokenIds, 'tokenIds')
-        let tokenId = tokenIds[0].toString()
+        // let tokenIds = await userContract.getUserTokenIdList()
+        // console.log(tokenIds, 'tokenIds')
+        let tokenId = '0'
         let t = await userContract.revealNFT(tokenId)
         await t.wait()
         console.log(t, 't')
