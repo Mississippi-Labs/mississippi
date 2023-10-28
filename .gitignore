@@ -1,7 +1,6 @@
 node_modules
 .env
 packages/contracts/src/codegen/
-pnpm-lock.yaml
 packages/contracts/worlds.json
 .DS_Store
 # worlds.json
