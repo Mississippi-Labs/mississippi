@@ -26,7 +26,7 @@ const root = ReactDOM.createRoot(rootElement);
 
 
 // https://vitejs.dev/guide/env-and-mode.html
-if (import.meta.env.DEV) {
+// if (import.meta.env.DEV) {
   const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
   const comp = [];
   network.world.components.forEach((c) => {
@@ -46,4 +46,4 @@ if (import.meta.env.DEV) {
     write$: network.write$,
     recsWorld: network.world,
   });
-}
+// }
