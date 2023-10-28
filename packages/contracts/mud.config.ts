@@ -169,6 +169,30 @@ export default mudConfig({
         owner: "address",
       }
     }, 
+    LootList1:{
+      keySchema:{
+        addr: "address",
+      },
+      schema:{
+        weapon:"string",
+        chest:"string",
+        head:"string",
+        waist:"string",
+        foot:"string",
+      }
+
+    },
+    LootList2:{
+      keySchema:{
+        addr: "address",
+      },
+      schema:{
+        hand:"string",
+        neck:"string",
+        ring:"string"
+      }
+
+    },
     GlobalConfig: {
       dataStruct: false,
       schema: {

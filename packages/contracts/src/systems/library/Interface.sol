@@ -10,6 +10,7 @@ interface User {
 
 // Loot
 interface Loot {
+    function ownerOf(uint256 tokenId) external view returns (address);
     function getStructInfo(uint256 tokenId) external view returns (string memory,string memory,string memory,string memory,string memory,string memory,string memory,string memory);
 }
 
