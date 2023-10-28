@@ -21,7 +21,7 @@ const Test = () => {
   const [battlesData, setBattlesData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [boxId, setBoxId] = useState([]);
-  const [revealNFTData, setRevealNFTData] = useState([]);
+  const [revealNFTData, setRevealNFTData] = useState('');
   const [nftListData, setNftListData] = useState([]);
 
   const {
