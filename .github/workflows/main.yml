@@ -1,0 +1,73 @@
+name: preview
+
+on:
+  push:
+
+env:
+  FOUNDRY_PROFILE: ci
+  # PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
+permissions:
+  pull-requests: write
+  deployments: write
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+    name: MUD project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - uses: pnpm/action-setup@v2.2.4
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      # - name: Change Github config
+      #   run: git config --global url."https://github.com/".insteadOf git@github.com:;
+      #   run: git config --global url."https://".insteadOf git://
+
+      - name: Install dependencies
+        run: pnpm install --loglevel verbose --no-frozen-lockfile
+
+      # - name: deploy on lattice testnet
+      #   run: cd packages/contracts; pnpm run deploy:testnet
+
+      - name: build
+        run: pnpm build
+
+      
+      - name: Cloudflare Pages GitHub Action
+        # You may pin to the exact commit or the version.
+        # uses: cloudflare/pages-action@f0a1cd58cd66095dee69bfa18fa5efd1dde93bca
+        uses: cloudflare/pages-action@v1.5.0
+        with:
+          # Cloudflare API Token
+          apiToken: ${{ secrets.cfApiToken }}
+          # Cloudflare Account ID
+          accountId: ${{ secrets.cfAccountId }}
+          # The name of the Pages project to upload to
+          projectName: mississippi
+          # The directory of static assets to upload
+          directory: ./packages/client/dist
+          # The name of the branch you want to deploy to
+          branch: feat-mvp
+          # The working directory in which to run Wrangler
+          
