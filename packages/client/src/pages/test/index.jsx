@@ -34,13 +34,13 @@ const Test = () => {
   console.log(network, 'account')
 
   // PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 转账
-  let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-  let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
-  let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
+  // let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+  // let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
+  // let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
   // console.log(wallet, 'wallet')
   // // 转账到0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44
   // wallet.sendTransaction({
-  //   to: '0x35be872A3C94Bf581A9DA4c653CE734380b75B7D',
+  //   to: '0x74F750d72009B2a70aAe2F934B0F0C1F4015A037',
   //   value: ethers.utils.parseEther('1')
   // }).then(res => {
   //   console.log(res, 'res')
@@ -52,16 +52,14 @@ const Test = () => {
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
 
-  // if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
+  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    // let provider = new ethers.providers.JsonRpcProvider(rpc)
-    // let wallet = new ethers.Wallet(privateKey, provider)
-    // let userContractAddress = GlobalConfigData[0].userContract
-    let userContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-
-  userContract = new ethers.Contract(userContractAddress, abi, wallet)
-  // }
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let userContractAddress = GlobalConfigData[0].userContract
+    userContract = new ethers.Contract(userContractAddress, abi, wallet)
+  }
 
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
@@ -109,7 +107,7 @@ const Test = () => {
   const getNftList = async () => {
     let nftList = await userContract.getUserTokenIdList()
     nftList = nftList.map(e => e.toString())
-    console.log(nftList, 'nftList')
+    console.log(nftList)
     setNftListData(nftList)
   }
 
