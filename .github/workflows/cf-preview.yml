@@ -1,4 +1,4 @@
-name: preview
+name: cf_auto_deploy
 
 on:
   push:
