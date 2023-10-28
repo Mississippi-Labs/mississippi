@@ -8,6 +8,8 @@ import { GameConfigInit } from "./GameConfigInit.sol";
 import { BattleConfigInit } from "./BattleConfigInit.sol";
 import { GlobalConfigInit } from "./GlobalConfigInit.sol";
 import { console } from "forge-std/console.sol";
+import "../src/other/User.sol";
+import "../src/other/Loot.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -18,11 +20,13 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     console.log(" ========== PostDeploy  ========== ");
+    MUser muser = new MUser(2, "MUser", "MUser", "", "");
+        MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
 
     // ------------------ INIT ------------------
     GameConfigInit.initGameConfig(IWorld(worldAddress));
     BattleConfigInit.initBattleConfig(IWorld(worldAddress));
-    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress));
+    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress), address(muser),address(mloot));
 
     vm.stopBroadcast();
 
