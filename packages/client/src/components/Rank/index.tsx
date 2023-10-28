@@ -15,7 +15,8 @@ interface IProps {
 const Rank = (props: IProps) => {
 
   const { data, curId } = props;
-  const curIndex = data.findIndex(item => item.id === curId);
+  console.log(data)
+  const curIndex = data.findIndex(item => item.id === 1);
   const [visible, setVisible] = useState(false);
 
   const toggleVisible = () => {

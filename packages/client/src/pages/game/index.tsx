@@ -28,14 +28,6 @@ const Game = () => {
     network,
   } = useMUD();
 
-  const mudPlayers = useEntityQuery([Has(Player)]).map((entity) => {
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    const player = getComponentValue(Player, entity);
-    player.isMe = address.toLocaleLowerCase() == account.toLocaleLowerCase();
-    player.addr = address
-    return player;
-  });
-
   const [renderMapData, setRenderMapData] = useState([]);
   const [vertexCoordinate, setVertexCoordinate] = useState({
     x: 0,
@@ -53,8 +45,6 @@ const Game = () => {
 
   const { account } = network;
 
-  const curPlayer = players.find(player => player.isMe);
-
   const { Modal, open, close, setContent } = useModal();
 
   const mapDataRef = useRef([]);
@@ -68,25 +58,33 @@ const Game = () => {
     head,
   } = location.state ?? {};
 
+  const mudPlayers = useEntityQuery([Has(Player)]).map((entity) => {
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    const player = getComponentValue(Player, entity);
+    player.addr = address
+    if (address.toLocaleLowerCase() === account.toLocaleLowerCase()) {
+      player.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+    }
+    return player;
+  });
+
+  const curPlayer = mudPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+
+  console.log(curPlayer, 'curPlayer')
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
-
-    curPlayer.equip = {
-      clothes,
-      handheld,
-      head,
-    }
-    curPlayer.username = username;
-    setPlayers([...players]);
-
   }, []);
 
   useEffect(() => {
     setPlayers(mudPlayers);
-  }, [mudPlayers]);
+  }, []);
 
 
   const finishBattle = (e: any) => {
@@ -256,7 +254,7 @@ const Game = () => {
           />
         </div>
 
-        <Rank data={RankMockData} curId={CurIdMockData} />
+        <Rank data={RankMockData} curId={account} />
         <Map
           width={MapConfig.visualWidth}
           height={MapConfig.visualHeight}
