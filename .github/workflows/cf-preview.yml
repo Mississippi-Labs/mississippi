@@ -23,26 +23,19 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: pnpm/action-setup@v2.2.4
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
-
-      - uses: actions/setup-node@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v2
         with:
           node-version: 18
-          # cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
 
-      # - name: Change Github config
-      #   run: git config --global url."https://github.com/".insteadOf git@github.com:;
-      #   run: git config --global url."https://".insteadOf git://
 
       - name: Install dependencies
         run: pnpm install --loglevel verbose --no-frozen-lockfile
