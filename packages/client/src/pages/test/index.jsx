@@ -109,12 +109,6 @@ const Test = () => {
     return battle;
   });
   console.log(battles, 'battles')
-  battles.forEach(async item => {
-    if (item.attackerState == 2 && item.defenderState == 2) {
-      let hp = await getBattlePlayerHp(item.id, account)
-      console.log(hp, 'hp')
-    }
-  })
 
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
     let id = decodeEntity({ boxId: "uint256" }, entity);
@@ -230,7 +224,7 @@ const Test = () => {
     let player = players.find(item => item.isMe);
     let from = {x: player.x, y: player.y}
     let to = {x: stepData[0], y: stepData[1]}
-    let merkelData = main(from, to);
+    let { merkelData } = main(from, to);
     move(merkelData);
   }
 
@@ -345,7 +339,7 @@ const Test = () => {
       </div>
       <div className="hd">
         {
-          boxs.map((item, index) => (<div key={index}>
+          boxs.map((item, index) => (<div key={index} style={{marginBottom: '20px'}}>
             <h6>宝箱信息</h6>
             <div style={{ marginTop: '8px' }}>id: {item.id}</div>
             <div style={{ marginTop: '8px' }}>opened: {item.opened.toString()}</div>

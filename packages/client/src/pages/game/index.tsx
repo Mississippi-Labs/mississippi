@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
@@ -20,11 +20,15 @@ import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
 import { updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
+import { bfs, simplifyMapData } from '@/utils/map';
+import useMerkel from '@/hooks/useMerkel';
+
+let boxId = ''
 
 const Game = () => {
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
-    systemCalls: { move, getPosition },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation },
     network,
   } = useMUD();
 
@@ -34,16 +38,20 @@ const Game = () => {
     y: 0,
   });
 
-  const [players, setPlayers] = useState([]);
+  const simpleMapData = useMemo(() => {
+    return simplifyMapData(renderMapData);
+  }, [renderMapData]);
+
+  const formatMovePath = useMerkel(simpleMapData);
+
   const [targetPlayer, setTargetPlayer] = useState(null);
   const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
-  const [treasureChest, setTreasureChest] = useState(TreasureChestMockData);
-  const curId = CurIdMockData;
 
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
 
   const { account } = network;
+  const curId = account;
 
   const { Modal, open, close, setContent } = useModal();
 
@@ -58,7 +66,7 @@ const Game = () => {
     head,
   } = location.state ?? {};
 
-  const mudPlayers = useEntityQuery([Has(Player)]).map((entity) => {
+  const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     const player = getComponentValue(Player, entity);
     player.addr = address
@@ -68,13 +76,44 @@ const Game = () => {
         handheld,
         head,
       }
+      player.username = username;
     }
     return player;
   });
 
-  const curPlayer = mudPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
 
-  console.log(curPlayer, 'curPlayer')
+  const getCollectionsFun = (box: any) => {
+    setContent(
+      <div className={'mi-modal-content-wrapper'}>
+        <div className="mi-modal-content">
+          Congrats,you got {box.oreBalance} gems!
+
+          <div className="mi-treasure-chest-wrapper">
+            <TreasureChest/>
+          </div>
+        </div>
+        <div className="mi-modal-footer">
+          <button className="mi-btn" onClick={async () => {
+            await getCollections(box.id, box.oreBalance, box.treasureBalance);
+            boxId = ''
+            close();
+          }}>OK</button>
+        </div>
+      </div>
+    );
+    open();
+  }
+  
+  const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
+    let id = decodeEntity({ boxId: "uint256" }, entity);
+    let box:any = getComponentValue(BoxList, entity)
+    box.id = id.boxId.toString()
+    return box;
+  });
+
+  const treasureChest = boxs.filter((item) => !item.opened);
+
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
@@ -83,8 +122,11 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    setPlayers(mudPlayers);
-  }, []);
+    if (boxId) {
+      const box = boxs.find((item) => item.id === boxId);
+      getCollectionsFun(box);
+    }
+  }, [boxs]);
 
 
   const finishBattle = (e: any) => {
@@ -119,7 +161,6 @@ const Game = () => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
       pathIndex++;
-      setPlayers([...players]);
       if (pathIndex === paths.length) {
         clearInterval(moveInterval.current);
         const target = paths[pathIndex - 1];
@@ -166,39 +207,33 @@ const Game = () => {
     }, 1000);
   }
 
-  const setStartBattle = (player) => {
+  const setStartBattle = async (player) => {
+    console.log(player)
+    const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
+    // await battleInvitation(player.addr, formatMovePath(paths));
+    // console.log(formatMovePath(paths))
     setTargetPlayer(player);
     setStartBattleData(true);
   }
 
-  const openTreasureChest = (id) => {
+  const openTreasureChest = async (id) => {
+    console.log(id);
     const targetIndex = treasureChest.findIndex(item => item.id === id);
     treasureChest[targetIndex].opening = true;
-    setTreasureChest([...treasureChest]);
+    await openBox(id);
+    
+    let blockNumber = await network.publicClient.getBlockNumber()
+    // 每隔1s获取一次getBlockNumber
+    let interval = setInterval(async () => {
+      let currentBlockNumber = await network.publicClient.getBlockNumber()
+      console.log(currentBlockNumber, blockNumber, 'currentBlockNumber')
+      if (currentBlockNumber - blockNumber >= 2) {
+        clearInterval(interval)
+        await revealBox(id)
 
-    setTimeout(() => {
-      curPlayer.gem += treasureChest[targetIndex].gem;
-      setPlayers([...players]);
-      setContent(
-        <div className={'mi-modal-content-wrapper'}>
-          <div className="mi-modal-content">
-            Congrats,you got {treasureChest[targetIndex].gem} gems!
-
-            <div className="mi-treasure-chest-wrapper">
-              <TreasureChest/>
-            </div>
-          </div>
-          <div className="mi-modal-footer">
-            <button className="mi-btn" onClick={() => {
-              treasureChest.splice(targetIndex, 1);
-              setTreasureChest([...treasureChest]);
-              close();
-            }}>OK</button>
-          </div>
-        </div>
-      );
-      open();
-    }, 3000);
+        boxId = id
+      }
+    }, 1000)
   }
 
   const getWinTreasureChest = (gem = 1) => {

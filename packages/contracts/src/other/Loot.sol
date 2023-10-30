@@ -241,13 +241,31 @@ contract MLoot is Suit, ERC721,MRandom {
     function getStructInfo(uint256 _tokenId) external view returns(string memory,string memory,string memory,string memory,string memory,string memory,string memory,string memory){
         Loot memory loot = lootList[_tokenId];
         require(loot.state == RandomState.Confirmed,"User not exists");
-        return(loot.Weapon,
-        loot.Chest,
-        loot.Head,
-        loot.Waist,
-        loot.Foot,
-        loot.Hand,
-        loot.Neck,
-        loot.Ring);
+        return(
+            loot.Weapon,
+            loot.Chest,
+            loot.Head,
+            loot.Waist,
+            loot.Foot,
+            loot.Hand,
+            loot.Neck,
+            loot.Ring
+        );
+    }
+    
+     function getUserTokenIdList() view external returns(uint256[] memory){
+        uint256 balance = balanceOf(msg.sender);
+        uint256[] memory tokenIds = new uint256[](balance);
+        uint256 index;
+        for(uint256 i;i<tokenId;i++){
+            if(ownerOf(i) == msg.sender){
+                tokenIds[index] = i;
+                index++;
+                if(index == balance){
+                    break;
+                }
+            }
+        }
+        return tokenIds;
     }
 }
