@@ -112,8 +112,6 @@ export default function Battle(props) {
                 setPlayer2LossData(0);
                 // console.log(player2ResidualData)
                 if (defenderHP <= 0 || battle.isEnd) {
-                  setConfirmBattleData([]);
-                  setConfirmBattle2Data([]);
                   setTimeout(() => {props.finishBattle(battle.winner);}, 600)
                   return
                 }
@@ -128,16 +126,12 @@ export default function Battle(props) {
                     setBattleData(data)
                     if (attackerHP <= 0 || battle.isEnd) {
                       setPlayer1ResidualData(0);
-                      setConfirmBattleData([]);
-                      setConfirmBattle2Data([]);
                       setTimeout(() => {props.finishBattle(battle.winner);}, 600)
                       return
                     }
                     setTimeout(() => {
                       battle1.classList.remove('back');
                       setPlayer1LossData(0);
-                      setConfirmBattleData([]);
-                      setConfirmBattle2Data([]);
                       setBattleState(0)
                       console.log(battleState)
                     }, 400);
