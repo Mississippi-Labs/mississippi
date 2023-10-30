@@ -232,8 +232,10 @@ const Home = () => {
   const play = () => {
     let curPlayer = localStorage.getItem('curPlayer') || null;
     let worldContractAddress = localStorage.getItem('worldContractAddress') || null;
-    if (curPlayer && curPlayer.addr == network.account && worldContractAddress == network.worldContract.address) {
-      curPlayer = JSON.parse(curPlayer);
+    if (curPlayer) curPlayer = JSON.parse(curPlayer);
+    console.log(curPlayer, worldContractAddress, network.account, network.worldContract.address)
+    console.log(curPlayer && curPlayer.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase() && worldContractAddress?.toLocaleLowerCase() == network.worldContract.address.toLocaleLowerCase())
+    if (curPlayer?.addr?.toLocaleLowerCase() == network.account.toLocaleLowerCase() && worldContractAddress?.toLocaleLowerCase() == network.worldContract.address.toLocaleLowerCase()) {
       // to /game
       navigate('/game', {
         state: {
