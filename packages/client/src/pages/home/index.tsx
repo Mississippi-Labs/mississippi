@@ -20,6 +20,8 @@ import { min } from 'rxjs';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 
+console.log(lootAbi, 'lootAbi')
+
 let userContract: any
 let lootContract: any
 const Home = () => {
@@ -54,6 +56,8 @@ const Home = () => {
   const [handheld, setHandheld] = useState<string>();
   const [head, setHead] = useState<string>();
   const [username, setUsername] = useState<string>();
+  const [userUrl, setUserUrl] = useState<string>();
+  const [lootUrl, setLootUrl] = useState<string>();
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
@@ -122,9 +126,8 @@ const Home = () => {
         await tx.wait()
         console.log(tx, 'tx')
         message.success('Mint Loot Success');
-        // let tokenIds = await lootContract.getUserTokenIdList()
-        // let tokenId = tokenIds[tokenIds.length - 1].toString()
-        let tokenId = 0
+        let tokenIds = await lootContract.getUserTokenIdList()
+        let tokenId = tokenIds[tokenIds.length - 1].toString()
         // 获取当前getBlockNumber
         let blockNumber = await network.publicClient.getBlockNumber()
         // 每隔1s获取一次getBlockNumber
@@ -175,6 +178,13 @@ const Home = () => {
     })
   }
 
+  const atobUrl = (url) => {
+    url = url.replace('data:application/json;base64,', '')
+    url = atob(url)
+    url = JSON.parse(url)
+    return url
+  }
+
   const mintAndGo = async () => {
     const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
     const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
@@ -185,7 +195,16 @@ const Home = () => {
     await mintLoot()
 
     let tokenIds = await userContract.getUserTokenIdList()
-    let tokenId = tokenIds[tokenIds.length - 1].toString()
+    let tokenId = tokenIds[0].toString()
+    let lootTokenIds = await lootContract.getUserTokenIdList()
+    let lootTokenId = lootTokenIds[0].toString()
+    let url = await userContract.tokenURI(tokenId)
+    let lootUrl = await lootContract.tokenURI(lootTokenId)
+    
+    url = atobUrl(url)
+    lootUrl = atobUrl(lootUrl)
+    setUserUrl(url.image)
+    setLootUrl(lootUrl.image)
 
     await selectUserNft(tokenId)
     await joinBattlefield()
@@ -195,6 +214,7 @@ const Home = () => {
       setHandheld(handheld);
       setHead(head);
     }).delay(3000).then(() => {
+      setMinting(false);
       navigate('/game', {
         state: {
           username,
@@ -204,9 +224,6 @@ const Home = () => {
         }
       });
     })
-
-    setMinting(false);
-
   }
 
   const play = () => {
@@ -244,7 +261,7 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo clothes={clothes} handheld={handheld} head={head}/>
+              <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
                 {minting ? 'Loading...' : 'MINT AND GO'}
               </button>
