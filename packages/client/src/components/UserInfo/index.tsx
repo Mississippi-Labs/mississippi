@@ -12,7 +12,7 @@ export interface IUserInfo {
 
 const UserInfo = (props: IUserInfo) => {
 
-  const { handheld, head, clothes, gem = 0 } = props;
+  const { handheld, head, clothes, gem = 0, userUrl, lootUrl } = props;
   const lootHasLoaded = handheld && head && clothes;
   console.log(handheld, head, clothes, lootHasLoaded);
 
@@ -28,10 +28,14 @@ const UserInfo = (props: IUserInfo) => {
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <div className="loot-detail">
-
+              {
+                userUrl ? <img src={userUrl} alt=""/> : null
+              }
             </div>
             <div className="loot-detail">
-
+              {
+                lootUrl ? <img src={lootUrl} alt=""/> : null
+              }
             </div>
           </div>
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
