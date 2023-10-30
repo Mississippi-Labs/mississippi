@@ -108,6 +108,7 @@ const Game = () => {
   if (curPlayer && curPlayer.addr) {
     console.log(curPlayer, 'curPlayer')
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
+    localStorage.setItem('worldContractAddress', network.worldContract.address)
   }
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);

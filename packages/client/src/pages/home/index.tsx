@@ -231,8 +231,8 @@ const Home = () => {
 
   const play = () => {
     let curPlayer = localStorage.getItem('curPlayer') || null;
-
-    if (curPlayer) {
+    let worldContractAddress = localStorage.getItem('worldContractAddress') || null;
+    if (curPlayer && curPlayer.addr == network.account && worldContractAddress == network.worldContract.address) {
       curPlayer = JSON.parse(curPlayer);
       // to /game
       navigate('/game', {
@@ -245,6 +245,8 @@ const Home = () => {
       });
       return;
     } else {
+      localStorage.removeItem('curPlayer');
+      localStorage.removeItem('worldContractAddress');
       createWallet();
     }
   }
