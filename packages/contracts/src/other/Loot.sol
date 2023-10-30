@@ -252,8 +252,22 @@ contract MLoot is Suit, ERC721,MRandom {
             loot.Ring
         );
     }
-    
-     function getUserTokenIdList() view external returns(uint256[] memory){
+    function getStructIndexInfo(uint256 _tokenId) external view returns(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256){
+        Loot memory loot = lootList[_tokenId];
+        require(loot.state == RandomState.Confirmed,"User not exists");
+        return(
+            indexOf(weapons,loot.Weapon),
+            indexOf(chestArmor,loot.Chest),
+            indexOf(headArmor,loot.Head),
+            indexOf(waistArmor,loot.Waist),
+            indexOf(footArmor,loot.Foot),
+            indexOf(handArmor,loot.Hand),
+            indexOf(necklaces,loot.Neck),
+            indexOf(rings,loot.Ring)
+        );
+    }
+
+    function getUserTokenIdList() view external returns(uint256[] memory){
         uint256 balance = balanceOf(msg.sender);
         uint256[] memory tokenIds = new uint256[](balance);
         uint256 index;
@@ -267,5 +281,17 @@ contract MLoot is Suit, ERC721,MRandom {
             }
         }
         return tokenIds;
+    }
+
+    function indexOf(string[] memory _list,string memory _name) internal pure returns(uint256){
+        uint256 r;
+        require(_list.length > 0,"list is empty");
+        for(uint256 i;i<_list.length;i++){
+            if(keccak256(abi.encodePacked(_list[i])) == keccak256(abi.encodePacked(_name))){
+                r = i;
+                break;
+            }
+        }
+        return r;
     }
 }
