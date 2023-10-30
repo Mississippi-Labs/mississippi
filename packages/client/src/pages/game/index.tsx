@@ -210,8 +210,8 @@ const Game = () => {
   const setStartBattle = async (player) => {
     console.log(player)
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
-    // await battleInvitation(player.addr, formatMovePath(paths));
-    // console.log(formatMovePath(paths))
+    await battleInvitation(player.addr, formatMovePath(paths));
+    console.log(formatMovePath(paths))
     setTargetPlayer(player);
     setStartBattleData(true);
   }
