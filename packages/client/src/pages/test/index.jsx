@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { Has, getComponentValue } from '@latticexyz/recs';
@@ -9,6 +9,9 @@ import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { getRandomStr } from '../../utils/utils';
 import './index.scss';
+import { bfs, simplifyMapData } from '@/utils/map';
+import useMerkel from '@/hooks/useMerkel';
+import { loadMapData } from "@/utils";
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
@@ -28,6 +31,7 @@ const Test = () => {
   const [revealNFTData, setRevealNFTData] = useState('');
   const [nftListData, setNftListData] = useState([]);
   const [walletBalance, setWalletBalance] = useState('');
+  const [renderMapData, setRenderMapData] = useState([]);
 
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
@@ -36,7 +40,20 @@ const Test = () => {
   } = useMUD();
 
   const { account } = network;
-  console.log(network, 'account')
+
+  const simpleMapData = useMemo(() => {
+    return simplifyMapData(renderMapData);
+  }, [renderMapData]);
+
+  const formatMovePath = useMerkel(simpleMapData);
+
+  useEffect(() => {
+    loadMapData().then((csv) => {
+      setRenderMapData(csv);
+      mapDataRef.current = csv;
+    });
+  }, []);
+
 
   // 转账函数
   const transferFun = async (to) => {
@@ -107,7 +124,7 @@ const Test = () => {
     console.log(battle, 'battle', id, entity)
     battle.id = id.battleId.toString()
     return battle;
-  });
+  }).filter(e => !e.isEnd)
   console.log(battles, 'battles')
 
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
@@ -224,8 +241,8 @@ const Test = () => {
     let player = players.find(item => item.isMe);
     let from = {x: player.x, y: player.y}
     let to = {x: stepData[0], y: stepData[1]}
-    let { merkelData } = main(from, to);
-    move(merkelData);
+    const paths = bfs(simpleMapData, from, to).slice(1);
+    move(formatMovePath(paths));
   }
 
   const transferPlayer = () => {
@@ -241,7 +258,8 @@ const Test = () => {
       let player = players.find(item => item.isMe);
       let from = {x: player.x, y: player.y}
       let to = {x: battleData[0], y: battleData[1]}
-      let merkelData = main(from, to);
+      const paths = bfs(simpleMapData, from, to).slice(1);
+      let merkelData = formatMovePath(paths)
       battleInvitation(tragePlayer.addr, merkelData);
     }
   }

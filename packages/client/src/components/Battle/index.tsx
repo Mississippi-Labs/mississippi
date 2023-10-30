@@ -84,11 +84,15 @@ export default function Battle(props) {
       if (battle) {
         if (!battleData.curHp || !battleData.targetHp) {
           let data = {
-            curHp: props.curPlayer.addr == battle.attacker ? battle.attackerHP : battle.defenderHP,
-            targetHp: props.targetPlayer.addr == battle.attacker ? battle.attackerHP : battle.defenderHP,
+            attackerHP: battle.attackerHP.toString(),
+            defenderHP: battle.defenderHP.toString(),
+            attacker: battle.attacker.toLocaleLowerCase(),
+            defender: battle.defender.toLocaleLowerCase(),
           }
+          console.log(data, props.curPlayer.addr, props.targetPlayer.addr)
           setBattleData(data)
         }
+        console.log(battleData, battle)
         if (battleState == 3) {
           let data = battleData
           let battle1 = document.querySelector('.battle-1');
@@ -98,18 +102,18 @@ export default function Battle(props) {
             setTimeout(() => {
               battle1.classList.remove('attack');
               battle2.classList.add('back');
-              let targetHp = props.curPlayer.addr == battle.attacker ? battle.attackerHP : battle.defenderHP
-              setPlayer2LossData(Number(data.targetHp) - Number(targetHp))
-              data.targetHp = targetHp
+              let defenderHP = battle.defenderHP
+              setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
+              data.defenderHP = defenderHP
               setBattleData(data)
               setTimeout(() => {
                 battle2.classList.remove('back');
                 setPlayer2LossData(0);
                 // console.log(player2ResidualData)
-                if (targetHp <= 0) {
+                if (defenderHP <= 0 || battle.isEnd) {
                   setConfirmBattleData([]);
                   setConfirmBattle2Data([]);
-                  setTimeout(() => {props.finishBattle(1);}, 600)
+                  setTimeout(() => {props.finishBattle(battle.winner);}, 600)
                   return
                 }
                 setTimeout(() => {
@@ -117,16 +121,15 @@ export default function Battle(props) {
                   setTimeout(() => {
                     battle2.classList.remove('attack');
                     battle1.classList.add('back');
-                    let curHp = props.targetPlayer.addr == battle.attacker ? battle.attackerHP : battle.defenderHP
-                    setPlayer1LossData(Number(data.curHp) - Number(curHp))
-                    data.curHp = curHp
+                    let attackerHP = battle.attackerHP
+                    setPlayer1LossData(Number(data.attackerHP) - Number(attackerHP))
+                    data.attackerHP = attackerHP
                     setBattleData(data)
-                    if (curHp <= 0) {
+                    if (attackerHP <= 0 || battle.isEnd) {
                       setPlayer1ResidualData(0);
                       setConfirmBattleData([]);
                       setConfirmBattle2Data([]);
-                      props.finishBattle(2);
-                      setTimeout(() => {props.finishBattle(1);}, 200)
+                      setTimeout(() => {props.finishBattle(battle.winner);}, 600)
                       return
                     }
                     setTimeout(() => {
@@ -169,7 +172,7 @@ export default function Battle(props) {
 
   const confirmBattleFun = () => {
     if (battleState != 0) return
-      let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase()) && !item.isEnd)[0]
+      let battle:any = battles.filter((item:any) => (item?.attacker?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item?.defender?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
       console.log(battle)
       let action = confirmBattleData[0]
       let arg = confirmBattleData[1]
@@ -210,14 +213,6 @@ export default function Battle(props) {
             <div className="mi-battle-character">
               <div className="mi-battle-character-card battle-1" style={{ marginLeft: '90px' }}>
                 <div className="mi-battle-character-card-hp">
-                  {
-                    confirmBattleData.length && confirmBattleData[0] ? (
-                      <div className="confirm-info">
-                        <img src={confirmBattleData[0]} alt="" />
-                        <img src={confirmBattleData[1]} alt="" />
-                      </div>
-                    ) : ''
-                  }
                   <div
                     className="hp"
                     style={{
@@ -226,7 +221,7 @@ export default function Battle(props) {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       background: "#FF6161",
-                      width: Math.floor(152 * (Number(battleData.curHp) / Number(props.curPlayer.maxHp))) + 'px',
+                      width: Math.floor(152 * (Number(battleData?.attackerHP) / Number(props?.curPlayer?.addr == battleData?.attacker ? props?.curPlayer?.maxHp : props?.targetPlayer?.maxHp))) + 'px',
                       height: "22px",
                     }}
                   ></div>
@@ -234,7 +229,9 @@ export default function Battle(props) {
                     player1LossData ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <Appearance {...props.curPlayer.equip} />
+                {
+                  props?.curPlayer?.addr == battleData.attacker ? <Appearance {...props?.curPlayer?.equip} /> : <Appearance {...props?.targetPlayer?.equip} />
+                }
                 {/* <img
                   src={duck}
                   style={{
@@ -261,7 +258,7 @@ export default function Battle(props) {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       background: "#FF6161",
-                      width: Math.floor(152 * (Number(battleData.targetHp) / Number(props.targetPlayer.maxHp))) + 'px',
+                      width: Math.floor(152 * (Number(battleData.defenderHP) / Number(props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.maxHp : props?.targetPlayer?.maxHp))) + 'px',
                       height: "22px",
                     }}
                   ></div>
@@ -269,15 +266,17 @@ export default function Battle(props) {
                     player2LossData ? <div className="hp-loss">-{(player2LossData).toFixed(0)}</div> : null
                   }
                 </div>
-                <Appearance {...props.targetPlayer.equip} />
+                {
+                  props?.curPlayer?.addr == battleData.defender ? <Appearance {...props?.curPlayer?.equip} /> : <Appearance {...props?.targetPlayer?.equip} />
+                }
               </div>
               <div className="mi-battle-character-info">
                 <div className="character-info self">
-                  <div>HP : {battleData.curHp}/100</div>
+                  <div>HP : {battleData.attackerHP}/{props?.curPlayer?.addr == battleData.attacker ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
                   <div>ATK : 20</div>
                 </div>
                 <div className="character-info opponent">
-                  <div>HP : {battleData.targetHp}/100</div>
+                  <div>HP : {battleData.defenderHP}/{props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
                   <div>ATK : 20</div>
                 </div>
               </div>

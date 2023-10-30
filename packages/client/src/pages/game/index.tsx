@@ -7,6 +7,7 @@ import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
 import { useLocation } from "react-router-dom";
+import { message } from 'antd';
 import "./styles.scss";
 import Rank from "@/components/Rank";
 import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
@@ -45,6 +46,7 @@ const Game = () => {
   const formatMovePath = useMerkel(simpleMapData);
 
   const [targetPlayer, setTargetPlayer] = useState(null);
+  const [battleCurPlayer, setBattleCurPlayer] = useState(null);
   const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
 
   const [startBattleData, setStartBattleData] = useState(false);
@@ -79,10 +81,33 @@ const Game = () => {
       player.username = username;
     }
     return player;
-  });
+  }).filter(e => e.state != 1);
+  console.log(players, 'players')
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
 
+  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
+    let id = decodeEntity({ battleId: "uint256" }, entity);
+    let battle:any = getComponentValue(BattleList, entity)
+    battle.id = id.battleId.toString()
+    return battle;
+  });
+
+  if (battles.length && !startBattleData) {
+    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+    if (battle) {
+      let targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
+      let target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+      if (!battleCurPlayer) {
+        setBattleCurPlayer(curPlayer)
+      }
+      if (!targetPlayer) {
+        setTargetPlayer(target)
+      }
+      setStartBattleData(true);
+    }
+  }
+  
   const getCollectionsFun = (box: any) => {
     setContent(
       <div className={'mi-modal-content-wrapper'}>
@@ -112,8 +137,6 @@ const Game = () => {
     return box;
   });
 
-  const treasureChest = boxs.filter((item) => !item.opened);
-
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
@@ -132,25 +155,13 @@ const Game = () => {
   const finishBattle = (e: any) => {
     console.log(e);
     setStartBattleData(false);
-    if (e == 1) {
+    if (e.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       console.log('win');
-      let treasureChestData = treasureChest
-      console.log(treasureChestData, treasureChestData[treasureChestData.length - 1]);
-      let item = {
-        id: treasureChestData.length ? treasureChestData[treasureChestData.length - 1].id + 1 : 1,
-        x: targetPlayer.x,
-        y: targetPlayer.y,
-        gem: targetPlayer.gem
-      }
-      treasureChestData.push(item)
-      let targetPlayerIndex = players.findIndex((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
-      players.splice(targetPlayerIndex, 1);
-      setTreasureChest([...treasureChestData]);
-      // setPlayers([...players]);
-      // getWinTreasureChest(targetPlayer.gem)
+      message.success('You win the battle');
       setTargetPlayer(null);
-    } else if (e == 2) {
+    } else {
       console.log('lose');
+      message.error('You lose the battle');
     }
   }
 
@@ -197,7 +208,6 @@ const Game = () => {
               <button className="mi-btn" onClick={() => {
                 close();
                 curPlayer.gem = 0;
-                setPlayers([...players]);
               }}>OK</button>
             </div>
           </div>
@@ -218,10 +228,19 @@ const Game = () => {
 
   const openTreasureChest = async (id) => {
     console.log(id);
-    const targetIndex = treasureChest.findIndex(item => item.id === id);
-    treasureChest[targetIndex].opening = true;
+    const boxIndex = boxs.findIndex(item => item.id === id);
+    let box = boxs[boxIndex]
+    if (box.opened) {
+      if (box.owner.toLocaleLowerCase() != account.toLocaleLowerCase()) {
+        message.error('The treasure chest has been opened by others');
+        return
+      } else {
+        getCollectionsFun(box);
+        return
+      }
+    } 
+    boxs[boxIndex].opening = true;
     await openBox(id);
-    
     let blockNumber = await network.publicClient.getBlockNumber()
     // 每隔1s获取一次getBlockNumber
     let interval = setInterval(async () => {
@@ -230,36 +249,10 @@ const Game = () => {
       if (currentBlockNumber - blockNumber >= 2) {
         clearInterval(interval)
         await revealBox(id)
-
         boxId = id
       }
     }, 1000)
   }
-
-  const getWinTreasureChest = (gem = 1) => {
-    curPlayer.gem += gem;
-    const targetPlayerData = players.find((item) => item.x === targetPlayer.x && item.y === targetPlayer.y);
-    targetPlayerData.gem -= gem;
-    setPlayers([...players]);
-    setContent(
-      <div className={'mi-modal-content-wrapper'}>
-        <div className="mi-modal-content">
-          Congrats,you got {gem} gems!
-
-          <div className="mi-treasure-chest-wrapper">
-            <TreasureChest/>
-          </div>
-        </div>
-        <div className="mi-modal-footer">
-          <button className="mi-btn" onClick={close}>OK</button>
-        </div>
-      </div>
-    );
-    open();
-  }
-
-
-
 
   return (
     <GameContext.Provider
@@ -269,10 +262,9 @@ const Game = () => {
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         showUserInfo,
-        treasureChest,
+        treasureChest: boxs,
         openTreasureChest,
-        setStartBattle,
-        getWinTreasureChest
+        setStartBattle
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -296,7 +288,7 @@ const Game = () => {
           vertexCoordinate={vertexCoordinate}
         />
         {
-          startBattleData ? <Battle curPlayer={curPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
         <div className="opt-wrapper">
           <button className="mi-btn">Rank</button>
