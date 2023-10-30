@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles.scss';
-import userImg from '@/assets/img/duck_default.png';
 import { PlayerToward } from '@/components/Player';
 
 interface IProps {
@@ -16,15 +15,15 @@ const Appearance = (props: IProps) => {
 
   return (
     <div className={`mi-appearance-wrapper ${toward === 'Right' ? 'appearance-right' : ''}`}>
-      <img src={'/src/assets/img/duck_default.png'} alt="" className={'user-appearance'}/>
+      <img src={'/assets/img/duck/default.png'} alt="" className={'user-appearance'}/>
       {
-        clothes && <img src={`/src/assets/img/duck/Clothes/${clothes}.png`} alt=""/>
+        clothes && <img src={`/assets/img/duck/Clothes/${clothes}.png`} alt=""/>
       }
       {
-        handheld && <img src={`/src/assets/img/duck/Handheld/${handheld}.png`} alt=""/>
+        handheld && <img src={`/assets/img/duck/Handheld/${handheld}.png`} alt=""/>
       }
       {
-        head && <img src={`/src/assets/img/duck/Head/${head}.png`} alt=""/>
+        head && <img src={`/assets/img/duck/Head/${head}.png`} alt=""/>
       }
     </div>
   );
