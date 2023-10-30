@@ -20,8 +20,19 @@ export function createSystemCalls(
 
   const move = async (steps: any) => {
     console.log(worldContract)
-    const tx = await worldContract.write.move([steps]);
-    await waitForTransaction(tx);
+    try {
+      const tx = await worldContract.write.move([steps]);
+      await waitForTransaction(tx);
+      return {
+        type: 'success'
+      }
+    } catch (error) {
+      return {
+        type: 'error',
+        message: error.cause.reason
+      }
+    }
+    
     // return getComponentValue(Player, singletonEntity);
   };
 

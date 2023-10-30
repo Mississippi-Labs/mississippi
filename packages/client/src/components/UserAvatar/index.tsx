@@ -12,11 +12,13 @@ interface IProps {
   ap: number;
   maxAp: number;
   roomId: string;
+  address: string;
+  balance: string;
 }
 
 const UserAvatar = (props: IProps) => {
 
-  const { avatar, username = 'user', hp, maxHp, ap, maxAp, roomId } = props;
+  const { avatar, username = 'user', hp, maxHp, ap, maxAp, roomId, address, balance } = props;
 
   return (
     <div className="mi-c-user-avatar">
@@ -24,7 +26,7 @@ const UserAvatar = (props: IProps) => {
         <Appearance {...props}/>
       </div>
 
-      <UserAddress address={'0x12324b4in4lkn2424124421'} account={'0.1ETH'}/>
+      <UserAddress address={address} account={balance + 'ETH'}/>
       {/*<div className="hp-wrapper">*/}
       {/*  <div className="hp" style={{ width: `${hp / maxHp * 100}%` }}/>*/}
       {/*</div>*/}

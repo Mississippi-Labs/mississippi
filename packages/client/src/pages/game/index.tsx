@@ -23,8 +23,15 @@ import { updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
+import { ethers } from 'ethers';
 
 let boxId = ''
+
+const toObject = (obj) => {
+  return JSON.parse(JSON.stringify(obj, (key, value) =>
+    typeof value === 'bigint' ? value.toString() : value
+  ));
+}
 
 const Game = () => {
   const {
@@ -51,6 +58,7 @@ const Game = () => {
 
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
+  const [balance, setBalance] = useState(0);
 
   const { account } = network;
   const curId = account;
@@ -97,6 +105,10 @@ const Game = () => {
   console.log(players, 'players')
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  if (curPlayer && curPlayer.addr) {
+    console.log(curPlayer, 'curPlayer')
+    localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
+  }
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle:any = getComponentValue(BattleList, entity)
@@ -148,11 +160,21 @@ const Game = () => {
     return box;
   });
 
+  const getBalance = async () => {
+    let balance = await network.publicClient.getBalance({
+      address: network.walletClient.account.address
+    })
+    // 转成eth
+    let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
+    setBalance(walletBalance);  
+  }
+
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
+    getBalance()
   }, []);
 
   useEffect(() => {
@@ -176,7 +198,7 @@ const Game = () => {
     }
   }
 
-  const movePlayer = (paths, merkelData) => {
+  const movePlayer = async (paths, merkelData) => {
     clearInterval(moveInterval.current);
     let pathIndex = 0;
     moveInterval.current = setInterval(() => {
@@ -193,7 +215,10 @@ const Game = () => {
         }
       }
     }, 300);
-    move(merkelData);
+    let result = await move(merkelData);
+    if (result.type === 'error') {
+      message.error(result.message);
+    }
   };
 
   const showUserInfo = (player) => {
@@ -282,14 +307,16 @@ const Game = () => {
       <div className="mi-game" tabIndex={0}>
         <div className="mi-game-user-avatar">
           <UserAvatar
-            username={username}
-            hp={100}
-            maxHp={120}
+            username={curPlayer?.username}
+            hp={curPlayer?.hp}
+            maxHp={curPlayer?.maxHp}
             ap={50}
             maxAp={100}
-            clothes={clothes}
-            handheld={handheld}
-            head={head}
+            clothes={curPlayer?.equip?.clothes}
+            handheld={curPlayer?.equip?.handheld}
+            head={curPlayer?.equip?.head}
+            address={account}
+            balance={balance}
           />
         </div>
 

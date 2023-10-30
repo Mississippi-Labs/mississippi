@@ -45,7 +45,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    
+    getBalance()
     // const address = localStorage.getItem(UserAddressKey);
     // if (address) {
     //   setWalletAddress(address);
@@ -114,7 +114,6 @@ const Home = () => {
       return;
     }
     setUsername(usernameRef.current.value);
-    await getBalance()
     close();
     setStep('mint');
   }
@@ -231,7 +230,23 @@ const Home = () => {
   }
 
   const play = () => {
-    createWallet();
+    let curPlayer = localStorage.getItem('curPlayer') || null;
+
+    if (curPlayer) {
+      curPlayer = JSON.parse(curPlayer);
+      // to /game
+      navigate('/game', {
+        state: {
+          username: curPlayer.username,
+          clothes: curPlayer.equip.clothes,
+          handheld: curPlayer.equip.handheld,
+          head: curPlayer.equip.head,
+        }
+      });
+      return;
+    } else {
+      createWallet();
+    }
   }
 
   const getBalance = async () => {
