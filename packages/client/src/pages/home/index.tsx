@@ -128,19 +128,22 @@ const Home = () => {
         message.success('Mint Loot Success');
         let tokenIds = await lootContract.getUserTokenIdList()
         let tokenId = tokenIds[tokenIds.length - 1].toString()
+        console.log(tokenId, 'tokenId')
         // 获取当前getBlockNumber
         let blockNumber = await network.publicClient.getBlockNumber()
+        console.log(blockNumber, new Date().getTime())
         // 每隔1s获取一次getBlockNumber
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber >= 2) {
+          console.log(currentBlockNumber, blockNumber, new Date().getTime())
+          if (currentBlockNumber - blockNumber > 2) {
             clearInterval(interval)
             let t = await lootContract.revealNFT(tokenId)
             await t.wait()
             message.success('reveal Loot Success');
             resolve('success')
           }
-        }, 1000)
+        }, 2000)
       } catch (error) {
         console.log(error)
         reject(error)
@@ -181,6 +184,7 @@ const Home = () => {
   const atobUrl = (url) => {
     url = url.replace('data:application/json;base64,', '')
     url = atob(url)
+    console.log(url, 'url')
     url = JSON.parse(url)
     return url
   }
@@ -195,9 +199,9 @@ const Home = () => {
     await mintLoot()
 
     let tokenIds = await userContract.getUserTokenIdList()
-    let tokenId = tokenIds[0].toString()
+    let tokenId = tokenIds[tokenIds.length - 1].toString()
     let lootTokenIds = await lootContract.getUserTokenIdList()
-    let lootTokenId = lootTokenIds[0].toString()
+    let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
     let url = await userContract.tokenURI(tokenId)
     let lootUrl = await lootContract.tokenURI(lootTokenId)
     

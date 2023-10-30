@@ -28,7 +28,7 @@ let boxId = ''
 
 const Game = () => {
   const {
-    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
+    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation },
     network,
   } = useMUD();
@@ -67,6 +67,18 @@ const Game = () => {
     handheld,
     head,
   } = location.state ?? {};
+
+  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
+    const loot = getComponentValue(LootList1, entity);
+    return loot;
+  })
+
+  const LootList2Data = useEntityQuery([Has(LootList2)]).map((entity) => {
+    const loot = getComponentValue(LootList2, entity);
+    return loot;
+  })
+
+  console.log(LootList1Data, LootList2Data, 'LootList1Data')
 
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
@@ -290,13 +302,6 @@ const Game = () => {
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
-        <div className="opt-wrapper">
-          <button className="mi-btn">Rank</button>
-          <button className="mi-btn">Help</button>
-          <button className="mi-btn" onClick={() => {
-            showUserInfo(curPlayer);
-          }}>Info</button>
-        </div>
         {
           userInfoVisible && (
             <UserInfoDialog
