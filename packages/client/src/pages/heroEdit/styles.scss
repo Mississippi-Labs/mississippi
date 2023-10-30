@@ -1,3 +1,10 @@
+$head: 'DarkElf', 'Demigod', 'Demon', 'Elf', 'FireLizard', 'Furry', 'Goblin' ,'Human' ,'HumanShadow' ,'Lizard' ,'Merman' ,'Orc' ,'Skeleton' ,'Vampire' ,'Werewolf' ,'ZombieA' ,'ZombieB';
+
+$size: 64px;
+$offsetY: 32px;
+
+$actions: idle ready run jump jab slash shot climb die crawl push block;
+
 .mi-hero-page {
     display: flex;
     justify-content: center;
@@ -5,11 +12,24 @@
     width: 100vw;
     height: 100vh;
 
+    .select-wrap {
+        select {
+            //display: block;
+        }
+    }
+
+    .hero-preview-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 256px;
+        height: 256px;
+    }
     .hero-preview {
         position: relative;
         width: 64px;
         height: 64px;
-        background: #fff;
+        transform: scale(4);
 
         .hero-comp {
             position: absolute;
@@ -17,19 +37,102 @@
             top: 0;
             width: 100%;
             height: 100%;
+
+            image-rendering: pixelated;
+
+            background-repeat: no-repeat;
+
+            animation-duration: 1s;
+            animation-timing-function: steps(1, end);
+            animation-iteration-count: infinite;
+
+
         }
 
-        .HEAD {
-            background-image: url("../../assets/img/hero/Head/Human.png");
-            //background-origin: 64px 832px;
+        &.action-block .Shield{
+            z-index: 1;
+        }
+
+        @each $action in $actions {
+            &.action-#{$action} .hero-comp {
+                animation-name: $action;
+            }
         }
     }
 
+}
 
-    canvas, img {
-        image-rendering: optimizeSpeed;
-        image-rendering: -moz-crisp-edges;
-        image-rendering: pixelated;
-        -ms-interpolation-mode: nearest-neighbor;
+@mixin keyframes($name, $step, $col) {
+    @keyframes #{$name} {
+        0% {
+            background-position: 0 #{$size * -$col - $offsetY};
+        }
+
+        @if ($step == 1) {
+            50% {
+                background-position: #{$size * -1} #{$size * -$col - $offsetY};
+            }
+        } @else if ($step == 2) {
+            33.33% {
+                background-position: #{$size * -1} #{$size * -$col - $offsetY};
+            }
+
+            66.66% {
+                background-position: #{$size * -2} #{$size * -$col - $offsetY};
+            }
+        } @else {
+            25% {
+                background-position: #{$size * -1} #{$size * -$col - $offsetY};
+            }
+
+            50% {
+                background-position: #{$size * -2} #{$size * -$col - $offsetY};
+            }
+
+            75% {
+                background-position: #{$size * -3} #{$size * -$col - $offsetY};
+            }
+        }
+
+
+        100% {
+            background-position: 0 #{$size * -$col - $offsetY};
+        }
     }
 }
+
+@include keyframes(idle, 1, 0);
+@include keyframes(ready, 1, 1);
+@include keyframes(run, 3, 2);
+@include keyframes(crawl, 3, 3);
+@include keyframes(climb, 1, 4);
+@include keyframes(jump, 2, 5);
+@include keyframes(push, 2, 6);
+@include keyframes(jab, 2, 7);
+@include keyframes(slash, 3, 8);
+@include keyframes(block, 1, 12);
+@include keyframes(die, 2, 13);
+
+
+@keyframes shot {
+    0% {
+        background-position: 0 #{$size * -5};
+    }
+
+    25% {
+        background-position: #{$size * -1} #{$size * -5};
+    }
+
+    50% {
+        background-position: #{$size * -2} #{$size * -5};
+    }
+
+    75% {
+        background-position: #{$size * -3} #{$size * -5};
+    }
+
+    100% {
+        background-position: 0 #{$size * -5};
+    }
+}
+

@@ -1,33 +1,79 @@
-import React, { useEffect } from 'react';
-import imgSrc from '@/assets/img/hero/Hair/Hair2.png'
+import React, { useEffect, useState } from 'react';
+import { Hero } from '@/config/hero';
 import './styles.scss';
 
-const HeroComps = ['HEAD', 'EARS', 'BODY', 'EYES', 'MASK', 'HAIR', 'ARMOR', 'HELMET', 'WEAPON', 'SHIELD', 'CAPE', 'BACK'];
+const HeroComps = ['Back', 'Cape', 'Shield', 'Head', 'Ears', 'Body', 'Eyes', 'Mask', 'Hair', 'Armor', 'Helmet', 'Weapon'];
+const Actions = ['idle', 'ready', 'run', 'jump', 'jab', 'slash', 'shot', 'climb', 'die', 'crawl', 'block'];
 
 const HeroEdit = () => {
 
+  const [appearance, setAppearance] = useState({});
+  const [heroAction, setHeroActions] = useState(Actions[0]);
+
   useEffect(() => {
-    const c = document.querySelector('canvas');
-    const img = document.querySelector('img');
-    const ctx = c.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
-    setTimeout(() => {
-      ctx.scale(8,8)
-      ctx.drawImage(img, 0, 0);
-    }, 2000)
-    // ctx.
-  }, [])
+    HeroComps.forEach((comp) => {
+      appearance[comp] = Hero[comp][0];
+    });
+
+    setAppearance({...appearance});
+  }, []);
+
   return (
     <div className={'mi-hero-page'}>
-      {/*<div className="hero-preview">*/}
-      {/*  {*/}
-      {/*    HeroComps.map((comp) => {*/}
-      {/*      return <div className={`hero-comp ${comp}`} key={comp}/>*/}
-      {/*    })*/}
-      {/*  }*/}
-      {/*</div>*/}
-      <img src={imgSrc} alt="" width={768}/>
-      <canvas width={512} height={512}/>
+      <div className="actions">
+        <select
+          onChange={(e) => {
+            setHeroActions(e.target.value);
+          }}
+        >
+          {
+            Actions.map(action => <option value={action} key={action}>{action}</option>)
+          }
+        </select>
+        <img src={'/assets/img/duck/default.png'} alt="" className={'user-appearance'}/>
+      </div>
+      <div className="hero-preview-wrap">
+        <div className={`hero-preview action-${heroAction}`}>
+          {
+            HeroComps.map((comp) => {
+              return (
+                <div
+                  className={`hero-comp ${comp}`}
+                  key={comp}
+                  style={{
+                    backgroundImage: appearance[comp] ? `url("/src/assets/img/hero/${comp}/${appearance[comp]}.png")` : 'none'
+                  }}
+                />
+              )
+            })
+          }
+        </div>
+      </div>
+
+      <div className="select-wrap">
+        {
+          HeroComps.map((key) => {
+            return (
+              <div>
+                <label htmlFor="">{key}: </label>
+                <select
+                  name=""
+                  id=""
+                  key={key}
+                  onChange={(e) => {
+                    appearance[key] = e.target.value;
+                    setAppearance({ ...appearance });
+                  }}
+                >
+                  {
+                    Hero[key].map((item) => <option value={item} key={item}>{item}</option>)
+                  }
+                </select>
+              </div>
+            )
+          })
+        }
+      </div>
     </div>
   );
 };
