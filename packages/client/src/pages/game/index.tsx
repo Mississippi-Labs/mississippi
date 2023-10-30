@@ -85,7 +85,6 @@ const Game = () => {
   console.log(players, 'players')
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle:any = getComponentValue(BattleList, entity)
@@ -223,6 +222,7 @@ const Game = () => {
     await battleInvitation(player.addr, formatMovePath(paths));
     console.log(formatMovePath(paths))
     setTargetPlayer(player);
+    setBattleCurPlayer(curPlayer)
     setStartBattleData(true);
   }
 

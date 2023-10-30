@@ -195,9 +195,9 @@ const Home = () => {
     await mintLoot()
 
     let tokenIds = await userContract.getUserTokenIdList()
-    let tokenId = tokenIds[tokenIds.length - 1].toString()
+    let tokenId = tokenIds[0].toString()
     let lootTokenIds = await lootContract.getUserTokenIdList()
-    let lootTokenId = tokenIds[lootTokenIds.length - 1].toString()
+    let lootTokenId = lootTokenIds[0].toString()
     let url = await userContract.tokenURI(tokenId)
     let lootUrl = await lootContract.tokenURI(lootTokenId)
     
