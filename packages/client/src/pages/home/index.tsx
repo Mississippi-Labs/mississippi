@@ -191,19 +191,13 @@ const Home = () => {
     const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
 
     setMinting(true);
+    await mintUser();
+    await mintLoot()
 
     let tokenIds = await userContract.getUserTokenIdList()
-    let lootTokenIds = await lootContract.getUserTokenIdList()
-    if (!tokenIds && !tokenIds.length) {
-      await mintUser();
-      tokenIds = await userContract.getUserTokenIdList()
-    }
-    if (!lootTokenIds && !lootTokenIds.length) {
-      await mintLoot();
-      lootTokenIds = await lootContract.getUserTokenIdList()
-    }
-    let lootTokenId = lootTokenIds[0].toString()
     let tokenId = tokenIds[0].toString()
+    let lootTokenIds = await lootContract.getUserTokenIdList()
+    let lootTokenId = lootTokenIds[0].toString()
     let url = await userContract.tokenURI(tokenId)
     let lootUrl = await lootContract.tokenURI(lootTokenId)
     
@@ -230,8 +224,6 @@ const Home = () => {
         }
       });
     })
-
-
   }
 
   const play = () => {
