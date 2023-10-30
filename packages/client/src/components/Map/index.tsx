@@ -6,6 +6,7 @@ import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ITreasureChest } from '@/components/TreasureChest';
 import GameContext from '@/context';
+import { main } from '../../utils/createMerkelTree';
 
 interface IProps {
   width: number;
@@ -57,9 +58,21 @@ const Map = (props: IProps) => {
   const cellClassCache = useRef<ICellClassCache>({});
 
   const onMoveTo = (coordinate) => {
-    const { x, y} = players.find((player) => player.id === curId);
+    console.log(players, coordinate, 'onMoveTo', curId)
+    const { x, y} = players.find((player) => player.addr.toLocaleLowerCase() === curId.toLocaleLowerCase());
     const paths = bfs(simpleMapData, { x, y }, coordinate).slice(1);
     onPlayerMove(paths, formatMovePath(paths));
+    // 全是1的地图
+    // const player = players.find((e) => e.addr.toLocaleLowerCase() === curId.toLocaleLowerCase());
+    // let from = {x: player.x, y: player.y}
+    // let to = coordinate
+    // let map_info = [];
+    // let line = Array.from({ length: 100 }, () => 1);
+    // for (let i = 0; i < 10; i++) {
+    //   map_info.push(line);
+    // }
+    // let {merkelData, paths} = main(from, to);
+    // onPlayerMove(paths, merkelData);
   }
 
 

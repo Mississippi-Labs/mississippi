@@ -9,8 +9,8 @@ import { GAME_CONFIG_KEY } from "../src/Constants.sol";
 library GameConfigInit {
     function initGameConfig(IWorld _world) internal {
         console.log(" ========= initGameConfig");
-        // bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
-        bytes32 merkleRoot = 0xa969691ad8c2e97e3d516e08f5b10ee4decd5f278a5f03ac4fa3532be181c854;
+        bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
+        // bytes32 merkleRoot = 0xa969691ad8c2e97e3d516e08f5b10ee4decd5f278a5f03ac4fa3532be181c854;
         GameConfig.set(
             _world,
             GAME_CONFIG_KEY, //key

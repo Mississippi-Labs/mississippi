@@ -70,7 +70,7 @@ export const main = (from, to) => {
   console.log("总移动步数", steps_arr.length);
   let steps_list = move(steps_arr);
   console.log("生成的传入文件", steps_list);
-  return steps_list
+  return {merkelData: steps_list, paths: steps}
 }
 
 

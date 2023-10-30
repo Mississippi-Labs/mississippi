@@ -23,7 +23,7 @@ function useModal(config = { title: '' }) {
       <Modal
         {...config}
         className="mi-modal"
-        visible={visible}
+        open={visible}
         onCancel={close}
         footer={null}
       >

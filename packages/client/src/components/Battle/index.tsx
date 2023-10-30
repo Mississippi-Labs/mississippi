@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import duck from "@/assets/img/DarkDuck.svg";
 import info from "@/assets/img/battle/info.png";
 import attackButton from "@/assets/img/battle/attack-button.png";
@@ -18,100 +18,192 @@ import button5 from "@/assets/img/battle/Button5.png";
 import btnBg from "@/assets/img/battle/btn-bg.svg";
 import Appearance from '@/components/Appearance';
 import "./styles.scss";
+import { useEntityQuery } from "@latticexyz/react";
+import { Has, getComponentValue } from '@latticexyz/recs';
+import { useMUD } from '@/mud/MUDContext';
+import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { getRandomStr } from '@/utils/utils';
+import { ethers } from 'ethers';
+import { solidityKeccak256 } from 'ethers/lib/utils';
+import { message } from 'antd';
 
 export default function Battle(props) {
+  console.log(props)
+  const [nonceHex, setNonceHex] = useState('');
   const [selectActionData, setSelectActionData] = useState('');
   const [selectTacticData, setSelectTacticData] = useState('');
-  const [player2LossData, setPlayer2LossData] = useState(0);
-  const [player1LossData, setPlayer1LossData] = useState(0);
   const [confirmBattleData, setConfirmBattleData] = useState([]);
   const [confirmBattle2Data, setConfirmBattle2Data] = useState([]);
+  const [battleData, setBattleData] = useState({});
+  const [battlesId, setBattlesId] = useState(null);
+  const [battleState, setBattleState] = useState(0);
+  const [player2LossData, setPlayer2LossData] = useState(0);
+  const [player1LossData, setPlayer1LossData] = useState(0);
 
-  const [player2ResidualData, setPlayer2ResidualData] = useState(1);
-  const [player1ResidualData, setPlayer1ResidualData] = useState(1);
+  const {
+    components: { BattleList },
+    systemCalls: { confirmBattle, revealBattle },
+    network
+  } = useMUD();
 
-  const [roundData, setRoundData] = useState(1);
-
-  const setSelectAction = (img: any) => {
-    setSelectActionData(img);
+  const nonce = getRandomStr(18)
+  if (!nonceHex) {
+    setNonceHex(ethers.utils.formatBytes32String(nonce));
   }
-  const setSelectTactic = (img: any) => {
-    setSelectTacticData(img);
-  }
-  const confirmBattle = () => {
-    //battle-1
-    let battle1 = document.querySelector('.battle-1');
-    let battle2 = document.querySelector('.battle-2');
-    setConfirmBattleData([selectActionData, selectTacticData])
-    let scale1 = 0
-    let scale2 = 0
-    if (roundData == 1) {
-      setConfirmBattle2Data([attackButton, rock])
-      scale1 = 0.4
-      scale2 = 0.4
-    }
-    if (roundData == 2) {
-      setConfirmBattle2Data([attackButton, scissors])
-      scale1 = 0.2
-      scale2 = 0.0001
-    }
-    if (roundData == 3) {
-      setConfirmBattle2Data([attackButton, paper])
-      scale1 = 0.0001
-      scale2 = 0.6
-    }
-    if (battle1 && battle2) {
-      battle1.classList.add('attack');
-      setTimeout(() => {
-        battle1.classList.remove('attack');
-        battle2.classList.add('back');
-        setPlayer2LossData(scale2);
-        // setPlayer2ResidualData(player2ResidualData - .4);
-        if (player2ResidualData - scale2 <= 0) {
-          setPlayer2ResidualData(0);
-        } else {
-          setPlayer2ResidualData(player2ResidualData - scale2);
-        }
 
-        setTimeout(() => {
-          battle2.classList.remove('back');
-          setPlayer2LossData(0);
-          // console.log(player2ResidualData)
-          if (player2ResidualData - scale2 <= 0) {
-            setConfirmBattleData([]);
-            setConfirmBattle2Data([]);
-            setTimeout(() => {props.finishBattle(1);}, 600)
-            return
+  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
+    let id = decodeEntity({ battleId: "uint256" }, entity);
+    let battle:any = getComponentValue(BattleList, entity)
+    battle.id = id.battleId.toString()
+    return battle;
+  });
+  if (battles.length) {
+    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase()) && !item.isEnd)[0]
+    if (battle) {
+      if (!battlesId) {
+        setBattlesId(battle.id)
+      }
+    }
+  }
+  if (battlesId) {
+    let battle:any = battles.filter((item:any) => item.id.toString() == battlesId)[0]
+    if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState == 1) {
+      let action = confirmBattleData[0]
+      let arg = confirmBattleData[1]
+      let actionHex = ethers.utils.formatBytes32String(action);
+      revealBattle(battle.id, actionHex, arg, nonceHex)
+      setBattleState(2)
+    }
+    if ((battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
+      setBattleState(3)
+    }
+  }
+
+  useEffect(() => {
+    if (battlesId) {
+      let battle:any = battles.filter((item:any) => item.id.toString() == battlesId)[0]
+      if (battle) {
+        if (!battleData.curHp || !battleData.targetHp) {
+          let data = {
+            attackerHP: battle.attackerHP.toString(),
+            defenderHP: battle.defenderHP.toString(),
+            attacker: battle.attacker.toLocaleLowerCase(),
+            defender: battle.defender.toLocaleLowerCase(),
           }
-          setTimeout(() => {
-            battle2.classList.add('attack');
+          console.log(data, props.curPlayer.addr, props.targetPlayer.addr)
+          setBattleData(data)
+        }
+        console.log(battleData, battle)
+        if (battleState == 3) {
+          let data = battleData
+          let battle1 = document.querySelector('.battle-1');
+          let battle2 = document.querySelector('.battle-2');
+          if (battle1 && battle2) {
+            battle1.classList.add('attack');
             setTimeout(() => {
-              battle2.classList.remove('attack');
-              battle1.classList.add('back');
-              setPlayer1LossData(scale1);
-              if (player1ResidualData - scale1 <= 0) {
-                setPlayer1ResidualData(0);
-                setConfirmBattleData([]);
-                setConfirmBattle2Data([]);
-                props.finishBattle(2);
-                setTimeout(() => {props.finishBattle(1);}, 200)
-                return
-              } else {
-                setPlayer1ResidualData(player1ResidualData - scale1);
-              }
+              battle1.classList.remove('attack');
+              battle2.classList.add('back');
+              let defenderHP = battle.defenderHP
+              setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
+              data.defenderHP = defenderHP
+              setBattleData(data)
               setTimeout(() => {
-                battle1.classList.remove('back');
-                setPlayer1LossData(0);
-                setConfirmBattleData([]);
-                setConfirmBattle2Data([]);
-                setRoundData(roundData + 1);
+                battle2.classList.remove('back');
+                setPlayer2LossData(0);
+                // console.log(player2ResidualData)
+                if (defenderHP <= 0 || battle.isEnd) {
+                  setTimeout(() => {props.finishBattle(battle.winner);}, 600)
+                  return
+                }
+                setTimeout(() => {
+                  battle2.classList.add('attack');
+                  setTimeout(() => {
+                    battle2.classList.remove('attack');
+                    battle1.classList.add('back');
+                    let attackerHP = battle.attackerHP
+                    setPlayer1LossData(Number(data.attackerHP) - Number(attackerHP))
+                    data.attackerHP = attackerHP
+                    setBattleData(data)
+                    if (attackerHP <= 0 || battle.isEnd) {
+                      setPlayer1ResidualData(0);
+                      setTimeout(() => {props.finishBattle(battle.winner);}, 600)
+                      return
+                    }
+                    setTimeout(() => {
+                      battle1.classList.remove('back');
+                      setPlayer1LossData(0);
+                      setBattleState(0)
+                      console.log(battleState)
+                    }, 400);
+                  }, 400);
+                }, 500)
               }, 400);
             }, 400);
-          }, 1000)
-        }, 400);
-      }, 400);
+          }
+        }
+      }
     }
+  }, [battleState])
+
+  const setSelectAction = (img: any, action: String) => {
+    setSelectActionData(img);
+    let bt:any = confirmBattleData
+    bt[0] = action
+    setConfirmBattleData(bt)
   }
+  const setSelectTactic = (img: any, tactic: number) => {
+    setSelectTacticData(img);
+    let bt:any = confirmBattleData
+    bt[1] = tactic
+    setConfirmBattleData(bt)
+  }
+
+  const getProofHash = (action, arg, nonce) => {
+    return solidityKeccak256(
+      ["bytes32", "uint256", "bytes32"],
+      [action, arg, nonce]
+    )
+  }
+
+  const confirmBattleFun = () => {
+    if (battleState != 0) return
+    if (!confirmBattleData[0]) {
+      message.info('Please select action')
+      return
+    }
+      let battle:any = battles.filter((item:any) => (item?.attacker?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item?.defender?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
+      console.log(battle)
+      let action = confirmBattleData[0]
+      let arg = confirmBattleData[1] || 0
+      let actionHex = ethers.utils.formatBytes32String(action);
+      let hash = getProofHash(actionHex, arg, nonceHex);
+      confirmBattle(hash, battle.id);
+      setBattleState(1)
+  }
+  // const confirmBattle = () => {
+  //   //battle-1
+  //   let battle1 = document.querySelector('.battle-1');
+  //   let battle2 = document.querySelector('.battle-2');
+  //   setConfirmBattleData([selectActionData, selectTacticData])
+  //   let scale1 = 0
+  //   let scale2 = 0
+  //   if (roundData == 1) {
+  //     setConfirmBattle2Data([attackButton, rock])
+  //     scale1 = 0.4
+  //     scale2 = 0.4
+  //   }
+  //   if (roundData == 2) {
+  //     setConfirmBattle2Data([attackButton, scissors])
+  //     scale1 = 0.2
+  //     scale2 = 0.0001
+  //   }
+  //   if (roundData == 3) {
+  //     setConfirmBattle2Data([attackButton, paper])
+  //     scale1 = 0.0001
+  //     scale2 = 0.6
+  //   }
+  //   
+  // }
   return (
     <div className="mi-battle-wrap">
       <div className="mi-battle-content">
@@ -120,14 +212,6 @@ export default function Battle(props) {
             <div className="mi-battle-character">
               <div className="mi-battle-character-card battle-1" style={{ marginLeft: '90px' }}>
                 <div className="mi-battle-character-card-hp">
-                  {
-                    confirmBattleData.length && confirmBattleData[0] ? (
-                      <div className="confirm-info">
-                        <img src={confirmBattleData[0]} alt="" />
-                        <img src={confirmBattleData[1]} alt="" />
-                      </div>
-                    ) : ''
-                  }
                   <div
                     className="hp"
                     style={{
@@ -136,15 +220,17 @@ export default function Battle(props) {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       background: "#FF6161",
-                      width: 152 * player1ResidualData + 'px',
+                      width: Math.floor(152 * (Number(battleData?.attackerHP) / Number(props?.curPlayer?.addr == battleData?.attacker ? props?.curPlayer?.maxHp : props?.targetPlayer?.maxHp))) + 'px',
                       height: "22px",
                     }}
                   ></div>
                   {
-                    player1LossData ? <div className="hp-loss">-{(100 * player1LossData).toFixed(0)}</div> : null
+                    player1LossData ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <Appearance {...props.curPlayer.equip} />
+                {
+                  props?.curPlayer?.addr == battleData.attacker ? <Appearance {...props?.curPlayer?.equip} /> : <Appearance {...props?.targetPlayer?.equip} />
+                }
                 {/* <img
                   src={duck}
                   style={{
@@ -155,14 +241,14 @@ export default function Battle(props) {
               </div>
               <div className="mi-battle-character-card battle-2" style={{ marginRight: '90px' }}>
                 <div className="mi-battle-character-card-hp">
-                  {
+                  {/* {
                     confirmBattle2Data.length && confirmBattle2Data[0] ? (
                       <div className="confirm-info">
                         <img src={confirmBattle2Data[0]} alt="" />
                         <img src={confirmBattle2Data[1]} alt="" />
                       </div>
                     ) : ''
-                  }
+                  } */}
                   <div
                     className="hp"
                     style={{
@@ -171,24 +257,25 @@ export default function Battle(props) {
                       borderTopLeftRadius: 0,
                       borderBottomLeftRadius: 0,
                       background: "#FF6161",
-                      width: 152 * player2ResidualData + 'px',
+                      width: Math.floor(152 * (Number(battleData.defenderHP) / Number(props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.maxHp : props?.targetPlayer?.maxHp))) + 'px',
                       height: "22px",
                     }}
                   ></div>
                   {
-                    player2LossData ? <div className="hp-loss">-{(100 * player2LossData).toFixed(0)}</div> : null
+                    player2LossData ? <div className="hp-loss">-{(player2LossData).toFixed(0)}</div> : null
                   }
-                  {/* <div className="hp-loss">-{160 * player2LossData}</div> */}
                 </div>
-                <Appearance {...props.targetPlayer.equip} />
+                {
+                  props?.curPlayer?.addr == battleData.defender ? <Appearance {...props?.curPlayer?.equip} /> : <Appearance {...props?.targetPlayer?.equip} />
+                }
               </div>
               <div className="mi-battle-character-info">
                 <div className="character-info self">
-                  <div>HP : {(100 * player1ResidualData).toFixed(0)}/100</div>
+                  <div>HP : {battleData.attackerHP}/{props?.curPlayer?.addr == battleData.attacker ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
                   <div>ATK : 20</div>
                 </div>
                 <div className="character-info opponent">
-                  <div>HP : {(100 * player2ResidualData).toFixed(0)}/100</div>
+                  <div>HP : {battleData.defenderHP}/{props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
                   <div>ATK : 20</div>
                 </div>
               </div>
@@ -199,11 +286,11 @@ export default function Battle(props) {
             <div className="action">
               <div className="action-title">Action</div>
               <div style={{ display: "flex" }}>
-                <div className="icon" onClick={() => setSelectAction(attackButton)}>
+                <div className="icon" onClick={() => setSelectAction(attackButton, 'attack')}>
                   {/* <img src={iconBg} alt="" className="icon-bg" /> */}
                   <img src={button4} alt="" className="icon-btn" />
                 </div>
-                <div className="icon" onClick={() => setSelectAction(runButton)}>
+                <div className="icon" onClick={() => setSelectAction(runButton, 'escape')}>
                   {/* <img src={iconBg} alt="" className="icon-bg" /> */}
                   <img src={button5} alt="" className="icon-btn" />
                 </div>
@@ -227,7 +314,7 @@ export default function Battle(props) {
                   {selectTacticData ? <img src={selectTacticData} style={{ width: "40px", height: "40px" }} alt="" /> : null}
                 </div>
               </div>
-              <div className="confirm-btn" onClick={confirmBattle}>
+              <div className="confirm-btn" onClick={confirmBattleFun} style={{cursor: battleState == 0 ? 'pointer' : 'no-drop'}}>
                 <img src={btnBg} alt="" />
                 <div className="confirm-text">confirm</div>
               </div>
@@ -235,15 +322,15 @@ export default function Battle(props) {
             <div className="action">
               <div className="action-title" style={{ marginLeft: 'auto' }}>Tactic</div>
               <div style={{ display: "flex" }}>
-                <div className="icon icon-r" onClick={() => setSelectTactic(rock)}>
+                <div className="icon icon-r" onClick={() => setSelectTactic(rock, 1)}>
                   {/* <img src={iconBg} alt="" className="icon-bg" /> */}
                   <img src={button1} alt="" className="icon-btn" />
                 </div>
-                <div className="icon icon-r" onClick={() => setSelectTactic(scissors)}>
+                <div className="icon icon-r" onClick={() => setSelectTactic(scissors, 2)}>
                   {/* <img src={iconBg} alt="" className="icon-bg" /> */}
                   <img src={button2} alt="" className="icon-btn" />
                 </div>
-                <div className="icon icon-r" onClick={() => setSelectTactic(paper)}>
+                <div className="icon icon-r" onClick={() => setSelectTactic(paper, 3)}>
                   {/* <img src={iconBg} alt="" className="icon-bg" /> */}
                   <img src={button3} alt="" className="icon-btn" />
                 </div>

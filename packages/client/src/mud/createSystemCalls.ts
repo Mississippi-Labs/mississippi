@@ -59,11 +59,8 @@ export function createSystemCalls(
   }
 
   const selectUserNft = async (tokenId: any) => {
-    console.log(tokenId, 'tokenId')
     const tx = await worldContract.write.selectUserNft([tokenId]);
-    console.log(new Date().getTime(), tx, 'tx')
     await waitForTransaction(tx);
-    console.log(new Date().getTime(), tx, 'tx')
   }
 
   const openBox = async (boxId: any) => {

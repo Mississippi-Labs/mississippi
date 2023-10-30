@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { Has, getComponentValue } from '@latticexyz/recs';
@@ -9,9 +9,16 @@ import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { getRandomStr } from '../../utils/utils';
 import './index.scss';
+import { bfs, simplifyMapData } from '@/utils/map';
+import useMerkel from '@/hooks/useMerkel';
+import { loadMapData } from "@/utils";
 
-const abi = [{"inputs":[{"internalType":"uint256","name":"_waitBlockCount","type":"uint256"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_notRevealedInfo","type":"string"},{"internalType":"string","name":"_revealedDesc","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"}],"name":"ERC721IncorrectOwner","type":"error"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ERC721InsufficientApproval","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC721InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"operator","type":"address"}],"name":"ERC721InvalidOperator","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"ERC721InvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC721InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC721InvalidSender","type":"error"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ERC721NonexistentToken","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"randomId","type":"uint256"},{"indexed":false,"internalType":"address","name":"author","type":"address"}],"name":"NewRandom","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"getStructInfo","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getUserTokenIdList","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"randomId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"randomList","outputs":[{"internalType":"uint256","name":"blockNumber","type":"uint256"},{"internalType":"address","name":"author","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"revealNFT","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"userList","outputs":[{"internalType":"uint256","name":"randomId","type":"uint256"},{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"HP","type":"uint256"},{"internalType":"uint256","name":"Attack","type":"uint256"},{"internalType":"uint256","name":"AttackRange","type":"uint256"},{"internalType":"uint256","name":"Speed","type":"uint256"},{"internalType":"uint256","name":"Strength","type":"uint256"},{"internalType":"uint256","name":"Space","type":"uint256"},{"internalType":"enum MRandom.RandomState","name":"state","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"waitBlockCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
+import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+
 let userContract
+let lootContract
+let transfering = false
 
 const Test = () => {
   const [stepData, setStepData] = useState([]);
@@ -21,8 +28,10 @@ const Test = () => {
   const [battlesData, setBattlesData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [boxId, setBoxId] = useState([]);
-  const [revealNFTData, setRevealNFTData] = useState([]);
+  const [revealNFTData, setRevealNFTData] = useState('');
   const [nftListData, setNftListData] = useState([]);
+  const [walletBalance, setWalletBalance] = useState('');
+  const [renderMapData, setRenderMapData] = useState([]);
 
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
@@ -31,20 +40,57 @@ const Test = () => {
   } = useMUD();
 
   const { account } = network;
-  console.log(network, 'account')
 
-  // PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 转账
-  // let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-  // let provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545')
-  // let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-  // console.log(wallet, 'wallet')
-  // // 转账到0x6B5A3EF0cEdDE6f8266eCcb7971a6dbdE9D93D44
-  // wallet.sendTransaction({
-  //   to: '0x74F750d72009B2a70aAe2F934B0F0C1F4015A037',
-  //   value: ethers.utils.parseEther('1')
-  // }).then(res => {
-  //   console.log(res, 'res')
-  // })
+  const simpleMapData = useMemo(() => {
+    return simplifyMapData(renderMapData);
+  }, [renderMapData]);
+
+  const formatMovePath = useMerkel(simpleMapData);
+
+  useEffect(() => {
+    loadMapData().then((csv) => {
+      setRenderMapData(csv);
+      mapDataRef.current = csv;
+    });
+  }, []);
+
+
+  // 转账函数
+  const transferFun = async (to) => {
+    if (transfering) return
+    transfering = true
+    let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
+    console.log(wallet, 'wallet')
+    wallet.sendTransaction({
+      to,
+      value: ethers.utils.parseEther('1')
+    }).then(res => {
+      console.log(res, 'res')
+      transfering = false
+      getBalance()
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  const getBalance = () => {
+    network.publicClient.getBalance({
+      address: network.walletClient.account.address
+    }).then(balance => {
+      if (balance.toString() == 0) {
+        transferFun(network.walletClient.account.address)
+      } else {
+        let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
+        console.log(walletBalance)
+        setWalletBalance(walletBalance);
+      }
+    })
+  }
+
+  getBalance()
 
   const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
   console.log(GameData, 'GameData')
@@ -52,13 +98,24 @@ const Test = () => {
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
 
-  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
+  if (GlobalConfigData.length && GlobalConfigData[0].userContract && !userContract) {
+    console.log(userAbi, 'userAbi')
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(privateKey, provider)
     let userContractAddress = GlobalConfigData[0].userContract
-    userContract = new ethers.Contract(userContractAddress, abi, wallet)
+    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
+  }
+
+  if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
+    console.log(lootAbi, 'lootAbi')
+    let privateKey = network.privateKey
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let lootContractAddress = GlobalConfigData[0].lootContract
+    lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
   }
 
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
@@ -67,14 +124,8 @@ const Test = () => {
     console.log(battle, 'battle', id, entity)
     battle.id = id.battleId.toString()
     return battle;
-  });
+  }).filter(e => !e.isEnd)
   console.log(battles, 'battles')
-  battles.forEach(async item => {
-    if (item.attackerState == 2 && item.defenderState == 2) {
-      let hp = await getBattlePlayerHp(item.id, account)
-      console.log(hp, 'hp')
-    }
-  })
 
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
     let id = decodeEntity({ boxId: "uint256" }, entity);
@@ -112,7 +163,6 @@ const Test = () => {
   }
 
   const mintFun = () => {
-    console.log(1, userContract)
     userContract.mint().then(async res => {
       await res.wait()
       console.log(res)
@@ -191,8 +241,8 @@ const Test = () => {
     let player = players.find(item => item.isMe);
     let from = {x: player.x, y: player.y}
     let to = {x: stepData[0], y: stepData[1]}
-    let merkelData = main(from, to);
-    move(merkelData);
+    const paths = bfs(simpleMapData, from, to).slice(1);
+    move(formatMovePath(paths));
   }
 
   const transferPlayer = () => {
@@ -208,7 +258,8 @@ const Test = () => {
       let player = players.find(item => item.isMe);
       let from = {x: player.x, y: player.y}
       let to = {x: battleData[0], y: battleData[1]}
-      let merkelData = main(from, to);
+      const paths = bfs(simpleMapData, from, to).slice(1);
+      let merkelData = formatMovePath(paths)
       battleInvitation(tragePlayer.addr, merkelData);
     }
   }
@@ -280,11 +331,15 @@ const Test = () => {
     )
   }
 
+  // useEffect(() => {
+  //   getBalance()
+  // });
+
   return (
     <div className="content">
       <div className="nav">
         <h3>测试面板</h3>
-        <div className="addr">当前用户地址：{account}</div>
+        <div className="addr">当前用户地址：{account} | {walletBalance} ETH</div>
       </div>
       <div className="hd">
         {
@@ -302,7 +357,7 @@ const Test = () => {
       </div>
       <div className="hd">
         {
-          boxs.map((item, index) => (<div key={index}>
+          boxs.map((item, index) => (<div key={index} style={{marginBottom: '20px'}}>
             <h6>宝箱信息</h6>
             <div style={{ marginTop: '8px' }}>id: {item.id}</div>
             <div style={{ marginTop: '8px' }}>opened: {item.opened.toString()}</div>

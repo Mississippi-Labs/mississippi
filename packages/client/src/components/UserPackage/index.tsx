@@ -18,9 +18,9 @@ const UserPackage = (props: IProps) => {
       <h3>{props.title}</h3>
       <div className="package-items-wrapper">
       {
-        arr.map((count) => {
+        arr.map((count, index) => {
           return (
-            <div className='package-item'>
+            <div className='package-item' key={index}>
               {
                 count > 0 && (<>
                   <img src={gemImg} alt="" className={'package-item-gem'}/>
