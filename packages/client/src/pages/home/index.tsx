@@ -194,6 +194,7 @@ const Home = () => {
     const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
 
     setMinting(true);
+    message.loading('minting loot and user,please wait...');
     await mintUser();
     await mintLoot()
 
@@ -288,6 +289,9 @@ const Home = () => {
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
                 {minting ? 'Loading...' : 'MINT AND GO'}
               </button>
+              {
+                minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null
+              }
             </div>
           </div>
         )
