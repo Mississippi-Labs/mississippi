@@ -61,7 +61,7 @@ jobs:
           # The directory of static assets to upload
           directory: ./packages/client/dist
           # The name of the branch you want to deploy to
-          branch: feat-mvp
+          branch: main
           # The working directory in which to run Wrangler
       
       - name: Vercel Action
