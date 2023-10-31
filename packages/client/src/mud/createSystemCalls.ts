@@ -31,7 +31,6 @@ export function createSystemCalls(
   const getPosition = async (address) => {
     const tx = await worldContract.read.getPosition([address]);
     const result = await waitForTransaction(tx);
-    console.log(result);
     await waitForTransaction(tx);
   };
 
@@ -39,6 +38,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.joinBattlefield();
       await waitForTransaction(tx);
+      return tx
     } catch (error) {
       console.log('joinBattlefield', error);
       message.error(error.cause.reason);
@@ -146,6 +146,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.setInfo([name, url]);
       await waitForTransaction(tx);
+      return tx
     } catch (error) {
       message.error(error.cause.reason);
     }

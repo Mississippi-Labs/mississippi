@@ -200,7 +200,8 @@ const Home = () => {
       setHandheld(handheld);
       setHead(head);
       
-      await Promise.all([setInfo(username, ''), joinBattlefield()])
+      let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
+      console.log(result, 'result')
       setMinting(false);
       navigate('/game', {
         state: {
