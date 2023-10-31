@@ -161,57 +161,57 @@ const Home = () => {
 
   const mintAndGo = async () => {
     setMinting(true);
-    messageApi.open({
-      type: 'loading',
-      content: 'minting loot and user,please wait...',
-      duration: 7,
-    })
-
-    if (!(userTokenIds.length && lootTokenIds.length)) {
-      await mint()
-    }
-    let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
-    let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
-
-    console.log(userTokenId, lootTokenId, 'userTokenId, lootTokenId', userTokenIds, lootTokenIds)
-
-    let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-    console.log(urls, 'urls')
-    let url = urls[0]
-    let lootUrl = urls[1]
-    // let url = await userContract.tokenURI(tokenId)
-    // let lootUrl = await lootContract.tokenURI(lootTokenId)
-    
-    url = atobUrl(url)
-    lootUrl = atobUrl(lootUrl)
-    setUserUrl(url.image)
-    setLootUrl(lootUrl.image)
-
-    // await selectUserNft(userTokenId)
-    // await selectLootNFT(lootTokenId)
-    let rep = await Promise.all([selectUserNft(userTokenId, network.account), selectLootNFT(lootTokenId, network.account)])
-    console.log(rep, 'rep')
-    let playerData = rep[0]
-    let lootData = rep[1]
-
-    let clothes = lootData.chest.replace('\"', '').split(' of')[0]
-    let handheld = lootData.weapon.replace('\"', '').split(' of')[0]
-    let head = lootData.head.replace('\"', '').split(' of')[0]
-    setPlayer(playerData)
-    setClothes(clothes);
-    setHandheld(handheld);
-    setHead(head);
-    
-    await Promise.all([setInfo(username, ''), joinBattlefield()])
-    setMinting(false);
-    navigate('/game', {
-      state: {
-        username,
-        clothes,
-        handheld,
-        head,
+    try {
+      messageApi.open({
+        type: 'loading',
+        content: 'minting loot and user,please wait...',
+        duration: 7,
+      })
+  
+      if (!(userTokenIds.length && lootTokenIds.length)) {
+        await mint()
       }
-    });
+      let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
+      let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
+  
+      console.log(userTokenId, lootTokenId, 'userTokenId, lootTokenId', userTokenIds, lootTokenIds)
+  
+      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+      console.log(urls, 'urls')
+      let url = urls[0]
+      let lootUrl = urls[1]
+      
+      url = atobUrl(url)
+      lootUrl = atobUrl(lootUrl)
+      setUserUrl(url.image)
+      setLootUrl(lootUrl.image)
+  
+      let rep = await Promise.all([selectUserNft(userTokenId, network.account), selectLootNFT(lootTokenId, network.account)])
+      console.log(rep, 'rep')
+      let playerData = rep[0]
+      let lootData = rep[1]
+  
+      let clothes = lootData.chest.replace('\"', '').split(' of')[0]
+      let handheld = lootData.weapon.replace('\"', '').split(' of')[0]
+      let head = lootData.head.replace('\"', '').split(' of')[0]
+      setPlayer(playerData)
+      setClothes(clothes);
+      setHandheld(handheld);
+      setHead(head);
+      
+      await Promise.all([setInfo(username, ''), joinBattlefield()])
+      setMinting(false);
+      navigate('/game', {
+        state: {
+          username,
+          clothes,
+          handheld,
+          head,
+        }
+      });
+    } catch (error) {
+      message.error(error);
+    }
   }
 
   const play = () => {
