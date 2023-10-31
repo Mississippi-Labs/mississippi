@@ -182,9 +182,9 @@ const Home = () => {
         duration: 7,
       })
   
-      // if (!(userTokenIds.length && lootTokenIds.length)) {
+      if (!(userTokenIds.length && lootTokenIds.length)) {
         await mint()
-      // }
+      }
       let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
   
