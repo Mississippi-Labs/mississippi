@@ -19,7 +19,7 @@ import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
-import { updatePlayerPosition } from '@/utils/player';
+import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
@@ -76,15 +76,8 @@ const Game = () => {
     head,
   } = location.state ?? {};
 
-  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
-    const loot = getComponentValue(LootList1, entity);
-    return loot;
-  })
-
-  const LootList2Data = useEntityQuery([Has(LootList2)]).map((entity) => {
-    const loot = getComponentValue(LootList2, entity);
-    return loot;
-  })
+  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => getComponentValue(LootList1, entity))
+  const LootList2Data = useEntityQuery([Has(LootList2)]).map((entity) => getComponentValue(LootList2, entity))
 
   console.log(LootList1Data, LootList2Data, 'LootList1Data')
 
@@ -102,26 +95,43 @@ const Game = () => {
     }
     return player;
   }).filter(e => e.state != 1);
-  console.log(players, 'players')
 
-  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+
+  const [renderPlayers, setRenderPlayers] = useState([]);
+  const playersCache = getPlayersCache(players);
+
+  useEffect(() => {
+    console.log(players, 'players');
+    players.forEach((player) => {
+      const index = renderPlayers.findIndex((rPlayer) => rPlayer.addr === player.addr);
+      if (index === -1) {
+        // add
+        setRenderPlayers([...renderPlayers, { ...player }]);
+      } else {
+        Object.assign(renderPlayers[index], player);
+        setRenderPlayers([...renderPlayers]);
+      }
+    });
+  }, [playersCache])
+
+  const curPlayer = renderPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.addr) {
-    console.log(curPlayer, 'curPlayer')
+    console.log(curPlayer, 'curPlayer', Number(curPlayer.speed))
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
   }
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
-    let id = decodeEntity({ battleId: "uint256" }, entity);
-    let battle:any = getComponentValue(BattleList, entity)
+    const id = decodeEntity({ battleId: "uint256" }, entity);
+    const battle:any = getComponentValue(BattleList, entity)
     battle.id = id.battleId.toString()
     return battle;
   });
 
   if (battles.length && !startBattleData) {
-    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+    const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
     if (battle) {
-      let targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
-      let target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+      const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
+      const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
       if (!battleCurPlayer) {
         setBattleCurPlayer(curPlayer)
       }
@@ -155,18 +165,18 @@ const Game = () => {
   }
   
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
-    let id = decodeEntity({ boxId: "uint256" }, entity);
-    let box:any = getComponentValue(BoxList, entity)
+    const id = decodeEntity({ boxId: "uint256" }, entity);
+    const box:any = getComponentValue(BoxList, entity)
     box.id = id.boxId.toString()
     return box;
   });
 
   const getBalance = async () => {
-    let balance = await network.publicClient.getBalance({
+    const balance = await network.publicClient.getBalance({
       address: network.walletClient.account.address
     })
     // 转成eth
-    let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
+    const walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
     setBalance(walletBalance);  
   }
 
@@ -200,11 +210,15 @@ const Game = () => {
   }
 
   const movePlayer = async (paths, merkelData) => {
+    if (curPlayer.waiting) {
+      return;
+    }
     clearInterval(moveInterval.current);
     let pathIndex = 0;
     moveInterval.current = setInterval(() => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
+      setRenderPlayers([...renderPlayers]);
       pathIndex++;
       if (pathIndex === paths.length) {
         clearInterval(moveInterval.current);
@@ -216,7 +230,9 @@ const Game = () => {
         }
       }
     }, 300);
-    let result = await move(merkelData);
+    curPlayer.waiting = true;
+    const result = await move(merkelData);
+    curPlayer.waiting = false;
     if (result.type === 'error') {
       message.error(result.message);
     }
@@ -267,7 +283,7 @@ const Game = () => {
   const openTreasureChest = async (id) => {
     console.log(id);
     const boxIndex = boxs.findIndex(item => item.id === id);
-    let box = boxs[boxIndex]
+    const box = boxs[boxIndex]
     if (box.opened) {
       if (box.owner.toLocaleLowerCase() != account.toLocaleLowerCase()) {
         message.error('The treasure chest has been opened by others');
@@ -279,10 +295,10 @@ const Game = () => {
     } 
     boxs[boxIndex].opening = true;
     await openBox(id);
-    let blockNumber = await network.publicClient.getBlockNumber()
+    const blockNumber = await network.publicClient.getBlockNumber()
     // 每隔1s获取一次getBlockNumber
-    let interval = setInterval(async () => {
-      let currentBlockNumber = await network.publicClient.getBlockNumber()
+    const interval = setInterval(async () => {
+      const currentBlockNumber = await network.publicClient.getBlockNumber()
       console.log(currentBlockNumber, blockNumber, 'currentBlockNumber')
       if (currentBlockNumber - blockNumber >= 2) {
         clearInterval(interval)
@@ -292,17 +308,31 @@ const Game = () => {
     }, 1000)
   }
 
+  const [renderPreviewPaths, setRenderPreviewPaths] = useState([]);
+  const previewPath = (x, y) => {
+    if (x === curPlayer?.x && y === curPlayer?.y) {
+      return;
+    }
+    if (curPlayer) {
+      const path = bfs(simpleMapData, curPlayer, { x, y }).slice(1);
+      path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
+      setRenderPreviewPaths(path);
+    }
+  }
+
   return (
     <GameContext.Provider
       value={{
         curId,
-        players,
+        players: renderPlayers,
+        renderPreviewPaths,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         showUserInfo,
         treasureChest: boxs,
         openTreasureChest,
-        setStartBattle
+        setStartBattle,
+        previewPath
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -321,7 +351,7 @@ const Game = () => {
           />
         </div>
 
-        <Rank data={RankMockData} curId={account} />
+        {/*<Rank data={RankMockData} curId={account} />*/}
         <Map
           width={MapConfig.visualWidth}
           height={MapConfig.visualHeight}

@@ -42,9 +42,10 @@ const MapCell = (props: IProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, openTreasureChest, setStartBattle, showUserInfo, curId } = useContext(GameContext);
+  const { mapData, openTreasureChest, setStartBattle, showUserInfo, curId, previewPath, renderPreviewPaths = [] } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
+  const movable = isMovable(mapData[y][x]);
 
   if (!cellClassCache[`${y}-${x}`]) {
     cellClassCache[`${y}-${x}`] = getCellClass(mapData, { x, y});
@@ -55,12 +56,11 @@ const MapCell = (props: IProps) => {
   const onContextMenu = (e) => {
     onExeAction({ x, y});
     e.preventDefault();
-    const curMapDataType = mapData[y][x];
     if (players.length > 0 || treasureChest.length > 0) {
       onClick();
       return;
     }
-    if (isMovable(curMapDataType)) {
+    if (movable) {
       onMoveTo({ x, y});
     }
   }
@@ -101,11 +101,18 @@ const MapCell = (props: IProps) => {
     }
   }, [prevActionCoordinate.x, prevActionCoordinate.y])
 
+  const renderPreviewPath = renderPreviewPaths.find(item => item.x === x && item.y === y);
+
   return (
     <div
       className="mi-map-cell"
       onContextMenu={onContextMenu}
       onClick={onClick}
+      onMouseEnter={() => {
+        if (movable) {
+          previewPath(x, y);
+        }
+      }}
     >
       <div className="cell-map-box">
         {
@@ -124,6 +131,10 @@ const MapCell = (props: IProps) => {
           })
         }
       </div>
+
+      {
+        renderPreviewPath && <div className={`render-preview-path ${renderPreviewPath.movable ? 'movable' : ''}`}/>
+      }
 
       {
         isDelivery && <div className={'cell-map-delivery'}/>

@@ -62,4 +62,20 @@
             height: 46px;
         }
     }
+
+    .render-preview-path {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        pointer-events: none;
+        border: 1px solid #f00;
+        background: rgba(#f00, 0.2);
+
+        &.movable {
+            border: 1px solid #4EBFFF;
+            background: rgba(#4EBFFF, 0.2);
+        }
+    }
 }

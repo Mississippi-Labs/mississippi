@@ -10,9 +10,11 @@ export interface IPlayer {
   x: number;
   y: number;
   id: number;
+  addr: string;
   username: string;
   gem: number;
   toward?: PlayerToward;
+  waiting?: boolean;
   equip: {
     head: string;
     handheld: string;
@@ -22,7 +24,7 @@ export interface IPlayer {
 
 const Player = (props: IPlayer) => {
 
-  const { username, id, equip, gem = 0, toward } = props;
+  const { username, id, equip, gem = 0, toward, waiting } = props;
   return (
     <div className="mi-player">
       <div className="player-info">
@@ -35,6 +37,9 @@ const Player = (props: IPlayer) => {
       <Appearance toward={toward as PlayerToward} {...equip} />
       {
         id === CurIdMockData && <Fog />
+      }
+      {
+        waiting && <div className={'waiting-tip'}>Waiting</div>
       }
     </div>
   );

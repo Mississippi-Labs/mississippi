@@ -13,7 +13,7 @@ interface IProps {
   maxAp: number;
   roomId: string;
   address: string;
-  balance: string;
+  balance: number;
 }
 
 const UserAvatar = (props: IProps) => {
@@ -33,7 +33,7 @@ const UserAvatar = (props: IProps) => {
       {/*<div className="ap-wrapper">*/}
       {/*  <div className="ap" style={{ width: `${ap / maxAp * 100}%` }}/>*/}
       {/*</div>*/}
-      <div className="username">{username}</div>
+      {/*<div className="username">{username}</div>*/}
       {/*<div className="room-id">Room ID: {roomId}</div>*/}
     </div>
   );

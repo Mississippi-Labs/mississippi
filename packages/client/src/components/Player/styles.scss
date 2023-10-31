@@ -42,4 +42,18 @@
         //flex: 1;
         //background: url("");
     }
+
+    .waiting-tip {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        font-size: 12px;
+        font-family: MISS, sans-serif;
+        left: 0;
+        top: 100%;
+        width: 100%;
+        color: #000;
+        text-align: center;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
 }

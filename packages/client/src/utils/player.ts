@@ -10,3 +10,7 @@ export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {
     player.toward = toward;
   }
 }
+
+export const getPlayersCache = (players: IPlayer[] = []) => {
+  return players.map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
+}

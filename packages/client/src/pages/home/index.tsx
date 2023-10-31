@@ -94,18 +94,6 @@ const Home = () => {
       </div>
     );
     open();
-    // setTimeout(() => {
-    //   setWalletAddress('0X1234567894519845184814');
-    //   setContent(
-    //     <div className="create-wallet-successful-wrapper">
-    //       <div className="create-wallet-successful-content">
-    //         You have successfully created a wallet, and we will send you xxx test tokens as  a gift.
-    //         Start your journey in Mississippi!
-    //       </div>
-    //       <button className="mi-btn" onClick={toMint}>OK</button>
-    //     </div>
-    //   )
-    // }, 3000);
   }
   
   const toMint = async () => {
