@@ -60,6 +60,7 @@ const Home = () => {
   const [username, setUsername] = useState<string>();
   const [userUrl, setUserUrl] = useState<string>();
   const [lootUrl, setLootUrl] = useState<string>();
+  const [player, setPlayer] = useState<any>();
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
@@ -166,8 +167,9 @@ const Home = () => {
       duration: 7,
     })
 
-    await mint()
-
+    if (!(userTokenIds.length && lootTokenIds.length)) {
+      await mint()
+    }
     let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
     let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
 
@@ -187,13 +189,15 @@ const Home = () => {
 
     // await selectUserNft(userTokenId)
     // await selectLootNFT(lootTokenId)
-    let rep = await Promise.all([selectUserNft(userTokenId), selectLootNFT(lootTokenId, network.account)])
+    let rep = await Promise.all([selectUserNft(userTokenId, network.account), selectLootNFT(lootTokenId, network.account)])
     console.log(rep, 'rep')
+    let playerData = rep[0]
     let lootData = rep[1]
 
     let clothes = lootData.chest.replace('\"', '').split(' of')[0]
     let handheld = lootData.weapon.replace('\"', '').split(' of')[0]
     let head = lootData.head.replace('\"', '').split(' of')[0]
+    setPlayer(playerData)
     setClothes(clothes);
     setHandheld(handheld);
     setHead(head);
@@ -266,7 +270,7 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} />
+              <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
                 {minting ? 'Loading...' : 'MINT AND GO'}
               </button>

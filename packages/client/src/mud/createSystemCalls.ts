@@ -82,10 +82,11 @@ export function createSystemCalls(
     }
   }
 
-  const selectUserNft = async (tokenId: any) => {
+  const selectUserNft = async (tokenId: any, address: any) => {
     try {
       const tx = await worldContract.write.selectUserNft([tokenId]);
       await waitForTransaction(tx);
+      return getComponentValue(Player, encodeEntity({ addr: "address" }, { addr:  address}));
     } catch (error) {
       console.log('selectUserNft', error);
       message.error(error.cause.reason);
