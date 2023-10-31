@@ -46,4 +46,5 @@ if (true) {
     write$: network.write$,
     recsWorld: network.world,
   });
+  console.log("mounted")
 }
