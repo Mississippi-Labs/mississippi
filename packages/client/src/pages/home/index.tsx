@@ -28,9 +28,11 @@ const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
     components: { GlobalConfig },
-    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT },
+    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT, setInfo },
     network
   } = useMUD();
+
+  console.log(network, 'network')
 
   const [walletAddress, setWalletAddress] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
@@ -157,9 +159,6 @@ const Home = () => {
   }
 
   const mintAndGo = async () => {
-    const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
-    const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
-    const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
     setMinting(true);
     messageApi.open({
       type: 'loading',
@@ -188,24 +187,27 @@ const Home = () => {
 
     // await selectUserNft(userTokenId)
     // await selectLootNFT(lootTokenId)
-    let rep = await Promise.all([selectUserNft(userTokenId), selectLootNFT(lootTokenId)])
-    await joinBattlefield()
+    let rep = await Promise.all([selectUserNft(userTokenId), selectLootNFT(lootTokenId, network.account)])
+    console.log(rep, 'rep')
+    let lootData = rep[1]
 
-    delay(100).then(() => {
-      setClothes(clothes);
-      setHandheld(handheld);
-      setHead(head);
-    }).delay(3000).then(() => {
-      setMinting(false);
-      navigate('/game', {
-        state: {
-          username,
-          clothes,
-          handheld,
-          head,
-        }
-      });
-    })
+    let clothes = lootData.chest.replace('\"', '').split(' of')[0]
+    let handheld = lootData.weapon.replace('\"', '').split(' of')[0]
+    let head = lootData.head.replace('\"', '').split(' of')[0]
+    setClothes(clothes);
+    setHandheld(handheld);
+    setHead(head);
+    
+    await Promise.all([setInfo(username, ''), joinBattlefield()])
+    setMinting(false);
+    navigate('/game', {
+      state: {
+        username,
+        clothes,
+        handheld,
+        head,
+      }
+    });
   }
 
   const play = () => {

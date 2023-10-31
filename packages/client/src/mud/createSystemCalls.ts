@@ -1,7 +1,7 @@
 import { getComponentValue } from "@latticexyz/recs";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
-import { singletonEntity } from "@latticexyz/store-sync/recs";
+import { singletonEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { message } from 'antd';
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
@@ -10,9 +10,7 @@ export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
   ClientComponents
 ) {
-  const { Counter, Player } = ClientComponents;
-
-  console.log(ClientComponents, 'ClientComponents')
+  const { Counter, Player, LootList1, LootList2 } = ClientComponents;
   const increment = async () => {
     const tx = await worldContract.write.increment();
     await waitForTransaction(tx);
@@ -94,10 +92,13 @@ export function createSystemCalls(
     }
   }
 
-  const selectLootNFT = async (tokenId: any) => {
+  const selectLootNFT = async (tokenId: any, address: any) => {
     try {
       const tx = await worldContract.write.selectLootNFT([tokenId]);
       await waitForTransaction(tx);
+      let LootList1Data = getComponentValue(LootList1, encodeEntity({ addr: "address" }, { addr:  address}));
+      let LootList2Data = getComponentValue(LootList2, encodeEntity({ addr: "address" }, { addr:  address}));
+      return Object.assign(LootList1Data, LootList2Data);
     } catch (error) {
       console.log('selectLootNFT', error);
       message.error(error.cause.reason);
@@ -140,6 +141,15 @@ export function createSystemCalls(
     }
   }
 
+  const setInfo = async (name: any, url: any) => {
+    try {
+      const tx = await worldContract.write.setInfo([name, url]);
+      await waitForTransaction(tx);
+    } catch (error) {
+      message.error(error.cause.reason);
+    }
+  }
+
   const getBattlePlayerHp = async (battleId: any, addr: any) => {
     const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
     return data
@@ -159,6 +169,7 @@ export function createSystemCalls(
     getCollections,
     revealBox,
     CreateBox,
-    getBattlePlayerHp
+    getBattlePlayerHp,
+    setInfo
   };
 }
