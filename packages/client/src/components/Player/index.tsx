@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './styles.scss';
 import { CurIdMockData } from '@/mock/data';
 import Fog from '@/components/Fog';
 import Appearance from '@/components/Appearance';
+import GameContext from '@/context';
 
 export type PlayerToward = 'Left' | 'Right';
 
@@ -24,7 +25,10 @@ export interface IPlayer {
 
 const Player = (props: IPlayer) => {
 
-  const { username, id, equip, gem = 0, toward, waiting } = props;
+  const { username, addr, equip, gem = 0, toward, waiting } = props;
+  const { curAddr } = useContext(GameContext);
+
+  // console.log(addr, curAddr, 'addr curid')
   return (
     <div className="mi-player">
       <div className="player-info">
@@ -36,7 +40,7 @@ const Player = (props: IPlayer) => {
       </div>
       <Appearance toward={toward as PlayerToward} {...equip} />
       {
-        id === CurIdMockData && <Fog />
+        addr === curAddr && <Fog />
       }
       {
         waiting && <div className={'waiting-tip'}>Waiting</div>

@@ -334,6 +334,7 @@ const Game = () => {
     <GameContext.Provider
       value={{
         curId,
+        curAddr: curPlayer?.addr,
         players: renderPlayers,
         renderPreviewPaths,
         mapData: renderMapData,
