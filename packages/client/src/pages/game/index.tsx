@@ -216,10 +216,7 @@ const Game = () => {
         }
       }
     }, 300);
-    let result = await move(merkelData);
-    if (result.type === 'error') {
-      message.error(result.message);
-    }
+    move(merkelData);
   };
 
   const showUserInfo = (player) => {
