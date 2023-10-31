@@ -78,28 +78,30 @@ const Game = () => {
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
     const loot = getComponentValue(LootList1, entity);
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    loot.addr = address
     return loot;
   })
 
-  const LootList2Data = useEntityQuery([Has(LootList2)]).map((entity) => {
-    const loot = getComponentValue(LootList2, entity);
-    return loot;
-  })
-
-  console.log(LootList1Data, LootList2Data, 'LootList1Data')
+  console.log(LootList1Data, 'LootList1Data')
 
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     const player = getComponentValue(Player, entity);
     player.addr = address
-    if (address.toLocaleLowerCase() === account.toLocaleLowerCase()) {
-      player.equip = {
-        clothes,
-        handheld,
-        head,
+    player.username = player.name;
+    LootList1Data.forEach((item) => {
+      if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
+        let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let handheld = item.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let head = item.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        player.equip = {
+          clothes,
+          handheld,
+          head,
+        }
       }
-      player.username = username;
-    }
+    })
     return player;
   }).filter(e => e.state != 1);
   console.log(players, 'players')
@@ -216,10 +218,7 @@ const Game = () => {
         }
       }
     }, 300);
-    let result = await move(merkelData);
-    if (result.type === 'error') {
-      message.error(result.message);
-    }
+    move(merkelData);
   };
 
   const showUserInfo = (player) => {

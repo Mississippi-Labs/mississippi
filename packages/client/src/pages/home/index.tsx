@@ -15,22 +15,24 @@ import { useMUD } from '@/mud/MUDContext';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
 import { ethers } from 'ethers';
-import { min } from 'rxjs';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 
-console.log(lootAbi, 'lootAbi')
-
 let userContract: any
 let lootContract: any
-const Home = () => {
 
+let userTokenIds: any
+let lootTokenIds: any
+const Home = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const {
     components: { GlobalConfig },
-    systemCalls: { selectUserNft, joinBattlefield },
+    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT, setInfo, initUserInfo },
     network
   } = useMUD();
+
+  console.log(network, 'network')
 
   const [walletAddress, setWalletAddress] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
@@ -58,6 +60,7 @@ const Home = () => {
   const [username, setUsername] = useState<string>();
   const [userUrl, setUserUrl] = useState<string>();
   const [lootUrl, setLootUrl] = useState<string>();
+  const [player, setPlayer] = useState<any>();
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
@@ -70,6 +73,9 @@ const Home = () => {
     console.log(wallet)
     let userContractAddress = GlobalConfigData[0].userContract
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
+    userContract?.getUserTokenIdList().then(res => {
+      userTokenIds = res
+    })
   }
 
   if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
@@ -79,6 +85,9 @@ const Home = () => {
     let wallet = new ethers.Wallet(privateKey, provider)
     let lootContractAddress = GlobalConfigData[0].lootContract
     lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
+    lootContract?.getUserTokenIdList().then(res => {
+      lootTokenIds = res
+    })
   }
 
   const createWallet = () => {
@@ -118,58 +127,21 @@ const Home = () => {
     setStep('mint');
   }
 
-  const mintLoot = async () => {
+  const mint = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        let tx = await lootContract.mint()
-        await tx.wait()
-        console.log(tx, 'tx')
-        message.success('Mint Loot Success');
-        let tokenIds = await lootContract.getUserTokenIdList()
-        let tokenId = tokenIds[tokenIds.length - 1].toString()
-        console.log(tokenId, 'tokenId')
-        // 获取当前getBlockNumber
+        let nonce = await network.publicClient.getTransactionCount({address: network.account})
+        let res = await Promise.all([userContract.mint({nonce}), lootContract.mint({nonce: nonce + 1})])
         let blockNumber = await network.publicClient.getBlockNumber()
-        console.log(blockNumber, new Date().getTime())
-        // 每隔1s获取一次getBlockNumber
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          console.log(currentBlockNumber, blockNumber, new Date().getTime())
           if (currentBlockNumber - blockNumber > 2) {
             clearInterval(interval)
-            let t = await lootContract.revealNFT(tokenId)
-            await t.wait()
-            message.success('reveal Loot Success');
-            resolve('success')
-          }
-        }, 2000)
-      } catch (error) {
-        console.log(error)
-        reject(error)
-      }
-    })
-  }
-
-  const mintUser = async () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let tx = await userContract.mint()
-        await tx.wait()
-        console.log(tx, 'tx')
-        message.success('Mint User Success');
-        let tokenIds = await userContract.getUserTokenIdList()
-        let tokenId = tokenIds[tokenIds.length - 1].toString()
-        // 获取当前getBlockNumber
-        let blockNumber = await network.publicClient.getBlockNumber()
-        // 每隔1s获取一次getBlockNumber
-        let interval = setInterval(async () => {
-          let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber >= 2) {
-            clearInterval(interval)
-            let t = await userContract.revealNFT(tokenId)
-            await t.wait()
-            console.log(t, 't')
-            message.success('reveal User Success');
+            let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
+            userTokenIds = tokenIds[0]
+            lootTokenIds = tokenIds[1]
+            nonce = await network.publicClient.getTransactionCount({address: network.account})
+            await Promise.all([userContract.revealNFT(userTokenIds[userTokenIds.length - 1].toString(), {nonce}), lootContract.revealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), {nonce: nonce + 1})])
             resolve('success')
           }
         }, 1000)
@@ -183,41 +155,53 @@ const Home = () => {
   const atobUrl = (url) => {
     url = url.replace('data:application/json;base64,', '')
     url = atob(url)
-    console.log(url, 'url')
     url = JSON.parse(url)
     return url
   }
 
   const mintAndGo = async () => {
-    const clothes = Duck.Clothes[~~(Math.random() * Duck.Clothes.length)];
-    const handheld = Duck.HandHeld[~~(Math.random() * Duck.HandHeld.length)];
-    const head = Duck.Head[~~(Math.random() * Duck.Head.length)];
-
     setMinting(true);
-    message.loading('minting loot and user,please wait...');
-    await mintUser();
-    await mintLoot()
-
-    let tokenIds = await userContract.getUserTokenIdList()
-    let tokenId = tokenIds[tokenIds.length - 1].toString()
-    let lootTokenIds = await lootContract.getUserTokenIdList()
-    let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
-    let url = await userContract.tokenURI(tokenId)
-    let lootUrl = await lootContract.tokenURI(lootTokenId)
-    
-    url = atobUrl(url)
-    lootUrl = atobUrl(lootUrl)
-    setUserUrl(url.image)
-    setLootUrl(lootUrl.image)
-
-    await selectUserNft(tokenId)
-    await joinBattlefield()
-
-    delay(100).then(() => {
+    try {
+      messageApi.open({
+        type: 'loading',
+        content: 'minting loot and user,please wait...',
+        duration: 7,
+      })
+  
+      if (!(userTokenIds.length && lootTokenIds.length)) {
+        await mint()
+      }
+      let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
+      let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
+  
+      console.log(userTokenId, lootTokenId, 'userTokenId, lootTokenId', userTokenIds, lootTokenIds)
+  
+      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+      console.log(urls, 'urls')
+      let url = urls[0]
+      let lootUrl = urls[1]
+      
+      url = atobUrl(url)
+      lootUrl = atobUrl(lootUrl)
+      setUserUrl(url.image)
+      setLootUrl(lootUrl.image)
+      let nonce = await network.publicClient.getTransactionCount({address: network.account})
+      console.log(nonce, 'nonce')
+      let rep = await Promise.all([selectUserNft(userTokenId, network.account, nonce), selectLootNFT(lootTokenId, network.account, nonce + 1)])
+      console.log(rep, 'rep')
+      let playerData = rep[0]
+      let lootData = rep[1]
+  
+      let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      setPlayer(playerData)
       setClothes(clothes);
       setHandheld(handheld);
       setHead(head);
-    }).delay(3000).then(() => {
+      
+      let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
+      console.log(result, 'result')
       setMinting(false);
       navigate('/game', {
         state: {
@@ -227,7 +211,11 @@ const Home = () => {
           head,
         }
       });
-    })
+    } catch (error) {
+      setMinting(false);
+      console.log(error)
+      message.error(error);
+    }
   }
 
   const play = () => {
@@ -265,8 +253,16 @@ const Home = () => {
     localStorage.setItem('mi_user_address', network.walletClient.account.address)
   }
 
+  const initUserInfoFun = async () => {
+    await initUserInfo()
+    localStorage.removeItem('curPlayer');
+    localStorage.removeItem('worldContractAddress');
+    message.success('init success')
+  }
+
   return (
     <div className="mi-home-page">
+      {contextHolder}
       <Header
         onPlayBtnClick={play}
         walletAddress={walletAddress}
@@ -276,6 +272,7 @@ const Home = () => {
         step === 'play' && (
           <section className="mi-section">
             <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
+            <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
           </section>
         )
       }
@@ -285,7 +282,7 @@ const Home = () => {
           <div className="mi-section mint-section">
             <div className="mint-box">
               <h2 className="mint-title">HOME</h2>
-              <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} />
+              <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
                 {minting ? 'Loading...' : 'MINT AND GO'}
               </button>
