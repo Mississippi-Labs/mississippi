@@ -145,18 +145,17 @@ const Home = () => {
       try {
         let res = await pluginContract.multMint()
         await res.wait()
-        let tid = await userContract.userList(0)
-        console.log(tid, 'res')
         let blockNumber = await network.publicClient.getBlockNumber()
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber > 2) {
+          if (currentBlockNumber - blockNumber >= 2) {
             clearInterval(interval)
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
             console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds')
-            await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
+            let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
+            await revealres.wait()
             resolve('success')
           }
         }, 1000)
@@ -189,10 +188,8 @@ const Home = () => {
       let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
   
-      console.log(userTokenId, lootTokenId, 'userTokenId, lootTokenId', userTokenIds, lootTokenIds)
   
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-      console.log(urls, 'urls')
       let url = urls[0]
       let lootUrl = urls[1]
       
