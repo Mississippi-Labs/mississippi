@@ -197,7 +197,8 @@ export default mudConfig({
       dataStruct: false,
       schema: {
         userContract: "address",
-        lootContract: "address"
+        lootContract: "address",
+        pluginContract: "address",
       }
     }
   }

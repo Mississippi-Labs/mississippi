@@ -40,21 +40,20 @@ contract MUser is ERC721, MRandom {
 
     mapping(uint256 => User) public userList;
 
-    function mint() external {
+    function mint(address _addr) external {
         // init loot box
         User storage user = userList[tokenId];
-        user.owner = msg.sender;
+        user.owner = _addr;
         user.state = RandomState.Pending;
         user.randomId = randomId;
         requestRandom(randomId);
-        _mint(msg.sender, tokenId);
+        _mint(_addr, tokenId);
         tokenId++;
         randomId++;
     }
 
     function revealNFT(uint256 _tokenId) external {
         User storage user = userList[_tokenId];
-        require(user.owner == msg.sender, "only owner can reveal the  box");
         uint8[] memory random_numbers = getRandom(
             user.randomId,
             8,

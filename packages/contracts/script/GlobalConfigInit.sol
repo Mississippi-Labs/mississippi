@@ -7,7 +7,7 @@ import {GlobalConfig} from "../src/codegen/Tables.sol";
 import { GLOBAL_CONFIG_KEY } from "../src/Constants.sol";
 
 library GlobalConfigInit {
-    function initGlobalConfig(IWorld _world,address _userContract,address _lootContract) internal {
+    function initGlobalConfig(IWorld _world,address _userContract,address _lootContract,address _pluginContract) internal {
         GlobalConfig.setUserContract(
             _world,
             GLOBAL_CONFIG_KEY, //key
@@ -17,6 +17,11 @@ library GlobalConfigInit {
             _world,
             GLOBAL_CONFIG_KEY, //key
             _lootContract
+        );
+        GlobalConfig.setPluginContract(
+            _world,
+            GLOBAL_CONFIG_KEY, //key
+            _pluginContract
         );
     }
 }

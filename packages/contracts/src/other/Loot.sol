@@ -197,7 +197,6 @@ contract MLoot is Suit, ERC721,MRandom {
 
     function revealNFT(uint256 _tokenId) external {
         Loot storage loot = lootList[_tokenId];
-        require(loot.owner == msg.sender, "only owner can reveal the  box");
         uint8[] memory random_numbers = getRandom(loot.randomId, 8,waitBlockCount);
         loot.Weapon = luck(random_numbers[0], weapons);
         loot.Chest = luck(random_numbers[1], chestArmor);
@@ -210,14 +209,14 @@ contract MLoot is Suit, ERC721,MRandom {
         loot.state = RandomState.Confirmed;
     }
 
-    function mint() external {
+    function mint(address _addr) external {
         // init loot box
         Loot storage loot = lootList[tokenId];
-        loot.owner = msg.sender;
+        loot.owner = _addr;
         loot.state = RandomState.Pending;
         loot.randomId = randomId;
         requestRandom(randomId);
-        _mint(msg.sender, tokenId);
+        _mint(_addr, tokenId);
         tokenId++;
         randomId++;
     }

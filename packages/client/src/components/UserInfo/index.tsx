@@ -8,11 +8,14 @@ export interface IUserInfo {
   clothes: string;
   handheld: string;
   gem?: number;
+  userUrl?: string;
+  lootUrl?: string;
+  player?: any;
 }
 
 const UserInfo = (props: IUserInfo) => {
 
-  const { handheld, head, clothes, gem = 0, userUrl, lootUrl } = props;
+  const { handheld, head, clothes, gem = 0, userUrl, lootUrl, player } = props;
   const lootHasLoaded = handheld && head && clothes;
   console.log(handheld, head, clothes, lootHasLoaded);
 
@@ -41,27 +44,27 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 100 : 0}</span><span className="extra-attr">100</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 20 : 0}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.attack?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.attack?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>AttackRange</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 5 : 0}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.attackRange?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.attackRange?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Speed</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 2 : 0}</span><span className="extra-attr">2</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.speed?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.speed?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Strength</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 20 : 0}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.strength?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ?player?.strength?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Space</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? 10 : 0}</span><span className="extra-attr">1</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.space?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.space?.toString() : ''}</span></dd>
             </dl>
           </div>
         </div>
