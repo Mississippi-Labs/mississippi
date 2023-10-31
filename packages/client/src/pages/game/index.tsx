@@ -92,9 +92,9 @@ const Game = () => {
     player.username = player.name;
     LootList1Data.forEach((item) => {
       if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
-        let clothes = lootData.chest.split('\" ')[1].split(' of')[0]
-        let handheld = lootData.weapon.split('\" ')[1].split(' of')[0]
-        let head = lootData.head.split('\" ')[1].split(' of')[0]
+        let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
         player.equip = {
           clothes,
           handheld,

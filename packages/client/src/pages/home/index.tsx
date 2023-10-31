@@ -192,9 +192,9 @@ const Home = () => {
       let playerData = rep[0]
       let lootData = rep[1]
   
-      let clothes = lootData.chest.split('\" ')[1].split(' of')[0]
-      let handheld = lootData.weapon.split('\" ')[1].split(' of')[0]
-      let head = lootData.head.split('\" ')[1].split(' of')[0]
+      let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       setPlayer(playerData)
       setClothes(clothes);
       setHandheld(handheld);
