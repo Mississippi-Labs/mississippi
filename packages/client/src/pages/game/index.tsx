@@ -242,7 +242,7 @@ const Game = () => {
     curPlayer.waiting = true;
     const result = await move(merkelData);
     curPlayer.waiting = false;
-    if (result.type === 'error') {
+    if (result?.type === 'error') {
       message.error(result.message);
     }
 
