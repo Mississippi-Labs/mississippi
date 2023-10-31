@@ -83,6 +83,8 @@ const Game = () => {
     return loot;
   })
 
+  console.log(LootList1Data, 'LootList1Data')
+
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     const player = getComponentValue(Player, entity);
@@ -90,9 +92,9 @@ const Game = () => {
     player.username = player.name;
     LootList1Data.forEach((item) => {
       if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
-        let clothes = item.chest.replace('\"', '').split(' of')[0]
-        let handheld = item.weapon.replace('\"', '').split(' of')[0]
-        let head = item.head.replace('\"', '').split(' of')[0]
+        let clothes = lootData.chest.split('\" ')[1].split(' of')[0]
+        let handheld = lootData.weapon.split('\" ')[1].split(' of')[0]
+        let head = lootData.head.split('\" ')[1].split(' of')[0]
         player.equip = {
           clothes,
           handheld,

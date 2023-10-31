@@ -98,8 +98,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.selectLootNFT([tokenId], {nonce});
       await waitForTransaction(tx);
       let LootList1Data = getComponentValue(LootList1, encodeEntity({ addr: "address" }, { addr:  address}));
-      let LootList2Data = getComponentValue(LootList2, encodeEntity({ addr: "address" }, { addr:  address}));
-      return Object.assign(LootList1Data, LootList2Data);
+      // let LootList2Data = getComponentValue(LootList2, encodeEntity({ addr: "address" }, { addr:  address}));
+      return LootList1Data
     } catch (error) {
       console.log('selectLootNFT', error);
       message.error(error.cause.reason);
