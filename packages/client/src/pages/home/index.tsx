@@ -185,8 +185,9 @@ const Home = () => {
       lootUrl = atobUrl(lootUrl)
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
-  
-      let rep = await Promise.all([selectUserNft(userTokenId, network.account), selectLootNFT(lootTokenId, network.account)])
+      let nonce = await network.publicClient.getTransactionCount({address: network.account})
+      console.log(nonce, 'nonce')
+      let rep = await Promise.all([selectUserNft(userTokenId, network.account, nonce), selectLootNFT(lootTokenId, network.account, nonce + 1)])
       console.log(rep, 'rep')
       let playerData = rep[0]
       let lootData = rep[1]
