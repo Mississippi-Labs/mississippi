@@ -152,6 +152,16 @@ export function createSystemCalls(
     }
   }
 
+  const initUserInfo = async () => {
+    try {
+      const tx = await worldContract.write.initUserInfo();
+      await waitForTransaction(tx);
+      return tx
+    } catch (error) {
+      message.error(error.cause.reason);
+    }
+  }
+
   const getBattlePlayerHp = async (battleId: any, addr: any) => {
     const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
     return data
@@ -172,6 +182,7 @@ export function createSystemCalls(
     revealBox,
     CreateBox,
     getBattlePlayerHp,
-    setInfo
+    setInfo,
+    initUserInfo
   };
 }

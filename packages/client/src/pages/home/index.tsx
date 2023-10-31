@@ -28,7 +28,7 @@ const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
     components: { GlobalConfig },
-    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT, setInfo },
+    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT, setInfo, initUserInfo },
     network
   } = useMUD();
 
@@ -253,6 +253,13 @@ const Home = () => {
     localStorage.setItem('mi_user_address', network.walletClient.account.address)
   }
 
+  const initUserInfoFun = async () => {
+    await initUserInfo()
+    localStorage.removeItem('curPlayer');
+    localStorage.removeItem('worldContractAddress');
+    message.success('init success')
+  }
+
   return (
     <div className="mi-home-page">
       {contextHolder}
@@ -265,6 +272,7 @@ const Home = () => {
         step === 'play' && (
           <section className="mi-section">
             <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
+            <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
           </section>
         )
       }

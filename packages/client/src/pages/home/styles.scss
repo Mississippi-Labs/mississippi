@@ -17,6 +17,10 @@
             bottom: 25%;
             font-size: 16px;
             transform: translate3d(-50%, 0, 0);
+            & ~ .play-btn {
+                margin-top: 100px;
+                bottom: calc(25% - 100px);
+            }
         }
     }
 
