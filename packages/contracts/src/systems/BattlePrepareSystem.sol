@@ -72,9 +72,11 @@ contract BattlePrepareSystem is System {
         uint256 battleId = GameConfig.getBattleId(GAME_CONFIG_KEY);
         BattleList.setAttacker(battleId, _msgSender());
         BattleList.setDefender(battleId, _targetAddress);
-        BattleList.setTimestamp(battleId, block.timestamp);
         BattleList.setAttackerHP(battleId, Player.getHp(_msgSender()));
         BattleList.setDefenderHP(battleId, Player.getHp(_targetAddress));
+        BattleList.setStartTimestamp(battleId, block.timestamp);
+        BattleList.setEndTimestamp(battleId, block.timestamp);
+    
 
         // battleId++;
         GameConfig.setBattleId(GAME_CONFIG_KEY, battleId + 1);
@@ -90,7 +92,7 @@ contract BattlePrepareSystem is System {
         BattleListData memory battle = BattleList.get(_battleId);
         BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Inited);
 
-        require(block.timestamp - battle.timestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
+        require(block.timestamp - battle.startTimestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
         // 战斗是否已经选择buff
         BattleState _battleState = battle.attacker == _msgSender() ? battle.attackerState : battle.defenderState;
 
@@ -103,6 +105,7 @@ contract BattlePrepareSystem is System {
         BattleList.setDefenderBuffHash(_battleId, _buffHash);
         BattleList.setDefenderState(_battleId, BattleState.Confirmed);
         }
+        BattleList.setEndTimestamp(_battleId, block.timestamp);
 
         // TODO需要一个event通知前端验证buff
         emit BattleConfirmed(_battleId, _msgSender(), _buffHash);
@@ -121,5 +124,5 @@ contract BattlePrepareSystem is System {
         uint256 increase = (elapsedTime / 10) / 100 * maxHp ; 
         hp = hp + increase;
         return (hp > maxHp) ? maxHp : hp;
-  }
+    }
 }

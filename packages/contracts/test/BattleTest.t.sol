@@ -40,7 +40,7 @@ contract BattleTest is MudTest {
         Player.setHp(bob, 200);
         Player.setAttack(bob, 36);
         Player.setAttackRange(bob, 5);
-        Player.setSpeed(bob, 5);
+        Player.setSpeed(bob, 6);
         Player.setStrength(bob, 5);
         Player.setSpace(bob, 5);
 
@@ -49,7 +49,7 @@ contract BattleTest is MudTest {
         Player.setHp(alice, 200);
         Player.setAttack(alice, 3);
         Player.setAttackRange(alice, 5);
-        Player.setSpeed(alice, 5);
+        Player.setSpeed(alice, 6);
         Player.setStrength(alice, 5);
         Player.setSpace(alice, 5);
         vm.stopPrank();
@@ -312,6 +312,58 @@ contract BattleTest is MudTest {
         vm.stopPrank();
     }
 */
+
+
+    function testTimeout() public {
+        GloabalInit();
+        PlayerInit();
+        GameInit();
+
+        // alice attack bob 
+        vm.startPrank(alice);
+        world.battleInvitation(bob, positions());
+        vm.stopPrank();
+
+        // bob confirm 
+        vm.startPrank(alice);
+        bytes32 action = bytes32("attack");
+        uint256 arg = 1;
+        bytes32 nonce = bytes32("1");
+        bytes32 buffHash = keccak256(abi.encodePacked(action, arg, nonce));
+        world.confirmBattle(buffHash, 1);
+        vm.stopPrank();
+
+        vm.warp(block.timestamp + 140);
+        console.log(" block height: ", block.number);
+        // vm.roll(block.number + 2);
+        console.log(" after roll block height: ", block.number);
+        
+        vm.startPrank(alice);
+        world.forceEnd(1);
+        vm.stopPrank();
+        
+        // // alice confirm 
+        // vm.startPrank(alice);
+        // bytes32 action2 = bytes32("attack");
+        // uint256 arg2 = 2;
+        // bytes32 nonce2 = bytes32("1");
+        // bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
+        // world.confirmBattle(buffHash2, 1);
+        // vm.stopPrank();
+
+        // bob revealBattle 
+        // console.log(" bob revealBattle");
+        // vm.startPrank(bob);
+        // world.revealBattle(1, action, arg, nonce);
+        // vm.stopPrank();
+
+        // // alice revealBattle 
+        // console.log(" alice revealBattle");
+        // vm.startPrank(alice);
+        // world.revealBattle(1, action2, arg2, nonce2);
+        // vm.stopPrank();
+    }
+
 
 
 

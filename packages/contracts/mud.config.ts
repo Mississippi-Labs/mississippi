@@ -139,9 +139,10 @@ export default mudConfig({
         defenderAction: "bytes32",
         attackerBuffHash: "bytes32",
         defenderBuffHash: "bytes32",
-        timestamp: "uint256",
+        startTimestamp: "uint256",
         attackerArg: "uint256",
         defenderArg: "uint256",
+        endTimestamp: "uint256",
       }
     },
     PlayerLocationLock: {
