@@ -16,4 +16,5 @@ packages/contracts/types/*
 # out for loot and user
 !packages/contracts/out/Loot.sol/
 !packages/contracts/out/User.sol/
+!packages/contracts/out/Plugin.sol/
 !packages/contracts/out/IWorld.sol/
