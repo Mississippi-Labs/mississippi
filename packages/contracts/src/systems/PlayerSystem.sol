@@ -53,7 +53,7 @@ contract PlayerSystem is System {
         Player.setSpace(sender, space);
     }
     function selectLootNFT(uint256 _tokenId) external {
-        address lootAddress  = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
+        address lootAddress  = GlobalConfig.getLootContract(GLOBAL_CONFIG_KEY);
         Loot loot = Loot(lootAddress);
         address _sender = _msgSender();
         require(loot.ownerOf(_tokenId) == _msgSender(), "You are not the owner of this NFT");
