@@ -16,8 +16,9 @@ contract MPlugin {
     function multMint() external {
         User user = User(userAddress);
         Loot loot = Loot(lootAddress);
-        user.mint();
-        loot.mint();
+        address _user = msg.sender;
+        user.mint(_user);
+        loot.mint(_user);
     }
 
     function multRevealNFT(uint256 _lootTokenId,uint256 _userTokenId) external {
@@ -26,5 +27,5 @@ contract MPlugin {
         loot.revealNFT(_lootTokenId);
         user.revealNFT(_userTokenId);
     }
-    
+
 }
