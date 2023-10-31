@@ -18,9 +18,13 @@ import { ethers } from 'ethers';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
+
+console.log(pluginAbi, userAbi)
 
 let userContract: any
 let lootContract: any
+let pluginContract: any
 
 let userTokenIds: any
 let lootTokenIds: any
@@ -90,6 +94,15 @@ const Home = () => {
     })
   }
 
+  if (GlobalConfigData.length && GlobalConfigData[0].pluginContract && !pluginContract) {
+    let privateKey = network.privateKey
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let pluginContractAddress = GlobalConfigData[0].pluginContract
+    pluginContract = new ethers.Contract(pluginContractAddress, pluginAbi, wallet)
+  }
+
   const createWallet = () => {
     setContent(
       <div className="create-wallet-wrapper">
@@ -130,8 +143,10 @@ const Home = () => {
   const mint = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        let nonce = await network.publicClient.getTransactionCount({address: network.account})
-        let res = await Promise.all([userContract.mint({nonce}), lootContract.mint({nonce: nonce + 1})])
+        let res = await pluginContract.multMint()
+        await res.wait()
+        let tid = await userContract.userList(0)
+        console.log(tid, 'res')
         let blockNumber = await network.publicClient.getBlockNumber()
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
@@ -140,8 +155,8 @@ const Home = () => {
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
-            nonce = await network.publicClient.getTransactionCount({address: network.account})
-            await Promise.all([userContract.revealNFT(userTokenIds[userTokenIds.length - 1].toString(), {nonce}), lootContract.revealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), {nonce: nonce + 1})])
+            console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds')
+            await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
             resolve('success')
           }
         }, 1000)
@@ -168,9 +183,9 @@ const Home = () => {
         duration: 7,
       })
   
-      if (!(userTokenIds.length && lootTokenIds.length)) {
+      // if (!(userTokenIds.length && lootTokenIds.length)) {
         await mint()
-      }
+      // }
       let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
   
