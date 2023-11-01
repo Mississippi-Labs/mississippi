@@ -23,7 +23,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.move([steps]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('move', error);
+      message.error(error.cause.reason || error.cause.details);
     }
     
     // return getComponentValue(Player, singletonEntity);
@@ -42,7 +43,7 @@ export function createSystemCalls(
       return tx
     } catch (error) {
       console.log('joinBattlefield', error);
-      message.error(error.cause.reason);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -51,7 +52,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.transfer([addr, ...transferData]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('transfer', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -60,7 +62,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.battleInvitation([addr, steps]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('battleInvitation', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -68,8 +71,16 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
       await waitForTransaction(tx);
+      return {
+        type: 'success'
+      }
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('confirmBattle', error);
+      message.error(error.cause.reason || error.cause.details);
+      return {
+        type: 'error',
+        msg: error.cause.reason || error.cause.details || error.cause
+      }
     }
     
   }
@@ -79,7 +90,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('revealBattle', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -93,7 +105,7 @@ export function createSystemCalls(
       }
     } catch (error) {
       console.log('selectUserNft', error);
-      message.error(error.cause.reason);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -104,7 +116,7 @@ export function createSystemCalls(
       return getComponentValue(Player, encodeEntity({ addr: "address" }, { addr:  address}));
     } catch (error) {
       console.log('selectUserNft', error);
-      message.error(error.cause.reason);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -117,7 +129,7 @@ export function createSystemCalls(
       return LootList1Data
     } catch (error) {
       console.log('selectLootNFT', error);
-      message.error(error.cause.reason);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -126,7 +138,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.openBox([boxId]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('openBox', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -136,7 +149,8 @@ export function createSystemCalls(
       await waitForTransaction(tx);
       return getComponentValue(BoxList, encodeEntity({ boxId: "uint256" }, { boxId:  boxId}));
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('revealBox', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -146,7 +160,7 @@ export function createSystemCalls(
       await waitForTransaction(tx);
     } catch (error) {
       console.log('getCollections', error);
-      message.error(error.cause.reason);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -155,7 +169,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.CreateBox([x, y]);
       await waitForTransaction(tx);
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('CreateBox', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -165,7 +180,8 @@ export function createSystemCalls(
       await waitForTransaction(tx);
       return tx
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('setInfo', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -175,7 +191,19 @@ export function createSystemCalls(
       await waitForTransaction(tx);
       return tx
     } catch (error) {
-      message.error(error.cause.reason);
+      console.log('initUserInfo', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
+  const forceEnd = async (battleId: any) => {
+    try {
+      const tx = await worldContract.write.forceEnd([battleId]);
+      await waitForTransaction(tx);
+      return tx
+    } catch (error) {
+      console.log('forceEnd', error);
+      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -201,6 +229,7 @@ export function createSystemCalls(
     getBattlePlayerHp,
     setInfo,
     initUserInfo,
-    selectBothNFT
+    selectBothNFT,
+    forceEnd
   };
 }

@@ -27,9 +27,11 @@ import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { message } from 'antd';
 
+let timeout:any = null
+let nonceHex = ''
+
 export default function Battle(props) {
   console.log(props)
-  const [nonceHex, setNonceHex] = useState('');
   const [selectActionData, setSelectActionData] = useState('');
   const [selectTacticData, setSelectTacticData] = useState('');
   const [confirmBattleData, setConfirmBattleData] = useState([]);
@@ -42,13 +44,42 @@ export default function Battle(props) {
 
   const {
     components: { BattleList },
-    systemCalls: { confirmBattle, revealBattle },
+    systemCalls: { confirmBattle, revealBattle, forceEnd },
     network
   } = useMUD();
 
-  const nonce = getRandomStr(18)
+  let nonce = localStorage.getItem('nonce') || '';
+  if (!nonce) {
+    nonce = getRandomStr(18);
+    localStorage.setItem('nonce', nonce);
+  }
   if (!nonceHex) {
-    setNonceHex(ethers.utils.formatBytes32String(nonce));
+    nonceHex = (ethers.utils.formatBytes32String(nonce))
+  }
+
+  const initBattle = (id: any) => {
+    let battle:any = battles.filter((item:any) => item.id.toString() == id)[0]
+    console.log(battle, id)
+    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1) || (battle.attackerState == 0 && battle.defenderState == 0))) {
+      if (!timeout) {
+        timeout = setTimeout(() => {
+          forceEnd(battle.id)
+        }, 120000)
+      } 
+      
+    } else if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
+      console.log('battleState', battleState)
+      clearTimeout(timeout)
+      timeout = null
+      let action = confirmBattleData[0] || 'attack'
+      let arg = confirmBattleData[1] || 0
+      let actionHex = ethers.utils.formatBytes32String(action);
+      revealBattle(battle.id, actionHex, arg, nonceHex)
+      setBattleState(2)
+    }
+    if ((battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
+      setBattleState(3)
+    }
   }
 
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
@@ -58,25 +89,16 @@ export default function Battle(props) {
     return battle;
   });
   if (battles.length) {
-    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props.curPlayer.addr.toLocaleLowerCase()) && !item.isEnd)[0]
+    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
     if (battle) {
       if (!battlesId) {
         setBattlesId(battle.id)
       }
     }
   }
+
   if (battlesId) {
-    let battle:any = battles.filter((item:any) => item.id.toString() == battlesId)[0]
-    if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState == 1) {
-      let action = confirmBattleData[0]
-      let arg = confirmBattleData[1]
-      let actionHex = ethers.utils.formatBytes32String(action);
-      revealBattle(battle.id, actionHex, arg, nonceHex)
-      setBattleState(2)
-    }
-    if ((battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
-      setBattleState(3)
-    }
+    initBattle(battlesId)
   }
 
   useEffect(() => {
@@ -90,7 +112,6 @@ export default function Battle(props) {
             attacker: battle.attacker.toLocaleLowerCase(),
             defender: battle.defender.toLocaleLowerCase(),
           }
-          console.log(data, props.curPlayer.addr, props.targetPlayer.addr)
           setBattleData(data)
         }
         console.log(battleData, battle)
@@ -165,45 +186,26 @@ export default function Battle(props) {
     )
   }
 
-  const confirmBattleFun = () => {
+  const confirmBattleFun = async () => {
     if (battleState != 0) return
     if (!confirmBattleData[0]) {
       message.info('Please select action')
       return
     }
-      let battle:any = battles.filter((item:any) => (item?.attacker?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item?.defender?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
-      console.log(battle)
-      let action = confirmBattleData[0]
-      let arg = confirmBattleData[1] || 0
-      let actionHex = ethers.utils.formatBytes32String(action);
-      let hash = getProofHash(actionHex, arg, nonceHex);
-      confirmBattle(hash, battle.id);
-      setBattleState(1)
+    let battle:any = battles.filter((item:any) => (item?.attacker?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item?.defender?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
+    console.log(battle)
+    let action = confirmBattleData[0]
+    let arg = confirmBattleData[1] || 0
+    let actionHex = ethers.utils.formatBytes32String(action);
+    let hash = getProofHash(actionHex, arg, nonceHex);
+    console.log(hash, battle.id)
+    setBattleState(1)
+    let res = await confirmBattle(hash, battle.id);
+    // if (res.type == 'error' && res.msg.indexOf('Battle is timeout') > -1) {
+    //   forceEnd(battle.id)
+    //   return
+    // }
   }
-  // const confirmBattle = () => {
-  //   //battle-1
-  //   let battle1 = document.querySelector('.battle-1');
-  //   let battle2 = document.querySelector('.battle-2');
-  //   setConfirmBattleData([selectActionData, selectTacticData])
-  //   let scale1 = 0
-  //   let scale2 = 0
-  //   if (roundData == 1) {
-  //     setConfirmBattle2Data([attackButton, rock])
-  //     scale1 = 0.4
-  //     scale2 = 0.4
-  //   }
-  //   if (roundData == 2) {
-  //     setConfirmBattle2Data([attackButton, scissors])
-  //     scale1 = 0.2
-  //     scale2 = 0.0001
-  //   }
-  //   if (roundData == 3) {
-  //     setConfirmBattle2Data([attackButton, paper])
-  //     scale1 = 0.0001
-  //     scale2 = 0.6
-  //   }
-  //   
-  // }
   return (
     <div className="mi-battle-wrap">
       <div className="mi-battle-content">

@@ -6,7 +6,7 @@ import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { message } from 'antd';
 import "./styles.scss";
 import Rank from "@/components/Rank";
@@ -24,7 +24,7 @@ import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
-import { get } from "http";
+
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -33,6 +33,7 @@ const toObject = (obj) => {
 }
 
 const Game = () => {
+  const navigate = useNavigate();
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation },
@@ -106,25 +107,31 @@ const Game = () => {
 
   const [renderPlayers, setRenderPlayers] = useState([]);
   const playersCache = getPlayersCache(players);
-
   useEffect(() => {
-    console.log(players, 'players');
+    let renderPlayersArr = [...renderPlayers];
     players.forEach((player) => {
       const index = renderPlayers.findIndex((rPlayer) => rPlayer.addr === player.addr);
       if (index === -1) {
         // add
-        setRenderPlayers([...renderPlayers, { ...player }]);
+        renderPlayersArr.push({ ...player });
       } else {
-        Object.assign(renderPlayers[index], player);
-        setRenderPlayers([...renderPlayers]);
+        // update
+        renderPlayersArr[index] = Object.assign(renderPlayersArr[index], player);
       }
     });
+    // remove players中不存在的
+    renderPlayersArr = renderPlayersArr.filter((player) => {
+      return players.findIndex((p) => p.addr === player.addr) !== -1;
+    });
+    setRenderPlayers(renderPlayersArr);
   }, [playersCache])
 
   const curPlayer = renderPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
+  } else {
+    // 返回首页
   }
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     const id = decodeEntity({ battleId: "uint256" }, entity);
@@ -138,8 +145,9 @@ const Game = () => {
     if (battle) {
       const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
       const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+      const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
       if (!battleCurPlayer) {
-        setBattleCurPlayer(curPlayer)
+        setBattleCurPlayer(cur)
       }
       if (!targetPlayer) {
         setTargetPlayer(target)
@@ -204,7 +212,15 @@ const Game = () => {
       setTargetPlayer(null);
     } else {
       console.log('lose');
-      message.error('You lose the battle');
+      let cur = getComponentValue(Player, network.playerEntity);
+      if (cur?.state == 1) {
+        message.error('You lose the battle');
+        navigate('/');
+        return
+      } else {
+        // 逃跑成功
+        message.info('You escaped the battle');
+      }
     }
   }
 

@@ -29,6 +29,7 @@ let pluginContract: any
 
 let userTokenIds: any
 let lootTokenIds: any
+
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
@@ -195,8 +196,6 @@ const Home = () => {
       lootUrl = atobUrl(lootUrl)
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
-      let nonce = await network.publicClient.getTransactionCount({address: network.account})
-      console.log(nonce, 'nonce')
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
   
       let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -298,8 +297,7 @@ const Home = () => {
           </div>
         )
       }
-
-      <Modal/>
+      <Modal />
     </div>
   );
 };
