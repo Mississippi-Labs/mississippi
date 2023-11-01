@@ -230,7 +230,8 @@ const Home = () => {
       message.error('waiting for wallet connection');
       return;
     }
-    if (curPlayer && curPlayer.state != 1) {
+    console.log(curPlayer, 'curPlayer')
+    if (curPlayer && curPlayer.state != 1 && curPlayer.state != 0) {
       navigate('/game', {
         state: {
           username: '',

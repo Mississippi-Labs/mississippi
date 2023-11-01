@@ -150,6 +150,7 @@ const Game = () => {
   }
   
   const getCollectionsFun = (box: any) => {
+    boxId = ''
     setContent(
       <div className={'mi-modal-content-wrapper'}>
         <div className="mi-modal-content">
@@ -176,7 +177,7 @@ const Game = () => {
     const box:any = getComponentValue(BoxList, entity)
     box.id = id.boxId.toString()
     return box;
-  });
+  }).filter(e => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));;
 
   const getBalance = async () => {
     const balance = await network.publicClient.getBalance({
