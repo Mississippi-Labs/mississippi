@@ -82,9 +82,23 @@ export function createSystemCalls(
     }
   }
 
-  const selectUserNft = async (tokenId: any, address: any, nonce: any) => {
+  const selectBothNFT = async (userTokenId: any, lootTokenId: any, address: any) => {
     try {
-      const tx = await worldContract.write.selectUserNft([tokenId], {nonce});
+      const tx = await worldContract.write.selectBothNFT([userTokenId, lootTokenId]);
+      await waitForTransaction(tx);
+      return {
+        playerData: getComponentValue(Player, encodeEntity({ addr: "address" }, { addr:  address})),
+        lootData: getComponentValue(LootList1, encodeEntity({ addr: "address" }, { addr:  address})),
+      }
+    } catch (error) {
+      console.log('selectUserNft', error);
+      message.error(error.cause.reason);
+    }
+  }
+
+  const selectUserNft = async (tokenId: any, address: any) => {
+    try {
+      const tx = await worldContract.write.selectUserNft([tokenId]);
       await waitForTransaction(tx);
       return getComponentValue(Player, encodeEntity({ addr: "address" }, { addr:  address}));
     } catch (error) {
@@ -93,9 +107,9 @@ export function createSystemCalls(
     }
   }
 
-  const selectLootNFT = async (tokenId: any, address: any, nonce: any) => {
+  const selectLootNFT = async (tokenId: any, address: any) => {
     try {
-      const tx = await worldContract.write.selectLootNFT([tokenId], {nonce});
+      const tx = await worldContract.write.selectLootNFT([tokenId]);
       await waitForTransaction(tx);
       let LootList1Data = getComponentValue(LootList1, encodeEntity({ addr: "address" }, { addr:  address}));
       // let LootList2Data = getComponentValue(LootList2, encodeEntity({ addr: "address" }, { addr:  address}));
@@ -183,6 +197,7 @@ export function createSystemCalls(
     CreateBox,
     getBattlePlayerHp,
     setInfo,
-    initUserInfo
+    initUserInfo,
+    selectBothNFT
   };
 }

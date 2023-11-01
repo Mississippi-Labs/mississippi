@@ -83,7 +83,6 @@ const Game = () => {
     return loot;
   })
 
-  console.log(LootList1Data, 'LootList1Data')
 
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
@@ -125,7 +124,6 @@ const Game = () => {
 
   const curPlayer = renderPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.addr) {
-    console.log(curPlayer, 'curPlayer', Number(curPlayer.speed))
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
   }

@@ -14,6 +14,7 @@ import { delay } from '@/utils';
 import { useMUD } from '@/mud/MUDContext';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
+import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
@@ -31,8 +32,8 @@ let lootTokenIds: any
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig },
-    systemCalls: { selectUserNft, joinBattlefield, selectLootNFT, setInfo, initUserInfo },
+    components: { GlobalConfig, Player },
+    systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
 
@@ -65,6 +66,15 @@ const Home = () => {
   const [userUrl, setUserUrl] = useState<string>();
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
+
+  const players = useEntityQuery([Has(Player)]).map((entity) => {
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    const player = getComponentValue(Player, entity);
+    player.addr = address
+    return player;
+  })
+
+  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
@@ -187,10 +197,7 @@ const Home = () => {
       setLootUrl(lootUrl.image)
       let nonce = await network.publicClient.getTransactionCount({address: network.account})
       console.log(nonce, 'nonce')
-      let rep = await Promise.all([selectUserNft(userTokenId, network.account, nonce), selectLootNFT(lootTokenId, network.account, nonce + 1)])
-      console.log(rep, 'rep')
-      let playerData = rep[0]
-      let lootData = rep[1]
+      let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
   
       let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -219,22 +226,19 @@ const Home = () => {
   }
 
   const play = () => {
-    let curPlayer = localStorage.getItem('curPlayer') || null;
-    let worldContractAddress = localStorage.getItem('worldContractAddress') || null;
-    if (curPlayer) curPlayer = JSON.parse(curPlayer);
-    console.log(curPlayer, worldContractAddress, network.account, network.worldContract.address)
-    console.log(curPlayer && curPlayer.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase() && worldContractAddress?.toLocaleLowerCase() == network.worldContract.address.toLocaleLowerCase())
-    if (curPlayer?.addr?.toLocaleLowerCase() == network.account.toLocaleLowerCase() && worldContractAddress?.toLocaleLowerCase() == network.worldContract.address.toLocaleLowerCase()) {
-      // to /game
+    if (!network.account) {
+      message.error('waiting for wallet connection');
+      return;
+    }
+    if (curPlayer && curPlayer.state != 1) {
       navigate('/game', {
         state: {
-          username: curPlayer.username,
-          clothes: curPlayer.equip.clothes,
-          handheld: curPlayer.equip.handheld,
-          head: curPlayer.equip.head,
+          username: '',
+          clothes: '',
+          handheld: '',
+          head: '',
         }
       });
-      return;
     } else {
       localStorage.removeItem('curPlayer');
       localStorage.removeItem('worldContractAddress');
