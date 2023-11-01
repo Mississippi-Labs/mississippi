@@ -52,7 +52,7 @@ contract PlayerSystem is System {
         Player.setStrength(sender, strength);
         Player.setSpace(sender, space);
     }
-    function selectLootNFT(uint256 _tokenId) external {
+    function selectLootNFT(uint256 _tokenId) public {
         address lootAddress  = GlobalConfig.getLootContract(GLOBAL_CONFIG_KEY);
         Loot loot = Loot(lootAddress);
         address _sender = _msgSender();
@@ -66,6 +66,11 @@ contract PlayerSystem is System {
         LootList2.setHand(_sender,Hand);
         LootList2.setNeck(_sender,Neck);
         LootList2.setRing(_sender,Ring);
+    }
+
+    function selectBothNFT(uint256 _userTokenId,uint256 _lootTokenId) external {
+        selectUserNft(_userTokenId);
+        selectLootNFT(_lootTokenId);
     }
 
     function getUserInfo(uint256 tokenId) public view returns (uint256,uint256,uint256,uint256,uint256,uint256) {
