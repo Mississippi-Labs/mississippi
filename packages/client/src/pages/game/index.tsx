@@ -24,8 +24,7 @@ import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
-
-let boxId = ''
+import { get } from "http";
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -150,7 +149,7 @@ const Game = () => {
   }
   
   const getCollectionsFun = (box: any) => {
-    boxId = ''
+    console.log(box);
     setContent(
       <div className={'mi-modal-content-wrapper'}>
         <div className="mi-modal-content">
@@ -163,7 +162,6 @@ const Game = () => {
         <div className="mi-modal-footer">
           <button className="mi-btn" onClick={async () => {
             await getCollections(box.id, box.oreBalance, box.treasureBalance);
-            boxId = ''
             close();
           }}>OK</button>
         </div>
@@ -177,7 +175,7 @@ const Game = () => {
     const box:any = getComponentValue(BoxList, entity)
     box.id = id.boxId.toString()
     return box;
-  }).filter(e => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));;
+  }).filter(e => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
 
   const getBalance = async () => {
     const balance = await network.publicClient.getBalance({
@@ -195,13 +193,6 @@ const Game = () => {
     });
     getBalance()
   }, []);
-
-  useEffect(() => {
-    if (boxId) {
-      const box = boxs.find((item) => item.id === boxId);
-      getCollectionsFun(box);
-    }
-  }, [boxs]);
 
 
   const finishBattle = (e: any) => {
@@ -311,8 +302,9 @@ const Game = () => {
       console.log(currentBlockNumber, blockNumber, 'currentBlockNumber')
       if (currentBlockNumber - blockNumber >= 2) {
         clearInterval(interval)
-        await revealBox(id)
-        boxId = id
+        let boxData = await revealBox(id)
+        boxData.id = id
+        getCollectionsFun(boxData);
       }
     }, 1000)
   }

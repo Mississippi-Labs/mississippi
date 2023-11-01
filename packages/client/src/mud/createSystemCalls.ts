@@ -3,6 +3,7 @@ import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { message } from 'antd';
+import { get } from "http";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -10,7 +11,7 @@ export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
   ClientComponents
 ) {
-  const { Counter, Player, LootList1, LootList2 } = ClientComponents;
+  const { Counter, Player, LootList1, LootList2, BoxList } = ClientComponents;
   const increment = async () => {
     const tx = await worldContract.write.increment();
     await waitForTransaction(tx);
@@ -133,6 +134,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.revealBox([boxId]);
       await waitForTransaction(tx);
+      return getComponentValue(BoxList, encodeEntity({ boxId: "uint256" }, { boxId:  boxId}));
     } catch (error) {
       message.error(error.cause.reason);
     }
@@ -143,6 +145,7 @@ export function createSystemCalls(
       const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
       await waitForTransaction(tx);
     } catch (error) {
+      console.log('getCollections', error);
       message.error(error.cause.reason);
     }
   }
