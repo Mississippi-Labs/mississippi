@@ -320,6 +320,7 @@ const Game = () => {
         clearInterval(interval)
         let boxData = await revealBox(id)
         boxData.id = id
+        boxs[boxIndex].opening = false;
         getCollectionsFun(boxData);
       }
     }, 1000)
