@@ -105,7 +105,7 @@ contract BattlePrepareSystem is System {
         BattleList.setDefenderBuffHash(_battleId, _buffHash);
         BattleList.setDefenderState(_battleId, BattleState.Confirmed);
         }
-        BattleList.setEndTimestamp(_battleId, block.timestamp);
+        // BattleList.setEndTimestamp(_battleId, block.timestamp);
 
         // TODO需要一个event通知前端验证buff
         emit BattleConfirmed(_battleId, _msgSender(), _buffHash);
