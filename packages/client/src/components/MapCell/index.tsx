@@ -43,7 +43,7 @@ const MapCell = (props: IProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [activePlayerId, setActivePlayerId] = useState(-1);
 
-  const { mapData, openTreasureChest, setStartBattle, showUserInfo, previewPath, renderPreviewPaths = [], curAddr } = useContext(GameContext);
+  const { mapData, openTreasureChest, setStartBattle, showUserInfo, previewPath, renderPreviewPaths = [], curAddr, players: AllPlayers } = useContext(GameContext);
 
   const isDelivery = DELIVERY.x === x && DELIVERY.y === y;
   const movable = isMovable(mapData[y][x]);
@@ -68,7 +68,7 @@ const MapCell = (props: IProps) => {
 
   const onClick = () => {
     onExeAction({ x, y});
-    const curPlayer = players.find(item => item.addr === curAddr);
+    const curPlayer = AllPlayers.find(item => item.addr === curAddr);
     if (!curPlayer) {
       return;
     }
