@@ -92,7 +92,7 @@ contract BattlePrepareSystem is System {
         BattleListData memory battle = BattleList.get(_battleId);
         BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Inited);
 
-        require(block.timestamp - battle.startTimestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
+        // require(block.timestamp - battle.startTimestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
         // 战斗是否已经选择buff
         BattleState _battleState = battle.attacker == _msgSender() ? battle.attackerState : battle.defenderState;
 
