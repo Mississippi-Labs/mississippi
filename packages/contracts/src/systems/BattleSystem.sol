@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import { console } from "forge-std/console.sol";
+// import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { BattleState, Buff, PlayerState, BattleEndType } from "@codegen/Types.sol";
-import { GameConfig, BattleConfig, BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
+import { GameConfig,  BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
@@ -65,7 +65,7 @@ contract BattleSystem is System {
     }
 
     if (!BattleList.getIsEnd(_battleId)) {
-      console.log(" round end ");
+      // console.log(" round end ");
       // emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
       BattleList.setDefenderState(_battleId, BattleState.Inited);
       BattleList.setAttackerState(_battleId, BattleState.Inited);
