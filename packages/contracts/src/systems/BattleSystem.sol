@@ -77,6 +77,7 @@ contract BattleSystem is System {
       if (Player.getState(battle.defender) == PlayerState.Attacking) {
         Player.setState(battle.defender, PlayerState.Exploring);
       }
+      BattleList.setEndTimestamp(_battleId, block.timestamp);
     }
   }
 
