@@ -3,7 +3,6 @@ import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { message } from 'antd';
-import { get } from "http";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -11,7 +10,7 @@ export function createSystemCalls(
   { worldContract, waitForTransaction }: SetupNetworkResult,
   ClientComponents
 ) {
-  const { Counter, Player, LootList1, LootList2, BoxList } = ClientComponents;
+  const { Counter, Player, LootList1, LootList2, BoxList, BattleList } = ClientComponents;
   const increment = async () => {
     const tx = await worldContract.write.increment();
     await waitForTransaction(tx);
@@ -200,9 +199,20 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.forceEnd([battleId]);
       await waitForTransaction(tx);
-      return tx
+      return getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
     } catch (error) {
       console.log('forceEnd', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
+  const unlockUserLocation = async () => {
+    try {
+      const tx = await worldContract.write.unlockUserLocation();
+      await waitForTransaction(tx);
+      return tx
+    } catch (error) {
+      console.log('unlockUserLocation', error);
       message.error(error.cause.reason || error.cause.details);
     }
   }
@@ -230,6 +240,7 @@ export function createSystemCalls(
     setInfo,
     initUserInfo,
     selectBothNFT,
-    forceEnd
+    forceEnd,
+    unlockUserLocation
   };
 }

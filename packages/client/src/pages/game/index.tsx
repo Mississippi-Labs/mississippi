@@ -36,7 +36,7 @@ const Game = () => {
   const navigate = useNavigate();
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
     network,
   } = useMUD();
 
@@ -220,6 +220,9 @@ const Game = () => {
       } else {
         // 逃跑成功
         message.info('You escaped the battle');
+        setTimeout(() => {
+          unlockUserLocation();
+        }, 1000);
       }
     }
   }
