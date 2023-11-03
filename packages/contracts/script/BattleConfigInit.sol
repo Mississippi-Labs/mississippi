@@ -14,7 +14,7 @@ library BattleConfigInit {
             BATTLE_CONFIG_KEY, //key
             10,  //maxAttackzDistance
             15,  //maxMoveDistance,
-            120, //maxTimeLimit,
+            20, //maxTimeLimit,
             120, //maxUserLocationLockTime,
             120, //maxBoxBindTime,
             players
