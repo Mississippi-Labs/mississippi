@@ -17,6 +17,8 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
+import indexDuckImg from '@/assets/img/duck_index.png';
+
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
@@ -276,9 +278,26 @@ const Home = () => {
       />
       {
         step === 'play' && (
-          <section className="mi-section">
-            <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
-            <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
+          <section className="mi-section index-section">
+            <div className="section-box">
+              <div className="intro-box">
+                <h1 className={'intro-title'}>Welcome to Mississippi</h1>
+                <p>
+                  An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
+
+                  The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
+
+                  The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
+
+                  Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
+                </p>
+                <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
+                <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
+
+              </div>
+            </div>
+            <img src={indexDuckImg} alt="duck" className={'duck-index'}/>
+
           </section>
         )
       }

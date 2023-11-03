@@ -9,18 +9,46 @@
         padding-top: 116px;
         height: 100%;
 
-        .play-btn {
+    }
+
+    .index-section {
+
+        .duck-index {
             position: absolute;
-            width: 210px;
-            height: 66px;
-            left: 50%;
-            bottom: 25%;
-            font-size: 16px;
-            transform: translate3d(-50%, 0, 0);
-            & ~ .play-btn {
-                margin-top: 100px;
-                bottom: calc(25% - 100px);
+            bottom: 0;
+            right: 20px;
+            width: 720px;
+        }
+
+        .intro-box {
+            font-family: MISS, sans-serif;
+            width: 600px;
+            color: #fff;
+
+            h1 {
+                margin: 60px auto 40px;
+                text-align: center;
+                font-size: 28px;
             }
+
+            p {
+                font-size: 16px;
+                line-height: 2;
+            }
+
+            .play-btn {
+                display: block;
+                margin: 40px auto;
+                width: 210px;
+                height: 66px;
+                font-size: 16px;
+            }
+        }
+
+        .section-box {
+            position: relative;
+            width: 1280px;
+            margin: 0 auto;
         }
     }
 
