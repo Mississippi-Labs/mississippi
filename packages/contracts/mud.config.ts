@@ -65,8 +65,19 @@ export default mudConfig({
         maxHp: "uint256",
         name: "string",
         url: "string",
+        
       }
     },
+    // PlayerAddon:{
+    //   keySchema: {
+    //     addr: "address",
+    //   },
+    //   schema: {
+    //     lootId: "uint256",
+    //     userId: "uint256"
+    //   }
+
+    // },
     Ownable: {
       schema: {
         owner: "address",
