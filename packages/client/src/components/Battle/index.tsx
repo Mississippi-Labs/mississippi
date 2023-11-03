@@ -60,7 +60,7 @@ export default function Battle(props) {
   const initBattle = (id: any) => {
     let battle:any = battles.filter((item:any) => item.id.toString() == id)[0]
     console.log(battle, id)
-    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1) || (battle.attackerState == 0 && battle.defenderState == 0))) {
+    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1))) {
       if (!timeout) {
         timeout = setTimeout(async () => {
           let resultBattle:any = await forceEnd(battle.id)
@@ -205,6 +205,9 @@ export default function Battle(props) {
     console.log(hash, battle.id)
     setBattleState(1)
     let res = await confirmBattle(hash, battle.id);
+    if (res.type == 'success') {
+      
+    }
     // if (res.type == 'error' && res.msg.indexOf('Battle is timeout') > -1) {
     //   forceEnd(battle.id)
     //   return

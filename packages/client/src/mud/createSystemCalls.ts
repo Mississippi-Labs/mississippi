@@ -71,7 +71,8 @@ export function createSystemCalls(
       const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
       await waitForTransaction(tx);
       return {
-        type: 'success'
+        type: 'success',
+        data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
       }
     } catch (error) {
       console.log('confirmBattle', error);

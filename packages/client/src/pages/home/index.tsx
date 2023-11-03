@@ -17,6 +17,8 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
+import useStore from '@/hooks/useStore';
+
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
@@ -32,6 +34,7 @@ let lootTokenIds: any
 
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const { players } = useStore();
   const {
     components: { GlobalConfig, Player },
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
@@ -67,13 +70,6 @@ const Home = () => {
   const [userUrl, setUserUrl] = useState<string>();
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
-
-  const players = useEntityQuery([Has(Player)]).map((entity) => {
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    const player = getComponentValue(Player, entity);
-    player.addr = address
-    return player;
-  })
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
 

@@ -222,7 +222,7 @@ const Game = () => {
         message.info('You escaped the battle');
         setTimeout(() => {
           unlockUserLocation();
-        }, 1000);
+        }, 200);
       }
     }
   }
