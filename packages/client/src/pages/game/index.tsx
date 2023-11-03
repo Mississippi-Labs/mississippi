@@ -243,7 +243,9 @@ const Game = () => {
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
-          setUserInfoPlayer(curPlayer);
+          let cur = localStorage.getItem('playerInfo');
+          if (cur) cur = JSON.parse(cur);
+          setUserInfoPlayer(cur || curPlayer);
           submitGem();
         }
       }
@@ -258,6 +260,12 @@ const Game = () => {
   };
 
   const showUserInfo = (player) => {
+    console.log(player);
+    if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
+      let cur = localStorage.getItem('playerInfo');
+      if (cur) player = JSON.parse(cur);
+    }
+    
     setUserInfoPlayer(player);
     setUserInfoVisible(true);
   }
@@ -390,7 +398,7 @@ const Game = () => {
                 setUserInfoVisible(false);
               }}
               gem={userInfoPlayer.gem}
-              {...userInfoPlayer.equip}
+              {...userInfoPlayer}
             />
           )
         }

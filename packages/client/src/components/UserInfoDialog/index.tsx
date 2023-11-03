@@ -13,7 +13,7 @@ const UserInfoDialog = (props: IProps) => {
 
   return (
     <div className={`mi-userinfo-dialog ${visible ? '' : 'hidden'}`}>
-      <UserInfo {...rest}/>
+      <UserInfo {...rest} player={rest} />
       <button className="mi-btn close-btn" onClick={onClose}>OK</button>
     </div>
   );

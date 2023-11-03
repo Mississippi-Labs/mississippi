@@ -166,6 +166,11 @@ const Home = () => {
     return url
   }
 
+  const toObject = (obj) => {
+    return JSON.parse(JSON.stringify(obj, (key, value) => typeof value === 'bigint' ? value.toString() : value
+  ))
+}
+
   const mintAndGo = async () => {
     setMinting(true);
     try {
@@ -199,6 +204,10 @@ const Home = () => {
       setClothes(clothes);
       setHandheld(handheld);
       setHead(head);
+
+      let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
+      console.log(player, 'player')
+      localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
       
       let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
       console.log(result, 'result')

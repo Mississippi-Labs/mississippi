@@ -16,7 +16,7 @@ export interface IUserInfo {
 const UserInfo = (props: IUserInfo) => {
 
   const { handheld, head, clothes, gem = 0, userUrl, lootUrl, player } = props;
-  const lootHasLoaded = handheld && head && clothes;
+  const lootHasLoaded = (handheld && head && clothes) || (player?.equip?.handheld && player?.equip?.head && player?.equip?.clothes);
   console.log(handheld, head, clothes, lootHasLoaded);
 
   return (
@@ -26,7 +26,7 @@ const UserInfo = (props: IUserInfo) => {
         <div className="user-detail-wrapper">
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
-              <Appearance clothes={clothes} handheld={handheld} head={head}/>
+              <Appearance clothes={clothes || player.equip.clothes} handheld={handheld || player.equip.handheld} head={head || player.equip.head}/>
             </div>
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
@@ -44,7 +44,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp?.toString() : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
