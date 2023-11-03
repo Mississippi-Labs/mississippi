@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '@/pages/home/header';
 import './styles.scss';
-
+import useModal from '@/hooks/useModal';
 import Loading from '@/components/Loading';
 import MintList from '@/config/mint';
-import { message, Modal } from 'antd';
+import { message } from 'antd';
 import UserInfo from '@/components/UserInfo';
 import { UserAddress } from '@/mock/data';
 import { UserAddressKey } from '@/config';
@@ -23,8 +23,6 @@ import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
 
-console.log(pluginAbi, userAbi)
-
 let userContract: any
 let lootContract: any
 let pluginContract: any
@@ -40,14 +38,13 @@ const Home = () => {
     network
   } = useMUD();
 
-  console.log(network, 'network')
-
   const [walletAddress, setWalletAddress] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
-  const [modalVisible, setModalVisible] = useState(false);
-
+  const { Modal, open, close, setContent } = useModal({
+    title: '',
+  });
 
   const [minting, setMinting] = useState(false);
 
@@ -86,7 +83,6 @@ const Home = () => {
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(privateKey, provider)
-    console.log(wallet)
     let userContractAddress = GlobalConfigData[0].userContract
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     userContract?.getUserTokenIdList().then(res => {
@@ -116,7 +112,18 @@ const Home = () => {
   }
 
   const createWallet = () => {
-    setModalVisible(true);
+    setContent(
+      <div className="create-wallet-wrapper">
+        <div className="create-wallet-content">
+          You have successfully created a wallet.Name your character and start your journey!
+        </div>
+        <div className="mint-name">
+          <input type="text" className="mi-input" ref={usernameRef} />
+          <button className="mi-btn" onClick={toMint}>OK</button>
+        </div>
+      </div>
+    );
+    open();
   }
   
   const toMint = async () => {
@@ -125,7 +132,7 @@ const Home = () => {
       return;
     }
     setUsername(usernameRef.current.value);
-    setModalVisible(false);
+    close();
     setStep('mint');
   }
 
@@ -142,7 +149,6 @@ const Home = () => {
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
-            console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds')
             let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
             await revealres.wait()
             resolve('success')
@@ -219,7 +225,6 @@ const Home = () => {
       message.error('waiting for wallet connection');
       return;
     }
-    console.log(curPlayer, 'curPlayer')
     if (curPlayer && curPlayer.state != 1 && curPlayer.state != 0) {
       navigate('/game', {
         state: {
@@ -304,22 +309,7 @@ const Home = () => {
           </div>
         )
       }
-      <Modal
-        visible={modalVisible}
-        className="mi-modal"
-        footer={null}
-        onCancel={() => setModalVisible(false)}
-      >
-        <div className="create-wallet-wrapper">
-          <div className="create-wallet-content">
-            You have successfully created a wallet.Name your character and start your journey!
-          </div>
-          <div className="mint-name">
-            <input type="text" className="mi-input" ref={usernameRef} />
-            <button className="mi-btn" onClick={toMint}>OK</button>
-          </div>
-        </div>
-      </Modal>
+      <Modal />
     </div>
   );
 };

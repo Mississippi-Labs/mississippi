@@ -36,7 +36,7 @@ const Game = () => {
   const navigate = useNavigate();
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
     network,
   } = useMUD();
 
@@ -220,6 +220,9 @@ const Game = () => {
       } else {
         // 逃跑成功
         message.info('You escaped the battle');
+        setTimeout(() => {
+          unlockUserLocation();
+        }, 200);
       }
     }
   }
@@ -228,10 +231,8 @@ const Game = () => {
     if (curPlayer.waiting) {
       return;
     }
-    let txFinished = false;
     clearInterval(moveInterval.current);
     let pathIndex = 0;
-    const timeInterval = ~~(1500 / Number(curPlayer.speed))
     moveInterval.current = setInterval(() => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
@@ -239,9 +240,6 @@ const Game = () => {
       pathIndex++;
       if (pathIndex === paths.length) {
         clearInterval(moveInterval.current);
-        if (!txFinished) {
-          curPlayer.waiting = true;
-        }
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
@@ -249,9 +247,9 @@ const Game = () => {
           submitGem();
         }
       }
-    }, timeInterval);
+    }, 300);
+    curPlayer.waiting = true;
     const result = await move(merkelData);
-    txFinished = true;
     curPlayer.waiting = false;
     if (result?.type === 'error') {
       message.error(result.message);
