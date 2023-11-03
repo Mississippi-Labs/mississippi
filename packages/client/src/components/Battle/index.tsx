@@ -59,16 +59,17 @@ export default function Battle(props) {
 
   const initBattle = (id: any) => {
     let battle:any = battles.filter((item:any) => item.id.toString() == id)[0]
-    console.log(battle, id)
+    if (battle.isEnd && battle.winner) {
+      clearTimeout(timeout)
+      props.finishBattle(battle.winner)
+      return
+    }
     if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1))) {
       if (!timeout) {
         timeout = setTimeout(async () => {
           let resultBattle:any = await forceEnd(battle.id)
           console.log(resultBattle)
-          if (resultBattle.isEnd && resultBattle.winner) {
-            props.finishBattle(resultBattle.winner)
-          }
-        }, 120000)
+        }, 23000)
       } 
       
     } else if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
