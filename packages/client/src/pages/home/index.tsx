@@ -207,6 +207,12 @@ const Home = () => {
       setHandheld(handheld);
       setHead(head);
 
+      playerData.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+
       let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
       console.log(player, 'player')
       localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));

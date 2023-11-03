@@ -26,7 +26,7 @@ const UserInfo = (props: IUserInfo) => {
         <div className="user-detail-wrapper">
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
-              <Appearance clothes={clothes || player.equip.clothes} handheld={handheld || player.equip.handheld} head={head || player.equip.head}/>
+              <Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>
             </div>
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
