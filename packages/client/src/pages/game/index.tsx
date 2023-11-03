@@ -231,8 +231,10 @@ const Game = () => {
     if (curPlayer.waiting) {
       return;
     }
+    let txFinished = false;
     clearInterval(moveInterval.current);
     let pathIndex = 0;
+    const timeInterval = ~~(1500 / Number(curPlayer.speed))
     moveInterval.current = setInterval(() => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
@@ -240,18 +242,19 @@ const Game = () => {
       pathIndex++;
       if (pathIndex === paths.length) {
         clearInterval(moveInterval.current);
+        if (!txFinished) {
+          curPlayer.waiting = true;
+        }
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
-          let cur = localStorage.getItem('playerInfo');
-          if (cur) cur = JSON.parse(cur);
-          setUserInfoPlayer(cur || curPlayer);
+          setUserInfoPlayer(curPlayer);
           submitGem();
         }
       }
-    }, 300);
-    curPlayer.waiting = true;
+    }, timeInterval);
     const result = await move(merkelData);
+    txFinished = true;
     curPlayer.waiting = false;
     if (result?.type === 'error') {
       message.error(result.message);
