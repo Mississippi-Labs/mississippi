@@ -36,6 +36,6 @@ contract BattleForceSystem is System {
         BattleList.setWinner(_battleId, _msgSender());
         
 
-        BattleUtils.outBattlefield(oppositer);
+        BattleUtils.loseGame(oppositer, _msgSender());
     }
 }

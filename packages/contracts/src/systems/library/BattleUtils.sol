@@ -2,8 +2,8 @@
 pragma solidity >=0.8.0;
 
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
-import { BattleListData, Player, BattleConfig } from "../../codegen/Tables.sol";
-import { BATTLE_CONFIG_KEY } from "../../Constants.sol";
+import { BattleListData, Player, BattleConfig, GameConfig, PlayerData, BoxListData, BoxList } from "../../codegen/Tables.sol";
+import { BATTLE_CONFIG_KEY, GAME_CONFIG_KEY } from "../../Constants.sol";
 
 library BattleUtils {
     function compareBuff(
@@ -89,5 +89,29 @@ library BattleUtils {
         }
         Player.setState(_player, PlayerState.Preparing);
         Player.setLastBattleTime(_player, block.timestamp);
+    }
+
+    function loseGame(address _looser, address _winner) internal {
+        // lose game; will go home and hp will full.
+        // TODO bag system, baozang system
+        Player.setState(_looser, PlayerState.Exploring);
+        outBattlefield(_looser);
+    
+        uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
+        PlayerData memory losser = Player.get(_looser);
+        BoxListData memory box;
+        box.x = losser.x;
+        box.y = losser.y;
+        box.opened = true;
+        box.openTime = block.timestamp;
+        box.owner = _winner;
+        box.oreBalance = losser.oreBalance;
+        box.treasureBalance = losser.treasureBalance;
+        box.dropTime = block.timestamp;
+        BoxList.set(boxId, box);
+        Player.setOreBalance(_looser, 0);
+        Player.setTreasureBalance(_looser, 0);
+
+        GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
     }
 }
