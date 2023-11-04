@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
@@ -157,7 +157,6 @@ const Game = () => {
   }
   
   const getCollectionsFun = (box: any) => {
-    console.log(box);
     setContent(
       <div className={'mi-modal-content-wrapper'}>
         <div className="mi-modal-content">
@@ -203,12 +202,21 @@ const Game = () => {
   }, []);
 
 
-  const finishBattle = (e: any) => {
-    console.log(e);
+  const finishBattle = (winner: any, attacker: any, defender: any) => {
     setStartBattleData(false);
-    if (e.toLocaleLowerCase() == account.toLocaleLowerCase()) {
+    let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
+    let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
+    if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       console.log('win');
-      message.success('You win the battle');
+      if (loserData?.state == 1) {
+        message.success('You win the battle');
+      } else {
+        // 对方跑了
+        message.info('Target has escaped');
+        setTimeout(() => {
+          unlockUserLocation();
+        }, 200);
+      }
       setTargetPlayer(null);
     } else {
       console.log('lose');
@@ -220,9 +228,6 @@ const Game = () => {
       } else {
         // 逃跑成功
         message.info('You escaped the battle');
-        setTimeout(() => {
-          unlockUserLocation();
-        }, 200);
       }
     }
   }
@@ -263,7 +268,6 @@ const Game = () => {
   };
 
   const showUserInfo = (player) => {
-    console.log(player);
     if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       let cur = localStorage.getItem('playerInfo');
       if (cur) player = JSON.parse(cur);
@@ -301,17 +305,14 @@ const Game = () => {
   }
 
   const setStartBattle = async (player) => {
-    console.log(player)
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
     await battleInvitation(player.addr, formatMovePath(paths));
-    console.log(formatMovePath(paths))
     setTargetPlayer(player);
     setBattleCurPlayer(curPlayer)
     setStartBattleData(true);
   }
 
   const openTreasureChest = async (id) => {
-    console.log(id);
     const boxIndex = boxs.findIndex(item => item.id === id);
     const box = boxs[boxIndex]
     if (box.opened) {
@@ -329,7 +330,6 @@ const Game = () => {
     // 每隔1s获取一次getBlockNumber
     const interval = setInterval(async () => {
       const currentBlockNumber = await network.publicClient.getBlockNumber()
-      console.log(currentBlockNumber, blockNumber, 'currentBlockNumber')
       if (currentBlockNumber - blockNumber >= 2) {
         clearInterval(interval)
         let boxData = await revealBox(id)
