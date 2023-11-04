@@ -68,16 +68,16 @@ export default mudConfig({
         
       }
     },
-    // PlayerAddon:{
-    //   keySchema: {
-    //     addr: "address",
-    //   },
-    //   schema: {
-    //     lootId: "uint256",
-    //     userId: "uint256"
-    //   }
+    PlayerAddon:{
+      keySchema: {
+        addr: "address",
+      },
+      schema: {
+        lootId: "uint256",
+        userId: "uint256"
+      }
 
-    // },
+    },
     Ownable: {
       schema: {
         owner: "address",
