@@ -117,7 +117,7 @@ contract BattleSystem is System {
         BattleList.setWinner(_battleId, battle.defender);
         BattleList.setIsEnd(_battleId, true);
         // escaper will lock a while 
-        PlayerLocationLock.set(battle.attacker, block.timestamp);
+        PlayerLocationLock.set(battle.defender, block.timestamp);
         // console.log(" escape --- 2");
 
         // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
@@ -140,7 +140,7 @@ contract BattleSystem is System {
         BattleList.setWinner(_battleId, battle.attacker);
         BattleList.setIsEnd(_battleId, true);
         // escaper will lock a while 
-        PlayerLocationLock.set(battle.defender, block.timestamp);
+        PlayerLocationLock.set(battle.attacker, block.timestamp);
 
         // console.log(" attacker escape success");
 
