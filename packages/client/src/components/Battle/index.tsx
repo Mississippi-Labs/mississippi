@@ -59,12 +59,17 @@ export default function Battle(props) {
 
   const initBattle = (id: any) => {
     let battle:any = battles.filter((item:any) => item.id.toString() == id)[0]
-    console.log(battle, id)
-    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1) || (battle.attackerState == 0 && battle.defenderState == 0))) {
+    if (battle.isEnd && battle.winner) {
+      clearTimeout(timeout)
+      props.finishBattle(battle.winner)
+      return
+    }
+    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1))) {
       if (!timeout) {
-        timeout = setTimeout(() => {
-          forceEnd(battle.id)
-        }, 120000)
+        timeout = setTimeout(async () => {
+          let resultBattle:any = await forceEnd(battle.id)
+          console.log(resultBattle)
+        }, 23000)
       } 
       
     } else if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
@@ -201,6 +206,9 @@ export default function Battle(props) {
     console.log(hash, battle.id)
     setBattleState(1)
     let res = await confirmBattle(hash, battle.id);
+    if (res.type == 'success') {
+      
+    }
     // if (res.type == 'error' && res.msg.indexOf('Battle is timeout') > -1) {
     //   forceEnd(battle.id)
     //   return
@@ -299,7 +307,7 @@ export default function Battle(props) {
               </div>
             </div>
             <div className="action">
-              <div className="action-hint">Select your action and tactic</div>
+              <div className="action-hint">{battleState == 0 ? 'Select your action and tactic' : battleState == 1 ? "Waiting for your opponent's move, it may take up to 120 seconds" : ''}</div>
               <div
                 style={{
                   marginTop: "12px",

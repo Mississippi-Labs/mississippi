@@ -43,7 +43,7 @@ const Player = (props: IPlayer) => {
         addr === curAddr && <Fog />
       }
       {
-        waiting && <div className={'waiting-tip'}>Waiting</div>
+        waiting && <div className={'waiting-tip'}>Wait TX</div>
       }
     </div>
   );

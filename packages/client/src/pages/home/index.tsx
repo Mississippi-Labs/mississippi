@@ -17,11 +17,11 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
+import indexDuckImg from '@/assets/img/duck_index.png';
+
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
-
-console.log(pluginAbi, userAbi)
 
 let userContract: any
 let lootContract: any
@@ -37,8 +37,6 @@ const Home = () => {
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
-
-  console.log(network, 'network')
 
   const [walletAddress, setWalletAddress] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
@@ -85,7 +83,6 @@ const Home = () => {
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(privateKey, provider)
-    console.log(wallet)
     let userContractAddress = GlobalConfigData[0].userContract
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     userContract?.getUserTokenIdList().then(res => {
@@ -152,7 +149,6 @@ const Home = () => {
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
-            console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds')
             let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
             await revealres.wait()
             resolve('success')
@@ -171,6 +167,11 @@ const Home = () => {
     url = JSON.parse(url)
     return url
   }
+
+  const toObject = (obj) => {
+    return JSON.parse(JSON.stringify(obj, (key, value) => typeof value === 'bigint' ? value.toString() : value
+  ))
+}
 
   const mintAndGo = async () => {
     setMinting(true);
@@ -205,6 +206,16 @@ const Home = () => {
       setClothes(clothes);
       setHandheld(handheld);
       setHead(head);
+
+      playerData.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+
+      let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
+      console.log(player, 'player')
+      localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
       
       let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
       console.log(result, 'result')
@@ -229,7 +240,6 @@ const Home = () => {
       message.error('waiting for wallet connection');
       return;
     }
-    console.log(curPlayer, 'curPlayer')
     if (curPlayer && curPlayer.state != 1 && curPlayer.state != 0) {
       navigate('/game', {
         state: {
@@ -274,9 +284,26 @@ const Home = () => {
       />
       {
         step === 'play' && (
-          <section className="mi-section">
-            <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
-            <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
+          <section className="mi-section index-section">
+            <div className="section-box">
+              <div className="intro-box">
+                <h1 className={'intro-title'}>Welcome to Mississippi</h1>
+                <p>
+                  An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
+
+                  The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
+
+                  The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
+
+                  Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
+                </p>
+                <button className="play-btn mi-btn" onClick={play}>PLAY NOW</button>
+                <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
+
+              </div>
+            </div>
+            <img src={indexDuckImg} alt="duck" className={'duck-index'}/>
+
           </section>
         )
       }

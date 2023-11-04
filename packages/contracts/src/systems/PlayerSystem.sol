@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { Player, GlobalConfig, LootList1,LootList2 } from "@codegen/Tables.sol";
-import {PlayerState } from "@codegen/Types.sol";
+import { PlayerState } from "@codegen/Types.sol";
 
 import { GLOBAL_CONFIG_KEY, PLAYER_KEY } from "../Constants.sol";
 import { User, Loot } from "./library/Interface.sol";
@@ -37,13 +37,13 @@ contract PlayerSystem is System {
        return(x, y);
     }
 
-    function selectUserNft(uint256 tokenId) public {
+    function selectUserNft(uint256 _tokenId) public {
         address sender = _msgSender();
         // Player.selectNft(_msgSender(), tokenId);
         address userAddress  = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
         User user = User(userAddress);
-        require(user.ownerOf(tokenId) == sender, "You are not the owner of this NFT");
-        (uint256 hp, uint256 attack ,uint256 attackRange, uint256 speed, uint256 strength,uint256 space) = user.getStructInfo(tokenId);
+        require(user.ownerOf(_tokenId) == sender, "You are not the owner of this NFT");
+        (uint256 hp, uint256 attack ,uint256 attackRange, uint256 speed, uint256 strength,uint256 space) = user.getStructInfo(_tokenId);
         Player.setMaxHp(sender, hp);
         Player.setHp(sender, hp);
         Player.setAttack(sender, attack);
@@ -51,6 +51,9 @@ contract PlayerSystem is System {
         Player.setSpeed(sender, speed);
         Player.setStrength(sender, strength);
         Player.setSpace(sender, space);
+
+        // PlayerAddon.setUserId(_tokenId);
+
     }
     function selectLootNFT(uint256 _tokenId) public {
         address lootAddress  = GlobalConfig.getLootContract(GLOBAL_CONFIG_KEY);
@@ -66,6 +69,7 @@ contract PlayerSystem is System {
         LootList2.setHand(_sender,Hand);
         LootList2.setNeck(_sender,Neck);
         LootList2.setRing(_sender,Ring);
+        // Player.setLootId(_tokenId);
     }
 
     function selectBothNFT(uint256 _userTokenId,uint256 _lootTokenId) external {
