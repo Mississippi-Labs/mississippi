@@ -24,6 +24,8 @@ import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
+import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
+import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 
 
 const toObject = (obj) => {
@@ -32,10 +34,13 @@ const toObject = (obj) => {
   ));
 }
 
+let userContract: any
+let lootContract: any
+
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
+    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
     network,
   } = useMUD();
@@ -75,6 +80,27 @@ const Game = () => {
     handheld,
     head,
   } = location.state ?? {};
+
+  const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
+  console.log(GlobalConfigData, 'GlobalConfigData')
+
+  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
+    let privateKey = network.privateKey
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let userContractAddress = GlobalConfigData[0].userContract
+    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
+  }
+
+  if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
+    let privateKey = network.privateKey
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(privateKey, provider)
+    let lootContractAddress = GlobalConfigData[0].lootContract
+    lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
+  }
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
     const loot = getComponentValue(LootList1, entity);
@@ -267,10 +293,32 @@ const Game = () => {
 
   };
 
-  const showUserInfo = (player) => {
+  const atobUrl = (url) => {
+    url = url.replace('data:application/json;base64,', '')
+    url = atob(url)
+    url = JSON.parse(url)
+    return url
+  }
+
+  const showUserInfo = async (player) => {
     if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       let cur = localStorage.getItem('playerInfo');
       if (cur) player = JSON.parse(cur);
+    } else {
+      let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+      console.log(addon)
+      let userTokenId = addon.userId.toString()
+      let lootTokenId = addon.lootId.toString()
+  
+      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+      let url = urls[0]
+      let lootUrl = urls[1]
+    
+      url = atobUrl(url)
+      lootUrl = atobUrl(lootUrl)
+
+      player.userUrl = url.image
+      player.lootUrl = lootUrl.image
     }
     
     setUserInfoPlayer(player);
