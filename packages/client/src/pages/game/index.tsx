@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
@@ -203,12 +203,22 @@ const Game = () => {
   }, []);
 
 
-  const finishBattle = (e: any) => {
-    console.log(e);
+  const finishBattle = (winner: any, attacker: any, defender: any) => {
+    console.log(winner, attacker, defender);
     setStartBattleData(false);
-    if (e.toLocaleLowerCase() == account.toLocaleLowerCase()) {
+    let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
+    let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
+    if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       console.log('win');
-      message.success('You win the battle');
+      if (loserData?.state == 1) {
+        message.success('You win the battle');
+      } else {
+        // 对方跑了
+        message.success('Target has escaped');
+        setTimeout(() => {
+          unlockUserLocation();
+        }, 200);
+      }
       setTargetPlayer(null);
     } else {
       console.log('lose');
@@ -220,9 +230,6 @@ const Game = () => {
       } else {
         // 逃跑成功
         message.info('You escaped the battle');
-        setTimeout(() => {
-          unlockUserLocation();
-        }, 200);
       }
     }
   }

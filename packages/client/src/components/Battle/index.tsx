@@ -19,7 +19,7 @@ import btnBg from "@/assets/img/battle/btn-bg.svg";
 import Appearance from '@/components/Appearance';
 import "./styles.scss";
 import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue } from '@latticexyz/recs';
+import { Has, getComponentValue, NotValue } from '@latticexyz/recs';
 import { useMUD } from '@/mud/MUDContext';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { getRandomStr } from '@/utils/utils';
@@ -30,6 +30,9 @@ import { message } from 'antd';
 let timeout:any = null
 let nonceHex = ''
 
+let battlesId = ''
+let battle = {}
+
 export default function Battle(props) {
   console.log(props)
   const [selectActionData, setSelectActionData] = useState('');
@@ -37,7 +40,6 @@ export default function Battle(props) {
   const [confirmBattleData, setConfirmBattleData] = useState([]);
   const [confirmBattle2Data, setConfirmBattle2Data] = useState([]);
   const [battleData, setBattleData] = useState({});
-  const [battlesId, setBattlesId] = useState(null);
   const [battleState, setBattleState] = useState(0);
   const [player2LossData, setPlayer2LossData] = useState(0);
   const [player1LossData, setPlayer1LossData] = useState(0);
@@ -57,115 +59,105 @@ export default function Battle(props) {
     nonceHex = (ethers.utils.formatBytes32String(nonce))
   }
 
-  const initBattle = (id: any) => {
-    let battle:any = battles.filter((item:any) => item.id.toString() == id)[0]
-    if (battle.isEnd && battle.winner) {
-      clearTimeout(timeout)
-      props.finishBattle(battle.winner)
-      return
-    }
-    if (((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1))) {
+  const initBattle = async () => {
+    if (battle && ((battle.attackerState == 1 && battle.defenderState == 0) || (battle.attackerState == 0 && battle.defenderState == 1))) {
       if (!timeout) {
         timeout = setTimeout(async () => {
           let resultBattle:any = await forceEnd(battle.id)
           console.log(resultBattle)
+          if (resultBattle.isEnd && resultBattle.winner) {
+            props.finishBattle(battle.winner, battle.attacker, battle.defender)
+            return
+          }
         }, 23000)
       } 
-      
-    } else if (((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
-      console.log('battleState', battleState)
+    } else if (battle && ((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
       clearTimeout(timeout)
       timeout = null
       let action = confirmBattleData[0] || 'attack'
       let arg = confirmBattleData[1] || 0
       let actionHex = ethers.utils.formatBytes32String(action);
-      revealBattle(battle.id, actionHex, arg, nonceHex)
-      setBattleState(2)
-    }
-    if ((battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
+      let src = await revealBattle(battle.id, actionHex, arg, nonceHex)
+      if (src.type == 'success') battle = src.data
       setBattleState(3)
-    }
+      // initBattle()
+    } 
+    // else if (battle && (battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
+    //   setBattleState(3)
+    // }
   }
 
-  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
+  const battles = useEntityQuery([Has(BattleList), NotValue(BattleList, {isEnd: true})]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle:any = getComponentValue(BattleList, entity)
     battle.id = id.battleId.toString()
     return battle;
   });
   if (battles.length) {
-    let battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
-    if (battle) {
-      if (!battlesId) {
-        setBattlesId(battle.id)
-      }
+    let battleTemp:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()))[0]
+    if (battleTemp) {
+      battle = battleTemp
+      initBattle()
     }
   }
 
-  if (battlesId) {
-    initBattle(battlesId)
-  }
-
   useEffect(() => {
-    if (battlesId) {
-      let battle:any = battles.filter((item:any) => item.id.toString() == battlesId)[0]
-      if (battle) {
-        if (!battleData.curHp || !battleData.targetHp) {
-          let data = {
-            attackerHP: battle.attackerHP.toString(),
-            defenderHP: battle.defenderHP.toString(),
-            attacker: battle.attacker.toLocaleLowerCase(),
-            defender: battle.defender.toLocaleLowerCase(),
-          }
-          setBattleData(data)
+    console.log(battle)
+    if (battle) {
+      if (!battleData.curHp || !battleData.targetHp) {
+        let data = {
+          attackerHP: battle.attackerHP.toString(),
+          defenderHP: battle.defenderHP.toString(),
+          attacker: battle.attacker.toLocaleLowerCase(),
+          defender: battle.defender.toLocaleLowerCase(),
         }
-        console.log(battleData, battle)
-        if (battleState == 3) {
-          let data = battleData
-          let battle1 = document.querySelector('.battle-1');
-          let battle2 = document.querySelector('.battle-2');
-          if (battle1 && battle2) {
-            battle1.classList.add('attack');
+        setBattleData(data)
+      }
+      if (battleState == 3) {
+        let data = battleData
+        let battle1 = document.querySelector('.battle-1');
+        let battle2 = document.querySelector('.battle-2');
+        if (battle1 && battle2) {
+          battle1.classList.add('attack');
+          setTimeout(() => {
+            battle1.classList.remove('attack');
+            battle2.classList.add('back');
+            let defenderHP = battle.defenderHP
+            setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
+            data.defenderHP = defenderHP
+            setBattleData(data)
             setTimeout(() => {
-              battle1.classList.remove('attack');
-              battle2.classList.add('back');
-              let defenderHP = battle.defenderHP
-              setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
-              data.defenderHP = defenderHP
-              setBattleData(data)
+              battle2.classList.remove('back');
+              setPlayer2LossData(0);
+              // console.log(player2ResidualData)
+              if (defenderHP <= 0 || battle.isEnd) {
+                setTimeout(() => {props.finishBattle(battle.winner, battle.attacker, battle.defender);}, 600)
+                return
+              }
               setTimeout(() => {
-                battle2.classList.remove('back');
-                setPlayer2LossData(0);
-                // console.log(player2ResidualData)
-                if (defenderHP <= 0 || battle.isEnd) {
-                  setTimeout(() => {props.finishBattle(battle.winner);}, 600)
-                  return
-                }
+                battle2.classList.add('attack');
                 setTimeout(() => {
-                  battle2.classList.add('attack');
+                  battle2.classList.remove('attack');
+                  battle1.classList.add('back');
+                  let attackerHP = battle.attackerHP
+                  setPlayer1LossData(Number(data.attackerHP) - Number(attackerHP))
+                  data.attackerHP = attackerHP
+                  setBattleData(data)
+                  if (attackerHP <= 0 || battle.isEnd) {
+                    setPlayer1ResidualData(0);
+                    setTimeout(() => {props.finishBattle(battle.winner, battle.attacker, battle.defender);}, 600)
+                    return
+                  }
                   setTimeout(() => {
-                    battle2.classList.remove('attack');
-                    battle1.classList.add('back');
-                    let attackerHP = battle.attackerHP
-                    setPlayer1LossData(Number(data.attackerHP) - Number(attackerHP))
-                    data.attackerHP = attackerHP
-                    setBattleData(data)
-                    if (attackerHP <= 0 || battle.isEnd) {
-                      setPlayer1ResidualData(0);
-                      setTimeout(() => {props.finishBattle(battle.winner);}, 600)
-                      return
-                    }
-                    setTimeout(() => {
-                      battle1.classList.remove('back');
-                      setPlayer1LossData(0);
-                      setBattleState(0)
-                      console.log(battleState)
-                    }, 400);
+                    battle1.classList.remove('back');
+                    setPlayer1LossData(0);
+                    setBattleState(0)
+                    console.log(battleState)
                   }, 400);
-                }, 500)
-              }, 400);
+                }, 400);
+              }, 500)
             }, 400);
-          }
+          }, 400);
         }
       }
     }
@@ -207,7 +199,7 @@ export default function Battle(props) {
     setBattleState(1)
     let res = await confirmBattle(hash, battle.id);
     if (res.type == 'success') {
-      
+      battle = res.data
     }
     // if (res.type == 'error' && res.msg.indexOf('Battle is timeout') > -1) {
     //   forceEnd(battle.id)

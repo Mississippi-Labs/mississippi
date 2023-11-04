@@ -3539,49 +3539,49 @@
   },
   "ast": {
     "absolutePath": "src/codegen/world/IWorld.sol",
-    "id": 117198,
+    "id": 116670,
     "exportedSymbols": {
       "IBaseWorld": [
         71348
       ],
       "IBattleForceSystem": [
-        116910
+        116382
       ],
       "IBattleInfoSystem": [
-        116931
+        116403
       ],
       "IBattlePrepareSystem": [
-        116965
+        116437
       ],
       "IBattleSystem": [
-        116984
+        116456
       ],
       "IBoxSystem": [
-        117006
+        116478
       ],
       "IGMSystem": [
-        117042
+        116514
       ],
       "IGameSystem": [
-        117057
+        116529
       ],
       "IMoveSystem": [
-        117072
+        116544
       ],
       "IPlayerSystem": [
-        117153
+        116625
       ],
       "IWorld": [
-        117197
+        116669
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "32:952:167",
+    "src": "32:952:166",
     "nodes": [
       {
-        "id": 117155,
+        "id": 116627,
         "nodeType": "PragmaDirective",
-        "src": "32:24:167",
+        "src": "32:24:166",
         "nodes": [],
         "literals": [
           "solidity",
@@ -3591,24 +3591,24 @@
         ]
       },
       {
-        "id": 117157,
+        "id": 116629,
         "nodeType": "ImportDirective",
-        "src": "107:77:167",
+        "src": "107:77:166",
         "nodes": [],
         "absolutePath": "node_modules/@latticexyz/world/src/interfaces/IBaseWorld.sol",
         "file": "@latticexyz/world/src/interfaces/IBaseWorld.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
+        "scope": 116670,
         "sourceUnit": 71349,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117156,
+              "id": 116628,
               "name": "IBaseWorld",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
               "referencedDeclaration": 71348,
-              "src": "116:10:167",
+              "src": "116:10:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3617,24 +3617,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117159,
+        "id": 116631,
         "nodeType": "ImportDirective",
-        "src": "186:62:167",
+        "src": "186:62:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleForceSystem.sol",
         "file": "./IBattleForceSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 116911,
+        "scope": 116670,
+        "sourceUnit": 116383,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117158,
+              "id": 116630,
               "name": "IBattleForceSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 116910,
-              "src": "195:18:167",
+              "referencedDeclaration": 116382,
+              "src": "195:18:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3643,24 +3643,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117161,
+        "id": 116633,
         "nodeType": "ImportDirective",
-        "src": "249:60:167",
+        "src": "249:60:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleInfoSystem.sol",
         "file": "./IBattleInfoSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 116932,
+        "scope": 116670,
+        "sourceUnit": 116404,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117160,
+              "id": 116632,
               "name": "IBattleInfoSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 116931,
-              "src": "258:17:167",
+              "referencedDeclaration": 116403,
+              "src": "258:17:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3669,24 +3669,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117163,
+        "id": 116635,
         "nodeType": "ImportDirective",
-        "src": "310:66:167",
+        "src": "310:66:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattlePrepareSystem.sol",
         "file": "./IBattlePrepareSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 116966,
+        "scope": 116670,
+        "sourceUnit": 116438,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117162,
+              "id": 116634,
               "name": "IBattlePrepareSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 116965,
-              "src": "319:20:167",
+              "referencedDeclaration": 116437,
+              "src": "319:20:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3695,24 +3695,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117165,
+        "id": 116637,
         "nodeType": "ImportDirective",
-        "src": "377:52:167",
+        "src": "377:52:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleSystem.sol",
         "file": "./IBattleSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 116985,
+        "scope": 116670,
+        "sourceUnit": 116457,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117164,
+              "id": 116636,
               "name": "IBattleSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 116984,
-              "src": "386:13:167",
+              "referencedDeclaration": 116456,
+              "src": "386:13:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3721,24 +3721,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117167,
+        "id": 116639,
         "nodeType": "ImportDirective",
-        "src": "430:46:167",
+        "src": "430:46:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBoxSystem.sol",
         "file": "./IBoxSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 117007,
+        "scope": 116670,
+        "sourceUnit": 116479,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117166,
+              "id": 116638,
               "name": "IBoxSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 117006,
-              "src": "439:10:167",
+              "referencedDeclaration": 116478,
+              "src": "439:10:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3747,24 +3747,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117169,
+        "id": 116641,
         "nodeType": "ImportDirective",
-        "src": "477:48:167",
+        "src": "477:48:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IGameSystem.sol",
         "file": "./IGameSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 117058,
+        "scope": 116670,
+        "sourceUnit": 116530,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117168,
+              "id": 116640,
               "name": "IGameSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 117057,
-              "src": "486:11:167",
+              "referencedDeclaration": 116529,
+              "src": "486:11:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3773,24 +3773,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117171,
+        "id": 116643,
         "nodeType": "ImportDirective",
-        "src": "526:44:167",
+        "src": "526:44:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IGMSystem.sol",
         "file": "./IGMSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 117043,
+        "scope": 116670,
+        "sourceUnit": 116515,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117170,
+              "id": 116642,
               "name": "IGMSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 117042,
-              "src": "535:9:167",
+              "referencedDeclaration": 116514,
+              "src": "535:9:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3799,24 +3799,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117173,
+        "id": 116645,
         "nodeType": "ImportDirective",
-        "src": "571:48:167",
+        "src": "571:48:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IMoveSystem.sol",
         "file": "./IMoveSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 117073,
+        "scope": 116670,
+        "sourceUnit": 116545,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117172,
+              "id": 116644,
               "name": "IMoveSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 117072,
-              "src": "580:11:167",
+              "referencedDeclaration": 116544,
+              "src": "580:11:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3825,24 +3825,24 @@
         "unitAlias": ""
       },
       {
-        "id": 117175,
+        "id": 116647,
         "nodeType": "ImportDirective",
-        "src": "620:52:167",
+        "src": "620:52:166",
         "nodes": [],
         "absolutePath": "src/codegen/world/IPlayerSystem.sol",
         "file": "./IPlayerSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 117198,
-        "sourceUnit": 117154,
+        "scope": 116670,
+        "sourceUnit": 116626,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 117174,
+              "id": 116646,
               "name": "IPlayerSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 117153,
-              "src": "629:13:167",
+              "referencedDeclaration": 116625,
+              "src": "629:13:166",
               "typeDescriptions": {}
             },
             "nameLocation": "-1:-1:-1"
@@ -3851,165 +3851,165 @@
         "unitAlias": ""
       },
       {
-        "id": 117197,
+        "id": 116669,
         "nodeType": "ContractDefinition",
-        "src": "788:195:167",
+        "src": "788:195:166",
         "nodes": [],
         "abstract": false,
         "baseContracts": [
           {
             "baseName": {
-              "id": 117177,
+              "id": 116649,
               "name": "IBaseWorld",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 71348,
-              "src": "810:10:167"
+              "src": "810:10:166"
             },
-            "id": 117178,
+            "id": 116650,
             "nodeType": "InheritanceSpecifier",
-            "src": "810:10:167"
+            "src": "810:10:166"
           },
           {
             "baseName": {
-              "id": 117179,
+              "id": 116651,
               "name": "IBattleForceSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 116910,
-              "src": "824:18:167"
+              "referencedDeclaration": 116382,
+              "src": "824:18:166"
             },
-            "id": 117180,
+            "id": 116652,
             "nodeType": "InheritanceSpecifier",
-            "src": "824:18:167"
+            "src": "824:18:166"
           },
           {
             "baseName": {
-              "id": 117181,
+              "id": 116653,
               "name": "IBattleInfoSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 116931,
-              "src": "846:17:167"
+              "referencedDeclaration": 116403,
+              "src": "846:17:166"
             },
-            "id": 117182,
+            "id": 116654,
             "nodeType": "InheritanceSpecifier",
-            "src": "846:17:167"
+            "src": "846:17:166"
           },
           {
             "baseName": {
-              "id": 117183,
+              "id": 116655,
               "name": "IBattlePrepareSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 116965,
-              "src": "867:20:167"
+              "referencedDeclaration": 116437,
+              "src": "867:20:166"
             },
-            "id": 117184,
+            "id": 116656,
             "nodeType": "InheritanceSpecifier",
-            "src": "867:20:167"
+            "src": "867:20:166"
           },
           {
             "baseName": {
-              "id": 117185,
+              "id": 116657,
               "name": "IBattleSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 116984,
-              "src": "891:13:167"
+              "referencedDeclaration": 116456,
+              "src": "891:13:166"
             },
-            "id": 117186,
+            "id": 116658,
             "nodeType": "InheritanceSpecifier",
-            "src": "891:13:167"
+            "src": "891:13:166"
           },
           {
             "baseName": {
-              "id": 117187,
+              "id": 116659,
               "name": "IBoxSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 117006,
-              "src": "908:10:167"
+              "referencedDeclaration": 116478,
+              "src": "908:10:166"
             },
-            "id": 117188,
+            "id": 116660,
             "nodeType": "InheritanceSpecifier",
-            "src": "908:10:167"
+            "src": "908:10:166"
           },
           {
             "baseName": {
-              "id": 117189,
+              "id": 116661,
               "name": "IGameSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 117057,
-              "src": "922:11:167"
+              "referencedDeclaration": 116529,
+              "src": "922:11:166"
             },
-            "id": 117190,
+            "id": 116662,
             "nodeType": "InheritanceSpecifier",
-            "src": "922:11:167"
+            "src": "922:11:166"
           },
           {
             "baseName": {
-              "id": 117191,
+              "id": 116663,
               "name": "IGMSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 117042,
-              "src": "937:9:167"
+              "referencedDeclaration": 116514,
+              "src": "937:9:166"
             },
-            "id": 117192,
+            "id": 116664,
             "nodeType": "InheritanceSpecifier",
-            "src": "937:9:167"
+            "src": "937:9:166"
           },
           {
             "baseName": {
-              "id": 117193,
+              "id": 116665,
               "name": "IMoveSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 117072,
-              "src": "950:11:167"
+              "referencedDeclaration": 116544,
+              "src": "950:11:166"
             },
-            "id": 117194,
+            "id": 116666,
             "nodeType": "InheritanceSpecifier",
-            "src": "950:11:167"
+            "src": "950:11:166"
           },
           {
             "baseName": {
-              "id": 117195,
+              "id": 116667,
               "name": "IPlayerSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 117153,
-              "src": "965:13:167"
+              "referencedDeclaration": 116625,
+              "src": "965:13:166"
             },
-            "id": 117196,
+            "id": 116668,
             "nodeType": "InheritanceSpecifier",
-            "src": "965:13:167"
+            "src": "965:13:166"
           }
         ],
         "canonicalName": "IWorld",
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 117176,
+          "id": 116648,
           "nodeType": "StructuredDocumentation",
-          "src": "674:113:167",
+          "src": "674:113:166",
           "text": " The IWorld interface includes all systems dynamically added to the World\n during the deploy process."
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          117197,
-          117153,
-          117072,
-          117042,
-          117057,
-          117006,
-          116984,
-          116965,
-          116931,
-          116910,
+          116669,
+          116625,
+          116544,
+          116514,
+          116529,
+          116478,
+          116456,
+          116437,
+          116403,
+          116382,
           71348,
-          128354,
-          128263,
-          128247,
-          128250,
-          128302,
-          172012,
-          128292,
-          128281,
+          124352,
+          124261,
+          124245,
+          124248,
+          124300,
+          168010,
+          124290,
+          124279,
           64435,
-          125520,
+          121518,
           64393,
           64426,
           64399,
@@ -4017,29 +4017,29 @@
           64256
         ],
         "name": "IWorld",
-        "nameLocation": "798:6:167",
-        "scope": 117198,
+        "nameLocation": "798:6:166",
+        "scope": 116670,
         "usedErrors": [
-          125485,
-          125491,
-          125493,
-          125495,
-          125501,
-          125507,
-          125513,
-          125519,
-          171981,
-          171985,
-          171991,
-          171995,
-          171999,
-          172003,
-          172007,
-          172011
+          121483,
+          121489,
+          121491,
+          121493,
+          121499,
+          121505,
+          121511,
+          121517,
+          167979,
+          167983,
+          167989,
+          167993,
+          167997,
+          168001,
+          168005,
+          168009
         ]
       }
     ],
     "license": "MIT"
   },
-  "id": 167
+  "id": 166
 }

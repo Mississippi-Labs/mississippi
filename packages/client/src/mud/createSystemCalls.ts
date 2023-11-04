@@ -89,9 +89,17 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce]);
       await waitForTransaction(tx);
+      return {
+        type: 'success',
+        data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
+      }
     } catch (error) {
       console.log('revealBattle', error);
       message.error(error.cause.reason || error.cause.details);
+      return {
+        type: 'error',
+        msg: error.cause.reason || error.cause.details || error.cause
+      }
     }
   }
 
