@@ -52,17 +52,20 @@ const Home = () => {
 
   useEffect(() => {
     getBalance()
-    let playerInfo = localStorage.getItem('playerInfo');
-    if (playerInfo) playerInfo = JSON.parse(playerInfo);
-    if (playerInfo && playerInfo.username) {
-      setUsername(playerInfo.username);
-      setClothes(playerInfo.clothes);
-      setHandheld(playerInfo.handheld);
-      setHead(playerInfo.head);
-      setUserUrl(playerInfo.userUrl);
-      setLootUrl(playerInfo.lootUrl);
-      setPlayer(playerInfo);
-      setStep('mint');
+    let worldContractAddress = localStorage.getItem('worldContractAddress') || ''
+    if (worldContractAddress && network.worldContract.address.toLocaleLowerCase() == worldContractAddress.toLocaleLowerCase()) {
+      let playerInfo = localStorage.getItem('playerInfo');
+      if (playerInfo) playerInfo = JSON.parse(playerInfo);
+      if (playerInfo && playerInfo.username) {
+        setUsername(playerInfo.username);
+        setClothes(playerInfo.clothes);
+        setHandheld(playerInfo.handheld);
+        setHead(playerInfo.head);
+        setUserUrl(playerInfo.userUrl);
+        setLootUrl(playerInfo.lootUrl);
+        setPlayer(playerInfo);
+        setStep('mint');
+      }
     }
     // const address = localStorage.getItem(UserAddressKey);
     // if (address) {

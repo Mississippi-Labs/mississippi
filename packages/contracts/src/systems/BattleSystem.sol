@@ -97,7 +97,7 @@ contract BattleSystem is System {
         address looser = battle.attackerHP == 0 ? battle.attacker : battle.defender;
         BattleList.setWinner(_battleId, winner);  
         BattleList.setIsEnd(_battleId, true);
-        loseGame(looser, winner);
+        BattleUtils.loseGame(looser, winner);
 
         // emit BattleEnd(_battleId, BattleEndType.NormalEnd, winner);
       } 
@@ -117,7 +117,7 @@ contract BattleSystem is System {
         BattleList.setWinner(_battleId, battle.defender);
         BattleList.setIsEnd(_battleId, true);
         // escaper will lock a while 
-        PlayerLocationLock.set(battle.attacker, block.timestamp);
+        PlayerLocationLock.set(battle.defender, block.timestamp);
         // console.log(" escape --- 2");
 
         // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
@@ -140,7 +140,7 @@ contract BattleSystem is System {
         BattleList.setWinner(_battleId, battle.attacker);
         BattleList.setIsEnd(_battleId, true);
         // escaper will lock a while 
-        PlayerLocationLock.set(battle.defender, block.timestamp);
+        PlayerLocationLock.set(battle.attacker, block.timestamp);
 
         // console.log(" attacker escape success");
 
@@ -156,29 +156,5 @@ contract BattleSystem is System {
         emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
       }
     }
-  }
-
-  function loseGame(address _looser, address _winner) internal {
-    // lose game; will go home and hp will full.
-    // TODO bag system, baozang system
-    Player.setState(_looser, PlayerState.Exploring);
-    BattleUtils.outBattlefield(_looser);
-  
-    uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
-    PlayerData memory losser = Player.get(_looser);
-    BoxListData memory box;
-    box.x = losser.x;
-    box.y = losser.y;
-    box.opened = true;
-    box.openTime = block.timestamp;
-    box.owner = _winner;
-    box.oreBalance = losser.oreBalance;
-    box.treasureBalance = losser.treasureBalance;
-    box.dropTime = block.timestamp;
-    BoxList.set(boxId, box);
-    Player.setOreBalance(_looser, 0);
-    Player.setTreasureBalance(_looser, 0);
-
-    GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
   }
 }

@@ -34,7 +34,6 @@ let battlesId = ''
 let battle = {}
 
 export default function Battle(props) {
-  console.log(props)
   const [selectActionData, setSelectActionData] = useState('');
   const [selectTacticData, setSelectTacticData] = useState('');
   const [confirmBattleData, setConfirmBattleData] = useState([]);
@@ -64,7 +63,6 @@ export default function Battle(props) {
       if (!timeout) {
         timeout = setTimeout(async () => {
           let resultBattle:any = await forceEnd(battle.id)
-          console.log(resultBattle)
           if (resultBattle.isEnd && resultBattle.winner) {
             props.finishBattle(battle.winner, battle.attacker, battle.defender)
             return
@@ -129,7 +127,6 @@ export default function Battle(props) {
             setTimeout(() => {
               battle2.classList.remove('back');
               setPlayer2LossData(0);
-              // console.log(player2ResidualData)
               if (defenderHP <= 0 || battle.isEnd) {
                 setTimeout(() => {props.finishBattle(battle.winner, battle.attacker, battle.defender);}, 600)
                 return
@@ -152,7 +149,6 @@ export default function Battle(props) {
                     battle1.classList.remove('back');
                     setPlayer1LossData(0);
                     setBattleState(0)
-                    console.log(battleState)
                   }, 400);
                 }, 400);
               }, 500)
@@ -190,12 +186,10 @@ export default function Battle(props) {
       return
     }
     let battle:any = battles.filter((item:any) => (item?.attacker?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item?.defender?.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()) && !item.isEnd)[0]
-    console.log(battle)
     let action = confirmBattleData[0]
     let arg = confirmBattleData[1] || 0
     let actionHex = ethers.utils.formatBytes32String(action);
     let hash = getProofHash(actionHex, arg, nonceHex);
-    console.log(hash, battle.id)
     setBattleState(1)
     let res = await confirmBattle(hash, battle.id);
     if (res.type == 'success') {

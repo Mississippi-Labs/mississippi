@@ -157,7 +157,6 @@ const Game = () => {
   }
   
   const getCollectionsFun = (box: any) => {
-    console.log(box);
     setContent(
       <div className={'mi-modal-content-wrapper'}>
         <div className="mi-modal-content">
@@ -204,7 +203,6 @@ const Game = () => {
 
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
-    console.log(winner, attacker, defender);
     setStartBattleData(false);
     let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
     let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
@@ -214,7 +212,7 @@ const Game = () => {
         message.success('You win the battle');
       } else {
         // 对方跑了
-        message.success('Target has escaped');
+        message.info('Target has escaped');
         setTimeout(() => {
           unlockUserLocation();
         }, 200);
@@ -270,7 +268,6 @@ const Game = () => {
   };
 
   const showUserInfo = (player) => {
-    console.log(player);
     if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
       let cur = localStorage.getItem('playerInfo');
       if (cur) player = JSON.parse(cur);
@@ -308,17 +305,14 @@ const Game = () => {
   }
 
   const setStartBattle = async (player) => {
-    console.log(player)
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
     await battleInvitation(player.addr, formatMovePath(paths));
-    console.log(formatMovePath(paths))
     setTargetPlayer(player);
     setBattleCurPlayer(curPlayer)
     setStartBattleData(true);
   }
 
   const openTreasureChest = async (id) => {
-    console.log(id);
     const boxIndex = boxs.findIndex(item => item.id === id);
     const box = boxs[boxIndex]
     if (box.opened) {
@@ -336,7 +330,6 @@ const Game = () => {
     // 每隔1s获取一次getBlockNumber
     const interval = setInterval(async () => {
       const currentBlockNumber = await network.publicClient.getBlockNumber()
-      console.log(currentBlockNumber, blockNumber, 'currentBlockNumber')
       if (currentBlockNumber - blockNumber >= 2) {
         clearInterval(interval)
         let boxData = await revealBox(id)
