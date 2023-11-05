@@ -64,6 +64,7 @@ const Game = () => {
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [openingBox, setOpeningBox] = useState();
 
   const { account } = network;
   const curId = account;
@@ -72,14 +73,7 @@ const Game = () => {
 
   const mapDataRef = useRef([]);
   const moveInterval = useRef<NodeJS.Timeout>();
-  const location = useLocation();
 
-  const {
-    username = "",
-    clothes,
-    handheld,
-    head,
-  } = location.state ?? {};
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
   console.log(GlobalConfigData, 'GlobalConfigData')
@@ -371,8 +365,8 @@ const Game = () => {
         getCollectionsFun(box);
         return
       }
-    } 
-    boxs[boxIndex].opening = true;
+    }
+    setOpeningBox(boxs[boxIndex].id);
     await openBox(id);
     const blockNumber = await network.publicClient.getBlockNumber()
     // 每隔1s获取一次getBlockNumber
@@ -382,7 +376,7 @@ const Game = () => {
         clearInterval(interval)
         let boxData = await revealBox(id)
         boxData.id = id
-        boxs[boxIndex].opening = false;
+        setOpeningBox(null);
         getCollectionsFun(boxData);
       }
     }, 1000)
@@ -409,6 +403,7 @@ const Game = () => {
         renderPreviewPaths,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
+        openingBox,
         showUserInfo,
         treasureChest: boxs,
         openTreasureChest,
