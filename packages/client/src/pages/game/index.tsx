@@ -389,7 +389,9 @@ const Game = () => {
     }
     if (curPlayer) {
       const path = bfs(simpleMapData, curPlayer, { x, y }).slice(1);
-      path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
+      if (!curPlayer.waiting) {
+        path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
+      }
       setRenderPreviewPaths(path);
     }
   }
