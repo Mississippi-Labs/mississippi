@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './styles.scss';
+import GameContext from '@/context';
 
 export interface ITreasureChest {
   id?: number | string;
@@ -11,7 +12,8 @@ export interface ITreasureChest {
 
 const TreasureChest = (props: ITreasureChest) => {
 
-  const { opening } = props;
+  const { openingBox } = useContext(GameContext);
+  const opening = openingBox === props.id;
 
   return (
     <div className={'mi-treasure-chest'}>
