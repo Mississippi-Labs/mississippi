@@ -34,7 +34,9 @@ contract BattleForceSystem is System {
         BattleList.setAttackerState(_battleId, BattleState.Revealed);
         BattleList.setIsEnd(_battleId, true);
         BattleList.setWinner(_battleId, _msgSender());
-        
+
+        Player.setHp(battle.attacker, battle.attackerHP);
+        Player.setHp(battle.defender, battle.defenderHP);
 
         BattleUtils.loseGame(oppositer, _msgSender());
     }

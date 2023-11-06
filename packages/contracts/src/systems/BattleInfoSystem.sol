@@ -15,8 +15,7 @@ contract BattleInfoSystem is System {
         return battle.attacker == addr ? battle.attackerHP : battle.defenderHP;
     }
 
-
-    function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
-        Player.setHp(_player, (_targetHP * _percent) / 100);
-    }
+    // function raisePlayerHp(uint256 _targetHP, uint256 _percent, address _player) public {
+    //     Player.setHp(_player, (_targetHP * _percent) / 100);
+    // }
 }
