@@ -36,6 +36,7 @@ contract BattlePrepareSystem is System {
         player.x == GameConfig.getOriginX(GAME_CONFIG_KEY) && player.y == GameConfig.getOriginY(GAME_CONFIG_KEY),
         "You are not in the origin point"
         );
+        Player.setHp(_msgSender(), Player.getMaxHp(_msgSender()));
         BattleUtils.outBattlefield(_msgSender());
     }
 
@@ -121,7 +122,7 @@ contract BattlePrepareSystem is System {
         }
 
         uint256 elapsedTime = block.timestamp - time;
-        uint256 increase = (elapsedTime / 10) / 100 * maxHp ; 
+        uint256 increase = ((elapsedTime / 10) * maxHp) / 100 ; 
         hp = hp + increase;
         return (hp > maxHp) ? maxHp : hp;
     }

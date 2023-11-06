@@ -69,6 +69,7 @@ contract BattleSystem is System {
       // emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
       BattleList.setDefenderState(_battleId, BattleState.Inited);
       BattleList.setAttackerState(_battleId, BattleState.Inited);
+      BattleList.setEndTimestamp(_battleId, block.timestamp);
     } else {
       // set explore state
       if (Player.getState(battle.attacker) == PlayerState.Attacking) {
@@ -78,6 +79,8 @@ contract BattleSystem is System {
         Player.setState(battle.defender, PlayerState.Exploring);
       }
       BattleList.setEndTimestamp(_battleId, block.timestamp);
+      Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
+      Player.setHp(battle.defender, BattleList.getDefenderHP(_battleId));
     }
   }
 
