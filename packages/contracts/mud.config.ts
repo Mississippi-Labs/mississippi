@@ -41,6 +41,16 @@ export default mudConfig({
         start: "uint256",
         end: "uint256",
         no: "uint256",
+
+      }
+    },
+    PlayerSeason: {
+      keySchema: {
+        addr: "address",
+      },
+      schema: {
+        oreBalance: "uint16",//为什么要用uint16
+        attackCount: "uint16",
       }
     },
     Player: {
