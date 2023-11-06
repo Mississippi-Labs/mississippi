@@ -71,7 +71,7 @@ library BattleUtils {
         require(Player.getState(_player) == PlayerState.Exploring, "You should in exploring state");
 
         // Player.setHp(_player, initPlayerHp(_player)); //Todo: setting to atacker or defender hp 
-        Player.setHp(_player, Player.getMaxHp(_player));
+        // Player.setHp(_player, Player.getMaxHp(_player));
 
         for (uint256 i; i < BattleConfig.lengthBattlefieldPlayers(BATTLE_CONFIG_KEY); i++) {
         if (BattleConfig.getItemBattlefieldPlayers(BATTLE_CONFIG_KEY, i) == _player) {
