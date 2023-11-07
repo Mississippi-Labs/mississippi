@@ -41,3 +41,10 @@ optimizer_runs = 3000
 eth_rpc_url = "https://sepolia.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
 optimizer = true
 optimizer_runs = 3000
+
+
+[profile.lidamao-testnet]
+eth_rpc_url = "http://8.217.213.253"
+optimizer = true
+optimizer_runs = 3000
+

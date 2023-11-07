@@ -29,11 +29,9 @@ contract GMSystem  is System {
         Season.setNo(MAP_KEY, no+1);
     }
 
-    event RenewMapMerkeRoot(bytes32 root);
     // merkle root
     function SetMapMerkleRoot(bytes32 _root) public {
         GameConfig.setMerkleRoot(GAME_CONFIG_KEY, _root);
-        emit RenewMapMerkeRoot(_root);
     }
 
     // create box 

@@ -467,13 +467,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "createLootBox",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -492,13 +485,6 @@
       }
     ],
     "name": "deleteRecord",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "dropLoot",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1443,14 +1429,7 @@
   },
   {
     "inputs": [],
-    "name": "settleBattle",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "takeLoot",
+    "name": "submitGem",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
