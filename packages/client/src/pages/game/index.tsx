@@ -322,6 +322,10 @@ const Game = () => {
     const result = await move(merkelData);
     txFinished = true;
     curPlayer.waiting = false;
+    if (renderPreviewPaths.length > 0) {
+      const lastPreviewPath = renderPreviewPaths[renderPreviewPaths.length - 1];
+      previewPath(lastPreviewPath.x, lastPreviewPath.y);
+    }
     if (result?.type === 'error') {
       message.error(result.message);
     }
@@ -485,18 +489,13 @@ const Game = () => {
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
-        {
-          userInfoVisible && (
-            <UserInfoDialog
-              visible={userInfoVisible}
-              onClose={() => {
-                setUserInfoVisible(false);
-              }}
-              gem={userInfoPlayer.gem}
-              {...userInfoPlayer}
-            />
-          )
-        }
+        <UserInfoDialog
+          visible={userInfoVisible}
+          onClose={() => {
+            setUserInfoVisible(false);
+          }}
+          {...userInfoPlayer}
+        />
 
         <Modal />
         <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
