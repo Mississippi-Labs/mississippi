@@ -1,7 +1,7 @@
 .user-address-wrapper {
     position: relative;
     display: flex;
-    padding: 20px;
+    padding: 0px 30px;
     align-items: center;
     height: 56px;
     //font-family: Arial, "Microsoft YaHei UI", sans-serif;
@@ -28,6 +28,7 @@
 
     .user-address {
         padding: 0 20px;
+        padding-right: unset;
         cursor: pointer;
     }
 
