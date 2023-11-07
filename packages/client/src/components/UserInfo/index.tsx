@@ -70,11 +70,11 @@ const UserInfo = (props: IUserInfo) => {
       </div>
       <div className="right-main-content">
         <UserPackage
-          gem={player.oreBalance}
+          gem={player?.oreBalance}
           title={'User Package'}
         />
         <UserPackage
-          gem={player.seasonOreBalance}
+          gem={player?.seasonOreBalance}
           title={'Season Package'}
         />
       </div>
