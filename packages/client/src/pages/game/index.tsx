@@ -40,8 +40,8 @@ let lootContract: any
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
+    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem },
     network,
   } = useMUD();
 
@@ -76,7 +76,7 @@ const Game = () => {
 
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  console.log(GlobalConfigData, 'GlobalConfigData')
+  // console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -122,8 +122,14 @@ const Game = () => {
       }
     })
     return player;
-  }).filter(e => e.state != 1);
+  }).filter(e => e.state > 1);
 
+  const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
+    const playerSeason = getComponentValue(PlayerSeason, entity);
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    playerSeason.addr = address
+    return playerSeason;
+  })
 
   const [renderPlayers, setRenderPlayers] = useState([]);
   const playersCache = getPlayersCache(players);
@@ -224,43 +230,59 @@ const Game = () => {
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     setStartBattleData(false);
-    let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
-    let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
-    if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      console.log('win');
-      if (loserData?.state == 1) {
-        message.success('You win the battle');
+    if (winner && attacker && defender) {
+      let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
+      let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
+      if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
+        console.log('win');
+        if (loserData?.state == 1 || loserData?.state == 0) {
+          message.success('You win the battle');
+        } else {
+          // 对方跑了
+          message.info('Target has escaped');
+          setTimeout(() => {
+            unlockUserLocation();
+          }, 5000);
+        }
+        setTargetPlayer(null);
       } else {
-        // 对方跑了
-        message.info('Target has escaped');
-        setTimeout(() => {
-          unlockUserLocation();
-        }, 200);
+        console.log('lose');
+        let cur = getComponentValue(Player, network.playerEntity);
+        if (cur?.state == 1 || cur?.state == 0) {
+          message.error('You lose the battle');
+          navigate('/');
+          return
+        } else {
+          // 逃跑成功
+          message.info('You escaped the battle');
+        }
       }
-      setTargetPlayer(null);
     } else {
-      console.log('lose');
       let cur = getComponentValue(Player, network.playerEntity);
-      if (cur?.state == 1) {
-        message.error('You lose the battle');
+      if (cur?.state == 1 || cur?.state == 0) {
         navigate('/');
         return
-      } else {
-        // 逃跑成功
-        message.info('You escaped the battle');
       }
     }
+    
   }
 
   const movePlayer = async (paths, merkelData) => {
     if (curPlayer.waiting) {
+      message.error('You are waiting for tx');
       return;
+    }
+    let playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
+    console.log(playerLock, 'playerLock')
+    if (playerLock && Number(playerLock.lockTime)) {
+      message.error('You are locked');
+      return
     }
     let txFinished = false;
     clearInterval(moveInterval.current);
     let pathIndex = 0;
     const timeInterval = ~~(1500 / Number(curPlayer.speed))
-    moveInterval.current = setInterval(() => {
+    moveInterval.current = setInterval(async () => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
       setRenderPlayers([...renderPlayers]);
@@ -273,8 +295,23 @@ const Game = () => {
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
-          setUserInfoPlayer(curPlayer);
-          submitGem();
+          let player = curPlayer
+          let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+          let userTokenId = addon.userId.toString()
+          let lootTokenId = addon.lootId.toString()
+      
+          let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+          let url = urls[0]
+          let lootUrl = urls[1]
+        
+          url = atobUrl(url)
+          lootUrl = atobUrl(lootUrl)
+
+          player.userUrl = url.image
+          player.lootUrl = lootUrl.image
+          player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
+          setUserInfoPlayer(player);
+          submitGemFun();
         }
       }
     }, timeInterval);
@@ -296,8 +333,7 @@ const Game = () => {
 
   const showUserInfo = async (player) => {
     if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      let cur = localStorage.getItem('playerInfo');
-      if (cur) player = JSON.parse(cur);
+      if (curPlayer) player = curPlayer
     } else {
       let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
       console.log(addon)
@@ -314,20 +350,22 @@ const Game = () => {
       player.userUrl = url.image
       player.lootUrl = lootUrl.image
     }
+
+    player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
     
     setUserInfoPlayer(player);
     setUserInfoVisible(true);
   }
 
-  const submitGem = () => {
+  const submitGemFun = async () => {
     setUserInfoVisible(true);
-
-    setTimeout(() => {
-      if (curPlayer.gem > 0) {
+    try {
+      if (curPlayer.oreBalance > 0) {
+        await submitGem();
         setContent(
           <div className={'mi-modal-content-wrapper'}>
             <div className="mi-modal-content">
-              Congrats,you submitted {curPlayer.gem} gems!
+              Congrats,you submitted {curPlayer.oreBalance} gems!
 
               <div className="mi-treasure-chest-wrapper">
                 <TreasureChest/>
@@ -335,23 +373,28 @@ const Game = () => {
             </div>
             <div className="mi-modal-footer">
               <button className="mi-btn" onClick={() => {
+                curPlayer.seasonOreBalance += curPlayer.oreBalance;
+                curPlayer.oreBalance = 0;
                 close();
-                curPlayer.gem = 0;
               }}>OK</button>
             </div>
           </div>
         );
         open();
       }
-    }, 1000);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const setStartBattle = async (player) => {
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
-    await battleInvitation(player.addr, formatMovePath(paths));
-    setTargetPlayer(player);
-    setBattleCurPlayer(curPlayer)
-    setStartBattleData(true);
+    let res = await battleInvitation(player.addr, formatMovePath(paths));
+    if (res) {
+      setTargetPlayer(player);
+      setBattleCurPlayer(curPlayer)
+      setStartBattleData(true);
+    }
   }
 
   const openTreasureChest = async (id) => {

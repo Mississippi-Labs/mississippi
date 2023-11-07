@@ -30,6 +30,8 @@ let pluginContract: any
 let userTokenIds: any
 let lootTokenIds: any
 
+let transfering = false
+
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
@@ -56,7 +58,7 @@ const Home = () => {
     if (worldContractAddress && network.worldContract.address.toLocaleLowerCase() == worldContractAddress.toLocaleLowerCase()) {
       let playerInfo = localStorage.getItem('playerInfo');
       if (playerInfo) playerInfo = JSON.parse(playerInfo);
-      if (playerInfo && playerInfo.username) {
+      if (playerInfo.state >= 1 && playerInfo && playerInfo.username) {
         setUsername(playerInfo.username);
         setClothes(playerInfo.clothes);
         setHandheld(playerInfo.handheld);
@@ -207,9 +209,10 @@ const Home = () => {
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       let url = urls[0]
       let lootUrl = urls[1]
-      
+      console.log(urls, 'url')
       url = atobUrl(url)
       lootUrl = atobUrl(lootUrl)
+
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
@@ -271,15 +274,40 @@ const Home = () => {
     }
   }
 
+  const transferFun = async (to) => {
+    if (transfering) return
+    transfering = true
+    let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+    let provider = new ethers.providers.JsonRpcProvider(rpc)
+    let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
+    console.log(wallet, 'wallet')
+    wallet.sendTransaction({
+      to,
+      value: ethers.utils.parseEther('1')
+    }).then(res => {
+      console.log(res, 'res')
+      transfering = false
+      getBalance()
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
   const getBalance = async () => {
     let balance = await network.publicClient.getBalance({
       address: network.walletClient.account.address
     })
+    if (balance.toString() == '0') {
+      transferFun(network.walletClient.account.address)
+    } else {
+      let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
+      setWalletAddress(network.walletClient.account.address);
+      setWalletBalance(walletBalance);
+      localStorage.setItem('mi_user_address', network.walletClient.account.address)
+    }
     // 转成eth
-    let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-    setWalletAddress(network.walletClient.account.address);
-    setWalletBalance(walletBalance);
-    localStorage.setItem('mi_user_address', network.walletClient.account.address)
+    
   }
 
   const initUserInfoFun = async () => {

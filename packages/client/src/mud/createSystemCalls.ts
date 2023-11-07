@@ -68,6 +68,7 @@ export function createSystemCalls(
       const tx = await worldContract.write.battleInvitation([addr, steps]);
       await waitForTransaction(tx);
       console.log('battleInvitation success', new Date().getTime(), tx);
+      return tx
     } catch (error) {
       console.log('battleInvitation', error);
       message.error(error.cause.reason || error.cause.details);
@@ -239,7 +240,7 @@ export function createSystemCalls(
       return getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
     } catch (error) {
       console.log('forceEnd', error);
-      message.error(error.cause.reason || error.cause.details);
+      // message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -252,6 +253,17 @@ export function createSystemCalls(
       return tx
     } catch (error) {
       console.log('unlockUserLocation', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
+  const submitGem = async () => {
+    try {
+      const tx = await worldContract.write.submitGem();
+      await waitForTransaction(tx);
+      return tx
+    } catch (error) {
+      console.log('submitGem', error);
       message.error(error.cause.reason || error.cause.details);
     }
   }
@@ -280,6 +292,7 @@ export function createSystemCalls(
     initUserInfo,
     selectBothNFT,
     forceEnd,
-    unlockUserLocation
+    unlockUserLocation,
+    submitGem
   };
 }

@@ -24,9 +24,6 @@ const UserAddress = (props: IProps) => {
       <CopyToClipboard text={address} onCopy={onCopy}>
         <div className="user-address">{addressTxt}</div>
       </CopyToClipboard>
-      <CopyToClipboard text={address} onCopy={onCopy}>
-        <img src={copyImg} alt="" className="copy-icon"/>
-      </CopyToClipboard>
     </div>
   );
 };

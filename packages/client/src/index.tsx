@@ -18,13 +18,6 @@ setup().then(async (result) => {
     </MUDProvider>
   );
   const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
-  const comp = [];
-  network.world.components.forEach((c) => {
-    if (comp.findIndex((item) => item.id === c.id) === -1) {
-      comp.push(c);
-    }
-  });
-  network.world.components = comp;
   mountDevTools({
     config: mudConfig,
     publicClient: network.publicClient,
