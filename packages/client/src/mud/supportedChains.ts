@@ -12,12 +12,12 @@ const testnet = {
     nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
     rpcUrls: {
       default: {
-        http: ["http://8.217.213.253"],
-        webSocket: ["http://8.217.213.253"],
+        http: ["https://rpc.0xmssp.xyz"],
+        webSocket: ["https://rpc.0xmssp.xyz"],
       },
       public: {
-        http: ["http://8.217.213.253"],
-        webSocket: ["http://8.217.213.253"],
+        http: ["https://rpc.0xmssp.xyz"],
+        webSocket: ["https://rpc.0xmssp.xyz"],
       },
     }
   }
