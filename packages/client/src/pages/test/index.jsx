@@ -20,6 +20,14 @@ let userContract
 let lootContract
 let transfering = false
 
+
+
+
+let boxData = [{x: 13, y: 1}, {x: 23, y: 5}, {x: 26, y: 8}, {x: 23, y: 18}, {x: 30, y: 20},
+  {x: 8, y: 21}, {x: 5, y: 25}, {x: 30, y: 36}, {x: 19, y: 30}, {x: 3, y: 37},
+  {x: 28, y: 39}, {x: 36, y: 51}, {x: 40, y: 55}, {x: 27, y: 59}, {x: 13, y: 55},
+  {x: 3, y: 49}, {x: 3, y: 40}, {x: 21, y: 29}, {x: 41, y: 26}, {x: 30, y: 20}]
+
 const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);

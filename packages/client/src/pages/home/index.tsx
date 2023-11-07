@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '@/pages/home/header';
 import './styles.scss';
-import useModal from '@/hooks/useModal';
 import Loading from '@/components/Loading';
 import MintList from '@/config/mint';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import UserInfo from '@/components/UserInfo';
 import { UserAddress } from '@/mock/data';
 import { UserAddressKey } from '@/config';
@@ -17,7 +16,7 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
-import indexDuckImg from '@/assets/img/duck_index.svg';
+import indexDuckImg from '@/assets/img/duck_index.png';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
@@ -44,9 +43,7 @@ const Home = () => {
   const [walletBalance, setWalletBalance] = useState('');
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
-  const { Modal, open, close, setContent } = useModal({
-    title: '',
-  });
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [minting, setMinting] = useState(false);
 
@@ -129,18 +126,7 @@ const Home = () => {
   }
 
   const createWallet = () => {
-    setContent(
-      <div className="create-wallet-wrapper">
-        <div className="create-wallet-content">
-          You have successfully created a wallet.Name your character and start your journey!
-        </div>
-        <div className="mint-name">
-          <input type="text" className="mi-input" ref={usernameRef} />
-          <button className="mi-btn" onClick={toMint}>OK</button>
-        </div>
-      </div>
-    );
-    open();
+    setModalVisible(true);
   }
   
   const toMint = async () => {
@@ -149,7 +135,7 @@ const Home = () => {
       return;
     }
     setUsername(usernameRef.current.value);
-    close();
+    setModalVisible(false);
     setStep('mint');
   }
 
@@ -307,7 +293,6 @@ const Home = () => {
       localStorage.setItem('mi_user_address', network.walletClient.account.address)
     }
     // 转成eth
-    
   }
 
   const initUserInfoFun = async () => {
@@ -367,7 +352,22 @@ const Home = () => {
           </div>
         )
       }
-      <Modal />
+      <Modal
+        visible={modalVisible}
+        className="mi-modal"
+        footer={null}
+        onCancel={() => setModalVisible(false)}
+      >
+        <div className="create-wallet-wrapper">
+          <div className="create-wallet-content">
+            You have successfully created a wallet.Name your character and start your journey!
+          </div>
+          <div className="mint-name">
+            <input type="text" className="mi-input" ref={usernameRef} />
+            <button className="mi-btn" onClick={toMint}>OK</button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
