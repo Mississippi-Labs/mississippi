@@ -150,7 +150,7 @@ const MapCell = (props: IProps) => {
       }
 
       {
-        players.map((player) => <Player key={player.addr} {...player}/>)
+        !isDelivery && players.map((player) => <Player key={player.addr} {...player}/>)
       }
       {
         menuVisible && (

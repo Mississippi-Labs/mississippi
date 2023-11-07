@@ -38,6 +38,8 @@ const toObject = (obj) => {
 let userContract: any
 let lootContract: any
 
+let timeout = null
+
 const Game = () => {
   const navigate = useNavigate();
   const {
@@ -244,8 +246,9 @@ const Game = () => {
         } else {
           // 对方跑了
           message.info('Target has escaped');
-          setTimeout(() => {
+          timeout = setTimeout(() => {
             unlockUserLocation();
+            timeout = null
           }, 5000);
         }
         setTargetPlayer(null);
@@ -273,13 +276,19 @@ const Game = () => {
 
   const movePlayer = async (paths, merkelData) => {
     if (curPlayer.waiting) {
-      message.error('You are waiting for tx');
+      message.error('Waiting for transaction');
       return;
     }
     let playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
     console.log(playerLock, 'playerLock')
     if (playerLock && Number(playerLock.lockTime)) {
       message.error('You are locked');
+      if (!timeout) {
+        timeout = setTimeout(() => {
+          unlockUserLocation();
+          timeout = null
+        }, 2000);
+      }
       return
     }
     let txFinished = false;
@@ -322,6 +331,10 @@ const Game = () => {
     const result = await move(merkelData);
     txFinished = true;
     curPlayer.waiting = false;
+    if (renderPreviewPaths.length > 0) {
+      const lastPreviewPath = renderPreviewPaths[renderPreviewPaths.length - 1];
+      previewPath(lastPreviewPath.x, lastPreviewPath.y);
+    }
     if (result?.type === 'error') {
       message.error(result.message);
     }
@@ -485,18 +498,13 @@ const Game = () => {
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
-        {
-          userInfoVisible && (
-            <UserInfoDialog
-              visible={userInfoVisible}
-              onClose={() => {
-                setUserInfoVisible(false);
-              }}
-              gem={userInfoPlayer.gem}
-              {...userInfoPlayer}
-            />
-          )
-        }
+        <UserInfoDialog
+          visible={userInfoVisible}
+          onClose={() => {
+            setUserInfoVisible(false);
+          }}
+          {...userInfoPlayer}
+        />
 
         <Modal />
         <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
