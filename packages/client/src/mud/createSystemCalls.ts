@@ -256,6 +256,17 @@ export function createSystemCalls(
     }
   }
 
+  const submitGem = async () => {
+    try {
+      const tx = await worldContract.write.submitGem();
+      await waitForTransaction(tx);
+      return tx
+    } catch (error) {
+      console.log('submitGem', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
   const getBattlePlayerHp = async (battleId: any, addr: any) => {
     const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
     return data
@@ -280,6 +291,7 @@ export function createSystemCalls(
     initUserInfo,
     selectBothNFT,
     forceEnd,
-    unlockUserLocation
+    unlockUserLocation,
+    submitGem
   };
 }

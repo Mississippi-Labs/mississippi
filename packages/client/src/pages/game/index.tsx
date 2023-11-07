@@ -40,8 +40,8 @@ let lootContract: any
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
+    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem },
     network,
   } = useMUD();
 
@@ -122,8 +122,14 @@ const Game = () => {
       }
     })
     return player;
-  }).filter(e => e.state != 1);
+  }).filter(e => e.state > 1);
 
+  const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
+    const playerSeason = getComponentValue(PlayerSeason, entity);
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    playerSeason.addr = address
+    return playerSeason;
+  })
 
   const [renderPlayers, setRenderPlayers] = useState([]);
   const playersCache = getPlayersCache(players);
@@ -303,8 +309,9 @@ const Game = () => {
 
           player.userUrl = url.image
           player.lootUrl = lootUrl.image
+          player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
           setUserInfoPlayer(player);
-          submitGem();
+          submitGemFun();
         }
       }
     }, timeInterval);
@@ -326,8 +333,7 @@ const Game = () => {
 
   const showUserInfo = async (player) => {
     if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      let cur = localStorage.getItem('playerInfo');
-      if (cur) player = JSON.parse(cur);
+      if (curPlayer) player = curPlayer
     } else {
       let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
       console.log(addon)
@@ -344,20 +350,22 @@ const Game = () => {
       player.userUrl = url.image
       player.lootUrl = lootUrl.image
     }
+
+    player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
     
     setUserInfoPlayer(player);
     setUserInfoVisible(true);
   }
 
-  const submitGem = () => {
+  const submitGemFun = async () => {
     setUserInfoVisible(true);
-
-    setTimeout(() => {
-      if (curPlayer.gem > 0) {
+    try {
+      if (curPlayer.oreBalance > 0) {
+        await submitGem();
         setContent(
           <div className={'mi-modal-content-wrapper'}>
             <div className="mi-modal-content">
-              Congrats,you submitted {curPlayer.gem} gems!
+              Congrats,you submitted {curPlayer.oreBalance} gems!
 
               <div className="mi-treasure-chest-wrapper">
                 <TreasureChest/>
@@ -365,15 +373,18 @@ const Game = () => {
             </div>
             <div className="mi-modal-footer">
               <button className="mi-btn" onClick={() => {
+                curPlayer.seasonOreBalance += curPlayer.oreBalance;
+                curPlayer.oreBalance = 0;
                 close();
-                curPlayer.gem = 0;
               }}>OK</button>
             </div>
           </div>
         );
         open();
       }
-    }, 1000);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const setStartBattle = async (player) => {

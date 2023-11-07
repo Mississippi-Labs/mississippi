@@ -11,6 +11,8 @@ const UserInfoDialog = (props: IProps) => {
 
   const { visible, onClose, ...rest } = props;
 
+  console.log(rest);
+
   return (
     <div className={`mi-userinfo-dialog ${visible ? '' : 'hidden'}`}>
       <UserInfo {...rest} player={rest} />

@@ -17,7 +17,6 @@ const UserInfo = (props: IUserInfo) => {
 
   const { handheld, head, clothes, gem = 0, userUrl, lootUrl, player } = props;
   const lootHasLoaded = (handheld && head && clothes) || (player?.equip?.handheld && player?.equip?.head && player?.equip?.clothes);
-  console.log(handheld, head, clothes, lootHasLoaded);
 
   return (
     <div className={'mi-userinfo-wrapper'}>
@@ -44,7 +43,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
@@ -71,10 +70,11 @@ const UserInfo = (props: IUserInfo) => {
       </div>
       <div className="right-main-content">
         <UserPackage
-          gem={gem}
+          gem={player.oreBalance}
           title={'User Package'}
         />
         <UserPackage
+          gem={player.seasonOreBalance}
           title={'Season Package'}
         />
       </div>
