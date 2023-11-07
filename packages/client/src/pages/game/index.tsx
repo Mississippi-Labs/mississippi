@@ -6,6 +6,7 @@ import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
+import Leaderboard from "@/components/Leaderboard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message } from 'antd';
 import "./styles.scss";
@@ -128,7 +129,10 @@ const Game = () => {
     const playerSeason = getComponentValue(PlayerSeason, entity);
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     playerSeason.addr = address
+    playerSeason.username = players.filter((item) => item.addr.toLocaleLowerCase() == address.toLocaleLowerCase())[0]?.name
     return playerSeason;
+  }).sort((a, b) => {
+    return b.oreBalance - a.oreBalance
   })
 
   const [renderPlayers, setRenderPlayers] = useState([]);
@@ -495,6 +499,7 @@ const Game = () => {
         }
 
         <Modal />
+        <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
       </div>
     </GameContext.Provider>
   );
