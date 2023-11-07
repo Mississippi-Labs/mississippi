@@ -389,10 +389,12 @@ const Game = () => {
 
   const setStartBattle = async (player) => {
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
-    await battleInvitation(player.addr, formatMovePath(paths));
-    setTargetPlayer(player);
-    setBattleCurPlayer(curPlayer)
-    setStartBattleData(true);
+    let res = await battleInvitation(player.addr, formatMovePath(paths));
+    if (res) {
+      setTargetPlayer(player);
+      setBattleCurPlayer(curPlayer)
+      setStartBattleData(true);
+    }
   }
 
   const openTreasureChest = async (id) => {

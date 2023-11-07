@@ -68,6 +68,7 @@ export function createSystemCalls(
       const tx = await worldContract.write.battleInvitation([addr, steps]);
       await waitForTransaction(tx);
       console.log('battleInvitation success', new Date().getTime(), tx);
+      return tx
     } catch (error) {
       console.log('battleInvitation', error);
       message.error(error.cause.reason || error.cause.details);
