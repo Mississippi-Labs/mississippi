@@ -7,7 +7,6 @@ export interface IUserInfo {
   head: string;
   clothes: string;
   handheld: string;
-  gem?: number;
   userUrl?: string;
   lootUrl?: string;
   player?: any;
@@ -15,7 +14,7 @@ export interface IUserInfo {
 
 const UserInfo = (props: IUserInfo) => {
 
-  const { handheld, head, clothes, gem = 0, userUrl, lootUrl, player } = props;
+  const { handheld, head, clothes, userUrl, lootUrl, player } = props;
   const lootHasLoaded = (handheld && head && clothes) || (player?.equip?.handheld && player?.equip?.head && player?.equip?.clothes);
 
   return (
