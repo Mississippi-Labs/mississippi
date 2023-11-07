@@ -239,7 +239,7 @@ export function createSystemCalls(
       return getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
     } catch (error) {
       console.log('forceEnd', error);
-      message.error(error.cause.reason || error.cause.details);
+      // message.error(error.cause.reason || error.cause.details);
     }
   }
 

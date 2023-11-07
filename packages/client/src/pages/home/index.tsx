@@ -56,7 +56,7 @@ const Home = () => {
     if (worldContractAddress && network.worldContract.address.toLocaleLowerCase() == worldContractAddress.toLocaleLowerCase()) {
       let playerInfo = localStorage.getItem('playerInfo');
       if (playerInfo) playerInfo = JSON.parse(playerInfo);
-      if (playerInfo && playerInfo.username) {
+      if (playerInfo.state >= 1 && playerInfo && playerInfo.username) {
         setUsername(playerInfo.username);
         setClothes(playerInfo.clothes);
         setHandheld(playerInfo.handheld);
@@ -207,9 +207,10 @@ const Home = () => {
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       let url = urls[0]
       let lootUrl = urls[1]
-      
+      console.log(urls, 'url')
       url = atobUrl(url)
       lootUrl = atobUrl(lootUrl)
+
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)

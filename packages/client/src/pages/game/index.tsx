@@ -40,7 +40,7 @@ let lootContract: any
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2 },
+    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock },
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation },
     network,
   } = useMUD();
@@ -76,7 +76,7 @@ const Game = () => {
 
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  console.log(GlobalConfigData, 'GlobalConfigData')
+  // console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -224,43 +224,59 @@ const Game = () => {
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     setStartBattleData(false);
-    let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
-    let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
-    if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      console.log('win');
-      if (loserData?.state == 1) {
-        message.success('You win the battle');
+    if (winner && attacker && defender) {
+      let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
+      let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
+      if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
+        console.log('win');
+        if (loserData?.state == 1 || loserData?.state == 0) {
+          message.success('You win the battle');
+        } else {
+          // 对方跑了
+          message.info('Target has escaped');
+          setTimeout(() => {
+            unlockUserLocation();
+          }, 5000);
+        }
+        setTargetPlayer(null);
       } else {
-        // 对方跑了
-        message.info('Target has escaped');
-        setTimeout(() => {
-          unlockUserLocation();
-        }, 200);
+        console.log('lose');
+        let cur = getComponentValue(Player, network.playerEntity);
+        if (cur?.state == 1 || cur?.state == 0) {
+          message.error('You lose the battle');
+          navigate('/');
+          return
+        } else {
+          // 逃跑成功
+          message.info('You escaped the battle');
+        }
       }
-      setTargetPlayer(null);
     } else {
-      console.log('lose');
       let cur = getComponentValue(Player, network.playerEntity);
-      if (cur?.state == 1) {
-        message.error('You lose the battle');
+      if (cur?.state == 1 || cur?.state == 0) {
         navigate('/');
         return
-      } else {
-        // 逃跑成功
-        message.info('You escaped the battle');
       }
     }
+    
   }
 
   const movePlayer = async (paths, merkelData) => {
     if (curPlayer.waiting) {
+      message.error('You are waiting for tx');
       return;
+    }
+    let playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
+    console.log(playerLock, 'playerLock')
+    if (playerLock && Number(playerLock.lockTime)) {
+      message.error('You are locked');
+      return
     }
     let txFinished = false;
     clearInterval(moveInterval.current);
     let pathIndex = 0;
     const timeInterval = ~~(1500 / Number(curPlayer.speed))
-    moveInterval.current = setInterval(() => {
+    moveInterval.current = setInterval(async () => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
       setRenderPlayers([...renderPlayers]);
@@ -273,7 +289,21 @@ const Game = () => {
         const target = paths[pathIndex - 1];
         const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
         if (isDelivery) {
-          setUserInfoPlayer(curPlayer);
+          let player = curPlayer
+          let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+          let userTokenId = addon.userId.toString()
+          let lootTokenId = addon.lootId.toString()
+      
+          let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+          let url = urls[0]
+          let lootUrl = urls[1]
+        
+          url = atobUrl(url)
+          lootUrl = atobUrl(lootUrl)
+
+          player.userUrl = url.image
+          player.lootUrl = lootUrl.image
+          setUserInfoPlayer(player);
           submitGem();
         }
       }

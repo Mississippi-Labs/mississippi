@@ -19,7 +19,7 @@ import btnBg from "@/assets/img/battle/btn-bg.svg";
 import Appearance from '@/components/Appearance';
 import "./styles.scss";
 import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue, NotValue } from '@latticexyz/recs';
+import { Has, getComponentValue, NotValue, HasValue } from '@latticexyz/recs';
 import { useMUD } from '@/mud/MUDContext';
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { getRandomStr } from '@/utils/utils';
@@ -63,8 +63,9 @@ export default function Battle(props) {
       if (!timeout) {
         timeout = setTimeout(async () => {
           let resultBattle:any = await forceEnd(battle.id)
+          console.log(resultBattle)
           if (resultBattle.isEnd && resultBattle.winner) {
-            props.finishBattle(battle.winner, battle.attacker, battle.defender)
+            props.finishBattle(resultBattle.winner, resultBattle.attacker, resultBattle.defender)
             return
           }
         }, 23000)
@@ -85,18 +86,18 @@ export default function Battle(props) {
     // }
   }
 
-  const battles = useEntityQuery([Has(BattleList), NotValue(BattleList, {isEnd: true})]).map((entity) => {
+  const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle:any = getComponentValue(BattleList, entity)
     battle.id = id.battleId.toString()
     return battle;
   });
-  if (battles.length) {
-    let battleTemp:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()))[0]
-    if (battleTemp) {
-      battle = battleTemp
-      initBattle()
-    }
+  let battleTemp:any = battles?.filter((item:any) => (item.attacker.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == props?.curPlayer?.addr.toLocaleLowerCase()))[0]
+  if (battleTemp) {
+    battle = battleTemp
+    initBattle()
+  } else {
+    props.finishBattle()
   }
 
   useEffect(() => {
