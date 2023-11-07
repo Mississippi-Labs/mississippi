@@ -269,11 +269,11 @@ export default function Battle(props) {
               <div className="mi-battle-character-info">
                 <div className="character-info self">
                   <div>HP : {battleData.attackerHP}/{props?.curPlayer?.addr == battleData.attacker ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
-                  <div>ATK : 20</div>
+                  <div>ATK : {props?.curPlayer?.addr == battleData.attacker ? props?.curPlayer?.attack?.toString() : props?.targetPlayer?.attack.toString()}</div>
                 </div>
                 <div className="character-info opponent">
                   <div>HP : {battleData.defenderHP}/{props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.maxHp.toString() : props?.targetPlayer?.maxHp.toString()}</div>
-                  <div>ATK : 20</div>
+                  <div>ATK : {props?.curPlayer?.addr == battleData.defender ? props?.curPlayer?.attack?.toString() : props?.targetPlayer?.attack.toString()}</div>
                 </div>
               </div>
             </div>
