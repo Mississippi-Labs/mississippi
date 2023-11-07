@@ -15,11 +15,14 @@ interface IProps {
 const HomeHeader = (props: IProps) => {
   return (
     <div className="home-header">
+      <a href="/">
       <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
+      </a>
+      
       <nav className="header-nav">
         <ul className="menu-lv1">
-          <li><a href="">Leaderboard</a></li>
-          <li><a href="">Docs</a></li>
+          {/* <li><a href="">Leaderboard</a></li> */}
+          {/* <li><a href="">Docs</a></li> */}
           <li className="menu-socials">
             <a href="">Socials</a>
             <ul className="menu-lv2">
