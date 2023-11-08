@@ -46,10 +46,10 @@ library BattleUtils {
     ) internal pure returns (uint256) {
         // TODO 后期添加防御力抵消对方的攻击力
         if (compareBuff(_myBuff, _targetBuff) == 0) {
-            return (_attackPower * 7) / 10;
+            return (_attackPower * 5) / 10;
         }
         if (compareBuff(_myBuff, _targetBuff) == 2) {
-            return (_attackPower * 13) / 10;
+            return (_attackPower * 15) / 10;
         }
 
         return _attackPower;
