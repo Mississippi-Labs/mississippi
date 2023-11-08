@@ -17,16 +17,16 @@ setup().then(async (result) => {
       <App />
     </MUDProvider>
   );
-  const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
-  mountDevTools({
-    config: mudConfig,
-    publicClient: network.publicClient,
-    walletClient: network.walletClient,
-    latestBlock$: network.latestBlock$,
-    blockStorageOperations$: network.blockStorageOperations$,
-    worldAddress: network.worldContract.address,
-    worldAbi: network.worldContract.abi,
-    write$: network.write$,
-    recsWorld: network.world,
-  });
+  // const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
+  // mountDevTools({
+  //   config: mudConfig,
+  //   publicClient: network.publicClient,
+  //   walletClient: network.walletClient,
+  //   latestBlock$: network.latestBlock$,
+  //   blockStorageOperations$: network.blockStorageOperations$,
+  //   worldAddress: network.worldContract.address,
+  //   worldAbi: network.worldContract.abi,
+  //   write$: network.write$,
+  //   recsWorld: network.world,
+  // });
 });

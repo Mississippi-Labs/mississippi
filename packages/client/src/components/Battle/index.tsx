@@ -71,14 +71,17 @@ export default function Battle(props) {
         }, 23000)
       } 
     } else if (battle && ((battle.attackerState == 1 && battle.defenderState == 1) || (battle.attackerState == 2 && battle.defenderState == 1) || (battle.attackerState == 1 && battle.defenderState == 2)) && battleState <= 1) {
+      if (battleState == 3) return
       clearTimeout(timeout)
       timeout = null
       let action = confirmBattleData[0] || 'attack'
       let arg = confirmBattleData[1] || 0
       let actionHex = ethers.utils.formatBytes32String(action);
       let src = await revealBattle(battle.id, actionHex, arg, nonceHex)
-      if (src.type == 'success') battle = src.data
-      setBattleState(3)
+      if (src?.type == 'success') {
+        battle = src.data
+        setBattleState(3)
+      }
       // initBattle()
     } 
     // else if (battle && (battle.attackerState == 0 || battle.attackerState == 2) && (battle.defenderState == 0 || battle.defenderState == 2) && battleState == 2) {
@@ -161,12 +164,14 @@ export default function Battle(props) {
   }, [battleState])
 
   const setSelectAction = (img: any, action: String) => {
+    if (battleState != 0) return
     setSelectActionData(img);
     let bt:any = confirmBattleData
     bt[0] = action
     setConfirmBattleData(bt)
   }
   const setSelectTactic = (img: any, tactic: number) => {
+    if (battleState != 0) return
     setSelectTacticData(img);
     let bt:any = confirmBattleData
     bt[1] = tactic
