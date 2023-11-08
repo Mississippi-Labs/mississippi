@@ -129,7 +129,7 @@ const Home = () => {
     return url
   }
 
-  console.log(curPlayer, 'curPlayer', players)
+  // console.log(curPlayer, 'curPlayer', players)
 
   useEffect(() => {
     getBalance()
