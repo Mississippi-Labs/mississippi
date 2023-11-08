@@ -13,14 +13,14 @@ library BattleUtils {
         // 0: fail , 1: equal , 2: success
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
-            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
+            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
             (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
         ) {
             return 2;
         }
         if (
             (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
-            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
             (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
         ) {
             return 0;
