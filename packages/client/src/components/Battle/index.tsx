@@ -161,12 +161,14 @@ export default function Battle(props) {
   }, [battleState])
 
   const setSelectAction = (img: any, action: String) => {
+    if (battleState != 0) return
     setSelectActionData(img);
     let bt:any = confirmBattleData
     bt[0] = action
     setConfirmBattleData(bt)
   }
   const setSelectTactic = (img: any, tactic: number) => {
+    if (battleState != 0) return
     setSelectTacticData(img);
     let bt:any = confirmBattleData
     bt[1] = tactic
