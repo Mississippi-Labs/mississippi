@@ -249,7 +249,7 @@ const Game = () => {
           timeout = setTimeout(() => {
             unlockUserLocation();
             timeout = null
-          }, 5000);
+          }, 23000);
         }
         setTargetPlayer(null);
       } else {
@@ -349,9 +349,7 @@ const Game = () => {
   }
 
   const showUserInfo = async (player) => {
-    if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      if (curPlayer) player = curPlayer
-    } else {
+    if (!player.userUrl || !player.lootUrl) {
       let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
       console.log(addon)
       let userTokenId = addon.userId.toString()

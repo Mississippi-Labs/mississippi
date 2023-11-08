@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '@/pages/home/header';
 import './styles.scss';
-import useModal from '@/hooks/useModal';
 import Loading from '@/components/Loading';
 import MintList from '@/config/mint';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import UserInfo from '@/components/UserInfo';
 import { UserAddress } from '@/mock/data';
 import { UserAddressKey } from '@/config';
@@ -14,14 +13,15 @@ import { delay } from '@/utils';
 import { useMUD } from '@/mud/MUDContext';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
-import indexDuckImg from '@/assets/img/duck_index.svg';
+import indexDuckImg from '@/assets/img/duck_index.png';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
+import { async } from 'rxjs';
 
 let userContract: any
 let lootContract: any
@@ -35,7 +35,7 @@ let transfering = false
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig, Player },
+    components: { GlobalConfig, Player, LootList1, PlayerAddon },
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
@@ -44,36 +44,11 @@ const Home = () => {
   const [walletBalance, setWalletBalance] = useState('');
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
-  const { Modal, open, close, setContent } = useModal({
-    title: '',
-  });
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [minting, setMinting] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getBalance()
-    let worldContractAddress = localStorage.getItem('worldContractAddress') || ''
-    if (worldContractAddress && network.worldContract.address.toLocaleLowerCase() == worldContractAddress.toLocaleLowerCase()) {
-      let playerInfo = localStorage.getItem('playerInfo');
-      if (playerInfo) playerInfo = JSON.parse(playerInfo);
-      if (playerInfo.state >= 1 && playerInfo && playerInfo.username) {
-        setUsername(playerInfo.username);
-        setClothes(playerInfo.clothes);
-        setHandheld(playerInfo.handheld);
-        setHead(playerInfo.head);
-        setUserUrl(playerInfo.userUrl);
-        setLootUrl(playerInfo.lootUrl);
-        setPlayer(playerInfo);
-        setStep('mint');
-      }
-    }
-    // const address = localStorage.getItem(UserAddressKey);
-    // if (address) {
-    //   setWalletAddress(address);
-    // }
-  }, []);
 
   const [clothes, setClothes] = useState<string>();
   const [handheld, setHandheld] = useState<string>();
@@ -83,17 +58,36 @@ const Home = () => {
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
 
+  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
+    const loot = getComponentValue(LootList1, entity);
+    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
+    loot.addr = address
+    return loot;
+  })
+
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     const player = getComponentValue(Player, entity);
     player.addr = address
+    LootList1Data.forEach((item) => {
+      if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
+        let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let handheld = item.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        let head = item.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+        player.equip = {
+          clothes,
+          handheld,
+          head,
+        }
+      }
+    })
     return player;
   })
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  console.log(GlobalConfigData, 'GlobalConfigData')
+  // console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -128,19 +122,49 @@ const Home = () => {
     pluginContract = new ethers.Contract(pluginContractAddress, pluginAbi, wallet)
   }
 
+  const atobUrl = (url) => {
+    url = url.replace('data:application/json;base64,', '')
+    url = atob(url)
+    url = JSON.parse(url)
+    return url
+  }
+
+  // console.log(curPlayer, 'curPlayer', players)
+
+  useEffect(() => {
+    getBalance()
+    async function init() {
+      if (curPlayer?.state >= 1 && curPlayer?.name) {
+        let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: curPlayer.addr}))
+        let userTokenId = addon.userId.toString()
+        let lootTokenId = addon.lootId.toString()
+    
+        let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+        let url = urls[0]
+        let lootUrl = urls[1]
+        url = atobUrl(url)
+        lootUrl = atobUrl(lootUrl)
+        curPlayer.userUrl = url.image
+        curPlayer.lootUrl = lootUrl.image
+        setUsername(curPlayer.name);
+        setClothes(curPlayer?.equip?.clothes);
+        setHandheld(curPlayer?.equip?.handheld);
+        setHead(curPlayer?.equip?.head);
+        setUserUrl(curPlayer.userUrl);
+        setLootUrl(curPlayer.lootUrl);
+        setPlayer(curPlayer);
+        setStep('mint');
+      }
+    }
+    init()
+    // const address = localStorage.getItem(UserAddressKey);
+    // if (address) {
+    //   setWalletAddress(address);
+    // }
+  }, [curPlayer]);
+
   const createWallet = () => {
-    setContent(
-      <div className="create-wallet-wrapper">
-        <div className="create-wallet-content">
-          You have successfully created a wallet.Name your character and start your journey!
-        </div>
-        <div className="mint-name">
-          <input type="text" className="mi-input" ref={usernameRef} />
-          <button className="mi-btn" onClick={toMint}>OK</button>
-        </div>
-      </div>
-    );
-    open();
+    setModalVisible(true);
   }
   
   const toMint = async () => {
@@ -149,7 +173,7 @@ const Home = () => {
       return;
     }
     setUsername(usernameRef.current.value);
-    close();
+    setModalVisible(false);
     setStep('mint');
   }
 
@@ -176,13 +200,6 @@ const Home = () => {
         reject(error)
       }
     })
-  }
-
-  const atobUrl = (url) => {
-    url = url.replace('data:application/json;base64,', '')
-    url = atob(url)
-    url = JSON.parse(url)
-    return url
   }
 
   const toObject = (obj) => {
@@ -233,7 +250,7 @@ const Home = () => {
 
       let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
       console.log(player, 'player')
-      localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
+      // localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
       
       let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
       console.log(result, 'result')
@@ -307,7 +324,6 @@ const Home = () => {
       localStorage.setItem('mi_user_address', network.walletClient.account.address)
     }
     // 转成eth
-    
   }
 
   const initUserInfoFun = async () => {
@@ -367,7 +383,22 @@ const Home = () => {
           </div>
         )
       }
-      <Modal />
+      <Modal
+        visible={modalVisible}
+        className="mi-modal"
+        footer={null}
+        onCancel={() => setModalVisible(false)}
+      >
+        <div className="create-wallet-wrapper">
+          <div className="create-wallet-content">
+            You have successfully created a wallet.Name your character and start your journey!
+          </div>
+          <div className="mint-name">
+            <input type="text" className="mi-input" ref={usernameRef} />
+            <button className="mi-btn" onClick={toMint}>OK</button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
