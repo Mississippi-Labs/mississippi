@@ -16,7 +16,7 @@ import { Has, getComponentValue } from '@latticexyz/recs';
 import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
-import indexDuckImg from '@/assets/img/duck_index.png';
+import indexDuckImg from '@/assets/img/duck_index.svg';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
