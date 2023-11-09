@@ -63,7 +63,7 @@ contract BoxSystem is System {
       require(msg.sender == _box.owner, "The box is waiting for its opener, please wait");
     }
     
-    console.log(" box oreBalance , treasureBalance ", _box.oreBalance, _box.treasureBalance);
+    console.log("box oreBalance , treasureBalance ", _box.oreBalance, _box.treasureBalance);
     require(_oreAmount <= _box.oreBalance && _treasureAmount <= _box.treasureBalance, "Invalid amount");
     // check player strength 
     require(Player.getOreBalance(_box.owner) + _oreAmount < Player.getStrength(msg.sender), "Not enough strength");

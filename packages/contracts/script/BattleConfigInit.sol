@@ -15,7 +15,7 @@ library BattleConfigInit {
             10,  //maxAttackzDistance
             15,  //maxMoveDistance,
             20, //maxTimeLimit,
-            20, //maxUserLocationLockTime,
+            10, //maxUserLocationLockTime,
             10, //maxBoxBindTime,
             players
         );
