@@ -11,6 +11,7 @@ library BattleUtils {
         Buff _targetBuff
     ) internal pure returns (uint256) {
         // 0: fail , 1: equal , 2: success
+        // Wind > Water > Fire
         
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||

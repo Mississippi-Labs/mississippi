@@ -54,7 +54,7 @@ contract BattleSystem is System {
     //set attack 
     uint256 attackerFirepower = Player.getAttack(battle.attacker);
     uint256 defenderFirepower = Player.getAttack(battle.defender);
-    Buff attackerBuff = Buff(battle.defenderArg);
+    Buff attackerBuff = Buff(battle.attackerArg);
     Buff defenderBuff = Buff(battle.defenderArg);
     if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("attack")) {
        allAttack(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower, defenderFirepower);
