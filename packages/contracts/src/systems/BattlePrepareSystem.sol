@@ -25,7 +25,7 @@ contract BattlePrepareSystem is System {
         Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
         Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
         Player.setState(player, PlayerState.Exploring);
-        Player.setHp(player, initPlayerHp(player));
+        // Player.setHp(player, initPlayerHp(player));
     }
 
      function goHome() external {
@@ -69,6 +69,9 @@ contract BattlePrepareSystem is System {
 
         Player.setState(_msgSender(), PlayerState.Attacking);
         Player.setState(_targetAddress, PlayerState.Attacking);
+
+        Player.setHp(_msgSender(), initPlayerHp(_msgSender()));
+        Player.setHp(_targetAddress, initPlayerHp(_targetAddress));
 
         uint256 battleId = GameConfig.getBattleId(GAME_CONFIG_KEY);
         BattleList.setAttacker(battleId, _msgSender());
