@@ -79,9 +79,9 @@ contract BattleSystem is System {
         Player.setState(battle.defender, PlayerState.Exploring);
       }
       BattleList.setEndTimestamp(_battleId, block.timestamp);
-      Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
-      Player.setHp(battle.defender, BattleList.getDefenderHP(_battleId));
     }
+    Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
+    Player.setHp(battle.defender, BattleList.getDefenderHP(_battleId));
   }
 
   function allAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff
@@ -107,7 +107,7 @@ contract BattleSystem is System {
   }
 
   function attackerEscapeDenfenderAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, 
-    Buff defenderBuff, uint attackerFirepower) internal {
+    Buff defenderBuff, uint defenderFirepower) internal {
       // console.log(" escape --- 1");
       if (attackerBuff == defenderBuff || BattleUtils.compareBuff(attackerBuff, defenderBuff) == 2) {
         // escape success 
@@ -118,8 +118,8 @@ contract BattleSystem is System {
 
       } else {
         // escape fail, cause hurt
-        uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
-        BattleList.setDefenderHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, attackerAttackPower));
+        uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
+        BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
         if (BattleList.getAttackerHP(_battleId) == 0) {
           BattleList.setWinner(_battleId, battle.defender);
           BattleList.setIsEnd(_battleId, true);
@@ -129,7 +129,7 @@ contract BattleSystem is System {
       }
   }
 
-  function attackerAttackDenfenderEscape(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff, uint defenderFirepower) internal {
+  function attackerAttackDenfenderEscape(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff, uint attackerFirepower) internal {
     if (attackerBuff == defenderBuff || BattleUtils.compareBuff(defenderBuff, attackerBuff) == 2) {
         // escape success 
         BattleList.setWinner(_battleId, battle.attacker);
@@ -141,8 +141,8 @@ contract BattleSystem is System {
         // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
     } else {
        // escape fail, cause hurt
-      uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
-      BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
+      uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
+      BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, attackerAttackPower));
       if (BattleList.getDefenderHP(_battleId) == 0) {
         BattleList.setWinner(_battleId, battle.attacker);
         BattleList.setIsEnd(_battleId, true);

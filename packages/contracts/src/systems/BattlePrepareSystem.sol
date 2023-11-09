@@ -115,7 +115,7 @@ contract BattlePrepareSystem is System {
         emit BattleConfirmed(_battleId, _msgSender(), _buffHash);
     }
 
-    function initPlayerHp(address _player) public view returns (uint256) {
+    function initPlayerHp(address _player) public  returns (uint256) {
         uint256 time = Player.getLastBattleTime(_player);
         uint256 maxHp = Player.getHp(_player);
         uint256 hp = Player.getHp(_player);
@@ -127,6 +127,9 @@ contract BattlePrepareSystem is System {
         uint256 elapsedTime = block.timestamp - time;
         uint256 increase = ((elapsedTime / 10) * maxHp) / 100 ; 
         hp = hp + increase;
+
+        Player.setLastBattleTime(_player, 0);
+
         return (hp > maxHp) ? maxHp : hp;
     }
 }
