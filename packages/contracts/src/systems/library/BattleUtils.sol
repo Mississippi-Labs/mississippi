@@ -12,18 +12,19 @@ library BattleUtils {
         Buff _targetBuff
     ) internal pure returns (uint256) {
         // 0: fail , 1: equal , 2: success
+        // Wind > Water > Fire
         
         if (
-            (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
-            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
-            (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Fire) ||
+            (_myBuff == Buff.Water && _targetBuff == Buff.Fire)
         ) {
             return 2;
         }
         if (
             (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
-            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
-            (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
+            (_myBuff == Buff.Fire && _targetBuff == Buff.Wind) ||
+            (_myBuff == Buff.Water && _targetBuff == Buff.Wind)
         ) {
             return 0;
         }

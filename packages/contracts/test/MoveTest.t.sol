@@ -116,6 +116,17 @@ contract MoveTest is MudTest {
     vm.stopPrank();
 
     address bob = address(1);
+    // init bob property
+    vm.startPrank(vm.addr(vm.envUint("PRIVATE_KEY")));
+    Player.setMaxHp(bob, 200);
+    Player.setHp(bob, 200);
+    Player.setAttack(bob, 36);
+    Player.setAttackRange(bob, 5);
+    Player.setSpeed(bob, 6);
+    Player.setStrength(bob, 5);
+    Player.setSpace(bob, 5);
+    vm.stopPrank();
+    
     // join game 
     vm.startPrank(bob);
     world.joinBattlefield();
