@@ -23,28 +23,28 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Use Node.js 18
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
+      # - name: Use Node.js 18
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: 18
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      # - name: Install pnpm
+      #   run: npm install -g pnpm
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
+      # - name: Install Foundry
+      #   uses: foundry-rs/foundry-toolchain@v1
+      #   with:
+      #     version: nightly
 
 
-      - name: Install dependencies
-        run: pnpm install --loglevel verbose --no-frozen-lockfile
+      # - name: Install dependencies
+      #   run: pnpm install --loglevel verbose --no-frozen-lockfile
 
-      # - name: deploy on lattice testnet
-      #   run: cd packages/contracts; pnpm run deploy:testnet
+      # # - name: deploy on lattice testnet
+      # #   run: cd packages/contracts; pnpm run deploy:testnet
 
-      - name: build
-        run: pnpm build
+      # - name: build
+      #   run: pnpm build
 
       
       - name: Cloudflare Pages GitHub Action
