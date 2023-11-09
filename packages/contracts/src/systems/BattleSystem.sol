@@ -6,10 +6,8 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { BattleState, Buff, PlayerState, BattleEndType } from "@codegen/Types.sol";
 import { GameConfig,  BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
-import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
-import "forge-std/console.sol";
-
+// import "forge-std/console.sol";
 
 contract BattleSystem is System {
   event BattleReveal(uint256 battleId, address sender);
@@ -140,8 +138,7 @@ contract BattleSystem is System {
         PlayerLocationLock.set(battle.attacker, block.timestamp);
 
         // console.log(" attacker escape success");
-
-        emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
+        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
     } else {
        // escape fail, cause hurt
       uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
@@ -150,7 +147,7 @@ contract BattleSystem is System {
         BattleList.setWinner(_battleId, battle.attacker);
         BattleList.setIsEnd(_battleId, true);
 
-        emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
+        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
       }
     }
   }
