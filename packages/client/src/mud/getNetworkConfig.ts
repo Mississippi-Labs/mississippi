@@ -8,6 +8,7 @@ export async function getNetworkConfig() {
   const params = new URLSearchParams(window.location.search);
   // const chainId = Number(params.get("chainId") || params.get("chainid") || (import.meta.env.DEV ? import.meta.env.TEST_CHAIN_ID : import.meta.env.VITE_CHAIN_ID) || 31337);
   const chainId = 33784;
+  // const chainId = 31337;
   // const chainId = 421613;
   // console.log(supportedChains);
   if (import.meta.env.DEV) {

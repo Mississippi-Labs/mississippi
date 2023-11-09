@@ -52,7 +52,7 @@ contract BattlePrepareSystem is System {
             positionList.length > 0 && positionList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
             "invalid attack distance"
         );
-        require(positionList.length <= Player.getSpace(_msgSender()), "exceed player space"); //Todo: temp remove
+        require(positionList.length <= Player.getAttackRange(_msgSender()), "exceed player attackRange"); //Todo: temp remove
 
         require(
             Player.getState(_msgSender()) == PlayerState.Exploring &&

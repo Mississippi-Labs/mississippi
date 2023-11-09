@@ -8,6 +8,9 @@ import { GameConfig,  BoxListData, BattleList, BattleListData, Player, PlayerDat
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 
+import "forge-std/console.sol";
+
+
 contract BattleSystem is System {
   event BattleReveal(uint256 battleId, address sender);
   event BattleEnd(uint256 battleId, BattleEndType endType, address winner);
@@ -48,7 +51,6 @@ contract BattleSystem is System {
   function revealWinner(uint256 _battleId) public {
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Revealed);
-
     //set attack 
     uint256 attackerFirepower = Player.getAttack(battle.attacker);
     uint256 defenderFirepower = Player.getAttack(battle.defender);
@@ -92,24 +94,18 @@ contract BattleSystem is System {
 
       BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
       BattleList.setDefenderHP(_battleId, BattleUtils.getAttackResult(battle.defenderHP, attackerAttackPower));
-
-      // console.log(" after attack hp ", BattleList.getAttackerHP(_battleId), BattleList.getDefenderHP(_battleId));
-
       if (BattleList.getAttackerHP(_battleId) == 0 || BattleList.getDefenderHP(_battleId) == 0) {
         address winner = battle.attackerHP == 0 ? battle.defender : battle.attacker;
         address looser = battle.attackerHP == 0 ? battle.attacker : battle.defender;
         BattleList.setWinner(_battleId, winner);  
         BattleList.setIsEnd(_battleId, true);
         BattleUtils.loseGame(looser, winner);
-
-        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, winner);
       } 
   }
   
   function allEscape(uint _battleId) internal {
       BattleList.setIsEnd(_battleId, true);
       BattleList.setWinner(_battleId, address(0));
-      // emit BattleEnd(_battleId, BattleEndType.AllEscape, address(0));
   }
 
   function attackerEscapeDenfenderAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, 
@@ -121,9 +117,7 @@ contract BattleSystem is System {
         BattleList.setIsEnd(_battleId, true);
         // escaper will lock a while 
         PlayerLocationLock.set(battle.defender, block.timestamp);
-        // console.log(" escape --- 2");
 
-        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
       } else {
         // escape fail, cause hurt
         uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
@@ -160,4 +154,6 @@ contract BattleSystem is System {
       }
     }
   }
+
+  
 }

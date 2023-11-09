@@ -4,6 +4,7 @@ pragma solidity >=0.8.0;
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
 import { BattleListData, Player, BattleConfig, GameConfig, PlayerData, BoxListData, BoxList } from "../../codegen/Tables.sol";
 import { BATTLE_CONFIG_KEY, GAME_CONFIG_KEY } from "../../Constants.sol";
+import "forge-std/console.sol";
 
 library BattleUtils {
     function compareBuff(
@@ -11,6 +12,7 @@ library BattleUtils {
         Buff _targetBuff
     ) internal pure returns (uint256) {
         // 0: fail , 1: equal , 2: success
+        
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
             (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
@@ -93,7 +95,6 @@ library BattleUtils {
 
     function loseGame(address _looser, address _winner) internal {
         // lose game; will go home and hp will full.
-        // TODO bag system, baozang system
         Player.setState(_looser, PlayerState.Exploring);
         outBattlefield(_looser);
     
