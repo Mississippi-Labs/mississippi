@@ -2,7 +2,7 @@
   "name": "mud-template-vanilla",
   "private": true,
   "scripts": {
-    "build": "pnpm recursive run build",
+    "build": "cd packages/client && pnpm run build",
     "dev": "concurrently -n contracts,client -c cyan,magenta \"cd packages/contracts && pnpm run dev\" \"cd packages/client && pnpm run dev\"",
     "dev:client": "pnpm --filter 'client' run dev",
     "dev:contracts": "pnpm --filter 'contracts' dev",
