@@ -4,7 +4,6 @@ pragma solidity >=0.8.0;
 import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
 import { BattleListData, Player, BattleConfig, GameConfig, PlayerData, BoxListData, BoxList } from "../../codegen/Tables.sol";
 import { BATTLE_CONFIG_KEY, GAME_CONFIG_KEY } from "../../Constants.sol";
-import "forge-std/console.sol";
 
 library BattleUtils {
     function compareBuff(
@@ -15,14 +14,14 @@ library BattleUtils {
         
         if (
             (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
-            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
+            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
             (_myBuff == Buff.Fire && _targetBuff == Buff.Wind)
         ) {
             return 2;
         }
         if (
             (_myBuff == Buff.Fire && _targetBuff == Buff.Water) ||
-            (_myBuff == Buff.Wind && _targetBuff == Buff.Water) ||
+            (_myBuff == Buff.Water && _targetBuff == Buff.Wind) ||
             (_myBuff == Buff.Wind && _targetBuff == Buff.Fire)
         ) {
             return 0;

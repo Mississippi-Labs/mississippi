@@ -62,12 +62,12 @@ contract MUser is ERC721, MRandom {
 
         user.HP = getRange(random_numbers[0], 100, 10, 5);
         user.Attack = getRange(random_numbers[1], 30, 10, 2);
-        user.AttackRange = getRange(random_numbers[2], 2, 50, 1);
-        user.Speed = getRange(random_numbers[3], 3, 50, 2);
+        user.AttackRange = getRange(random_numbers[2], 3, 50, 1); //攻击范围3-5 
+        user.Speed = getRange(random_numbers[3], 4, 30, 1); //速度4-6
         user.Strength = getRange(random_numbers[4], 20, 10, 3);
         user.Space = getRange(random_numbers[5], 2, 50, 1);
-
         user.state = RandomState.Confirmed;
+
     }
 
     function getRange(
