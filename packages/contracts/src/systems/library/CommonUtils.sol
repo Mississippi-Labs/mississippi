@@ -68,7 +68,7 @@ library CommonUtils {
 
           require(
               CommonUtils.isNear(moveList[i].x, x2, moveList[i].y, y2),
-              "invalied move"
+              "Invalied move"
           );
           // 判断用户每一个移动连续性以及合法性,不能超出1格, 不能斜着走,不能原地踏步
           Position memory info = moveList[i];
@@ -77,7 +77,7 @@ library CommonUtils {
               abi.encodePacked(info.x, ",", info.y, ",", prefer)
           );
           bool isValidLeaf = MerkleProof.verify(info.proof, GameConfig.getMerkleRoot(GAME_CONFIG_KEY), leaf);
-          require(isValidLeaf, "bad position");
+          require(isValidLeaf, "Bad position");
       }
   }
 }

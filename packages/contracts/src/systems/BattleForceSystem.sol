@@ -17,6 +17,7 @@ contract BattleForceSystem is System {
         require(_msgSender() == battle.attacker || _msgSender() == battle.defender, "not in battle");
         require(block.timestamp - battle.endTimestamp > BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "battle not timeout");
         require(battle.isEnd == false, "battle already end");
+        // 可以强制结束阶段为:confirmed, revealed
 
         BattleState oppositeState = _msgSender() == battle.attacker ? battle.defenderState : battle.attackerState;
         BattleState playerState = _msgSender() == battle.attacker ? battle.attackerState : battle.defenderState;
@@ -25,19 +26,12 @@ contract BattleForceSystem is System {
         address oppositer = _msgSender() == battle.attacker ? battle.defender : battle.attacker;
         console.log(" opposite state ", uint(oppositeState));
         console.log(" player state ", uint(playerState));
-        require(oppositeState == BattleState.Inited && playerState == BattleState.Confirmed, "battle state not correct");
+        require((oppositeState == BattleState.Inited && playerState == BattleState.Confirmed)||(oppositeState == BattleState.Confirmed && playerState == BattleState.Revealed), "battle state not correct");
 
-        Player.setState(battle.attacker, PlayerState.Exploring);
-        Player.setState(battle.defender, PlayerState.Exploring);
 
-        BattleList.setDefenderState(_battleId, BattleState.Revealed);
-        BattleList.setAttackerState(_battleId, BattleState.Revealed);
         BattleList.setIsEnd(_battleId, true);
         BattleList.setWinner(_battleId, _msgSender());
-
-        Player.setHp(battle.attacker, battle.attackerHP);
-        Player.setHp(battle.defender, battle.defenderHP);
-
-        BattleUtils.loseGame(oppositer, _msgSender());
+        BattleUtils.endGame(oppositer, _msgSender(),_battleId);
     }
+    // 还需要一个全局举报功能
 }
