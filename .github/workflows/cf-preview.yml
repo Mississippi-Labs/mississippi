@@ -44,7 +44,7 @@ jobs:
       #   run: cd packages/contracts; pnpm run deploy:testnet
 
       - name: build clinet
-        run: pnpm build:client
+        run: pnpm build
 
       
       - name: Cloudflare Pages GitHub Action
