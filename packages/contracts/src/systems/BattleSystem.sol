@@ -93,8 +93,8 @@ contract BattleSystem is System {
       BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
       BattleList.setDefenderHP(_battleId, BattleUtils.getAttackResult(battle.defenderHP, attackerAttackPower));
       if (BattleList.getAttackerHP(_battleId) == 0 || BattleList.getDefenderHP(_battleId) == 0) {
-        address winner = battle.attackerHP == 0 ? battle.defender : battle.attacker;
-        address looser = battle.attackerHP == 0 ? battle.attacker : battle.defender;
+        address winner = BattleList.getDefenderHP(_battleId) == 0 ? battle.attacker : battle.defender;
+        address looser = winner == battle.attacker ?  battle.defender : battle.attacker;
         BattleList.setWinner(_battleId, winner);  
         BattleList.setIsEnd(_battleId, true);
         BattleUtils.loseGame(looser, winner);
