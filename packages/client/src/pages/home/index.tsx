@@ -21,7 +21,6 @@ import indexDuckImg from '@/assets/img/duck_index.svg';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
-import { async } from 'rxjs';
 
 let userContract: any
 let lootContract: any
@@ -223,10 +222,14 @@ const Home = () => {
         })
         await mint()
       }
-      // if (curPlayer?.state >= 2) {
-      //   navigate('/game');
-      //   return;
-      // }
+      if (curPlayer?.state >= 2) {
+        navigate('/game');
+        return;
+      } else if (curPlayer?.state == 1) {
+        await joinBattlefield()
+        navigate('/game');
+        return
+      }
       let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
   

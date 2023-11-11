@@ -37,7 +37,6 @@ contract BoxSystem is System {
 
   function revealBox(uint256 _boxId) external {
     BoxListData memory _box = BoxList.get(_boxId);
-    require(_box.owner == _msgSender(), "you are not the owner");
     console.log("randomId ",  _box.randomId);
 
 
@@ -52,7 +51,6 @@ contract BoxSystem is System {
   
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) public {
     BoxListData memory _box = BoxList.get(_boxId);
-    require(_box.owner == _msgSender(), "you are not the owner");
 
     PlayerData memory _player = Player.get(_box.owner);
     require(CommonUtils.isNear(_box.x, _player.x, _box.y, _player.y), "You are not near the box");

@@ -102,6 +102,10 @@ contract BattleSystem is System {
     Player.setHp(_battle.defender, BattleList.getDefenderHP(_battleId));
     BattleList.setIsEnd(_battleId, true);
     BattleList.setWinner(_battleId, address(0));
+      Player.setLastBattleTime(_battle.attacker, block.timestamp);
+      Player.setLastBattleTime(_battle.defender, block.timestamp);
+
+
   }
 
   // 
@@ -120,9 +124,11 @@ contract BattleSystem is System {
       PlayerLocationLock.set(battle.defender, block.timestamp);
       Player.setState(battle.attacker, PlayerState.Exploring);
       Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
+      Player.setLastBattleTime(battle.attacker, block.timestamp);
       // console.log(" defender escape success");
       Player.setState(battle.defender, PlayerState.Exploring);
       Player.setHp(battle.defender, BattleList.getDefenderHP(_battleId));
+      Player.setLastBattleTime(battle.defender, block.timestamp);
 
     }else{
       // 逃跑失败
