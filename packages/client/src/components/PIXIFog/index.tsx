@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Graphics, Sprite } from '@pixi/react';
+import { Container, Sprite } from '@pixi/react';
 import { MapConfig } from '@/config/map';
 import * as PIXI from 'pixi.js';
-const { cellSize, visualWidth, visualHeight } = MapConfig;
+const { cellSize, visualWidth } = MapConfig;
 
-interface IPaths {
-  x: number;
-  y: number;
-  movable?: boolean;
-}
 
 interface IProps {
   offsetX?: number;
@@ -29,15 +24,11 @@ const Fog = (props: IProps) => {
 
     const ctx = canvas.getContext('2d');
 
-// 创建径向渐变
-// 参数分别为：内圆中心x坐标，内圆中心y坐标，内圆半径，外圆中心x坐标，外圆中心y坐标，外圆半径
     const gradient = ctx.createRadialGradient(width / 2, width / 2, width / 8, width / 2, width / 2, width / 4);
 
-// 定义颜色停点
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0)'); // 0%处透明
-    gradient.addColorStop(1, 'rgba(0, 0, 0, 1)'); // 100%处不透明
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
 
-// 应用渐变并绘制矩形
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, width);
     setTexture(PIXI.Texture.from(canvas));
