@@ -4,7 +4,7 @@ pragma solidity >=0.8.0;
 // import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { BattleState, Buff, PlayerState, BattleEndType } from "@codegen/Types.sol";
-import { GameConfig,  BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
+import { GameConfig, BoxListData, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock, BoxList } from "@codegen/Tables.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 
 // import "forge-std/console.sol";
@@ -36,32 +36,31 @@ contract BattleSystem is System {
       BattleList.setDefenderArg(_battleId, _arg);
       BattleList.setDefenderState(_battleId, BattleState.Revealed);
     }
-   
-   if (BattleList.getAttackerState(_battleId) == BattleState.Revealed 
-      && BattleList.getDefenderState(_battleId) == BattleState.Revealed) {
-      // reveal 
-      // console.log("reveal battle");
+
+    if (
+      BattleList.getAttackerState(_battleId) == BattleState.Revealed &&
+      BattleList.getDefenderState(_battleId) == BattleState.Revealed
+    ) {
       revealWinner(_battleId);
     }
-    // emit BattleReveal(_battleId, _msgSender());
   }
 
   function revealWinner(uint256 _battleId) public {
     BattleListData memory battle = BattleList.get(_battleId);
     BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Revealed);
-    //set attack 
+    //set attack
     uint256 attackerFirepower = Player.getAttack(battle.attacker);
     uint256 defenderFirepower = Player.getAttack(battle.defender);
     Buff attackerBuff = Buff(battle.attackerArg);
     Buff defenderBuff = Buff(battle.defenderArg);
     if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("attack")) {
-       allAttack(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower, defenderFirepower);
+      allAttack(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower, defenderFirepower);
     } else if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("escape")) {
-        allEscape(_battleId);
+      allEscape(_battleId,battle);
     } else if (battle.attackerAction == bytes32("escape") && battle.defenderAction == bytes32("attack")) {
-        attackerEscapeDenfenderAttack(_battleId, battle, attackerBuff, defenderBuff, defenderFirepower);
+      attackerEscapeDenfenderAttack(_battleId, battle, attackerBuff, defenderBuff, defenderFirepower);
     } else if (battle.attackerAction == bytes32("attack") && battle.defenderAction == bytes32("escape")) {
-        attackerAttackDenfenderEscape(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower);
+      attackerAttackDenfenderEscape(_battleId, battle, attackerBuff, defenderBuff, attackerFirepower);
     }
 
     if (!BattleList.getIsEnd(_battleId)) {
@@ -69,78 +68,86 @@ contract BattleSystem is System {
       // emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
       BattleList.setDefenderState(_battleId, BattleState.Inited);
       BattleList.setAttackerState(_battleId, BattleState.Inited);
-      BattleList.setEndTimestamp(_battleId, block.timestamp);
-    } else {
-      // set explore state
-      if (Player.getState(battle.attacker) == PlayerState.Attacking) {
-        Player.setState(battle.attacker, PlayerState.Exploring);
-      }
-      if (Player.getState(battle.defender) == PlayerState.Attacking) {
-        Player.setState(battle.defender, PlayerState.Exploring);
-      }
-      BattleList.setEndTimestamp(_battleId, block.timestamp);
+    } 
+    BattleList.setEndTimestamp(_battleId, block.timestamp);
+  }
+
+  function allAttack(
+    uint _battleId,
+    BattleListData memory battle,
+    Buff attackerBuff,
+    Buff defenderBuff,
+    uint attackerFirepower,
+    uint defenderFirepower
+  ) internal {
+    // 任意攻击buff都强于None
+    uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
+    uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
+
+    BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
+    BattleList.setDefenderHP(_battleId, BattleUtils.getAttackResult(battle.defenderHP, attackerAttackPower));
+    if (BattleList.getAttackerHP(_battleId) == 0 || BattleList.getDefenderHP(_battleId) == 0) {
+      address winner = BattleList.getDefenderHP(_battleId) == 0 ? battle.attacker : battle.defender;
+      address looser = winner == battle.attacker ? battle.defender : battle.attacker;
+      
+      BattleUtils.endGame(looser, winner,_battleId);
     }
-    Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
-    Player.setHp(battle.defender, BattleList.getDefenderHP(_battleId));
   }
 
-  function allAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff
-      , uint attackerFirepower, uint defenderFirepower) internal {
-      // 任意攻击buff都强于None
-      uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
-      uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
-
-      BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
-      BattleList.setDefenderHP(_battleId, BattleUtils.getAttackResult(battle.defenderHP, attackerAttackPower));
-      if (BattleList.getAttackerHP(_battleId) == 0 || BattleList.getDefenderHP(_battleId) == 0) {
-        address winner = battle.attackerHP == 0 ? battle.defender : battle.attacker;
-        address looser = battle.attackerHP == 0 ? battle.attacker : battle.defender;
-        BattleList.setWinner(_battleId, winner);  
-        BattleList.setIsEnd(_battleId, true);
-        BattleUtils.loseGame(looser, winner);
-      } 
+  function allEscape(uint _battleId,BattleListData memory _battle) internal {
+    
+    Player.setState(_battle.attacker, PlayerState.Exploring);
+    Player.setState(_battle.defender, PlayerState.Exploring);
+    Player.setHp(_battle.attacker, BattleList.getAttackerHP(_battleId));
+    Player.setHp(_battle.defender, BattleList.getDefenderHP(_battleId));
+    BattleList.setIsEnd(_battleId, true);
+    BattleList.setWinner(_battleId, address(0));
   }
-  
-  function allEscape(uint _battleId) internal {
+
+  function attackerEscapeDenfenderAttack(
+    uint _battleId,
+    BattleListData memory battle,
+    Buff attackerBuff,
+    Buff defenderBuff,
+    uint defenderFirepower
+  ) internal {
+    if (BattleUtils.compareBuff(attackerBuff, defenderBuff) >= 1) {
+      // escape success
+      BattleList.setWinner(_battleId, battle.defender);
       BattleList.setIsEnd(_battleId, true);
-      BattleList.setWinner(_battleId, address(0));
-  }
-
-  function attackerEscapeDenfenderAttack(uint _battleId, BattleListData memory battle, Buff attackerBuff, 
-    Buff defenderBuff, uint defenderFirepower) internal {
-      // console.log(" escape --- 1");
-      if (attackerBuff == defenderBuff || BattleUtils.compareBuff(attackerBuff, defenderBuff) == 2) {
-        // escape success 
+      // escaper will lock a while
+      PlayerLocationLock.set(battle.defender, block.timestamp);
+    } else {
+      // escape fail, cause hurt
+      uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
+      BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
+      if (BattleList.getAttackerHP(_battleId) == 0) {
         BattleList.setWinner(_battleId, battle.defender);
         BattleList.setIsEnd(_battleId, true);
-        // escaper will lock a while 
-        PlayerLocationLock.set(battle.defender, block.timestamp);
 
-      } else {
-        // escape fail, cause hurt
-        uint256 defenderAttackPower = BattleUtils.getAttackPower(defenderBuff, attackerBuff, defenderFirepower);
-        BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, defenderAttackPower));
-        if (BattleList.getAttackerHP(_battleId) == 0) {
-          BattleList.setWinner(_battleId, battle.defender);
-          BattleList.setIsEnd(_battleId, true);
-
-          // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
-        }
+        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.defender);
       }
+    }
   }
 
-  function attackerAttackDenfenderEscape(uint _battleId, BattleListData memory battle, Buff attackerBuff, Buff defenderBuff, uint attackerFirepower) internal {
-    if (attackerBuff == defenderBuff || BattleUtils.compareBuff(defenderBuff, attackerBuff) == 2) {
-        // escape success 
-        BattleList.setWinner(_battleId, battle.attacker);
-        BattleList.setIsEnd(_battleId, true);
-        // escaper will lock a while 
-        PlayerLocationLock.set(battle.attacker, block.timestamp);
+  function attackerAttackDenfenderEscape(
+    uint _battleId,
+    BattleListData memory battle,
+    Buff attackerBuff,
+    Buff defenderBuff,
+    uint attackerFirepower
+  ) internal {
+    if (BattleUtils.compareBuff(defenderBuff, attackerBuff) >= 1) {
+      // escape success
+      BattleList.setWinner(_battleId, battle.attacker);
+      BattleList.setIsEnd(_battleId, true);
+      // escaper will lock a while
+      PlayerLocationLock.set(battle.attacker, block.timestamp);
 
-        // console.log(" attacker escape success");
-        // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
+      // console.log(" attacker escape success");
+      // emit BattleEnd(_battleId, BattleEndType.NormalEnd, battle.attacker);
     } else {
-       // escape fail, cause hurt
+      // escape fail, cause hurt
       uint256 attackerAttackPower = BattleUtils.getAttackPower(attackerBuff, defenderBuff, attackerFirepower);
       BattleList.setAttackerHP(_battleId, BattleUtils.getAttackResult(battle.attackerHP, attackerAttackPower));
       if (BattleList.getDefenderHP(_battleId) == 0) {
@@ -151,6 +158,4 @@ contract BattleSystem is System {
       }
     }
   }
-
-  
 }

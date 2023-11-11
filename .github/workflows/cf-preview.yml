@@ -43,7 +43,7 @@ jobs:
       # - name: deploy on lattice testnet
       #   run: cd packages/contracts; pnpm run deploy:testnet
 
-      - name: build
+      - name: build clinet
         run: pnpm build
 
       
