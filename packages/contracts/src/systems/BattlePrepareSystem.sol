@@ -21,10 +21,10 @@ contract BattlePrepareSystem is System {
     //实际上是送到原点
     // TODO似乎可以直接通过indexer获取,就不需要再次插入了
 
-    Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
-    Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
+    // Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
+    // Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
     Player.setState(player, PlayerState.Exploring);
-    // Player.setHp(player, initPlayerHp(player));
+ 
   }
 
   function goHome() external {
