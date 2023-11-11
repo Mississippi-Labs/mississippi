@@ -64,13 +64,13 @@ jobs:
           branch: main
           # The working directory in which to run Wrangler
       
-      - name: Vercel Action
-        uses: amondnet/vercel-action@v25
+      # - name: Vercel Action
+      #   uses: amondnet/vercel-action@v25
 
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-          vercel-org-id: ${{ secrets.ORG_ID}} #Required
-          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
-          working-directory: ./packages/client/dist
-          scope: ${{secrets.TEAM_SLUG}}
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+      #     vercel-org-id: ${{ secrets.ORG_ID}} #Required
+      #     vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
+      #     working-directory: ./packages/client/dist
+      #     scope: ${{secrets.TEAM_SLUG}}
           
