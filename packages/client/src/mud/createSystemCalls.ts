@@ -20,18 +20,14 @@ export function createSystemCalls(
   };
 
   const move = async (steps: any) => {
-    if (wait) return
-    wait = true
     console.log('move', new Date().getTime());
     try {
       const tx = await worldContract.write.move([steps]);
       await waitForTransaction(tx);
       console.log('move success', new Date().getTime(), tx);
-      wait = false
     } catch (error) {
       console.log('move', error);
       message.error(error.cause.reason || error.cause.details);
-      wait = false
     }
     
     // return getComponentValue(Player, singletonEntity);
@@ -113,25 +109,36 @@ export function createSystemCalls(
   const revealBattle = async (battleId: any, action: any, arg: any, nonce: any) => {
     if (wait) return
     wait = true
-    console.log('revealBattle', new Date().getTime());
-    try {
-      const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce]);
-      await waitForTransaction(tx);
-      console.log('revealBattle success', new Date().getTime(), tx);
-      wait = false
-      return {
-        type: 'success',
-        data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
-      }
-    } catch (error) {
-      console.log('revealBattle', error);
-      message.error(error.cause.reason || error.cause.details);
-      wait = false
-      return {
-        type: 'error',
-        msg: error.cause.reason || error.cause.details || error.cause
-      }
-    }
+    return new Promise((resolve, reject) => {
+      worldContract.write.revealBattle([battleId, action, arg, nonce]).then((tx: any) => {
+        waitForTransaction(tx).then((res: any) => {
+          console.log('revealBattle success', new Date().getTime(), tx);
+          wait = false
+          setTimeout(() => {
+            resolve({
+              type: 'success',
+              data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
+            })
+          }, 100)
+        }).catch((error: any) => {
+          console.log('revealBattle', error);
+          message.error(error.cause.reason || error.cause.details);
+          wait = false
+          reject({
+            type: 'error',
+            msg: error.cause.reason || error.cause.details || error.cause
+          })
+        })
+      }).catch((error: any) => {
+        console.log('revealBattle', error);
+        message.error(error.cause.reason || error.cause.details);
+        wait = false
+        reject({
+          type: 'error',
+          msg: error.cause.reason || error.cause.details || error.cause
+        })
+      })
+    })
   }
 
   const selectBothNFT = async (userTokenId: any, lootTokenId: any, address: any) => {
@@ -295,6 +302,18 @@ export function createSystemCalls(
     }
   }
 
+  const goHome = async () => {
+    try {
+      const tx = await worldContract.write.goHome();
+      await waitForTransaction(tx);
+      console.log('goHome', new Date().getTime());
+      return tx
+    } catch (error) {
+      console.log('goHome', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
   const submitGem = async () => {
     try {
       const tx = await worldContract.write.submitGem();
@@ -331,6 +350,7 @@ export function createSystemCalls(
     selectBothNFT,
     forceEnd,
     unlockUserLocation,
-    submitGem
+    submitGem,
+    goHome
   };
 }

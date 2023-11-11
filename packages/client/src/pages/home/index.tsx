@@ -166,7 +166,6 @@ const Home = () => {
   const createWallet = () => {
     setModalVisible(true);
   }
-  
   const toMint = async () => {
     if (!usernameRef.current.value) {
       message.error('Please input your username');
@@ -175,6 +174,12 @@ const Home = () => {
     setUsername(usernameRef.current.value);
     setModalVisible(false);
     setStep('mint');
+  }
+
+  const handleKeyUp = (e) => {
+    if (e.keyCode === 13) {
+      toMint();
+    }
   }
 
   const mint = async () => {
@@ -190,7 +195,7 @@ const Home = () => {
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
-            let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds.length - 1].toString(), userTokenIds[userTokenIds.length - 1].toString())
+            let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds?.length - 1].toString(), userTokenIds[userTokenIds?.length - 1].toString())
             await revealres.wait()
             resolve('success')
           }
@@ -210,17 +215,20 @@ const Home = () => {
   const mintAndGo = async () => {
     setMinting(true);
     try {
-      messageApi.open({
-        type: 'loading',
-        content: 'minting loot and user,please wait...',
-        duration: 7,
-      })
-  
-      if (!(userTokenIds.length && lootTokenIds.length)) {
+      if (!(userTokenIds?.length && lootTokenIds?.length)) {
+        messageApi.open({
+          type: 'loading',
+          content: 'minting loot and user,please wait...',
+          duration: 7,
+        })
         await mint()
       }
-      let userTokenId = userTokenIds[userTokenIds.length - 1].toString()
-      let lootTokenId = lootTokenIds[lootTokenIds.length - 1].toString()
+      // if (curPlayer?.state >= 2) {
+      //   navigate('/game');
+      //   return;
+      // }
+      let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
+      let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
   
   
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
@@ -374,7 +382,7 @@ const Home = () => {
               <h2 className="mint-title">HOME</h2>
               <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
-                {minting ? 'Loading...' : 'MINT AND GO'}
+                {minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO'}
               </button>
               {
                 minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null
@@ -394,7 +402,7 @@ const Home = () => {
             You have successfully created a wallet.Name your character and start your journey!
           </div>
           <div className="mint-name">
-            <input type="text" className="mi-input" ref={usernameRef} />
+            <input type="text" className="mi-input" ref={usernameRef} onKeyUp={handleKeyUp} />
             <button className="mi-btn" onClick={toMint}>OK</button>
           </div>
         </div>
