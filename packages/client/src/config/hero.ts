@@ -206,3 +206,29 @@ export const Hero = {
     'WoodcutterAxe'
   ]
 }
+
+export const Actions = {
+  run: {
+    step: 4,
+    row: 2, // first row is 0
+  },
+  idle: {
+    step: 2,
+    row: 0,
+  },
+  slash: {
+    step: 4,
+    row: 8,
+  },
+  blink: {
+
+  },
+  die: {
+    step: 3,
+    row: 13,
+  }
+};
+
+export const FrameSize = 64;
+export const FrameOffsetY = FrameSize / 2;
+export const HeroUIScale = 3;

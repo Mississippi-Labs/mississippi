@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stage, Container, Sprite } from '@pixi/react';
+import * as PIXI from 'pixi.js';
 import { MapConfig } from '@/config/map';
 import PIXIMap from '@/components/PIXIMap';
 import Chests from '@/components/Chests';
@@ -7,7 +8,9 @@ import { TreasureChestMockData } from '@/mock/data';
 import Delivery from '@/components/Delivery';
 import PreviewPaths from '@/components/PreviewPaths';
 import PIXIFog from '@/components/PIXIFog';
+import PIXIPlayers from '@/components/PIXIPlayers';
 
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
 const PIXIAPP = () => {
@@ -38,6 +41,7 @@ const PIXIAPP = () => {
         ]}
       />
       <Chests data={TreasureChestMockData}/>
+      <PIXIPlayers/>
       <PIXIFog/>
 
     </Stage>
