@@ -128,7 +128,7 @@ const Game = () => {
     })
     return player;
   }).filter(e => e.state > 1);
-
+  console.log(players, 'players')
   const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
     const playerSeason = getComponentValue(PlayerSeason, entity);
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
@@ -248,6 +248,7 @@ const Game = () => {
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     setStartBattleData(false);
+    setBattleId(null);
     if (winner && attacker && defender) {
       let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
       let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
@@ -429,13 +430,8 @@ const Game = () => {
     const boxIndex = boxs.findIndex(item => item.id === id);
     const box = boxs[boxIndex]
     if (box.opened) {
-      if (box.owner.toLocaleLowerCase() != account.toLocaleLowerCase()) {
-        message.error('The treasure chest has been opened by others');
-        return
-      } else {
-        getCollectionsFun(box);
-        return
-      }
+      getCollectionsFun(box);
+      return
     }
     setOpeningBox(boxs[boxIndex].id);
     await openBox(id);

@@ -291,8 +291,8 @@ export default function Battle(props) {
     }
     return (
       <div>
-        <p>{attackerUsername} used a {attackerArg}: {player1LossData.toFixed(0)}</p>
-        <p>{username} used a {arg}: {player2LossData.toFixed(0)}</p>
+        <p>{attackerUsername} used a {attackerArg}: {player2LossData.toFixed(0)}</p>
+        <p>{username} used a {arg}: {player1LossData.toFixed(0)}</p>
       </div>
     )
   }
