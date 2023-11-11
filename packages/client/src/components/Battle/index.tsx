@@ -172,6 +172,7 @@ export default function Battle(props) {
   }, [])
 
   if (battle && !battle?.isEnd) {
+    isFirst = false
     initBattle()
   } else if (battle && battle?.isEnd && !isFirst) {
     isFirst = true
