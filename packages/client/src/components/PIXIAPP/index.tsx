@@ -6,6 +6,7 @@ import Chests from '@/components/Chests';
 import { TreasureChestMockData } from '@/mock/data';
 import Delivery from '@/components/Delivery';
 import PreviewPaths from '@/components/PreviewPaths';
+import PIXIFog from '@/components/PIXIFog';
 
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
@@ -37,7 +38,7 @@ const PIXIAPP = () => {
         ]}
       />
       <Chests data={TreasureChestMockData}/>
-
+      <PIXIFog/>
 
     </Stage>
   );
