@@ -58,8 +58,6 @@ export default mudConfig({
         addr: "address",
       },
       schema: {
-        suitId : "uint256",
-        equipmentId : "uint256",
         x : "uint16",
         y : "uint16",
         hp : "uint256",
@@ -75,7 +73,6 @@ export default mudConfig({
         maxHp: "uint256",
         name: "string",
         url: "string",
-        
       }
     },
     PlayerAddon:{

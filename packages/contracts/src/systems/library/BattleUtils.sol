@@ -8,7 +8,7 @@ import { BATTLE_CONFIG_KEY, GAME_CONFIG_KEY } from "../../Constants.sol";
 library BattleUtils {
   function compareBuff(Buff _myBuff, Buff _targetBuff) internal pure returns (uint256) {
     // 0: fail , 1: equal , 2: success
-    // Wind > Water > Fire
+    // "Fire"< "Water"<"Wind"
 
     if (
       (_myBuff == Buff.Water && _targetBuff == Buff.Fire) ||
