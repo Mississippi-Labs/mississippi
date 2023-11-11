@@ -94,8 +94,8 @@ export default function Battle(props) {
             timeout = setTimeout(async () => {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
-              if (resultbattle?.isEnd && resultbattle?.winner) {
-                props.finishBattle(resultbattle?.winner, resultbattle?.attacker, resultbattle?.defender)
+              if (resultBattle?.isEnd && resultBattle?.winner) {
+                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
             }, 23000)
@@ -113,8 +113,8 @@ export default function Battle(props) {
             timeout = setTimeout(async () => {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
-              if (resultbattle?.isEnd && resultbattle?.winner) {
-                props.finishBattle(resultbattle?.winner, resultbattle?.attacker, resultbattle?.defender)
+              if (resultBattle?.isEnd && resultBattle?.winner) {
+                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
             }, 23000)
@@ -130,8 +130,8 @@ export default function Battle(props) {
             timeout = setTimeout(async () => {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
-              if (resultbattle?.isEnd && resultbattle?.winner) {
-                props.finishBattle(resultbattle?.winner, resultbattle?.attacker, resultbattle?.defender)
+              if (resultBattle?.isEnd && resultBattle?.winner) {
+                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
             }, 23000)
@@ -168,8 +168,11 @@ export default function Battle(props) {
     }
   }, [])
 
-  if (battle) {
+  if (battle && !battle?.isEnd) {
     initBattle()
+  } else if (battle && battle?.isEnd) {
+    props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
+    return
   }
 
   // if (battle) {

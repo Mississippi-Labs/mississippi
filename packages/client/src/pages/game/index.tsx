@@ -388,7 +388,7 @@ const Game = () => {
   const submitGemFun = async () => {
     setUserInfoVisible(true);
     try {
-      // goHome();
+      goHome();
       if (curPlayer.oreBalance > 0) {
         await submitGem();
         setContent(
