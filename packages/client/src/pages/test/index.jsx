@@ -20,6 +20,16 @@ let userContract
 let lootContract
 let transfering = false
 
+
+
+
+let boxData1 = [{x: 13, y: 1}, {x: 23, y: 5}, {x: 26, y: 8}, {x: 23, y: 18}, {x: 30, y: 20},
+  {x: 8, y: 21}, {x: 5, y: 25}, {x: 30, y: 36}, {x: 19, y: 30}, {x: 3, y: 37},
+  {x: 28, y: 39}, {x: 36, y: 51}, {x: 40, y: 55}, {x: 27, y: 59}, {x: 13, y: 55},
+  {x: 3, y: 49}, {x: 3, y: 40}, {x: 21, y: 29}, {x: 41, y: 26}, {x: 59, y: 20}]
+
+  let boxI = 0
+
 const Test = () => {
   const [stepData, setStepData] = useState([]);
   const [transferData, setTransferData] = useState([]);
@@ -132,7 +142,7 @@ const Test = () => {
     let box = getComponentValue(BoxList, entity)
     box.id = id.boxId.toString()
     return box;
-  });
+  }).filter(e => !e.opened);
   console.log(boxs, 'boxs')
 
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
@@ -307,7 +317,22 @@ const Test = () => {
     setBattlesData(battlesDataTemp)
   }
 
-  const CreateBoxFun = () => {
+  const CreateBoxMoreFun = async (boxi) => {
+    if (boxi == undefined) boxi = 0
+    let box = boxData1[boxi]
+    console.log(box, 'box', boxi,boxData1 )
+    await CreateBox(box.x, box.y);
+
+    if (boxi >= boxData1.length) {
+      // boxI = 0
+    } else {
+      setTimeout(() => {
+        CreateBoxFun(boxi + 1)
+      }, 100)
+    }
+  }
+
+  const CreateBoxFun = async () => {
     CreateBox(boxData[0], boxData[1]);
   }
 
@@ -476,6 +501,11 @@ const Test = () => {
           <div className="btn" onClick={revealBattleFun}>确认</div>
         </div>
         <div className="section">
+          <div className="title">批量创建宝箱</div>
+          <div className="input"></div>
+          <div className="btn" onClick={() => CreateBoxMoreFun(0)}>确认</div>
+        </div>
+        <div className="section">
           <div className="title">创建宝箱</div>
           <div className="input">
             <input type="text" onChange={(e) => boxChange(e, 0)} placeholder='x' />
@@ -483,6 +513,7 @@ const Test = () => {
           </div>
           <div className="btn" onClick={CreateBoxFun}>确认</div>
         </div>
+        
         <div className="section">
           <div className="title">打开宝箱</div>
           <div className="input">

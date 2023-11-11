@@ -12,21 +12,26 @@ if (!rootElement) throw new Error("React root not found");
 const root = ReactDOM.createRoot(rootElement);
 
 setup().then(async (result) => {
+  console.log("result", result);
   root.render(
     <MUDProvider value={result}>
       <App />
     </MUDProvider>
   );
-  // const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
-  // mountDevTools({
-  //   config: mudConfig,
-  //   publicClient: network.publicClient,
-  //   walletClient: network.walletClient,
-  //   latestBlock$: network.latestBlock$,
-  //   blockStorageOperations$: network.blockStorageOperations$,
-  //   worldAddress: network.worldContract.address,
-  //   worldAbi: network.worldContract.abi,
-  //   write$: network.write$,
-  //   recsWorld: network.world,
-  // });
+  if (!import.meta.env.DEV) {
+    const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
+    mountDevTools({
+      config: mudConfig,
+      publicClient: network.publicClient,
+      walletClient: network.walletClient,
+      latestBlock$: network.latestBlock$,
+      blockStorageOperations$: network.blockStorageOperations$,
+      worldAddress: network.worldContract.address,
+      worldAbi: network.worldContract.abi,
+      write$: network.write$,
+      recsWorld: network.world,
+    });
+    localStorage.setItem("mud-dev-tools-shown", 'false');
+  }
+  
 });

@@ -4,6 +4,8 @@ import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { message } from 'antd';
 
+let wait = false;
+
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
@@ -63,24 +65,31 @@ export function createSystemCalls(
   }
 
   const battleInvitation = async (addr: any, steps: any) => {
+    if (wait) return
+    wait = true
     console.log('battleInvitation', new Date().getTime());
     try {
       const tx = await worldContract.write.battleInvitation([addr, steps]);
       await waitForTransaction(tx);
       console.log('battleInvitation success', new Date().getTime(), tx);
+      wait = false
       return tx
     } catch (error) {
       console.log('battleInvitation', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
   const confirmBattle = async (buffHash: any, battleId: any) => {
+    if (wait) return
+    wait = true
     console.log('confirmBattle', new Date().getTime());
     try {
       const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
       await waitForTransaction(tx);
       console.log('confirmBattle success', new Date().getTime(), tx);
+      wait = false
       return {
         type: 'success',
         data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
@@ -88,6 +97,7 @@ export function createSystemCalls(
     } catch (error) {
       console.log('confirmBattle', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
       return {
         type: 'error',
         msg: error.cause.reason || error.cause.details || error.cause
@@ -97,23 +107,38 @@ export function createSystemCalls(
   }
 
   const revealBattle = async (battleId: any, action: any, arg: any, nonce: any) => {
-    console.log('revealBattle', new Date().getTime());
-    try {
-      const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce]);
-      await waitForTransaction(tx);
-      console.log('revealBattle success', new Date().getTime(), tx);
-      return {
-        type: 'success',
-        data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
-      }
-    } catch (error) {
-      console.log('revealBattle', error);
-      message.error(error.cause.reason || error.cause.details);
-      return {
-        type: 'error',
-        msg: error.cause.reason || error.cause.details || error.cause
-      }
-    }
+    if (wait) return
+    wait = true
+    return new Promise((resolve, reject) => {
+      worldContract.write.revealBattle([battleId, action, arg, nonce]).then((tx: any) => {
+        waitForTransaction(tx).then((res: any) => {
+          console.log('revealBattle success', new Date().getTime(), tx);
+          wait = false
+          setTimeout(() => {
+            resolve({
+              type: 'success',
+              data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
+            })
+          }, 100)
+        }).catch((error: any) => {
+          console.log('revealBattle', error);
+          message.error(error.cause.reason || error.cause.details);
+          wait = false
+          reject({
+            type: 'error',
+            msg: error.cause.reason || error.cause.details || error.cause
+          })
+        })
+      }).catch((error: any) => {
+        console.log('revealBattle', error);
+        message.error(error.cause.reason || error.cause.details);
+        wait = false
+        reject({
+          type: 'error',
+          msg: error.cause.reason || error.cause.details || error.cause
+        })
+      })
+    })
   }
 
   const selectBothNFT = async (userTokenId: any, lootTokenId: any, address: any) => {
@@ -161,37 +186,49 @@ export function createSystemCalls(
   }
 
   const openBox = async (boxId: any) => {
+    if (wait) return
+    wait = true
     console.log('openBox', new Date().getTime());
     try {
       const tx = await worldContract.write.openBox([boxId]);
       await waitForTransaction(tx);
       console.log('openBox success', new Date().getTime(), tx);
+      wait = false
     } catch (error) {
       console.log('openBox', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
   const revealBox = async (boxId: any) => {
+    if (wait) return
+    wait = true
     console.log('revealBox', new Date().getTime());
     try {
       const tx = await worldContract.write.revealBox([boxId]);
       await waitForTransaction(tx);
       console.log('revealBox success', new Date().getTime(), tx);
+      wait = false
       return getComponentValue(BoxList, encodeEntity({ boxId: "uint256" }, { boxId:  boxId}));
     } catch (error) {
       console.log('revealBox', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
   const getCollections = async (boxId: any, oreAmount: any, treasureAmount: any) => {
+    if (wait) return
+    wait = true
     try {
       const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
       await waitForTransaction(tx);
+      wait = false
     } catch (error) {
       console.log('getCollections', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
@@ -219,28 +256,36 @@ export function createSystemCalls(
   }
 
   const initUserInfo = async () => {
+    if (wait) return
+    wait = true
     console.log('initUserInfo', new Date().getTime());
     try {
       const tx = await worldContract.write.initUserInfo();
       await waitForTransaction(tx);
       console.log('initUserInfo success', new Date().getTime(), tx);
+      wait = false
       return tx
     } catch (error) {
       console.log('initUserInfo', error);
       message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
   const forceEnd = async (battleId: any) => {
+    if (wait) return
+    wait = true
     console.log('forceEnd', new Date().getTime());
     try {
       const tx = await worldContract.write.forceEnd([battleId]);
       await waitForTransaction(tx);
       console.log('forceEnd success', new Date().getTime(), tx);
+      wait = false
       return getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
     } catch (error) {
       console.log('forceEnd', error);
       // message.error(error.cause.reason || error.cause.details);
+      wait = false
     }
   }
 
@@ -253,6 +298,18 @@ export function createSystemCalls(
       return tx
     } catch (error) {
       console.log('unlockUserLocation', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
+  const goHome = async () => {
+    try {
+      const tx = await worldContract.write.goHome();
+      await waitForTransaction(tx);
+      console.log('goHome', new Date().getTime());
+      return tx
+    } catch (error) {
+      console.log('goHome', error);
       message.error(error.cause.reason || error.cause.details);
     }
   }
@@ -293,6 +350,7 @@ export function createSystemCalls(
     selectBothNFT,
     forceEnd,
     unlockUserLocation,
-    submitGem
+    submitGem,
+    goHome
   };
 }

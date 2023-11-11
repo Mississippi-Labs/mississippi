@@ -37,7 +37,6 @@ contract BoxSystem is System {
 
   function revealBox(uint256 _boxId) external {
     BoxListData memory _box = BoxList.get(_boxId);
-    require(_box.owner == _msgSender(), "you are not the owner");
     console.log("randomId ",  _box.randomId);
 
 
@@ -52,7 +51,6 @@ contract BoxSystem is System {
   
   function getCollections(uint256 _boxId, uint16 _oreAmount, uint16 _treasureAmount) public {
     BoxListData memory _box = BoxList.get(_boxId);
-    require(_box.owner == _msgSender(), "you are not the owner");
 
     PlayerData memory _player = Player.get(_box.owner);
     require(CommonUtils.isNear(_box.x, _player.x, _box.y, _player.y), "You are not near the box");
@@ -63,7 +61,7 @@ contract BoxSystem is System {
       require(msg.sender == _box.owner, "The box is waiting for its opener, please wait");
     }
     
-    console.log(" box oreBalance , treasureBalance ", _box.oreBalance, _box.treasureBalance);
+    console.log("box oreBalance , treasureBalance ", _box.oreBalance, _box.treasureBalance);
     require(_oreAmount <= _box.oreBalance && _treasureAmount <= _box.treasureBalance, "Invalid amount");
     // check player strength 
     require(Player.getOreBalance(_box.owner) + _oreAmount < Player.getStrength(msg.sender), "Not enough strength");
@@ -72,5 +70,7 @@ contract BoxSystem is System {
     BoxList.setTreasureBalance(_boxId, _box.treasureBalance - _treasureAmount);
     Player.setOreBalance(_box.owner, _player.oreBalance + _oreAmount);
     Player.setTreasureBalance(_box.owner, _player.treasureBalance + _treasureAmount);
+    // TODO DEBUG 应该谁抢到归谁
+    
   }
 }

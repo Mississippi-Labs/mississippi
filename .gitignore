@@ -11,7 +11,7 @@ packages/contracts/node_modules/*
 packages/contracts/broadcast/*
 packages/contracts/types/*
 *.meta
-/pnpm-lock.yaml
+# /pnpm-lock.yaml
 
 # out for loot and user
 !packages/contracts/out/Loot.sol/

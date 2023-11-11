@@ -98,7 +98,7 @@ contract BattleTest is MudTest {
         vm.startPrank(alice);
         bytes32 action2 = bytes32("attack");
         uint256 arg2 = 2;
-        bytes32 nonce2 = bytes32("1");
+        bytes32 nonce2 = bytes32("2");
         bytes32 buffHash2 = keccak256(abi.encodePacked(action2, arg2, nonce2));
         world.confirmBattle(buffHash2, 1);
         vm.stopPrank();

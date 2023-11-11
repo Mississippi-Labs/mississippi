@@ -18,13 +18,13 @@
 
 .mi-battle {
   border-radius: 8px;
-  width: 1000px;
+  width: 897px;
 
   .mi-battle-main {
     border-radius: 7px;
     background-color: rgba(220, 199, 175, 0.95);
     box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
-    padding: 24px 20px 14px;
+    padding: 24px 20px;
     box-sizing: border-box;
   }
 
@@ -35,7 +35,7 @@
     align-items: flex-end;
     position: relative;
     justify-content: space-between;
-    background: url('../../assets/img/battle/bg.jpg') no-repeat;
+    background: url('../../assets/img/battle/bg.png') no-repeat;
     background-size: 100% 100%;
 
     .mi-battle-info-icon {
@@ -78,13 +78,48 @@
       }
 
       .mi-battle-character-card-hp {
-        width: 160px;
-        height: 30px;
-        border-radius: 6px;
-        border: 4px solid #2d2d2d;
+        border-radius: 10px;
+        border: 5px solid #6F391E;
+        background: #DDC9B2;
+        padding: 7px 5px;
+        box-sizing: border-box;
         position: relative;
-        top: 60px;
-        background: #fff;
+        width: 300px;
+        // left: 40px;
+        .user-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #000;
+          font-family: MISS;
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          margin-bottom: 8px;
+        }
+        .hp-wrap {
+          border: 4px solid #2d2d2d;
+          height: 30px;
+          overflow: hidden;
+          border-radius: 6px;
+          width: 280px;
+          position: relative;
+          box-sizing: border-box;
+          .hp-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            width: 100%;
+            line-height: 1;
+            box-sizing: border-box;
+          }
+          
+        }
         .hp-loss {
           position: absolute;
           right: -60px;
@@ -113,6 +148,21 @@
           }
         }
       }
+      .dark-attacker {
+        position: relative;
+        top: 50px;
+        right: 30px;
+        width: 280px;
+        height: 236px;
+      }
+
+      .dark-defender {
+        position: relative;
+        top: 50px;
+        left: 30px;
+        width: 280px;
+        height: 236px;
+      }
     }
 
     .mi-battle-character-info {
@@ -129,6 +179,52 @@
       line-height: 26px; /* 162.5% */
       .character-info {
         color: #000;
+      }
+    }
+  }
+  .battle-action {
+    margin-top: 14px;
+    font-family: MISS;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: relative;
+    z-index: 9;
+    .action-step {
+      width: 510px;
+      flex: 0 0 510px;
+      height: 108px;
+      border-radius: 10px;
+      background: #6F391E;
+      padding: 22px;
+      box-sizing: border-box;
+      line-height: 2;
+    }
+    .battle-tactics {
+      flex: 1;
+      height: 108px;
+      border-radius: 10px;
+      background: #6F391E;
+      padding: 22px;
+      box-sizing: border-box;
+      margin-left: 20px;
+      .tactics-item {
+        width: 130px;
+        flex: 0 0 130px;
+        height: 26px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        &.bag {
+          color: rgba(217, 217, 217, 0.58);
+          cursor: default;
+        }
       }
     }
   }

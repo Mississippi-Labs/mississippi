@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
+import { Has, HasValue, getComponentValue, ProxyRead } from '@latticexyz/recs';
+import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
@@ -44,8 +44,8 @@ let timeout = null
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem },
+    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason, SyncProgress },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
 
@@ -63,12 +63,15 @@ const Game = () => {
 
   const [targetPlayer, setTargetPlayer] = useState(null);
   const [battleCurPlayer, setBattleCurPlayer] = useState(null);
+  const [battleId, setBattleId] = useState(null);
   const [userInfoPlayer, setUserInfoPlayer] = useState<IPlayer>();
 
   const [startBattleData, setStartBattleData] = useState(false);
   const [userInfoVisible, setUserInfoVisible] = useState(false);
   const [balance, setBalance] = useState(0);
   const [openingBox, setOpeningBox] = useState();
+
+  const [percentage, setPercentage] = useState(0);
 
   const { account } = network;
   const curId = account;
@@ -107,7 +110,6 @@ const Game = () => {
     return loot;
   })
 
-
   const players = useEntityQuery([Has(Player)]).map((entity) => {
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
     const player = getComponentValue(Player, entity);
@@ -127,7 +129,6 @@ const Game = () => {
     })
     return player;
   }).filter(e => e.state > 1);
-
   const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
     const playerSeason = getComponentValue(PlayerSeason, entity);
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
@@ -166,16 +167,14 @@ const Game = () => {
   } else {
     // 返回首页
   }
-  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
+  const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
     const id = decodeEntity({ battleId: "uint256" }, entity);
     const battle:any = getComponentValue(BattleList, entity)
     battle.id = id.battleId.toString()
     return battle;
   });
-
-  if (battles.length && !startBattleData) {
-    const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
-    if (battle) {
+  const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+  if (battle && !startBattleData && percentage == 100) {
       const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
       const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
       const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
@@ -185,8 +184,10 @@ const Game = () => {
       if (!targetPlayer) {
         setTargetPlayer(target)
       }
+      if (!battleId) {
+        setBattleId(battle.id)
+      }
       setStartBattleData(true);
-    }
   }
   
   const getCollectionsFun = (box: any) => {
@@ -226,6 +227,15 @@ const Game = () => {
     setBalance(walletBalance);  
   }
 
+  const syncprogress = getComponentValue(SyncProgress, singletonEntity);
+
+  useEffect(() => {
+    if (percentage < 100) {
+      console.log(syncprogress, 'syncprogress')
+      setPercentage(syncprogress?.percentage || 0);
+    }
+  }, [syncprogress])
+
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
@@ -237,6 +247,7 @@ const Game = () => {
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     setStartBattleData(false);
+    setBattleId(null);
     if (winner && attacker && defender) {
       let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
       let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
@@ -246,11 +257,11 @@ const Game = () => {
           message.success('You win the battle');
         } else {
           // 对方跑了
-          message.info('Target has escaped');
+          message.info('Target has escaped,You are locked');
           timeout = setTimeout(() => {
             unlockUserLocation();
             timeout = null
-          }, 5000);
+          }, 23000);
         }
         setTargetPlayer(null);
       } else {
@@ -350,9 +361,7 @@ const Game = () => {
   }
 
   const showUserInfo = async (player) => {
-    if (player.addr.toLocaleLowerCase() == account.toLocaleLowerCase()) {
-      if (curPlayer) player = curPlayer
-    } else {
+    if (!player.userUrl || !player.lootUrl) {
       let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
       console.log(addon)
       let userTokenId = addon.userId.toString()
@@ -375,9 +384,26 @@ const Game = () => {
     setUserInfoVisible(true);
   }
 
+  const goHomeFun = async () => {
+    if (!curPlayer.waiting) {
+      try {
+        await goHome();
+        await joinBattlefield()
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      console.log('waiting')
+      setTimeout(() => {
+        goHomeFun();
+      }, 500)
+    }
+  }
+
   const submitGemFun = async () => {
     setUserInfoVisible(true);
     try {
+      goHomeFun()
       if (curPlayer.oreBalance > 0) {
         await submitGem();
         setContent(
@@ -409,9 +435,9 @@ const Game = () => {
     const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
     let res = await battleInvitation(player.addr, formatMovePath(paths));
     if (res) {
-      setTargetPlayer(player);
-      setBattleCurPlayer(curPlayer)
-      setStartBattleData(true);
+      // setTargetPlayer(player);
+      // setBattleCurPlayer(curPlayer)
+      // setStartBattleData(true);
     }
   }
 
@@ -419,13 +445,8 @@ const Game = () => {
     const boxIndex = boxs.findIndex(item => item.id === id);
     const box = boxs[boxIndex]
     if (box.opened) {
-      if (box.owner.toLocaleLowerCase() != account.toLocaleLowerCase()) {
-        message.error('The treasure chest has been opened by others');
-        return
-      } else {
-        getCollectionsFun(box);
-        return
-      }
+      getCollectionsFun(box);
+      return
     }
     setOpeningBox(boxs[boxIndex].id);
     await openBox(id);
@@ -497,7 +518,7 @@ const Game = () => {
         {/*/>*/}
         <PIXIAPP/>
         {
-          startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
+          startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
         <UserInfoDialog
           visible={userInfoVisible}
