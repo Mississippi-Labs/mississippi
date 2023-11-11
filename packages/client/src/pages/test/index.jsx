@@ -317,7 +317,7 @@ const Test = () => {
     setBattlesData(battlesDataTemp)
   }
 
-  const CreateBoxFun = async (boxi) => {
+  const CreateBoxMoreFun = async (boxi) => {
     if (boxi == undefined) boxi = 0
     let box = boxData1[boxi]
     console.log(box, 'box', boxi,boxData1 )
@@ -330,6 +330,10 @@ const Test = () => {
         CreateBoxFun(boxi + 1)
       }, 100)
     }
+  }
+
+  const CreateBoxFun = async () => {
+    CreateBox(boxData[0], boxData[1]);
   }
 
   const openBoxFun = () => {
@@ -497,13 +501,19 @@ const Test = () => {
           <div className="btn" onClick={revealBattleFun}>确认</div>
         </div>
         <div className="section">
+          <div className="title">批量创建宝箱</div>
+          <div className="input"></div>
+          <div className="btn" onClick={() => CreateBoxMoreFun(0)}>确认</div>
+        </div>
+        <div className="section">
           <div className="title">创建宝箱</div>
           <div className="input">
             <input type="text" onChange={(e) => boxChange(e, 0)} placeholder='x' />
             <input type="text" onChange={(e) => boxChange(e, 1)} placeholder='y' />
           </div>
-          <div className="btn" onClick={() => CreateBoxFun(0)}>确认</div>
+          <div className="btn" onClick={CreateBoxFun}>确认</div>
         </div>
+        
         <div className="section">
           <div className="title">打开宝箱</div>
           <div className="input">

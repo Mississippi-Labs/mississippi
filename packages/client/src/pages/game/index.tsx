@@ -44,7 +44,7 @@ const Game = () => {
   const navigate = useNavigate();
   const {
     components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason, SyncProgress },
-    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome },
+    systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
 
@@ -256,7 +256,7 @@ const Game = () => {
           message.success('You win the battle');
         } else {
           // 对方跑了
-          message.info('Target has escaped');
+          message.info('Target has escaped,You are locked');
           timeout = setTimeout(() => {
             unlockUserLocation();
             timeout = null
@@ -383,10 +383,26 @@ const Game = () => {
     setUserInfoVisible(true);
   }
 
+  const goHomeFun = async () => {
+    if (!curPlayer.waiting) {
+      try {
+        await goHome();
+        await joinBattlefield()
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      console.log('waiting')
+      setTimeout(() => {
+        goHomeFun();
+      }, 500)
+    }
+  }
+
   const submitGemFun = async () => {
     setUserInfoVisible(true);
     try {
-      goHome();
+      goHomeFun()
       if (curPlayer.oreBalance > 0) {
         await submitGem();
         setContent(
