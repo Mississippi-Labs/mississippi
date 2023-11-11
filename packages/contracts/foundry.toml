@@ -43,8 +43,8 @@ optimizer = true
 optimizer_runs = 3000
 
 
-[profile.lidamao-testnet]
-eth_rpc_url = "http://8.217.213.253"
+[profile.Mississippi-testnet]
+eth_rpc_url = "http://rpc.0xMssp.xyz"
 optimizer = true
 optimizer_runs = 3000
 
