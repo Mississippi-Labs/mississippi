@@ -12,6 +12,7 @@ if (!rootElement) throw new Error("React root not found");
 const root = ReactDOM.createRoot(rootElement);
 
 setup().then(async (result) => {
+  console.log("result", result);
   root.render(
     <MUDProvider value={result}>
       <App />
@@ -30,6 +31,7 @@ setup().then(async (result) => {
       write$: network.write$,
       recsWorld: network.world,
     });
+    localStorage.setItem("mud-dev-tools-shown", 'false');
   }
   
 });

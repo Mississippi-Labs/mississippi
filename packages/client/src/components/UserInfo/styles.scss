@@ -76,6 +76,7 @@
         .extra-attr {
             visibility: hidden;
             color: red;
+            display: none;
 
             &::before {
                 content: '+';
