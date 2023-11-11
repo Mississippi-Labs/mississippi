@@ -81,6 +81,7 @@ contract BattlePrepareSystem is System {
 
   function confirmBattle(bytes32 _buffHash, uint256 _battleId) external {
     // 战斗是否有用户,用户是否在当前战斗//战斗是否结束//是否已超时
+    require(!BattleList.getIsEnd(_battleId),"battel already end");
     
     
     BattleListData memory battle = BattleList.get(_battleId);

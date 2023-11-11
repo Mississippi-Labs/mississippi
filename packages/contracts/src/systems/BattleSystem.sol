@@ -14,6 +14,7 @@ contract BattleSystem is System {
   event BattleEnd(uint256 battleId, BattleEndType endType, address winner);
 
   function revealBattle(uint256 _battleId, bytes32 _action, uint256 _arg, bytes32 _nonce) external {
+    require(!BattleList.getIsEnd(_battleId),"battel already end");
     require(_action == bytes32("attack") || _action == bytes32("escape"), "invalid action");
     // check battle
     BattleListData memory battle = BattleList.get(_battleId);
@@ -60,11 +61,8 @@ contract BattleSystem is System {
     } else  {
       escapeAndAttack(_battleId, battle);
     } 
-
     if (!BattleList.getIsEnd(_battleId)) {
       // 如果战斗还没结束
-      // console.log(" round end ");
-      // emit BattleEnd(_battleId, BattleEndType.RoundEnd, address(0));
       BattleList.setDefenderState(_battleId, BattleState.Inited);
       BattleList.setAttackerState(_battleId, BattleState.Inited);
       if (BattleList.getAttackerHP(_battleId) == 0 || BattleList.getDefenderHP(_battleId) == 0) {

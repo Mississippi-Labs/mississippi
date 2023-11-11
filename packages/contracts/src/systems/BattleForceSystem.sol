@@ -13,6 +13,8 @@ import {Position} from "./Common.sol";
 
 contract BattleForceSystem is System {
     function forceEnd(uint256 _battleId) external {
+    require(!BattleList.getIsEnd(_battleId),"battel already end");
+
         BattleListData memory battle = BattleList.get(_battleId);
         require(_msgSender() == battle.attacker || _msgSender() == battle.defender, "not in battle");
         require(block.timestamp - battle.endTimestamp > BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "battle not timeout");
