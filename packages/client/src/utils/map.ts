@@ -39,9 +39,11 @@ export const loadMapData = async () => {
 const getNormalMovableCellClass = () => {
   const random = Math.random();
   if (random < 0.7) {
-    return 24;
+    return 23;
+    // return 24;
   } else if (random < 0.9) {
-    return 25;
+    return 24;
+    // return 25;
   } else {
     return 18;
   }
@@ -119,7 +121,7 @@ const getBlankCellClass = (movableConfig) => {
       wallIndexArr[productIndex - 1] = getBorderMovableCellClass();
       transforms.push({
         index: productWallIndexToFeIndex(productIndex),
-        transform: 'rotate(90deg)'
+        rotation: 90
       })
     });
     // 其他位置随机使用后缀0024，0025，0018的资源
@@ -146,7 +148,7 @@ const getBlankCellClass = (movableConfig) => {
       wallIndexArr[productIndex - 1] = getBorderMovableCellClass();
       transforms.push({
         index: productWallIndexToFeIndex(productIndex),
-        transform: 'rotate(90deg)'
+        rotation: 90
       })
     });
     // 其他位置随机使用后缀0024，0025，0018的资源
@@ -275,22 +277,22 @@ const getDeliveryCellClass = () => {
   const wallIndexArr = [27, 26, 27, 26, 28, 26, 27, 26, 27];
   const transforms = [ {
     index: 0,
-    transform: 'rotate(-90deg)'
+    rotation: -90
   }, {
     index: 3,
-    transform: 'rotate(-90deg)'
+    rotation: -90
   }, {
     index: 5,
-    transform: 'rotate(90deg)'
+    rotation: 90
   }, {
     index: 6,
-    transform: 'rotate(180deg)'
+    rotation: 180
   }, {
     index: 7,
-    transform: 'rotate(180deg)'
+    rotation: 180
   }, {
     index: 8,
-    transform: 'rotate(90deg)'
+    rotation: 90
   }];
 
   return {

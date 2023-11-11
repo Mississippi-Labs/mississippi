@@ -27,6 +27,7 @@ import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+import PIXIAPP from '@/components/PIXIAPP';
 
 
 const toObject = (obj) => {
@@ -489,12 +490,12 @@ const Game = () => {
           />
         </div>
 
-        {/*<Rank data={RankMockData} curId={account} />*/}
-        <Map
-          width={MapConfig.visualWidth}
-          height={MapConfig.visualHeight}
-          vertexCoordinate={vertexCoordinate}
-        />
+        {/*<Map*/}
+        {/*  width={MapConfig.visualWidth}*/}
+        {/*  height={MapConfig.visualHeight}*/}
+        {/*  vertexCoordinate={vertexCoordinate}*/}
+        {/*/>*/}
+        <PIXIAPP/>
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} finishBattle={finishBattle} /> : null
         }
