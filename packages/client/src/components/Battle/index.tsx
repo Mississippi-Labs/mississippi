@@ -16,6 +16,8 @@ let nonceHex = ''
 
 let curType = ''
 
+let isFirst = false
+
 export default function Battle(props) {
   let {battleId, curPlayer, targetPlayer} = props
   const [tacticsStep, setTacticsStep] = useState(1);
@@ -70,6 +72,7 @@ export default function Battle(props) {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
               if (resultBattle?.isEnd && resultBattle?.winner) {
+                isFirst = true
                 props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
@@ -95,6 +98,7 @@ export default function Battle(props) {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
               if (resultBattle?.isEnd && resultBattle?.winner) {
+                isFirst = true
                 props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
@@ -114,6 +118,7 @@ export default function Battle(props) {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
               if (resultBattle?.isEnd && resultBattle?.winner) {
+                isFirst = true
                 props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
@@ -131,6 +136,7 @@ export default function Battle(props) {
               let resultBattle:any = await forceEnd(battleId)
               console.log(resultBattle)
               if (resultBattle?.isEnd && resultBattle?.winner) {
+                isFirst = true
                 props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
                 return
               }
@@ -160,9 +166,6 @@ export default function Battle(props) {
         state = 1
       } else if ((curType == 'attacker' && battle?.attackerState == 2) || (curType == 'defender' && battle?.defenderState == 2)) {
         state = 2
-      } else if (battle?.isEnd) {
-        props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
-        return
       }
       setBattleState(state)
     }
@@ -170,7 +173,8 @@ export default function Battle(props) {
 
   if (battle && !battle?.isEnd) {
     initBattle()
-  } else if (battle && battle?.isEnd) {
+  } else if (battle && battle?.isEnd && !isFirst) {
+    isFirst = true
     props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
     return
   }
@@ -221,6 +225,7 @@ export default function Battle(props) {
             battle2.classList.remove('back');
             setShowPlayer2Loss(false)
             if (defenderHP <= 0 || battle?.isEnd) {
+              isFirst = true
               setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
               return
             }
@@ -234,6 +239,7 @@ export default function Battle(props) {
                 data.attackerHP = attackerHP
                 setBattleData(data)
                 if (attackerHP <= 0 || battle?.isEnd) {
+                  isFirst = true
                   setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
                   return
                 }

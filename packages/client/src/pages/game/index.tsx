@@ -128,7 +128,6 @@ const Game = () => {
     })
     return player;
   }).filter(e => e.state > 1);
-  console.log(players, 'players')
   const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
     const playerSeason = getComponentValue(PlayerSeason, entity);
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
@@ -230,7 +229,6 @@ const Game = () => {
   const syncprogress = getComponentValue(SyncProgress, singletonEntity);
 
   useEffect(() => {
-    console.log(percentage, 'percentage')
     if (percentage < 100) {
       console.log(syncprogress, 'syncprogress')
       setPercentage(syncprogress?.percentage || 0);
