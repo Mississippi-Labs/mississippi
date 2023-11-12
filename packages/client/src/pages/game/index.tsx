@@ -8,7 +8,7 @@ import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
 import Leaderboard from "@/components/Leaderboard";
 import { useLocation, useNavigate } from "react-router-dom";
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import "./styles.scss";
 import Rank from "@/components/Rank";
 import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
@@ -16,7 +16,7 @@ import { IPlayer } from "@/components/Player";
 import { useMUD } from "@/mud/MUDContext";
 import Battle from "@/components/Battle";
 import GameContext from '@/context';
-import useModal from '@/hooks/useModal';
+// import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import { DELIVERY } from '@/config/map';
@@ -72,10 +72,14 @@ const Game = () => {
 
   const [percentage, setPercentage] = useState(0);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [gotBox, setGotBox] = useState(null);
+
   const { account } = network;
   const curId = account;
 
-  const { Modal, open, close, setContent } = useModal();
+  // const { Modal, open, close, setContent } = useModal();
 
   const mapDataRef = useRef([]);
   const moveInterval = useRef<NodeJS.Timeout>();
@@ -190,24 +194,9 @@ const Game = () => {
   }
   
   const getCollectionsFun = (box: any) => {
-    setContent(
-      <div className={'mi-modal-content-wrapper'}>
-        <div className="mi-modal-content">
-          Congrats,you got {box.oreBalance} gems!
-
-          <div className="mi-treasure-chest-wrapper">
-            <TreasureChest/>
-          </div>
-        </div>
-        <div className="mi-modal-footer">
-          <button className="mi-btn" onClick={async () => {
-            await getCollections(box.id, box.oreBalance, box.treasureBalance);
-            close();
-          }}>OK</button>
-        </div>
-      </div>
-    );
-    open();
+    setGotBox(box);
+    setModalType('getCollections');
+    setModalVisible(true);
   }
   
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
@@ -290,6 +279,8 @@ const Game = () => {
       message.error('Waiting for transaction');
       return;
     }
+    let txFinished = false;
+    curPlayer.waiting = true;
     let playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
     console.log(playerLock, 'playerLock')
     if (playerLock && Number(playerLock.lockTime)) {
@@ -300,9 +291,10 @@ const Game = () => {
           timeout = null
         }, 2000);
       }
+      txFinished = true;
+      curPlayer.waiting = false;
       return
     }
-    let txFinished = false;
     clearInterval(moveInterval.current);
     let pathIndex = 0;
     const timeInterval = ~~(1500 / Number(curPlayer.speed))
@@ -386,8 +378,10 @@ const Game = () => {
   const goHomeFun = async () => {
     if (!curPlayer.waiting) {
       try {
+        curPlayer.waiting = true;
         await goHome();
         await joinBattlefield()
+        curPlayer.waiting = false;
       } catch (error) {
         console.log(error)
       }
@@ -399,35 +393,42 @@ const Game = () => {
     }
   }
 
+  const closeUserInfoDialog = () => {
+    if (curPlayer.waiting) {
+      message.error('Waiting for transaction');
+      return;
+    } else {
+      setUserInfoVisible(false);
+    }
+  }
+
   const submitGemFun = async () => {
     setUserInfoVisible(true);
     try {
-      goHomeFun()
+      goHomeFun();
       if (curPlayer.oreBalance > 0) {
+        console.log('submitGem')
+        setGotBox({oreBalance: curPlayer.oreBalance});
         await submitGem();
-        setContent(
-          <div className={'mi-modal-content-wrapper'}>
-            <div className="mi-modal-content">
-              Congrats,you submitted {curPlayer.oreBalance} gems!
-
-              <div className="mi-treasure-chest-wrapper">
-                <TreasureChest/>
-              </div>
-            </div>
-            <div className="mi-modal-footer">
-              <button className="mi-btn" onClick={() => {
-                curPlayer.seasonOreBalance += curPlayer.oreBalance;
-                curPlayer.oreBalance = 0;
-                close();
-              }}>OK</button>
-            </div>
-          </div>
-        );
-        open();
+        console.log(curPlayer)
+        setModalType('submitGem');
+        setModalVisible(true);
       }
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const closeModal = async () => {
+    if (modalType === 'getCollections') {
+      await getCollections(gotBox.id, gotBox.oreBalance, gotBox.treasureBalance);
+    } else if (modalType === 'submitGem') {
+      curPlayer.oreBalance = 0;
+      curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
+    }
+    setModalVisible(false);
+    setGotBox(null);
+    setModalType('');
   }
 
   const setStartBattle = async (player) => {
@@ -521,13 +522,33 @@ const Game = () => {
         }
         <UserInfoDialog
           visible={userInfoVisible}
-          onClose={() => {
-            setUserInfoVisible(false);
-          }}
+          onClose={closeUserInfoDialog}
           {...userInfoPlayer}
         />
 
-        <Modal />
+        <Modal
+          visible={modalVisible}
+          className="mi-modal"
+          footer={null}
+          onCancel={() => setModalVisible(false)}
+        >
+          <div className={'mi-modal-content-wrapper'}>
+            <div className="mi-modal-content">
+              { 
+                modalType === 'submitGem' ? <div className="mi-modal-title">Congrats,you submitted {gotBox?.oreBalance} gems!</div> : null
+              }
+              {
+                modalType === 'getCollections' ? <div className="mi-modal-title">Congrats,you got {gotBox?.oreBalance} gems!</div> : null
+              }
+              <div className="mi-treasure-chest-wrapper">
+                <TreasureChest/>
+              </div>
+            </div>
+            <div className="mi-modal-footer">
+              <button className="mi-btn" onClick={closeModal}>OK</button>
+            </div>
+          </div>
+        </Modal>
         <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
       </div>
     </GameContext.Provider>

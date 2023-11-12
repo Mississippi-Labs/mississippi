@@ -316,8 +316,10 @@ export function createSystemCalls(
 
   const submitGem = async () => {
     try {
+      console.log('submitGem', new Date().getTime());
       const tx = await worldContract.write.submitGem();
       await waitForTransaction(tx);
+      console.log('submitGem success', new Date().getTime(), tx);
       return tx
     } catch (error) {
       console.log('submitGem', error);
