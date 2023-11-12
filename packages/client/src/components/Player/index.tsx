@@ -24,27 +24,33 @@ export interface IPlayer {
 }
 
 const Player = (props: IPlayer) => {
-
-  const { username, addr, equip, gem = 0, toward, waiting } = props;
+  console.log(props, 'player props')
+  const { username, addr, equip, gem = 0, toward, waiting, x, y } = props;
   const { curAddr } = useContext(GameContext);
 
   // console.log(addr, curAddr, 'addr curid')
   return (
-    <div className="mi-player">
-      <div className="player-info">
-        {
-          gem > 0 && <span className="gem-num">{gem}</span>
-        }
-        <span className="player-username">{username}</span>
+    <div>
+    {
+      x == 0 && y == 0 ? null : (
+        <div className="mi-player">
+          <div className="player-info">
+            {
+              gem > 0 && <span className="gem-num">{gem}</span>
+            }
+            <span className="player-username">{username}</span>
 
-      </div>
-      <Appearance toward={toward as PlayerToward} {...equip} />
-      {
-        addr === curAddr && <Fog />
-      }
-      {
-        waiting && <div className={'waiting-tip'}>Wait TX</div>
-      }
+          </div>
+          <Appearance toward={toward as PlayerToward} {...equip} />
+          {
+            addr === curAddr && <Fog />
+          }
+          {
+            waiting && <div className={'waiting-tip'}>Wait TX</div>
+          }
+        </div>
+      )
+    }
     </div>
   );
 };
