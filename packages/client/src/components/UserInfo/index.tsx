@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UserPackage from '@/components/UserPackage';
 import Appearance from '@/components/Appearance';
+import * as PIXI from 'pixi.js';
+import { Stage } from '@pixi/react';
+import Player from '@/components/PIXIPlayers/Player';
+import { MapConfig } from '@/config/map';
+const { cellSize } = MapConfig;
+
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 export interface IUserInfo {
   head: string;
@@ -24,7 +31,10 @@ const UserInfo = (props: IUserInfo) => {
         <div className="user-detail-wrapper">
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
-              <Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>
+              <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
+                <Player size={128} x={0.5} y={0.5}/>
+              </Stage>
+              {/*<Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>*/}
             </div>
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stage, Container, Sprite } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 import { MapConfig } from '@/config/map';
@@ -9,11 +9,29 @@ import Delivery from '@/components/Delivery';
 import PreviewPaths from '@/components/PreviewPaths';
 import PIXIFog from '@/components/PIXIFog';
 import PIXIPlayers from '@/components/PIXIPlayers';
+import { IPlayer } from '@/components/PIXIPlayers/Player';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+// PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
-const PIXIAPP = () => {
+interface IProps {
+  players: IPlayer[];
+}
+
+const PIXIAPP = (props: IProps) => {
+
+  const { players = [] } = props;
+
+  // const [players, setPlayers] = useState([{ x: 1, y: 1 }]);
+  //
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     players[0].x++
+  //     setPlayers([...players])
+  //   }, 3000)
+  // }, [])
+
   return (
     <Stage
       width={cellSize * visualWidth}
@@ -41,7 +59,7 @@ const PIXIAPP = () => {
         ]}
       />
       <Chests data={TreasureChestMockData}/>
-      <PIXIPlayers/>
+      <PIXIPlayers data={players}/>
       <PIXIFog/>
 
     </Stage>

@@ -1,11 +1,24 @@
 import React from 'react';
-import { Stage, Container, Sprite } from '@pixi/react';
-import Player from '@/components/PIXIPlayers/Player';
+import { Container } from '@pixi/react';
+import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
 
-const PIXIPlayers = () => {
+interface IProps {
+  data: IPlayer[];
+}
+
+const PIXIPlayers = (props: IProps) => {
+
+  const { data = [] } = props;
+
+  console.log(data, 'data')
+
   return (
     <Container>
-      <Player/>
+      {
+        data.map((player, index) => {
+          return <Player key={index} {...player}/>;
+        })
+      }
     </Container>
   );
 };
