@@ -220,7 +220,7 @@ const Game = () => {
 
   useEffect(() => {
     if (percentage < 100) {
-      console.log(syncprogress, 'syncprogress')
+      // console.log(syncprogress, 'syncprogress')
       setPercentage(syncprogress?.percentage || 0);
     }
   }, [syncprogress])
@@ -335,10 +335,10 @@ const Game = () => {
     const result = await move(merkelData);
     txFinished = true;
     curPlayer.waiting = false;
-    if (renderPreviewPaths.length > 0) {
-      const lastPreviewPath = renderPreviewPaths[renderPreviewPaths.length - 1];
-      previewPath(lastPreviewPath.x, lastPreviewPath.y);
-    }
+    // if (renderPreviewPaths.length > 0) {
+    //   const lastPreviewPath = renderPreviewPaths[renderPreviewPaths.length - 1];
+      // previewPath(lastPreviewPath.x, lastPreviewPath.y);
+    // }
     if (result?.type === 'error') {
       message.error(result.message);
     }
@@ -465,29 +465,15 @@ const Game = () => {
     }, 1000)
   }
 
-  const [renderPreviewPaths, setRenderPreviewPaths] = useState([]);
-  const previewPath = (x, y) => {
-    if (x === curPlayer?.x && y === curPlayer?.y) {
-      return;
-    }
-    if (curPlayer) {
-      const path = bfs(simpleMapData, curPlayer, { x, y }).slice(1);
-      if (!curPlayer.waiting) {
-        path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
-      }
-      setRenderPreviewPaths(path);
-    }
-  }
-
-  console.log(boxs, 'boxs')
 
   return (
     <GameContext.Provider
       value={{
         curId,
         curAddr: curPlayer?.addr,
-        players: renderPlayers,
-        renderPreviewPaths,
+        players,
+        curPlayer,
+        simpleMapData,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         openingBox,
@@ -495,7 +481,6 @@ const Game = () => {
         treasureChest: boxs,
         openTreasureChest,
         setStartBattle,
-        previewPath
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -520,7 +505,6 @@ const Game = () => {
         {/*  vertexCoordinate={vertexCoordinate}*/}
         {/*/>*/}
         <PIXIAPP
-          players={players}
           chests={boxs}
         />
         {

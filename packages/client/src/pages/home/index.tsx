@@ -112,6 +112,8 @@ const Home = () => {
     })
   }
 
+  console.log(GlobalConfigData, 'GlobalConfigData')
+
   if (GlobalConfigData.length && GlobalConfigData[0].pluginContract && !pluginContract) {
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'

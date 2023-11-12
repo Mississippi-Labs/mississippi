@@ -8,11 +8,12 @@ const { cellSize, visualWidth } = MapConfig;
 interface IProps {
   offsetX?: number;
   offsetY?: number;
+  position?: [number, number];
 }
 
 
 const Fog = (props: IProps) => {
-  const { offsetX = 0, offsetY = 0 } = props;
+  const { offsetX = 0, offsetY = 0, position = [0, 0] } = props;
   const [texture, setTexture] = useState<PIXI.Texture<PIXI.Resource>>();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const Fog = (props: IProps) => {
 
     const ctx = canvas.getContext('2d');
 
-    const gradient = ctx.createRadialGradient(width / 2, width / 2, width / 8, width / 2, width / 2, width / 4);
+    const gradient = ctx.createRadialGradient(width / 2, width / 2, width / 16, width / 2, width / 2, width / 8);
 
     gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
@@ -40,7 +41,7 @@ const Fog = (props: IProps) => {
 
   return (
     <Container
-      position={[offsetX, offsetY]}
+      position={[offsetX + position[0] * cellSize, offsetY + position[1] * cellSize]}
     >
       <Sprite
         texture={texture}

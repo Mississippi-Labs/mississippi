@@ -3,19 +3,20 @@ import * as PIXI from 'pixi.js';
 import { Container, Sprite } from '@pixi/react';
 
 import MAP_CFG, { MapConfig } from '@/config/map';
-import { ICellClassCache } from '@/components/MapCell';
+import { ICellClassCache, ICoordinate } from '@/components/MapCell';
 import { getCellClass } from '@/utils';
 
 interface IProps {
   offsetX?: number;
   offsetY?: number;
+  emitEvent?: (action: string, coordinate: ICoordinate, type: number) => void;
 }
 
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
 const PIXIMap = (props: IProps = {}) => {
 
-  const { offsetX = 0, offsetY = 0 } = props;
+  const { offsetX = 0, offsetY = 0, emitEvent } = props;
   const cellClassCache = useRef<ICellClassCache>({});
   const [textures, setTextures] = useState<PIXI.Texture<PIXI.Resource>[]>([]);
 
@@ -41,13 +42,11 @@ const PIXIMap = (props: IProps = {}) => {
 
   return (
     <Container 
-      width={cellSize * visualWidth} 
-      height={cellSize * visualHeight}
       position={[offsetX, offsetY]}
     >
       {
         MAP_CFG.map((row, y) => {
-          return row.map((_, x) => {
+          return row.map((type, x) => {
             if (!cellClassCache.current[`${y}-${x}`]) {
               cellClassCache.current[`${y}-${x}`] = getCellClass(MAP_CFG, { x, y})
             }
@@ -58,22 +57,55 @@ const PIXIMap = (props: IProps = {}) => {
             if (!renderable) {
               return null;
             }
-
-            return classList.map((item, index) => {
-              const transformStyle = transforms.find((item) => item.index === index);
-              return (
-                <Sprite
-                  key={`${x}-${y}-${index}`}
-                  x={(index % 3) * spriteCellSize + spriteCellSize / 2 + positionX}
-                  y={~~(index / 3) * spriteCellSize + spriteCellSize / 2 + positionY}
-                  width={spriteCellSize}
-                  height={spriteCellSize}
-                  anchor={0.5}
-                  angle={transformStyle?.rotation ?? 0}
-                  texture={textures[item - 1]}
-                />
-              )
-            });
+            return (
+              <Container
+                position={[positionX, positionY]}
+                key={`${x}-${y}`}
+                interactive={'auto'}
+                onclick={() => {
+                  emitEvent?.('click', { x, y }, type);
+                }}
+                onmouseenter={() => {
+                  emitEvent?.('hover', { x, y }, type);
+                }}
+                onrightclick={() => {
+                  emitEvent?.('rightClick', { x, y }, type);
+                }}
+              >
+                {
+                  classList.map((item, index) => {
+                    const transformStyle = transforms.find((item) => item.index === index);
+                    return (
+                      <Sprite
+                        key={`${x}-${y}-${index}`}
+                        x={(index % 3) * spriteCellSize + spriteCellSize / 2}
+                        y={~~(index / 3) * spriteCellSize + spriteCellSize / 2}
+                        width={spriteCellSize}
+                        height={spriteCellSize}
+                        anchor={0.5}
+                        angle={transformStyle?.rotation ?? 0}
+                        texture={textures[item - 1]}
+                      />
+                    )
+                  })
+                }
+              </Container>
+            )
+            // return classList.map((item, index) => {
+            //   const transformStyle = transforms.find((item) => item.index === index);
+            //   return (
+            //     <Sprite
+            //       key={`${x}-${y}-${index}`}
+            //       x={(index % 3) * spriteCellSize + spriteCellSize / 2 + positionX}
+            //       y={~~(index / 3) * spriteCellSize + spriteCellSize / 2 + positionY}
+            //       width={spriteCellSize}
+            //       height={spriteCellSize}
+            //       anchor={0.5}
+            //       angle={transformStyle?.rotation ?? 0}
+            //       texture={textures[item - 1]}
+            //     />
+            //   )
+            // });
           })
         })
       }

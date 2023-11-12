@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, AnimatedSprite } from '@pixi/react';
+import { Container, AnimatedSprite, Text } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { Actions, FrameOffsetY, FrameSize } from '@/config/hero';
@@ -10,6 +10,11 @@ const { cellSize } = MapConfig;
 export type PlayerToward = 'Left' | 'Right';
 
 interface IMudPlayer {
+
+}
+
+export interface IPlayer {
+  // mud data field
   x: number;
   y: number;
   hp: number;
@@ -30,18 +35,17 @@ interface IMudPlayer {
     handheld: string;
     head: string;
   }
-}
-
-export interface IPlayer extends IMudPlayer {
+  // fe field
   action?: string;
   toward?: PlayerToward;
   size?: number;
   position?: [number, number];
+  moving?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
-  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {} } = props;
+  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -81,7 +85,7 @@ const Player = (props: IPlayer) => {
     loadTexture('hair', 'Hair2');
     loadTexture('head');
     loadTexture('arms');
-  }, []);
+  }, [action]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -101,7 +105,7 @@ const Player = (props: IPlayer) => {
     if (handheld) {
       loadTexture('weapon', handheld);
     }
-  }, [clothes, cap, handheld]);
+  }, [clothes, cap, handheld, action]);
 
   const scale = size / cellSize * 3;
 
@@ -119,6 +123,25 @@ const Player = (props: IPlayer) => {
     <Container
       position={[x * size, y * size]}
     >
+      {
+        name &&
+        <Text
+          text={name}
+          anchor={0.5}
+          x={cellSize / 2}
+          y={-20}
+          style={
+            new PIXI.TextStyle({
+              align: 'center',
+              fontFamily: '"MISS", Helvetica, sans-serif',
+              fontSize: 12,
+              fontWeight: '400',
+              stroke: '#000',
+              wordWrap: true,
+            })
+          }
+        />
+      }
       {
         ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon']
           .filter((item) => textureMap[item] && textureMap[item].length > 0)
