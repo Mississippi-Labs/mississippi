@@ -70,5 +70,7 @@ contract BoxSystem is System {
     BoxList.setTreasureBalance(_boxId, _box.treasureBalance - _treasureAmount);
     Player.setOreBalance(_box.owner, _player.oreBalance + _oreAmount);
     Player.setTreasureBalance(_box.owner, _player.treasureBalance + _treasureAmount);
+    // TODO DEBUG 应该谁抢到归谁
+    
   }
 }

@@ -118,10 +118,10 @@ contract BattleSystem is System {
     if(BattleUtils.compareBuff(escaperBuff,otherBuff)>=1){
       // 逃跑成功
       // 胜利方为0,双方explowing,双方设定hp,一方锁定
-      BattleList.setWinner(_battleId, battle.defender);
+      BattleList.setWinner(_battleId, other);
       BattleList.setIsEnd(_battleId, true);
       // escaper will lock a while
-      PlayerLocationLock.set(battle.defender, block.timestamp);
+      PlayerLocationLock.set(other, block.timestamp);
       Player.setState(battle.attacker, PlayerState.Exploring);
       Player.setHp(battle.attacker, BattleList.getAttackerHP(_battleId));
       Player.setLastBattleTime(battle.attacker, block.timestamp);

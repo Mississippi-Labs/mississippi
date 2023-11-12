@@ -24,7 +24,7 @@ contract BattlePrepareSystem is System {
     Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
     Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
     Player.setState(player, PlayerState.Exploring);
-    // Player.setHp(player, initPlayerHp(player));
+ 
   }
 
   function goHome() external {
