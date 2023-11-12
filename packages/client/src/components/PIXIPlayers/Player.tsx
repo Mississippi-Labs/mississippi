@@ -57,36 +57,35 @@ const Player = (props: IPlayer) => {
   const [frameIndex, setFrameIndex] = useState(0);
 
   
-  const getRegionTexture = (region, type = 'Human') => {
+  const loadTexture = (region, type = 'Human') => {
 
     let sheet;
     const textures = [];
-
-    try {
-      sheet = PIXI.Texture.from(`/assets/img/hero/${region}/${type}.png`)
-    } catch (e) {
-      console.error(`can't find ${region}-${type}`);
-      return  textures;
+    const img = new Image();
+    img.src = `/assets/img/hero/${region}/${type}.png`;
+    img.onload = () => {
+      sheet = PIXI.Texture.from(`/assets/img/hero/${region}/${type}.png`);
+      for (let i = 0; i < Actions[action].step; i++) {
+        const frame = new PIXI.Rectangle(i * FrameSize, Actions[action].row * FrameSize + FrameOffsetY, FrameSize, FrameSize);
+        textures.push(new PIXI.Texture(sheet, frame));
+      }
+      textureMap[region] = textures;
+      setTextureMap({
+        ...textureMap
+      })
     }
 
-    for (let i = 0; i < Actions[action].step; i++) {
-      const frame = new PIXI.Rectangle(i * FrameSize, Actions[action].row * FrameSize + FrameOffsetY, FrameSize, FrameSize);
-      textures.push(new PIXI.Texture(sheet, frame));
+    img.onerror = () => {
+      console.error(`${region}/${type} not found`);
     }
-    return textures;
   }
 
   useEffect(() => {
-
-    textureMap.body = getRegionTexture('body');
-    textureMap.eyes = getRegionTexture('eyes');
-    textureMap.hair = getRegionTexture('hair', 'Hair2');
-    textureMap.head = getRegionTexture('head');
-    textureMap.arms = getRegionTexture('arms');
-
-    setTextureMap({
-      ...textureMap
-    })
+    loadTexture('body');
+    loadTexture('eyes');
+    loadTexture('hair', 'Hair2');
+    loadTexture('head');
+    loadTexture('arms');
   }, []);
 
   useEffect(() => {
@@ -99,15 +98,14 @@ const Player = (props: IPlayer) => {
 
   useEffect(() => {
     if (clothes) {
-      textureMap.armor = getRegionTexture('armor', clothes);
+      loadTexture('armor', clothes);
     }
     if (cap) {
-      textureMap.helmet = getRegionTexture('helmet', cap);
+      loadTexture('helmet', cap);
     }
     if (handheld) {
-      textureMap.weapon = getRegionTexture('weapon', handheld);
+      loadTexture('weapon', handheld);
     }
-
   }, [clothes, cap, handheld]);
 
   const scale = size / cellSize * 3;

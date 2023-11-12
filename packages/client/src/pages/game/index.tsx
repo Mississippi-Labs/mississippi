@@ -139,8 +139,6 @@ const Game = () => {
     return b.oreBalance - a.oreBalance
   })
 
-  console.log(players?.[0], 'players')
-
   const [renderPlayers, setRenderPlayers] = useState([]);
   const playersCache = getPlayersCache(players);
   useEffect(() => {
