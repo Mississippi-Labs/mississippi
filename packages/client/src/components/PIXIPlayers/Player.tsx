@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, AnimatedSprite, Graphics } from '@pixi/react';
+import { Container, AnimatedSprite } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { Actions, FrameOffsetY, FrameSize } from '@/config/hero';
 import { MapConfig } from '@/config/map';
+import { loadAssets } from '@/utils';
 const { cellSize } = MapConfig;
 
 export type PlayerToward = 'Left' | 'Right';
@@ -61,10 +62,8 @@ const Player = (props: IPlayer) => {
 
     let sheet;
     const textures = [];
-    const img = new Image();
-    img.src = `/assets/img/hero/${region}/${type}.png`;
-    img.onload = () => {
-      sheet = PIXI.Texture.from(`/assets/img/hero/${region}/${type}.png`);
+    loadAssets(`/assets/img/hero/${region}/${type}.png`, (assets) => {
+      sheet = PIXI.Texture.from(assets);
       for (let i = 0; i < Actions[action].step; i++) {
         const frame = new PIXI.Rectangle(i * FrameSize, Actions[action].row * FrameSize + FrameOffsetY, FrameSize, FrameSize);
         textures.push(new PIXI.Texture(sheet, frame));
@@ -73,11 +72,7 @@ const Player = (props: IPlayer) => {
       setTextureMap({
         ...textureMap
       })
-    }
-
-    img.onerror = () => {
-      console.error(`${region}/${type} not found`);
-    }
+    })
   }
 
   useEffect(() => {
@@ -137,63 +132,6 @@ const Player = (props: IPlayer) => {
             )
         })
       }
-      {/*<AnimatedSprite*/}
-      {/*  key={'body'}*/}
-      {/*  textures={body}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'head'}*/}
-      {/*  textures={head}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'hair'}*/}
-      {/*  textures={hair}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'eyes'}*/}
-      {/*  textures={eyes}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'arms'}*/}
-      {/*  textures={arms}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'armor'}*/}
-      {/*  textures={armor}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'helmet'}*/}
-      {/*  textures={helmet}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<AnimatedSprite*/}
-      {/*  key={'weapon'}*/}
-      {/*  textures={weapon}*/}
-      {/*  {...commonProps}*/}
-      {/*/>*/}
-
-      {/*<Graphics*/}
-      {/*  draw={g => {*/}
-      {/*    g.clear();*/}
-      {/*    const color = 0xFF0000;*/}
-      {/*    g.beginFill(color, 0.2);*/}
-      {/*    g.lineStyle(1, color, 1);*/}
-      {/*    g.drawRect(0, 0, cellSize, cellSize);*/}
-      {/*  }}*/}
-      {/*/>*/}
     </Container>
   );
 };

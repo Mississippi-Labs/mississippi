@@ -17,11 +17,12 @@ const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
 interface IProps {
   players: IPlayer[];
+  chests: [];
 }
 
 const PIXIAPP = (props: IProps) => {
 
-  const { players = [] } = props;
+  const { players = [], chests = [] } = props;
 
   // const [players, setPlayers] = useState([{ x: 1, y: 1 }]);
   //
@@ -31,6 +32,8 @@ const PIXIAPP = (props: IProps) => {
   //     setPlayers([...players])
   //   }, 3000)
   // }, [])
+
+  console.log(chests, 'chests')
 
   return (
     <Stage
@@ -58,7 +61,7 @@ const PIXIAPP = (props: IProps) => {
           },
         ]}
       />
-      <Chests data={TreasureChestMockData}/>
+      <Chests data={chests}/>
       <PIXIPlayers data={players}/>
       <PIXIFog/>
 

@@ -3,6 +3,7 @@ import { Container, Sprite } from '@pixi/react';
 import { MapConfig } from '@/config/map';
 import * as PIXI from 'pixi.js';
 import ProgressBar from '@/components/Chests/ProgressBar';
+import { loadAssets } from '@/utils';
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
 interface IChest {
@@ -21,11 +22,13 @@ interface IProps {
 const Chests = (props: IProps) => {
   const { offsetX = 0, offsetY = 0, data = [] } = props;
 
-  const [texture, setTexture] = useState<PIXI.Texture<PIXI.Resource>>();
+  const [texture, setTexture] = useState<PIXI.Texture>();
 
   useEffect(() => {
-    const chestTexture = PIXI.Texture.from('/assets/img/chest.png');
-    setTexture(chestTexture);
+    loadAssets('/assets/img/chest.png', (assets) => {
+      const chestTexture = PIXI.Texture.from(assets);
+      setTexture(chestTexture);
+    })
   }, []);
 
   if (!texture) {
@@ -40,7 +43,9 @@ const Chests = (props: IProps) => {
         data.map((item) => {
           return (
             <Container position={[item.x * cellSize, item.y * cellSize]} key={item.id}>
-              <ProgressBar width={cellSize} animate={item.id === 1}/>
+              {
+                item.opening && <ProgressBar width={cellSize} animate={item.id === 1}/>
+              }
               <Sprite
                 width={cellSize}
                 height={cellSize * 64 / 94}

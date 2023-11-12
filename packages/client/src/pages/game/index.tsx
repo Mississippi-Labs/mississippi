@@ -478,6 +478,8 @@ const Game = () => {
     }
   }
 
+  console.log(boxs, 'boxs')
+
   return (
     <GameContext.Provider
       value={{
@@ -518,6 +520,7 @@ const Game = () => {
         {/*/>*/}
         <PIXIAPP
           players={players}
+          chests={boxs}
         />
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null

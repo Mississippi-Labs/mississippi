@@ -10,8 +10,6 @@ const PIXIPlayers = (props: IProps) => {
 
   const { data = [] } = props;
 
-  console.log(data, 'data')
-
   return (
     <Container>
       {
