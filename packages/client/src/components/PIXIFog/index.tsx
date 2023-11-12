@@ -14,7 +14,7 @@ interface IProps {
 
 const Fog = (props: IProps) => {
   const { offsetX = 0, offsetY = 0, position = [0, 0] } = props;
-  const [texture, setTexture] = useState<PIXI.Texture<PIXI.Resource>>();
+  const [texture, setTexture] = useState<PIXI.Texture>();
 
   useEffect(() => {
     const canvas = document.createElement('canvas');
