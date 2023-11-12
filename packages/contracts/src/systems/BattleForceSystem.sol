@@ -23,11 +23,8 @@ contract BattleForceSystem is System {
 
         BattleState oppositeState = _msgSender() == battle.attacker ? battle.defenderState : battle.attackerState;
         BattleState playerState = _msgSender() == battle.attacker ? battle.attackerState : battle.defenderState;
-        console.log("battle attacker ", battle.attacker);
 
         address oppositer = _msgSender() == battle.attacker ? battle.defender : battle.attacker;
-        console.log(" opposite state ", uint(oppositeState));
-        console.log(" player state ", uint(playerState));
         require((oppositeState == BattleState.Inited && playerState == BattleState.Confirmed)||(oppositeState == BattleState.Confirmed && playerState == BattleState.Revealed), "battle state not correct");
 
 
