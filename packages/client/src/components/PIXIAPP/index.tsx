@@ -4,7 +4,6 @@ import * as PIXI from 'pixi.js';
 import MAP_CFG, { MapConfig } from '@/config/map';
 import PIXIMap from '@/components/PIXIMap';
 import Chests from '@/components/Chests';
-import { TreasureChestMockData } from '@/mock/data';
 import Delivery from '@/components/Delivery';
 import PreviewPaths from '@/components/PreviewPaths';
 import PIXIFog from '@/components/PIXIFog';
@@ -13,7 +12,7 @@ import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
 import { ICoordinate } from '@/components/MapCell';
 import { CellType } from '@/constants';
-import { bfs, getDistance, isMovable, triggerOffsetUpdate } from '@/utils/map';
+import { bfs, getDistance, isDelivery, isMovable, triggerOffsetUpdate } from '@/utils/map';
 import {
   createPathInterpolator,
   getPlayersCache,
@@ -23,16 +22,13 @@ import {
 } from '@/utils/player';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
+const { cellSize, visualWidth, visualHeight } = MapConfig;
 
-interface IProps {
-  chests: [];
-}
 
-const PIXIAPP = (props: IProps) => {
 
-  const { chests = [] } = props;
-  const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest } = useContext(GameContext);
+const PIXIAPP = () => {
+
+  const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer, onMoveToDelivery, onPlayerMove } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -94,7 +90,7 @@ const PIXIAPP = (props: IProps) => {
     moveTasks.current = [];
   }
 
-  const animateMove = (player, paths) => {
+  const animateMove = (player, paths, onFinish) => {
     console.log(player, paths, 'animate move');
     let index = 0;
     const linePath = createPathInterpolator(paths);
@@ -117,6 +113,7 @@ const PIXIAPP = (props: IProps) => {
         movingPlayer.moving = false;
         setRenderPlayers([...renderPlayers]);
         clearInterval(interval);
+        onFinish?.()
       }
     }, 16)
 
@@ -151,16 +148,28 @@ const PIXIAPP = (props: IProps) => {
     setPreviewPaths(path);
   }
 
-  const onClickPlayers = (players, coordinate: ICoordinate, e) => {
-    if (players.length === 0) {
+
+  const moveCurPlayer = (coordinate: ICoordinate) => {
+    if (!isMovablePlayer(curPlayer)) {
       return;
     }
-  }
-  
-  const moveCurPlayer = (coordinate: ICoordinate) => {
     const { x, y, speed } = curPlayer;
     const paths = bfs(simpleMapData, { x, y }, coordinate).slice(0, Number(speed) + 1);
-    animateMove(curPlayer, paths);
+    animateMove(curPlayer, paths, () => {
+      if (previewPaths.length > 0) {
+        const lastPreviewPath = previewPaths[previewPaths.length - 1];
+        createPreviewPath(lastPreviewPath);
+      }
+      if (isDelivery(coordinate)) {
+        onMoveToDelivery();
+      }
+    });
+    curPlayer.waiting = true;
+    onPlayerMove(paths, () => {
+      curPlayer.waiting = false;
+      setRenderPlayers([...renderPlayers]);
+    });
+
   }
 
   const emitEvent = (action: string, coordinate: ICoordinate, e) => {
@@ -168,6 +177,8 @@ const PIXIAPP = (props: IProps) => {
     if (!curPlayer) {
       return;
     }
+    let targetChests;
+    let players;
     switch (action) {
       case 'hover':
         if (type === CellType.blank) {
@@ -177,13 +188,17 @@ const PIXIAPP = (props: IProps) => {
       case 'rightClick':
         if (type === CellType.blank) {
           moveCurPlayer(coordinate)
-          // onPlayerMove(paths, formatMovePath(paths));
         }
+        setMenuVisible(false);
         break;
       case 'click':
+        targetChests = treasureChest.filter(item => item.x === coordinate.x && item.y === coordinate.y);
+        if (targetChests.length > 0 && getDistance(curPlayer, coordinate) <= 1) {
+          openTreasureChest(targetChests[0].id);
+          return;
+        }
         clickedCoordinate.current = coordinate;
-        // eslint-disable-next-line no-case-declarations
-        const players = renderPlayers.filter(player => player.x === coordinate.x && player.y === coordinate.y);
+        players = renderPlayers.filter(player => player.x === coordinate.x && player.y === coordinate.y);
         if (players.length > 0) {
           setMenuVisible(true);
           setMenuPosition({
@@ -214,12 +229,7 @@ const PIXIAPP = (props: IProps) => {
           <Delivery/>
           <PreviewPaths data={previewPaths} />
           <Chests
-            data={chests}
-            onOpen={(id, c) => {
-              if (curPlayer && getDistance(curPlayer, c) <= 1) {
-                openTreasureChest(id);
-              }
-            }}
+            data={treasureChest}
             openingBox={openingBox}
           />
           <PIXIPlayers data={renderPlayers}/>

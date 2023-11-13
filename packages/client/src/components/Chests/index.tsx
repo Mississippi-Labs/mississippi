@@ -4,8 +4,7 @@ import { MapConfig } from '@/config/map';
 import * as PIXI from 'pixi.js';
 import ProgressBar from '@/components/Chests/ProgressBar';
 import { loadAssets } from '@/utils';
-import { ICoordinate } from '@/components/MapCell';
-const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
+const { cellSize } = MapConfig;
 
 interface IChest {
   x: number;
@@ -15,13 +14,12 @@ interface IChest {
 
 interface IProps {
   data?: IChest[];
-  onOpen?: (id, c: ICoordinate) => void;
   openingBox?: number;
 }
 
 
 const Chests = (props: IProps) => {
-  const { data = [], onOpen, openingBox } = props;
+  const { data = [], openingBox } = props;
 
   const [texture, setTexture] = useState<PIXI.Texture>();
 
@@ -37,11 +35,7 @@ const Chests = (props: IProps) => {
   }
 
   return (
-    <Container
-      onclick={() => {
-        onOpen?.(data[0].id, { x: data[0].x, y: data[0].y })
-      }}
-    >
+    <Container>
       {
         data.map((item) => {
           return (

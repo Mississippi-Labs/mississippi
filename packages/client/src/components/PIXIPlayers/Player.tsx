@@ -9,9 +9,14 @@ const { cellSize } = MapConfig;
 
 export type PlayerToward = 'Left' | 'Right';
 
-interface IMudPlayer {
-
-}
+const textStyle = new PIXI.TextStyle({
+  align: 'center',
+  fontFamily: '"MISS", Helvetica, sans-serif',
+  fontSize: 12,
+  fontWeight: '400',
+  stroke: '#000',
+  wordWrap: true,
+})
 
 export interface IPlayer {
   // mud data field
@@ -41,12 +46,13 @@ export interface IPlayer {
   size?: number;
   position?: [number, number];
   moving?: boolean;
+  waiting?: boolean; // wait tx
   isPlaying?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
-  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true } = props;
+  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false, moving } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -133,17 +139,20 @@ const Player = (props: IPlayer) => {
           anchor={0.5}
           x={cellSize / 2}
           y={-20}
-          style={
-            new PIXI.TextStyle({
-              align: 'center',
-              fontFamily: '"MISS", Helvetica, sans-serif',
-              fontSize: 12,
-              fontWeight: '400',
-              stroke: '#000',
-              wordWrap: true,
-            })
-          }
+          style={textStyle}
         />
+      }
+      {
+        (waiting && !moving) && (
+          <Text
+            text={'Wait TX'}
+            anchor={0.5}
+            x={cellSize / 2}
+            y={size + 10}
+            style={textStyle}
+          />
+        )
+
       }
       {
         ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon']

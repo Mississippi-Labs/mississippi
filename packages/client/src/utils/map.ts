@@ -1,7 +1,7 @@
 import { CellType } from '@/constants';
 import { ICoordinate } from '@/components/MapCell';
 import { IPlayer } from '@/components/Player';
-import MAP_CFG, { MapConfig, LimitSpace } from '@/config/map';
+import MAP_CFG, { MapConfig, LimitSpace, DELIVERY } from '@/config/map';
 const { cellSize } = MapConfig;
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
@@ -443,3 +443,8 @@ export const triggerOffsetUpdate = (cur, before, mapData, offset) => {
 export const getDistance = (p1, p2) => {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 }
+
+export const isDelivery = (target: ICoordinate) => {
+  return DELIVERY.x === target.x && DELIVERY.y === target.y;
+}
+
