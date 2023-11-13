@@ -327,7 +327,7 @@ const Test = () => {
       // boxI = 0
     } else {
       setTimeout(() => {
-        CreateBoxFun(boxi + 1)
+        CreateBoxMoreFun(boxi + 1)
       }, 100)
     }
   }
