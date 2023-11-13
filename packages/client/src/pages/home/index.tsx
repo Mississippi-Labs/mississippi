@@ -66,7 +66,7 @@ const Home = () => {
     const time = now.getTime();
 
     // 当天晚上20:30
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 30, 0);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0);
     const todayTime = today.getTime();
     let delayTime = todayTime - time;
     if (delayTime < 0) {
