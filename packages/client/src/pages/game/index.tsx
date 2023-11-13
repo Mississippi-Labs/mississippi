@@ -133,7 +133,7 @@ const Game = () => {
       }
     })
     return player;
-  }).filter(e => e.state > 1);
+  });
   const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
     const playerSeason = getComponentValue(PlayerSeason, entity);
     const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''

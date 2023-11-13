@@ -24,9 +24,10 @@ let transfering = false
 
 
 let boxData1 = [{x: 13, y: 1}, {x: 23, y: 5}, {x: 26, y: 8}, {x: 23, y: 18}, {x: 30, y: 20},
-  {x: 8, y: 21}, {x: 5, y: 25}, {x: 30, y: 36}, {x: 19, y: 30}, {x: 3, y: 37},
-  {x: 28, y: 39}, {x: 36, y: 51}, {x: 40, y: 55}, {x: 27, y: 59}, {x: 13, y: 55},
-  {x: 3, y: 49}, {x: 3, y: 40}, {x: 21, y: 29}, {x: 41, y: 26}, {x: 59, y: 20}]
+  {x: 8, y: 21}, {x: 5, y: 25}, {x: 30, y: 36}, {x: 19, y: 30}, {x: 3, y: 37}, {x: 29, y: 25},
+  {x: 28, y: 39}, {x: 36, y: 51}, {x: 40, y: 55}, {x: 27, y: 59}, {x: 13, y: 55}, {x: 41, y: 34},
+  {x: 3, y: 49}, {x: 3, y: 40}, {x: 21, y: 29}, {x: 41, y: 26}, {x: 59, y: 20}, {x: 8, y: 14}, {x: 23, y: 12},
+  {x: 39, y: 38}, {x: 29, y: 25}, {x: 12, y: 37}, {x: 11, y: 53}, {x: 21, y: 36}, {x: 33, y: 38}, {x: 36, y: 44}]
 
   let boxI = 0
 
@@ -320,6 +321,7 @@ const Test = () => {
   const CreateBoxMoreFun = async (boxi) => {
     if (boxi == undefined) boxi = 0
     let box = boxData1[boxi]
+    if (!box) return
     console.log(box, 'box', boxi,boxData1 )
     await CreateBox(box.x, box.y);
 
@@ -327,7 +329,7 @@ const Test = () => {
       // boxI = 0
     } else {
       setTimeout(() => {
-        CreateBoxFun(boxi + 1)
+        CreateBoxMoreFun(boxi + 1)
       }, 100)
     }
   }
