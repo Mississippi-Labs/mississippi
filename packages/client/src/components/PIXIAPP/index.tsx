@@ -29,7 +29,6 @@ const PIXIAPP = (props: IProps) => {
   const { openingBox, simpleMapData, players, curAddr } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
-  console.log(offset, 'offset')
 
   const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)

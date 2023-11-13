@@ -486,16 +486,9 @@ const Game = () => {
       <div className="mi-game" tabIndex={0}>
         <div className="mi-game-user-avatar">
           <UserAvatar
-            username={curPlayer?.username}
-            hp={curPlayer?.hp}
-            maxHp={curPlayer?.maxHp}
-            ap={50}
-            maxAp={100}
-            clothes={curPlayer?.equip?.clothes}
-            handheld={curPlayer?.equip?.handheld}
-            head={curPlayer?.equip?.head}
-            address={account}
+            {...(curPlayer ?? {})}
             balance={balance}
+            address={account}
           />
         </div>
 

@@ -41,11 +41,12 @@ export interface IPlayer {
   size?: number;
   position?: [number, number];
   moving?: boolean;
+  isPlaying?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
-  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name } = props;
+  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -89,7 +90,9 @@ const Player = (props: IPlayer) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFrameIndex(prevIndex => (prevIndex + 1) % Actions[action].step);
+      if (isPlaying) {
+        setFrameIndex(prevIndex => (prevIndex + 1) % Actions[action].step);
+      }
     }, 300);
 
     return () => clearInterval(interval);
@@ -110,7 +113,7 @@ const Player = (props: IPlayer) => {
   const scale = size / cellSize * 3;
 
   const commonProps = {
-    isPlaying: true,
+    isPlaying,
     scale: [scale * (toward === 'Right' ? 1: -1), scale],
     anchor: 0.5,
     animationSpeed: 0,
