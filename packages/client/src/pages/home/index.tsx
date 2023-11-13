@@ -89,15 +89,15 @@ const Home = () => {
 
   useEffect(() => {
     // 获取参数
-    const params = new URLSearchParams(window.location.search);
-    const author = params.get("author")
-    if (author) {
-      setAuthor(author)
-    }
+    // const params = new URLSearchParams(window.location.search);
+    // const author = params.get("author")
+    // if (author) {
+    //   setAuthor(author)
+    // }
 
-    setInterval(() => {
-      downFun();
-    }, 1000)
+    // setInterval(() => {
+    //   downFun();
+    // }, 1000)
   }, [])
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
@@ -325,10 +325,10 @@ const Home = () => {
   }
 
   const play = () => {
-    if (countDown && !author) {
-      message.error(`Please wait for open demo day, ${delayTime()}`);
-      return;
-    }
+    // if (countDown && !author) {
+    //   message.error(`Please wait for open demo day, ${delayTime()}`);
+    //   return;
+    // }
     if (!network.account) {
       message.error('waiting for wallet connection');
       return;
@@ -414,7 +414,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{(countDown && !author) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{'PLAY NOW'}</button>
                 <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
