@@ -7,8 +7,10 @@ import { ICellClassCache, ICoordinate } from '@/components/MapCell';
 import { getCellClass } from '@/utils';
 
 interface IProps {
-  offsetX?: number;
-  offsetY?: number;
+  offset?: {
+    x: number;
+    y: number;
+  }
   emitEvent?: (action: string, coordinate: ICoordinate, type: number) => void;
 }
 
@@ -16,7 +18,8 @@ const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
 
 const PIXIMap = (props: IProps = {}) => {
 
-  const { offsetX = 0, offsetY = 0, emitEvent } = props;
+  const { offset = { x: 0, y: 0 }, emitEvent } = props;
+  const { x: offsetX, y: offsetY } = offset;
   const cellClassCache = useRef<ICellClassCache>({});
   const [textures, setTextures] = useState<PIXI.Texture<PIXI.Resource>[]>([]);
 

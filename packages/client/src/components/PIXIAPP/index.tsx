@@ -13,7 +13,7 @@ import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
 import { ICoordinate } from '@/components/MapCell';
 import { CellType } from '@/constants';
-import { bfs, isMovable } from '@/utils/map';
+import { bfs, isMovable, triggerOffsetUpdate } from '@/utils/map';
 import { createPathInterpolator, getPlayersCache, isSamePosition, updatePlayerPosition } from '@/utils/player';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -28,6 +28,8 @@ const PIXIAPP = (props: IProps) => {
   const { chests = [] } = props;
   const { openingBox, simpleMapData, players, curAddr } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
+  const [offset, setOffset] = useState({ x: 0, y: 0});
+  console.log(offset, 'offset')
 
   const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
@@ -63,7 +65,7 @@ const PIXIAPP = (props: IProps) => {
     // filter non-existent player
     renderPlayersArr = renderPlayersArr.filter((player) => players.find((p) => p.addr === player.addr));
     setRenderPlayers(renderPlayersArr);
-    // exeMoveTasks();
+    exeMoveTasks();
   }, [playersCache]);
 
   const exeMoveTasks = () => {
@@ -87,6 +89,9 @@ const PIXIAPP = (props: IProps) => {
       if (!movingPlayer) {
         clearInterval(interval);
         return;
+      }
+      if (movingPlayer.addr === curPlayer?.addr) {
+        setOffset(triggerOffsetUpdate(linePath[index], movingPlayer, simpleMapData, offset));
       }
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
@@ -164,12 +169,14 @@ const PIXIAPP = (props: IProps) => {
       options={{ resolution: 1 }}
       ref={stageRef}
     >
-      <PIXIMap emitEvent={emitEvent}/>
-      <Delivery/>
-      <PreviewPaths data={previewPaths} />
-      <Chests data={chests}/>
-      <PIXIPlayers data={renderPlayers}/>
-      <PIXIFog position={fogPosition}/>
+      <PIXIMap emitEvent={emitEvent} offset={offset}/>
+      <Container position={[offset.x, offset.y]}>
+        <Delivery/>
+        <PreviewPaths data={previewPaths} />
+        <Chests data={chests}/>
+        <PIXIPlayers data={renderPlayers}/>
+        <PIXIFog position={fogPosition}/>
+      </Container>
 
     </Stage>
   );

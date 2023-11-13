@@ -1,8 +1,8 @@
 import { CellType } from '@/constants';
 import { ICoordinate } from '@/components/MapCell';
 import { IPlayer } from '@/components/Player';
-import MAP_CFG from '@/config/map';
-import { LimitSpace, MapConfig } from '@/config';
+import MAP_CFG, { MapConfig, LimitSpace } from '@/config/map';
+const { cellSize } = MapConfig;
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
   const { x: startX, y: startY} = startCoordinate;
@@ -405,6 +405,38 @@ export const triggerVertexUpdate = (cur, before, mapData, vertexCoordinate) => {
 
   return({
     ...vertexCoordinate,
+  });
+};
+
+export const triggerOffsetUpdate = (cur, before, mapData, offset) => {
+  const xDegree = cur.x - before.x;
+  const yDegree = cur.y - before.y;
+  if (xDegree > 0) {
+    const limitExceeded = cur.x > LimitSpace.x;
+    const lessBoundary = cur.x + LimitSpace.x < mapData[0].length - 1;
+    if (limitExceeded && lessBoundary) {
+      offset.x = (LimitSpace.x - cur.x) * cellSize;
+    }
+  } else if (xDegree < 0>) {
+    const limitExceeded = cur.x > LimitSpace.x;
+    if (limitExceeded) {
+      offset.x = (LimitSpace.x - cur.x ) * cellSize;
+    }
+  } else if (yDegree > 0) {
+    const limitExceeded = cur.y > LimitSpace.y;
+    const lessBoundary = cur.y + LimitSpace.y < mapData[0].length - 1;
+    if (limitExceeded && lessBoundary) {
+      offset.y = (LimitSpace.y - cur.y) * cellSize;
+    }
+  } else if (yDegree < 0) {
+    const limitExceeded = cur.y > LimitSpace.y;
+    if (limitExceeded) {
+      offset.y = (LimitSpace.y - cur.y) * cellSize;
+    }
+  }
+
+  return({
+    ...offset,
   });
 };
 
