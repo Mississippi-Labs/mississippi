@@ -450,7 +450,7 @@ const Game = () => {
       getCollectionsFun(box);
       return
     }
-    setOpeningBox(boxs[boxIndex].id);
+    setOpeningBox(id);
     await openBox(id);
     const blockNumber = await network.publicClient.getBlockNumber()
     // 每隔1s获取一次getBlockNumber
@@ -466,6 +466,7 @@ const Game = () => {
     }, 1000)
   }
 
+  console.log(players)
 
   return (
     <GameContext.Provider

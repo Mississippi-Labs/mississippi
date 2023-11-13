@@ -13,8 +13,14 @@ import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
 import { ICoordinate } from '@/components/MapCell';
 import { CellType } from '@/constants';
-import { bfs, isMovable, triggerOffsetUpdate } from '@/utils/map';
-import { createPathInterpolator, getPlayersCache, isSamePosition, updatePlayerPosition } from '@/utils/player';
+import { bfs, getDistance, isMovable, triggerOffsetUpdate } from '@/utils/map';
+import {
+  createPathInterpolator,
+  getPlayersCache,
+  isSamePosition,
+  isValidPlayer,
+  updatePlayerPosition
+} from '@/utils/player';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, spriteCellSize, visualWidth, visualHeight } = MapConfig;
@@ -26,7 +32,7 @@ interface IProps {
 const PIXIAPP = (props: IProps) => {
 
   const { chests = [] } = props;
-  const { openingBox, simpleMapData, players, curAddr, showUserInfo } = useContext(GameContext);
+  const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -46,7 +52,7 @@ const PIXIAPP = (props: IProps) => {
   const playersCache = getPlayersCache(players);
   useEffect(() => {
     let renderPlayersArr = [...renderPlayers];
-    players.forEach((player) => {
+    players.filter((player) => isValidPlayer(player)).forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
       if (renderPlayer) {
         // update
@@ -207,7 +213,15 @@ const PIXIAPP = (props: IProps) => {
         <Container position={[offset.x, offset.y]}>
           <Delivery/>
           <PreviewPaths data={previewPaths} />
-          <Chests data={chests}/>
+          <Chests
+            data={chests}
+            onOpen={(id, c) => {
+              if (curPlayer && getDistance(curPlayer, c) <= 1) {
+                openTreasureChest(id);
+              }
+            }}
+            openingBox={openingBox}
+          />
           <PIXIPlayers data={renderPlayers}/>
           <PIXIFog position={fogPosition}/>
         </Container>

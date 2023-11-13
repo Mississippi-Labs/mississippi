@@ -25,7 +25,7 @@ export interface IPlayer {
   space: number;
   oreBalance: number;
   treasureBalance: number;
-  state: string;
+  state: number;
   lastBattleTime: number;
   maxHp: number;
   name: string;
