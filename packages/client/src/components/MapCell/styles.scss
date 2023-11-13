@@ -24,45 +24,6 @@
         }
     }
 
-    .mi-cell-user-menu {
-        position: absolute;
-        z-index: 20;
-        left: 100%;
-        top: 0;
-        display: flex;
-
-        li {
-            margin-bottom: 4px;
-        }
-
-        .mi-cell-username-list {
-            margin-right: 10px;
-
-            li {
-                padding-left: 10px;
-                width: 144px;
-                height: 44px;
-                font-size: 24px;
-                line-height: 42px;
-                color: #fff;
-                background: rgba(0, 0, 0, 0.8);
-                border-radius: 5px;
-
-                &.active {
-                    text-shadow: #000 1px 0 0, #000 0 1px 0, #000 -1px 0 0, #000 0 -1px 0;
-                    border: 1px solid #000;
-                    background: #FED982;
-                }
-            }
-        }
-
-        .mi-btn {
-            font-size: 16px;
-            width: 136px;
-            height: 46px;
-        }
-    }
-
     .render-preview-path {
         position: absolute;
         left: 0;

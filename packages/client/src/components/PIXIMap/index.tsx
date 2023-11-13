@@ -65,14 +65,14 @@ const PIXIMap = (props: IProps = {}) => {
                 position={[positionX, positionY]}
                 key={`${x}-${y}`}
                 interactive={'auto'}
-                onclick={() => {
-                  emitEvent?.('click', { x, y }, type);
+                onclick={(e) => {
+                  emitEvent?.('click', { x, y }, e);
                 }}
-                onmouseenter={() => {
-                  emitEvent?.('hover', { x, y }, type);
+                onmouseenter={(e) => {
+                  emitEvent?.('hover', { x, y }, e);
                 }}
-                onrightclick={() => {
-                  emitEvent?.('rightClick', { x, y }, type);
+                onrightclick={(e) => {
+                  emitEvent?.('rightClick', { x, y }, e);
                 }}
               >
                 {
@@ -94,21 +94,6 @@ const PIXIMap = (props: IProps = {}) => {
                 }
               </Container>
             )
-            // return classList.map((item, index) => {
-            //   const transformStyle = transforms.find((item) => item.index === index);
-            //   return (
-            //     <Sprite
-            //       key={`${x}-${y}-${index}`}
-            //       x={(index % 3) * spriteCellSize + spriteCellSize / 2 + positionX}
-            //       y={~~(index / 3) * spriteCellSize + spriteCellSize / 2 + positionY}
-            //       width={spriteCellSize}
-            //       height={spriteCellSize}
-            //       anchor={0.5}
-            //       angle={transformStyle?.rotation ?? 0}
-            //       texture={textures[item - 1]}
-            //     />
-            //   )
-            // });
           })
         })
       }

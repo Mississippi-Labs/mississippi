@@ -28,6 +28,7 @@ import { ethers } from 'ethers';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
+import { ICoordinate } from '@/components/MapCell';
 
 
 const toObject = (obj) => {

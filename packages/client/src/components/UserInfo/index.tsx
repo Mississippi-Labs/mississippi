@@ -4,7 +4,7 @@ import UserPackage from '@/components/UserPackage';
 import Appearance from '@/components/Appearance';
 import * as PIXI from 'pixi.js';
 import { Stage } from '@pixi/react';
-import Player from '@/components/PIXIPlayers/Player';
+import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
 import { MapConfig } from '@/config/map';
 const { cellSize } = MapConfig;
 
@@ -16,7 +16,7 @@ export interface IUserInfo {
   handheld: string;
   userUrl?: string;
   lootUrl?: string;
-  player?: any;
+  player?: IPlayer;
 }
 
 const UserInfo = (props: IUserInfo) => {
@@ -32,7 +32,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
               <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                <Player size={128} x={0.5} y={0.5}/>
+                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}}/>
               </Stage>
               {/*<Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>*/}
             </div>

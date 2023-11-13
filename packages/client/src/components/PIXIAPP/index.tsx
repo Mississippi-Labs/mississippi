@@ -26,13 +26,22 @@ interface IProps {
 const PIXIAPP = (props: IProps) => {
 
   const { chests = [] } = props;
-  const { openingBox, simpleMapData, players, curAddr } = useContext(GameContext);
+  const { openingBox, simpleMapData, players, curAddr, showUserInfo } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
+
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({
+    left: 0,
+    top: 0
+  });
+  const [clickedPlayers, setClickedPlayers] = useState([]);
+  const [activePlayerId, setActivePlayerId] = useState('');
 
   const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
+  const clickedCoordinate = useRef({ x: -1, y : -1})
 
   const playersCache = getPlayersCache(players);
   useEffect(() => {
@@ -107,7 +116,6 @@ const PIXIAPP = (props: IProps) => {
 
   }
 
-  // console.log(renderPlayers.find(item => item.name === 'V')?.action, 'V')
 
   const stageRef = useRef();
 
@@ -137,7 +145,20 @@ const PIXIAPP = (props: IProps) => {
     setPreviewPaths(path);
   }
 
-  const emitEvent = (action: string, coordinate: ICoordinate, type) => {
+  const onClickPlayers = (players, coordinate: ICoordinate, e) => {
+    if (players.length === 0) {
+      return;
+    }
+  }
+  
+  const moveCurPlayer = (coordinate: ICoordinate) => {
+    const { x, y, speed } = curPlayer;
+    const paths = bfs(simpleMapData, { x, y }, coordinate).slice(0, Number(speed) + 1);
+    animateMove(curPlayer, paths);
+  }
+
+  const emitEvent = (action: string, coordinate: ICoordinate, e) => {
+    const type = MAP_CFG[coordinate.y][coordinate.x];
     if (!curPlayer) {
       return;
     }
@@ -149,11 +170,24 @@ const PIXIAPP = (props: IProps) => {
         break;
       case 'rightClick':
         if (type === CellType.blank) {
-          const { x, y, speed } = curPlayer;
-          const paths = bfs(simpleMapData, { x, y }, coordinate).slice(0, Number(speed) + 1);
-          console.log({x , y}, coordinate)
-          animateMove(curPlayer, paths);
+          moveCurPlayer(coordinate)
           // onPlayerMove(paths, formatMovePath(paths));
+        }
+        break;
+      case 'click':
+        clickedCoordinate.current = coordinate;
+        // eslint-disable-next-line no-case-declarations
+        const players = renderPlayers.filter(player => player.x === coordinate.x && player.y === coordinate.y);
+        if (players.length > 0) {
+          setMenuVisible(true);
+          setMenuPosition({
+            left: (coordinate.x + 0.5) * cellSize + offset.x,
+            top: (coordinate.y + 0.5) * cellSize + offset.y,
+          })
+          setClickedPlayers(players);
+          setActivePlayerId(players[0].addr)
+        } else {
+          setMenuVisible(false);
         }
         break;
     }
@@ -162,22 +196,83 @@ const PIXIAPP = (props: IProps) => {
   const fogPosition = curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]
 
   return (
-    <Stage
-      width={cellSize * visualWidth}
-      height={cellSize * visualHeight}
-      options={{ resolution: 1 }}
-      ref={stageRef}
-    >
-      <PIXIMap emitEvent={emitEvent} offset={offset}/>
-      <Container position={[offset.x, offset.y]}>
-        <Delivery/>
-        <PreviewPaths data={previewPaths} />
-        <Chests data={chests}/>
-        <PIXIPlayers data={renderPlayers}/>
-        <PIXIFog position={fogPosition}/>
-      </Container>
+    <div style={{ position: 'relative' }}>
+      <Stage
+        width={cellSize * visualWidth}
+        height={cellSize * visualHeight}
+        options={{ resolution: 1 }}
+        ref={stageRef}
+      >
+        <PIXIMap emitEvent={emitEvent} offset={offset}/>
+        <Container position={[offset.x, offset.y]}>
+          <Delivery/>
+          <PreviewPaths data={previewPaths} />
+          <Chests data={chests}/>
+          <PIXIPlayers data={renderPlayers}/>
+          <PIXIFog position={fogPosition}/>
+        </Container>
+      </Stage>
 
-    </Stage>
+      {
+        menuVisible && (
+          <div className="mi-cell-user-menu" style={menuPosition}>
+            {
+              clickedPlayers.length > 1 && (
+                <ul className="mi-cell-username-list">
+                  {
+                    clickedPlayers.slice(0, 3).map((player) => {
+                      return (
+                        <li
+                          key={player.addr}
+                          className={player.addr === activePlayerId ? 'active' : ''}
+                          onClick={(e) => {
+                            setActivePlayerId(player.addr);
+                            e.stopPropagation();
+                          }}
+                        >{player.username}</li>
+                      )
+                    })
+                  }
+                </ul>
+              )
+            }
+
+            <ul className="mi-cell-action-menu">
+              {
+                activePlayerId !== curAddr && (
+                  <li>
+                    <button
+                      className="mi-btn"
+                      onClick={() => {
+                        setMenuVisible(false);
+                        moveCurPlayer(clickedCoordinate.current)
+                      }}
+                    >move</button>
+                  </li>
+                )
+              }
+              {
+                activePlayerId !== curAddr && (
+                  <li>
+                    <button className="mi-btn" onClick={(e) => {}}>attack</button>
+                  </li>
+                )
+              }
+              <li>
+                <button
+                  className="mi-btn"
+                  onClick={(e) => {
+                    setMenuVisible(false);
+                    const activePlayer = clickedPlayers.find((item) => item.addr === activePlayerId);
+                    showUserInfo(activePlayer);
+                  }}
+                >info</button>
+              </li>
+            </ul>
+          </div>
+        )
+      }
+    </div>
   );
 };
 
