@@ -42,7 +42,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? player?.maxHp.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.maxHp?.toString() : ''}</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.hp.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.hp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>

@@ -60,13 +60,15 @@ const Home = () => {
   // 倒计时
   const [countDown, setCountDown] = useState(1);
 
+  const [author, setAuthor] = useState('')
+
   const downFun = () => {
     // 倒计时，晚上8:30
     const now = new Date();
     const time = now.getTime();
 
     // 当天晚上20:30
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 30, 0);
     const todayTime = today.getTime();
     let delayTime = todayTime - time;
     if (delayTime < 0) {
@@ -86,9 +88,16 @@ const Home = () => {
   }
 
   useEffect(() => {
-    setInterval(() => {
-      downFun();
-    }, 1000)
+    // 获取参数
+    // const params = new URLSearchParams(window.location.search);
+    // const author = params.get("author")
+    // if (author) {
+    //   setAuthor(author)
+    // }
+
+    // setInterval(() => {
+    //   downFun();
+    // }, 1000)
   }, [])
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
@@ -316,10 +325,10 @@ const Home = () => {
   }
 
   const play = () => {
-    if (countDown) {
-      message.error(`Please wait for open demo day, ${delayTime()}`);
-      return;
-    }
+    // if (countDown && !author) {
+    //   message.error(`Please wait for open demo day, ${delayTime()}`);
+    //   return;
+    // }
     if (!network.account) {
       message.error('waiting for wallet connection');
       return;
@@ -405,7 +414,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{countDown ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{'PLAY NOW'}</button>
                 <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
