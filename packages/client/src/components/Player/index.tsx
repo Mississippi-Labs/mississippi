@@ -24,7 +24,6 @@ export interface IPlayer {
 }
 
 const Player = (props: IPlayer) => {
-  console.log(props, 'player props')
   const { username, addr, equip, gem = 0, toward, waiting, x, y } = props;
   const { curAddr } = useContext(GameContext);
 
