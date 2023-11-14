@@ -51,7 +51,7 @@ contract GMSystem  is System {
     }
 
     function setGmaeOpen(bool _b) external{
-        GameConfig.setGameOpen(GAME_CONFIG_KEY, _b);
+        GameConfig.setIsOpen(GAME_CONFIG_KEY, _b);
     }
 
     
