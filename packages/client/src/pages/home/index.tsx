@@ -13,7 +13,7 @@ import { delay } from '@/utils';
 import { useMUD } from '@/mud/MUDContext';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
 import indexDuckImg from '@/assets/img/duck_index.svg';
@@ -34,7 +34,7 @@ let transfering = false
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig, Player, LootList1, PlayerAddon },
+    components: { GlobalConfig, Player, LootList1, PlayerAddon, GameConfig },
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
@@ -58,46 +58,22 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // 倒计时
-  const [countDown, setCountDown] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [author, setAuthor] = useState('')
-
-  const downFun = () => {
-    // 倒计时，晚上8:30
-    const now = new Date();
-    const time = now.getTime();
-
-    // 当天晚上20:30
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 30, 0);
-    const todayTime = today.getTime();
-    let delayTime = todayTime - time;
-    if (delayTime < 0) {
-      setCountDown(0);
-    } else {
-      // 今天晚上20:30
-      setCountDown(delayTime);
-    }
+  const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
+  console.log(GameConfigData, 'GameConfigData')
+  if (GameConfigData[0]?.isOpen && !isOpen) {
+    setIsOpen(true)
   }
-
-  const delayTime = () => {
-    let time = countDown / 1000;
-    let hour = Math.floor(time / 3600);
-    let minute = Math.floor((time - hour * 3600) / 60);
-    let second = Math.floor(time - hour * 3600 - minute * 60);
-    return `${hour}:${minute}:${second}`;
-  }
-
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
     const author = params.get("author")
     if (author) {
-      setAuthor(author)
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
     }
-
-    setInterval(() => {
-      downFun();
-    }, 1000)
   }, [])
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
@@ -327,8 +303,8 @@ const Home = () => {
   }
 
   const play = () => {
-    if (countDown && !author) {
-      message.error(`Please wait for open demo day, ${delayTime()}`);
+    if (!isOpen) {
+      message.error(`Please wait for open demo day`);
       return;
     }
     if (!network.account) {
@@ -416,7 +392,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{(countDown && !author) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
                 <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>

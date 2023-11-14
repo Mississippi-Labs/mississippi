@@ -20,7 +20,8 @@ library GameConfigInit {
             4, //originX,
             5, //originY,
             1, //roomId,
-            1 //boxId,
+            1, //boxId,
+            true //isOpen
         );
     }
 

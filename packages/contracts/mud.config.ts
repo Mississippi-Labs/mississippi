@@ -83,7 +83,6 @@ export default mudConfig({
         lootId: "uint256",
         userId: "uint256"
       }
-
     },
     Ownable: {
       schema: {
@@ -100,6 +99,7 @@ export default mudConfig({
         originY: "uint16",
         roomId: "uint256",
         boxId : "uint256",
+        isOpen: "bool",
       }
     },
     BattleConfig: {

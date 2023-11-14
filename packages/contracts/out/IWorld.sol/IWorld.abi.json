@@ -1384,6 +1384,19 @@
   {
     "inputs": [
       {
+        "internalType": "bool",
+        "name": "_b",
+        "type": "bool"
+      }
+    ],
+    "name": "setGmaeOpen",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "name",
         "type": "string"

@@ -50,6 +50,10 @@ contract GMSystem  is System {
         GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
     }
 
+    function setGmaeOpen(bool _b) external{
+        GameConfig.setIsOpen(GAME_CONFIG_KEY, _b);
+    }
+
     
     
 }
