@@ -28,7 +28,8 @@ const { cellSize, visualWidth, visualHeight } = MapConfig;
 
 const PIXIAPP = () => {
 
-  const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer, onMoveToDelivery, onPlayerMove } = useContext(GameContext);
+  const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
+    onMoveToDelivery, onPlayerMove, setStartBattle } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -214,7 +215,22 @@ const PIXIAPP = () => {
     }
   }
 
-  const fogPosition = curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]
+  const exeAction = (action) => {
+    setMenuVisible(false);
+    const activePlayer = clickedPlayers.find((item) => item.addr === activePlayerId);
+    switch (action) {
+      case 'move':
+        moveCurPlayer(clickedCoordinate.current)
+        break;
+      case 'attack':
+        setStartBattle(activePlayer);
+        break;
+      case 'info':
+        showUserInfo(activePlayer);
+        break;
+    }
+  }
+
 
   return (
     <div style={{ position: 'relative' }}>
@@ -233,7 +249,7 @@ const PIXIAPP = () => {
             openingBox={openingBox}
           />
           <PIXIPlayers data={renderPlayers}/>
-          <PIXIFog position={fogPosition}/>
+          <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
         </Container>
       </Stage>
 
@@ -267,10 +283,7 @@ const PIXIAPP = () => {
                   <li>
                     <button
                       className="mi-btn"
-                      onClick={() => {
-                        setMenuVisible(false);
-                        moveCurPlayer(clickedCoordinate.current)
-                      }}
+                      onClick={() => exeAction('move')}
                     >move</button>
                   </li>
                 )
@@ -278,18 +291,17 @@ const PIXIAPP = () => {
               {
                 activePlayerId !== curAddr && (
                   <li>
-                    <button className="mi-btn" onClick={(e) => {}}>attack</button>
+                    <button
+                      className="mi-btn"
+                      onClick={() => exeAction('attack')}
+                    >attack</button>
                   </li>
                 )
               }
               <li>
                 <button
                   className="mi-btn"
-                  onClick={(e) => {
-                    setMenuVisible(false);
-                    const activePlayer = clickedPlayers.find((item) => item.addr === activePlayerId);
-                    showUserInfo(activePlayer);
-                  }}
+                  onClick={() => exeAction('info')}
                 >info</button>
               </li>
             </ul>
