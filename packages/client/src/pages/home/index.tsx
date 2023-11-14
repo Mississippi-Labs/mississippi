@@ -13,7 +13,7 @@ import { delay } from '@/utils';
 import { useMUD } from '@/mud/MUDContext';
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
+import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
 import indexDuckImg from '@/assets/img/duck_index.svg';
@@ -34,7 +34,7 @@ let transfering = false
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig, Player, LootList1, PlayerAddon },
+    components: { GlobalConfig, Player, LootList1, PlayerAddon, GameConfig },
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
@@ -58,16 +58,21 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // 倒计时
-  const [isWait, setIsWait] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [author, setAuthor] = useState('')
-
+  const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
+  console.log(GameConfigData, 'GameConfigData')
+  if (GameConfigData[0]?.isOpen && !isOpen) {
+    setIsOpen(true)
+  }
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
     const author = params.get("author")
     if (author) {
-      setAuthor(author)
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
     }
   }, [])
 
@@ -296,7 +301,7 @@ const Home = () => {
   }
 
   const play = () => {
-    if (isWait && !author) {
+    if (!isOpen) {
       message.error(`Please wait for open demo day`);
       return;
     }
@@ -385,7 +390,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{(isWait && !author) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
                 <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
