@@ -58,46 +58,17 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // 倒计时
-  const [countDown, setCountDown] = useState(1);
+  const [isWait, setIsWait] = useState(true);
 
   const [author, setAuthor] = useState('')
 
-  const downFun = () => {
-    // 倒计时，晚上8:30
-    const now = new Date();
-    const time = now.getTime();
-
-    // 当天晚上20:30
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 30, 0);
-    const todayTime = today.getTime();
-    let delayTime = todayTime - time;
-    if (delayTime < 0) {
-      setCountDown(0);
-    } else {
-      // 今天晚上20:30
-      setCountDown(delayTime);
-    }
-  }
-
-  const delayTime = () => {
-    let time = countDown / 1000;
-    let hour = Math.floor(time / 3600);
-    let minute = Math.floor((time - hour * 3600) / 60);
-    let second = Math.floor(time - hour * 3600 - minute * 60);
-    return `${hour}:${minute}:${second}`;
-  }
-
   useEffect(() => {
     // 获取参数
-    // const params = new URLSearchParams(window.location.search);
-    // const author = params.get("author")
-    // if (author) {
-    //   setAuthor(author)
-    // }
-
-    // setInterval(() => {
-    //   downFun();
-    // }, 1000)
+    const params = new URLSearchParams(window.location.search);
+    const author = params.get("author")
+    if (author) {
+      setAuthor(author)
+    }
   }, [])
 
   const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
@@ -325,10 +296,10 @@ const Home = () => {
   }
 
   const play = () => {
-    // if (countDown && !author) {
-    //   message.error(`Please wait for open demo day, ${delayTime()}`);
-    //   return;
-    // }
+    if (isWait && !author) {
+      message.error(`Please wait for open demo day`);
+      return;
+    }
     if (!network.account) {
       message.error('waiting for wallet connection');
       return;
@@ -414,7 +385,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{(isWait && !author) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
                 <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
