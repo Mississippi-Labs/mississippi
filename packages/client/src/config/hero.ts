@@ -211,14 +211,17 @@ export const Actions = {
   run: {
     step: 4,
     row: 2, // first row is 0
+    loop: true
   },
   idle: {
     step: 2,
     row: 0,
+    loop: true
   },
   slash: {
     step: 4,
     row: 8,
+    loop: true
   },
   blink: {
 
@@ -226,6 +229,7 @@ export const Actions = {
   die: {
     step: 3,
     row: 13,
+    loop: false
   }
 };
 

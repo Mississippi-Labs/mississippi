@@ -10,6 +10,8 @@ import { getRandomStr } from '@/utils/utils';
 import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { message } from 'antd';
+import Player from '@/components/PIXIPlayers/Player';
+import { Stage } from '@pixi/react';
 
 let timeout:any = null
 let nonceHex = ''
@@ -203,6 +205,9 @@ export default function Battle(props) {
   //   initBattle()
   // }
 
+  const [attackerAction, setAttackerAction] = useState('idle');
+  const [defenderAction, setDefenderAction] = useState('idle');
+
   useEffect(() => {
     if (battleState == 3) {
       console.log(battleData)
@@ -215,7 +220,11 @@ export default function Battle(props) {
         setPlayer2LossData(Number(data.defenderHP) - Number(battle?.defenderHP))
         battle1.classList.add('attack');
         setTimeout(() => {
+          setAttackerAction('slash');
+        }, 300)
+        setTimeout(() => {
           battle1.classList.remove('attack');
+          setAttackerAction('idle');
           battle2.classList.add('back');
           let defenderHP = battle?.defenderHP?.toString()
           setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
@@ -227,19 +236,25 @@ export default function Battle(props) {
             setShowPlayer2Loss(false)
             if (defenderHP <= 0 || battle?.isEnd) {
               isFirst = true
+              setDefenderAction('die');
               setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
               return
             }
             setTimeout(() => {
               battle2.classList.add('attack');
               setTimeout(() => {
+                setDefenderAction('slash');
+              }, 300)
+              setTimeout(() => {
                 battle2.classList.remove('attack');
                 battle1.classList.add('back');
+                setDefenderAction('idle');
                 let attackerHP = battle?.attackerHP?.toString()
                 setShowPlayer1Loss(true)
                 data.attackerHP = attackerHP
                 setBattleData(data)
                 if (attackerHP <= 0 || battle?.isEnd) {
+                  setAttackerAction('die');
                   isFirst = true
                   setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
                   return
@@ -346,7 +361,7 @@ export default function Battle(props) {
                         width: Math.floor(272 * (Number(battleData?.attackerHP) / Number(curPlayer?.addr == battleData?.attacker ? curPlayer?.maxHp : targetPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
-                    ></div>
+                    />
                     <div className='hp-text'>{Number(battleData?.attackerHP)}/{Number(curPlayer?.addr == battleData?.attacker ? curPlayer?.maxHp : targetPlayer?.maxHp)}</div>
                   </div>
                   {
@@ -354,9 +369,15 @@ export default function Battle(props) {
                   }
                 </div>
                 <div className='dark-attacker'>
-                  {
-                    curPlayer?.addr == battleData.attacker ? <Appearance {...curPlayer?.equip} /> : <Appearance {...targetPlayer?.equip} />
-                  }
+                  <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
+                    <Player
+                      size={128}
+                      x={0.5}
+                      y={0.5}
+                      action={attackerAction}
+                      equip={curPlayer?.addr == battleData.attacker ? {...curPlayer?.equip} : {...targetPlayer?.equip}}
+                    />
+                  </Stage>
                 </div>
               </div>
               <div className="mi-battle-character-card battle-2" >
@@ -377,7 +398,7 @@ export default function Battle(props) {
                         width: Math.floor(272 * (Number(battleData?.defenderHP) / Number(curPlayer?.addr == battleData?.defender ? curPlayer?.maxHp : targetPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
-                    ></div>
+                    />
                     <div className='hp-text'>{Number(battleData?.defenderHP)}/{Number(curPlayer?.addr == battleData?.defender ? curPlayer?.maxHp : targetPlayer?.maxHp)}</div>
                   </div>
                   {
@@ -385,9 +406,16 @@ export default function Battle(props) {
                   }
                 </div>
                 <div className='dark-defender'>
-                  {
-                    curPlayer?.addr == battleData.defender ? <Appearance {...curPlayer?.equip} /> : <Appearance {...targetPlayer?.equip} />
-                  }
+                  <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
+                    <Player
+                      size={128}
+                      x={0.5}
+                      y={0.5}
+                      toward={'Left'}
+                      action={defenderAction}
+                      equip={curPlayer?.addr == battleData.defender ? {...curPlayer?.equip} : {...targetPlayer?.equip}}
+                    />
+                  </Stage>
                 </div>
               </div>
             </div>

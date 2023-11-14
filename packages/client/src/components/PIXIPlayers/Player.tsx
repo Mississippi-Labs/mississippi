@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container, AnimatedSprite, Text } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
@@ -67,7 +67,7 @@ const Player = (props: IPlayer) => {
   });
 
   const [frameIndex, setFrameIndex] = useState(0);
-
+  const frameInterval = useRef<NodeJS.Timeout>();
   
   const loadTexture = (region, type = 'Human') => {
 
@@ -76,7 +76,10 @@ const Player = (props: IPlayer) => {
     loadAssets(`/assets/img/hero/${region}/${type}.png`, (assets) => {
       sheet = PIXI.Texture.from(assets);
       for (let i = 0; i < Actions[action].step; i++) {
-        const frame = new PIXI.Rectangle(i * FrameSize, Actions[action].row * FrameSize + FrameOffsetY, FrameSize, FrameSize);
+        const offsetX = i * FrameSize;
+        const offsetY = Actions[action].row * FrameSize + FrameOffsetY;
+        const hFrameSize = (assets.height < offsetY + FrameSize) ? (assets.height - offsetY) : FrameSize;
+        const frame = new PIXI.Rectangle(offsetX, offsetY, FrameSize, hFrameSize);
         textures.push(new PIXI.Texture(sheet, frame));
       }
       textureMap[region] = textures;
@@ -95,14 +98,26 @@ const Player = (props: IPlayer) => {
   }, [action]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    clearInterval(frameInterval.current);
+    setFrameIndex(0);
+    frameInterval.current = setInterval(() => {
       if (isPlaying) {
-        setFrameIndex(prevIndex => (prevIndex + 1) % Actions[action].step);
+        if (Actions[action].loop) {
+          setFrameIndex(prevIndex => (prevIndex + 1) % Actions[action].step);
+        } else {
+          setFrameIndex(prevIndex => {
+            if (prevIndex === Actions[action].step - 1) {
+              clearInterval(frameInterval.current)
+              return prevIndex;
+            }
+            return (prevIndex + 1) % Actions[action].step;
+          });
+        }
       }
     }, 300);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(frameInterval.current);
+  }, [action]);
 
   useEffect(() => {
     if (clothes) {
