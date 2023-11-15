@@ -57,7 +57,7 @@ const PIXIAPP = () => {
           // Maybe other fields changed
           Object.assign(renderPlayer, player);
         } else {
-          if (!renderPlayer.moving) {
+          if (!renderPlayer.moving && !renderPlayer.waiting) {
             moveTasks.current.push({
               player: renderPlayer,
               target: {
