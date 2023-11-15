@@ -61,21 +61,16 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(null);
   const [percentage, setPercentage] = useState(0);
 
-  const syncprogress = getComponentValue(SyncProgress, singletonEntity);
   const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
-  console.log(syncprogress, 'syncprogress', GameConfigData, isOpen)
-  
+
+  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncprogress = syncprogressData[0]
   useEffect(() => {
     if (syncprogress?.percentage == 100) {
+      console.log('syncprogress', syncprogress)
       setIsOpen(GameConfigData[0]?.isOpen)
     }
   }, [syncprogress?.percentage])
-  if (percentage < 100) {
-    console.log(syncprogress, 'syncprogress')
-    setTimeout(() => {
-      setPercentage(syncprogress?.percentage || 0);
-    }, 300)
-  }
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
