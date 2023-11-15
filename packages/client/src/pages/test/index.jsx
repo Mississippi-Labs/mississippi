@@ -12,6 +12,7 @@ import './index.scss';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { loadMapData } from "@/utils";
+import { Switch } from 'antd';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
@@ -44,9 +45,11 @@ const Test = () => {
   const [walletBalance, setWalletBalance] = useState('');
   const [renderMapData, setRenderMapData] = useState([]);
 
+  const [defaultChecked, setDefaultChecked] = useState(false);
+
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, getBattlePlayerHp },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, getBattlePlayerHp, setGmaeOpen },
     network
   } = useMUD();
 
@@ -358,6 +361,15 @@ const Test = () => {
     )
   }
 
+  const onSwitchChange = (checked) => {
+    console.log(checked)
+    setDefaultChecked(checked)
+  }
+
+  const setGmaeOpenFun = () => {
+    setGmaeOpen(defaultChecked)
+  }
+
   // useEffect(() => {
   //   getBalance()
   // });
@@ -424,6 +436,14 @@ const Test = () => {
         </div>))
       }
       <div className="main">
+      
+        <div className="section">
+          <div className="title">setGmaeOpen</div>
+          <div className="input">
+            <Switch checked={defaultChecked} onChange={onSwitchChange} />
+          </div>
+          <div className="btn" onClick={setGmaeOpenFun}>确认</div>
+        </div>
         <div className="section">
           <div className="title">mintNFT</div>
           <div className="input"></div>
@@ -458,49 +478,12 @@ const Test = () => {
           <div className="btn" onClick={joinBattlefieldFun}>确认</div>
         </div>
         <div className="section">
-          <div className="title">移动</div>
-          <div className="input">
-            <input type="text" onChange={(e) => stepChange(e, 0)} placeholder='x' />
-            <input type="text" onChange={(e) => stepChange(e, 1)} placeholder='y' />
-          </div>
-          <div className="btn" onClick={movePlayer}>确认</div>
-        </div>
-        <div className="section">
           <div className="title">传送</div>
           <div className="input">
             <input type="text" onChange={(e) => transferChange(e, 0)} placeholder='x' />
             <input type="text" onChange={(e) => transferChange(e, 1)} placeholder='y' />
           </div>
           <div className="btn" onClick={transferPlayer}>确认</div>
-        </div>
-        <div className="section">
-          <div className="title">攻击</div>
-          <div className="input">
-            <input type="text" onChange={(e) => battleChange(e, 0)} placeholder='x' />
-            <input type="text" onChange={(e) => battleChange(e, 1)} placeholder='y' />
-          </div>
-          <div className="btn" onClick={battleInvitationFun}>确认</div>
-        </div>
-        <div className="section">
-          <div className="title">攻击策略</div>
-          <div className="input">
-            <select onChange={(e) => confirmBattleChange(e, 0)}>
-              <option value="attack">Attack</option>
-              <option value="escape">Escape</option>
-              <option value="props">Props</option>
-            </select>
-            <select onChange={(e) => confirmBattleChange(e, 1)}>
-              <option value="1">Fire</option>
-              <option value="2">Water</option>
-              <option value="3">Wind</option>
-            </select>
-          </div>
-          <div className="btn" onClick={confirmBattleFun}>确认</div>
-        </div>
-        <div className="section">
-          <div className="title">揭示结果</div>
-          <div className="input"></div>
-          <div className="btn" onClick={revealBattleFun}>确认</div>
         </div>
         <div className="section">
           <div className="title">批量创建宝箱</div>
