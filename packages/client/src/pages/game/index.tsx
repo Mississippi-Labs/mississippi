@@ -29,6 +29,7 @@ import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
 import { ICoordinate } from '@/components/MapCell';
+import Loading from '@/components/Loading';
 
 
 const toObject = (obj) => {
@@ -189,14 +190,17 @@ const Game = () => {
     setBalance(walletBalance);  
   }
 
-  const syncprogress = getComponentValue(SyncProgress, singletonEntity);
 
   useEffect(() => {
-    if (percentage < 100) {
-      // console.log(syncprogress, 'syncprogress')
-      setPercentage(syncprogress?.percentage || 0);
-    }
-  }, [syncprogress])
+    const interval = setInterval(() => {
+      const percent = getComponentValue(SyncProgress, singletonEntity)?.percentage ?? 0;
+      if (percent === 100) {
+        clearInterval(interval);
+      }
+      // mud bug, if percentage not 100, it will return a decimals less 1.
+      setPercentage(percent < 1 ? ~~(percent * 100) : percent);
+    }, 1000)
+  }, [])
 
   useEffect(() => {
     loadMapData().then((csv) => {
@@ -444,13 +448,12 @@ const Game = () => {
             address={account}
           />
         </div>
-
-        {/*<Map*/}
-        {/*  width={MapConfig.visualWidth}*/}
-        {/*  height={MapConfig.visualHeight}*/}
-        {/*  vertexCoordinate={vertexCoordinate}*/}
-        {/*/>*/}
-        <PIXIAPP/>
+        {
+          percentage < 100 ?
+            <Loading percent={percentage}/>
+            :
+            <PIXIAPP/>
+        }
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }

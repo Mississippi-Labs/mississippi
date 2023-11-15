@@ -146,7 +146,7 @@ const PIXIAPP = () => {
     if (!curPlayer.waiting) {
       path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
     }
-    setPreviewPaths(path);
+    return path;
   }
 
 
@@ -157,17 +157,23 @@ const PIXIAPP = () => {
     const { x, y, speed } = curPlayer;
     const paths = bfs(simpleMapData, { x, y }, coordinate).slice(0, Number(speed) + 1);
     animateMove(curPlayer, paths, () => {
-      if (previewPaths.length > 0) {
-        const lastPreviewPath = previewPaths[previewPaths.length - 1];
-        createPreviewPath(lastPreviewPath);
-      }
-      if (isDelivery(coordinate)) {
-        onMoveToDelivery();
+      if (curPlayer.waiting) {
+        setPreviewPaths([]);
       }
     });
     curPlayer.waiting = true;
     onPlayerMove(paths, () => {
       curPlayer.waiting = false;
+      setPreviewPaths((prevPath) => {
+        if (prevPath.length > 0) {
+          const lastPreviewPath = prevPath[prevPath.length - 1]
+          return createPreviewPath(lastPreviewPath);
+        }
+        return [];
+      })
+      if (isDelivery(coordinate)) {
+        onMoveToDelivery();
+      }
       setRenderPlayers([...renderPlayers]);
     });
 
@@ -183,7 +189,7 @@ const PIXIAPP = () => {
     switch (action) {
       case 'hover':
         if (type === CellType.blank) {
-          createPreviewPath(coordinate);
+          setPreviewPaths(createPreviewPath(coordinate));
         }
         break;
       case 'rightClick':
