@@ -177,7 +177,6 @@ const Home = () => {
         setUserUrl(curPlayer.userUrl);
         setLootUrl(curPlayer.lootUrl);
         setPlayer(curPlayer);
-        setStep('mint');
       }
     }
     init()
@@ -315,15 +314,8 @@ const Home = () => {
       message.error('waiting for wallet connection');
       return;
     }
-    if (curPlayer && curPlayer.state != 1 && curPlayer.state != 0) {
-      navigate('/game', {
-        state: {
-          username: '',
-          clothes: '',
-          handheld: '',
-          head: '',
-        }
-      });
+    if (curPlayer?.state >= 1) {
+      setStep('mint');
     } else {
       localStorage.removeItem('curPlayer');
       localStorage.removeItem('worldContractAddress');
@@ -400,7 +392,6 @@ const Home = () => {
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
                 <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
-                <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
             </div>

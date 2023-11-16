@@ -22,7 +22,7 @@ const HomeHeader = (props: IProps) => {
       <nav className="header-nav">
         <ul className="menu-lv1">
           {/* <li><a href="">Leaderboard</a></li> */}
-          {/* <li><a href="">Docs</a></li> */}
+          <li><a href="https://mississippi.gitbook.io/mississippi/" target='_blank'>Docs</a></li>
           <li className="menu-socials">
             <a href="">Socials</a>
             <ul className="menu-lv2">
