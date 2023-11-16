@@ -1,34 +1,39 @@
 .mi-game {
-    position: relative;
+  position: relative;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: url("../../assets/wall/wall_5.png");
+
+  .mi-game-head {
+    position: absolute;
+    z-index: 100;
+    left: 6px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .mi-game-user-avatar {
+    width: 310px;
+  }
+
+  .opt-wrapper {
+    position: absolute;
+    z-index: 11;
+    padding: 20px;
+    bottom: 0;
+    right: 0;
     display: flex;
-    height: 100vh;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: url("../../assets/wall/wall_5.png");
 
-    .mi-game-user-avatar {
-        position: absolute;
-        z-index: 100;
-        left: 6px;
-        top: 6px;
+    .mi-btn {
+      margin: 0 10px;
+      width: 128px;
+      height: 128px;
+      font-size: 16px;
+      background-image: url("../../assets/img/btn_5.png");
     }
-
-    .opt-wrapper {
-        position: absolute;
-        z-index: 11;
-        padding: 20px;
-        bottom: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
-
-        .mi-btn {
-            margin: 0 10px;
-            width: 128px;
-            height: 128px;
-            font-size: 16px;
-            background-image: url("../../assets/img/btn_5.png");
-        }
-    }
+  }
 }
