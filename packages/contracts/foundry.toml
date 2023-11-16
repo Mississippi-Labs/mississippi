@@ -48,3 +48,11 @@ eth_rpc_url = "http://rpc.0xMssp.xyz"
 optimizer = true
 optimizer_runs = 3000
 
+
+[profile.REDSTONE-HOLESKY]
+eth_rpc_url = "https://rpc.holesky.redstone.xyz"
+optimizer = true
+optimizer_runs = 3000
+
+
+
