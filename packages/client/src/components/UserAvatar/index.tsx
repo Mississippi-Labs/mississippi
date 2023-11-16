@@ -16,7 +16,7 @@ const UserAvatar = (props: IProps) => {
     <div className="mi-c-user-avatar">
       <div className={`avatar-box`}>
         <Stage width={72} height={72} options={{ resolution: 1, backgroundAlpha: 0 }}>
-          <Player {...rest} size={36} x={0.5} y={0.5} isPlaying={false} name={''} />
+          <Player {...rest} size={72} x={0} y={0.3} isPlaying={false} name={''} />
         </Stage>
       </div>
 
