@@ -327,6 +327,19 @@ export function createSystemCalls(
     }
   }
 
+  const setGmaeOpen = async (b) => {
+    try {
+      console.log('setGmaeOpen', new Date().getTime());
+      const tx = await worldContract.write.setGmaeOpen([b]);
+      await waitForTransaction(tx);
+      console.log('setGmaeOpen success', new Date().getTime(), tx);
+      return tx
+    } catch (error) {
+      console.log('setGmaeOpen', error);
+      message.error(error.cause.reason || error.cause.details);
+    }
+  }
+
   const getBattlePlayerHp = async (battleId: any, addr: any) => {
     const data = await worldContract.read.getBattlePlayerHp([battleId, addr]);
     return data
@@ -353,6 +366,7 @@ export function createSystemCalls(
     forceEnd,
     unlockUserLocation,
     submitGem,
-    goHome
+    goHome,
+    setGmaeOpen
   };
 }

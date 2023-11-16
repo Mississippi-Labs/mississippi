@@ -34,7 +34,7 @@ let transfering = false
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig, Player, LootList1, PlayerAddon, GameConfig },
+    components: { GlobalConfig, Player, LootList1, PlayerAddon, GameConfig, SyncProgress },
     systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
     network
   } = useMUD();
@@ -58,13 +58,19 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // 倒计时
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(null);
+  const [percentage, setPercentage] = useState(0);
 
   const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
-  console.log(GameConfigData, 'GameConfigData')
-  if (GameConfigData[0]?.isOpen && !isOpen) {
-    setIsOpen(true)
-  }
+
+  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncprogress = syncprogressData[0]
+  useEffect(() => {
+    if (syncprogress?.percentage == 100) {
+      console.log('syncprogress', syncprogress)
+      setIsOpen(GameConfigData[0]?.isOpen)
+    }
+  }, [syncprogress?.percentage])
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
@@ -72,7 +78,7 @@ const Home = () => {
     if (author) {
       setIsOpen(true)
     } else {
-      setIsOpen(false)
+      setIsOpen(null)
     }
   }, [])
 
