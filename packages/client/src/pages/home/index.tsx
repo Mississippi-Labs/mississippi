@@ -357,14 +357,15 @@ const Home = () => {
     let balance = await network.publicClient.getBalance({
       address: network.walletClient.account.address
     })
+    let walletBalance = 0
     if (balance.toString() == '0') {
       transferFun(network.walletClient.account.address)
     } else {
-      let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-      setWalletAddress(network.walletClient.account.address);
-      setWalletBalance(walletBalance);
-      localStorage.setItem('mi_user_address', network.walletClient.account.address)
+      walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
     }
+    setWalletAddress(network.walletClient.account.address);
+    setWalletBalance(walletBalance);
+    localStorage.setItem('mi_user_address', network.walletClient.account.address)
     // 转成eth
   }
 
