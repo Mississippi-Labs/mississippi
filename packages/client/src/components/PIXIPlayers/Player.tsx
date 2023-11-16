@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, AnimatedSprite, Text } from '@pixi/react';
+import { Container, AnimatedSprite, Text, Graphics } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
-import { Actions, FrameOffsetY, FrameSize } from '@/config/hero';
+import { Actions, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
 import { MapConfig } from '@/config/map';
 import { loadAssets } from '@/utils';
 const { cellSize } = MapConfig;
@@ -67,6 +67,7 @@ const Player = (props: IPlayer) => {
   });
 
   const [frameIndex, setFrameIndex] = useState(0);
+  const frameSizeRef = useRef({ w: FrameSize, h: FrameSize });
   const frameInterval = useRef<NodeJS.Timeout>();
   
   const loadTexture = (region, type = 'Human') => {
@@ -75,10 +76,12 @@ const Player = (props: IPlayer) => {
     const textures = [];
     loadAssets(`/assets/img/hero/${region}/${type}.png`, (assets) => {
       sheet = PIXI.Texture.from(assets);
+
       for (let i = 0; i < Actions[action].step; i++) {
         const offsetX = i * FrameSize;
         const offsetY = Actions[action].row * FrameSize + FrameOffsetY;
         const hFrameSize = (assets.height < offsetY + FrameSize) ? (assets.height - offsetY) : FrameSize;
+        frameSizeRef.current.h = hFrameSize;
         const frame = new PIXI.Rectangle(offsetX, offsetY, FrameSize, hFrameSize);
         textures.push(new PIXI.Texture(sheet, frame));
       }
@@ -136,12 +139,13 @@ const Player = (props: IPlayer) => {
   const commonProps = {
     isPlaying,
     scale: [scale * (toward === 'Right' ? 1: -1), scale],
-    anchor: 0.5,
     animationSpeed: 0,
     currentFrame: frameIndex,
-    x: size / 2,
-    y: size / 2
+    x: size / 2 - frameSizeRef.current.w / 2 * scale,
+    // hack: the last row's texture's height less than FrameSize
+    y: size / 2 - frameSizeRef.current.h / 2 * scale - (frameSizeRef.current.w - frameSizeRef.current.h) / 2 * scale,
   }
+
 
   return (
     <Container
@@ -170,7 +174,7 @@ const Player = (props: IPlayer) => {
 
       }
       {
-        ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon']
+        HeroRegions
           .filter((item) => textureMap[item] && textureMap[item].length > 0)
           .map((item) => {
             return (
@@ -182,6 +186,17 @@ const Player = (props: IPlayer) => {
             )
         })
       }
+      {/*<Graphics*/}
+      {/*  x={1}*/}
+      {/*  draw={g => {*/}
+      {/*    g.clear();*/}
+      {/*    const color = 0xFF0000;*/}
+      {/*    g.beginFill(color, 0.2);*/}
+      {/*    g.lineStyle(1, color, 1);*/}
+      {/*    g.drawRect(0, 0, size, size);*/}
+      {/*    g.drawRect(0, 0, size / 2, size / 2);*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Container>
   );
 };

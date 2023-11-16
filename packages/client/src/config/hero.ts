@@ -235,4 +235,4 @@ export const Actions = {
 
 export const FrameSize = 64;
 export const FrameOffsetY = FrameSize / 2;
-export const HeroUIScale = 3;
+export const HeroRegions = ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon'];

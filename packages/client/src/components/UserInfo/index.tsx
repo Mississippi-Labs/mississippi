@@ -32,9 +32,8 @@ const UserInfo = (props: IUserInfo) => {
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
               <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}}/>
+                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'die'}/>
               </Stage>
-              {/*<Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>*/}
             </div>
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
@@ -52,7 +51,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? player?.hp.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.hp?.toString() : ''}</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.hp?.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.hp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>
