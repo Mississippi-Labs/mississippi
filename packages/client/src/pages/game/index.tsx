@@ -69,8 +69,6 @@ const Game = () => {
   const [balance, setBalance] = useState(0);
   const [openingBox, setOpeningBox] = useState();
 
-  const [percentage, setPercentage] = useState(0);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [gotBox, setGotBox] = useState(null);
@@ -81,7 +79,10 @@ const Game = () => {
   const mapDataRef = useRef([]);
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  // console.log(GlobalConfigData, 'GlobalConfigData')
+  const syncProgressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncProgress = (syncProgressData?.[0]?.percentage ?? 0);
+  // mud bug, if syncProgress not 100, it will return a decimals less 1.
+  const percentage = syncProgress < 1 ? ~~(syncProgress * 100) : syncProgress;
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -190,17 +191,6 @@ const Game = () => {
     setBalance(walletBalance);  
   }
 
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const percent = getComponentValue(SyncProgress, singletonEntity)?.percentage ?? 0;
-      if (percent === 100) {
-        clearInterval(interval);
-      }
-      // mud bug, if percentage not 100, it will return a decimals less 1.
-      setPercentage(percent < 1 ? ~~(percent * 100) : percent);
-    }, 1000)
-  }, [])
 
   useEffect(() => {
     loadMapData().then((csv) => {
