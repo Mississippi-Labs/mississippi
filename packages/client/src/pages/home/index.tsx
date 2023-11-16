@@ -334,22 +334,23 @@ const Home = () => {
   const transferFun = async (to) => {
     if (transfering) return
     transfering = true
-    if (network.walletClient?.chain?.id == 31337 || network.walletClient?.chain?.id == 33784) return
-    let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-    console.log(wallet, 'wallet')
-    wallet.sendTransaction({
-      to,
-      value: ethers.utils.parseEther('1')
-    }).then(res => {
-      console.log(res, 'res')
-      transfering = false
-      getBalance()
-    }).catch(err => {
-      console.log(err)
-    })
+    if (network.walletClient?.chain?.id == 31337 || network.walletClient?.chain?.id == 33784) {
+      let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+      let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+      let provider = new ethers.providers.JsonRpcProvider(rpc)
+      let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
+      console.log(wallet, 'wallet')
+      wallet.sendTransaction({
+        to,
+        value: ethers.utils.parseEther('1')
+      }).then(res => {
+        console.log(res, 'res')
+        transfering = false
+        getBalance()
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 
   const getBalance = async () => {
