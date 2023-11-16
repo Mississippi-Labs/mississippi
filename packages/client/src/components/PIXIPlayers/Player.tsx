@@ -5,6 +5,7 @@ import * as PIXI from 'pixi.js';
 import { Actions, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
 import { MapConfig } from '@/config/map';
 import { loadAssets } from '@/utils';
+import whiteFilter from '@/filters/WhiteFilter';
 const { cellSize } = MapConfig;
 
 export type PlayerToward = 'Left' | 'Right';
@@ -141,6 +142,7 @@ const Player = (props: IPlayer) => {
     scale: [scale * (toward === 'Right' ? 1: -1), scale],
     animationSpeed: 0,
     currentFrame: frameIndex,
+    // filters: frameIndex % 2=== 0 ? [whiteFilter] : [],
     x: size / 2 - frameSizeRef.current.w / 2 * scale,
     // hack: the last row's texture's height less than FrameSize
     y: size / 2 - frameSizeRef.current.h / 2 * scale - (frameSizeRef.current.w - frameSizeRef.current.h) / 2 * scale,
