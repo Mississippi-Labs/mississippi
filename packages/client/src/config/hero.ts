@@ -207,7 +207,31 @@ export const Hero = {
   ]
 }
 
-export const Actions = {
+export type ActionType = 'run' | 'idle' | 'slash' | 'die' | 'blink';
+export type FiltersType = 'blink';
+
+type BaseAction = {
+  step: number;
+  row: number;
+  loop: boolean;
+  filter?: FiltersType;
+};
+
+export type ActionsType = {
+  [key in ActionType]: BaseAction;
+};
+
+type EffectsRender = {
+  [key in FiltersType]: (frameIndex: number) => boolean;
+}
+
+export const EffectsRender: EffectsRender = {
+  blink: (frameIndex: number) => {
+    return frameIndex % 2 === 0;
+  }
+}
+
+export const Actions: ActionsType = {
   run: {
     step: 4,
     row: 2, // first row is 0
@@ -224,7 +248,10 @@ export const Actions = {
     loop: true
   },
   blink: {
-
+    step: 2,
+    row: 0,
+    loop: true,
+    filter: 'blink',
   },
   die: {
     step: 3,

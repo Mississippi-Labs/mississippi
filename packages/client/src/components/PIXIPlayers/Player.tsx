@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Container, AnimatedSprite, Text, Graphics } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
-import { Actions, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
+import { Actions, ActionsType, ActionType, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
 import { MapConfig } from '@/config/map';
 import { loadAssets } from '@/utils';
-import whiteFilter from '@/filters/WhiteFilter';
+import BlinkFilter from '@/filters/BlinkFilter';
 const { cellSize } = MapConfig;
 
 export type PlayerToward = 'Left' | 'Right';
@@ -42,7 +42,7 @@ export interface IPlayer {
     head: string;
   }
   // fe field
-  action?: string;
+  action?: ActionType;
   toward?: PlayerToward;
   size?: number;
   position?: [number, number];
@@ -70,6 +70,7 @@ const Player = (props: IPlayer) => {
   const [frameIndex, setFrameIndex] = useState(0);
   const frameSizeRef = useRef({ w: FrameSize, h: FrameSize });
   const frameInterval = useRef<NodeJS.Timeout>();
+  const filterRef = useRef({ blink: new BlinkFilter() });
   
   const loadTexture = (region, type = 'Human') => {
 
@@ -99,6 +100,7 @@ const Player = (props: IPlayer) => {
     loadTexture('hair', 'Hair2');
     loadTexture('head');
     loadTexture('arms');
+
   }, [action]);
 
   useEffect(() => {
@@ -137,12 +139,14 @@ const Player = (props: IPlayer) => {
 
   const scale = size / cellSize * 3;
 
+  filterRef.current.blink.isOddFrame = frameIndex % 2 === 0;
+
   const commonProps = {
     isPlaying,
     scale: [scale * (toward === 'Right' ? 1: -1), scale],
     animationSpeed: 0,
     currentFrame: frameIndex,
-    // filters: frameIndex % 2=== 0 ? [whiteFilter] : [],
+    filters: Actions[action].filter ? [filterRef.current[Actions[action].filter]] : [],
     x: size / 2 - frameSizeRef.current.w / 2 * scale,
     // hack: the last row's texture's height less than FrameSize
     y: size / 2 - frameSizeRef.current.h / 2 * scale - (frameSizeRef.current.w - frameSizeRef.current.h) / 2 * scale,
