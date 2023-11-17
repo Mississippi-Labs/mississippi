@@ -12,6 +12,10 @@
     "deploy:testnet": "pnpm run build && mud deploy --profile=lattice-testnet",
     "deploy:lidamao": "pnpm run build && mud deploy --profile=Mississippi-testnet",
     "deploy:redstone-holesky": "pnpm run build && mud deploy --profile=REDSTONE-HOLESKY",
+    "deploy:scroll-sepolia": "pnpm run build && mud deploy --profile=scroll-sepolia",
+    "deploy:optimism-goerli": "pnpm run build && mud deploy --profile=optimism-goerli",
+    "deploy:linea-goerli": "pnpm run build && mud deploy --profile=linea-goerli",
+    
     "dev": "pnpm mud dev-contracts --rpc http://127.0.0.1:8545",
     "dev-old": "pnpm mud dev-contracts --rpc http://127.0.0.1:8545",
     "lint": "pnpm run prettier && pnpm run solhint",
