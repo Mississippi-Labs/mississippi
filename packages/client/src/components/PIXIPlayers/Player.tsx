@@ -193,17 +193,17 @@ const Player = (props: IPlayer) => {
             )
         })
       }
-      <Graphics
-        x={1}
-        draw={g => {
-          g.clear();
-          const color = 0xFF0000;
-          g.beginFill(color, 0.2);
-          g.lineStyle(1, color, 1);
-          g.drawRect(0, 0, size, size);
-          g.drawRect(0, 0, size / 2, size / 2);
-        }}
-      />
+      {/*<Graphics*/}
+      {/*  x={1}*/}
+      {/*  draw={g => {*/}
+      {/*    g.clear();*/}
+      {/*    const color = 0xFF0000;*/}
+      {/*    g.beginFill(color, 0.2);*/}
+      {/*    g.lineStyle(1, color, 1);*/}
+      {/*    g.drawRect(0, 0, size, size);*/}
+      {/*    g.drawRect(0, 0, size / 2, size / 2);*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Container>
   );
 };
