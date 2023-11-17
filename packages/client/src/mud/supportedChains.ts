@@ -6,9 +6,9 @@ arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.infura.io/v3/5ca
 arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.infura.io/ws/v3/5ca372516740427e97512d4dfefd9c47'];
 
 const testnet = {
-  name: "Lidamao Testnet",
+  name: "Mississippi testnet",
   id: 33784,
-  network: "lidamao-testnet",
+  network: "mississippi-testnet",
   nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
   rpcUrls: {
     default: {
@@ -23,9 +23,9 @@ const testnet = {
 }
 
 const redstone = {
-  name: "Redstone",
+  name: "Redstone testnet",
   id: 17001,
-  network: "redstone",
+  network: "redstone-testnet",
   nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
   rpcUrls: {
     default: {
