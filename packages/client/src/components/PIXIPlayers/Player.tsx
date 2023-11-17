@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Container, AnimatedSprite, Text, Graphics } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
-import { Actions, ActionsType, ActionType, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
+import { Actions, ActionType, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
 import { MapConfig } from '@/config/map';
 import { loadAssets } from '@/utils';
 import BlinkFilter from '@/filters/BlinkFilter';
@@ -145,11 +145,12 @@ const Player = (props: IPlayer) => {
     isPlaying,
     scale: [scale * (toward === 'Right' ? 1: -1), scale],
     animationSpeed: 0,
+    anchor: 0.5,
     currentFrame: frameIndex,
     filters: Actions[action].filter ? [filterRef.current[Actions[action].filter]] : [],
-    x: size / 2 - frameSizeRef.current.w / 2 * scale,
+    x: size / 2,
     // hack: the last row's texture's height less than FrameSize
-    y: size / 2 - frameSizeRef.current.h / 2 * scale - (frameSizeRef.current.w - frameSizeRef.current.h) / 2 * scale,
+    y: size / 2 - (frameSizeRef.current.w - frameSizeRef.current.h) / 2 * scale,
   }
 
 
@@ -192,17 +193,17 @@ const Player = (props: IPlayer) => {
             )
         })
       }
-      {/*<Graphics*/}
-      {/*  x={1}*/}
-      {/*  draw={g => {*/}
-      {/*    g.clear();*/}
-      {/*    const color = 0xFF0000;*/}
-      {/*    g.beginFill(color, 0.2);*/}
-      {/*    g.lineStyle(1, color, 1);*/}
-      {/*    g.drawRect(0, 0, size, size);*/}
-      {/*    g.drawRect(0, 0, size / 2, size / 2);*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <Graphics
+        x={1}
+        draw={g => {
+          g.clear();
+          const color = 0xFF0000;
+          g.beginFill(color, 0.2);
+          g.lineStyle(1, color, 1);
+          g.drawRect(0, 0, size, size);
+          g.drawRect(0, 0, size / 2, size / 2);
+        }}
+      />
     </Container>
   );
 };

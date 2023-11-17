@@ -32,7 +32,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
               <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'idle'}/>
+                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'idle'} />
               </Stage>
             </div>
           </div>

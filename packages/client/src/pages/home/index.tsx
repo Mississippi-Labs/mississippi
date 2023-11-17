@@ -111,7 +111,6 @@ const Home = () => {
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  // console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -136,8 +135,6 @@ const Home = () => {
       lootTokenIds = res
     })
   }
-
-  console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].pluginContract && !pluginContract) {
     let privateKey = network.privateKey
