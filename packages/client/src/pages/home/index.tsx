@@ -39,8 +39,6 @@ const Home = () => {
     network
   } = useMUD();
 
-  const [walletAddress, setWalletAddress] = useState('');
-  const [walletBalance, setWalletBalance] = useState('');
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
   const [modalVisible, setModalVisible] = useState(false);
@@ -65,6 +63,8 @@ const Home = () => {
 
   const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
   const syncprogress = syncprogressData[0]
+  console.log(GameConfigData, 'GlobalConfigData', syncprogress)
+
   useEffect(() => {
     if (syncprogress?.percentage == 100) {
       console.log('syncprogress', syncprogress)
@@ -111,7 +111,6 @@ const Home = () => {
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  // console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -156,7 +155,6 @@ const Home = () => {
   // console.log(curPlayer, 'curPlayer', players)
 
   useEffect(() => {
-    getBalance()
     async function init() {
       if (curPlayer?.state >= 1 && curPlayer?.name) {
         let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: curPlayer.addr}))
@@ -323,58 +321,11 @@ const Home = () => {
     }
   }
 
-  const transferFun = async (to) => {
-    if (transfering) return
-    transfering = true
-    if (network.walletClient?.chain?.id == 31337 || network.walletClient?.chain?.id == 33784) {
-      let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-      let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-      let provider = new ethers.providers.JsonRpcProvider(rpc)
-      let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-      console.log(wallet, 'wallet')
-      wallet.sendTransaction({
-        to,
-        value: ethers.utils.parseEther('1')
-      }).then(res => {
-        console.log(res, 'res')
-        transfering = false
-        getBalance()
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  }
-
-  const getBalance = async () => {
-    let balance = await network.publicClient.getBalance({
-      address: network.walletClient.account.address
-    })
-    let walletBalance = 0
-    if (balance.toString() == '0') {
-      transferFun(network.walletClient.account.address)
-    } else {
-      walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-    }
-    setWalletAddress(network.walletClient.account.address);
-    setWalletBalance(walletBalance);
-    localStorage.setItem('mi_user_address', network.walletClient.account.address)
-    // 转成eth
-  }
-
-  const initUserInfoFun = async () => {
-    await initUserInfo()
-    localStorage.removeItem('curPlayer');
-    localStorage.removeItem('worldContractAddress');
-    message.success('init success')
-  }
-
   return (
     <div className="mi-home-page">
       {contextHolder}
       <Header
         onPlayBtnClick={play}
-        walletAddress={walletAddress}
-        walletBalance={walletBalance}
       />
       {
         step === 'play' && (

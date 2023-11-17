@@ -19,6 +19,7 @@ import GameContext from '@/context';
 // import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
+import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
@@ -297,7 +298,8 @@ const Game = () => {
     }
     clearInterval(moveInterval.current);
     let pathIndex = 0;
-    const timeInterval = ~~(1500 / Number(curPlayer.speed))
+    let blockTime = network?.publicClient?.chain?.id == 17001 ? 2500 : 1500
+    const timeInterval = ~~(blockTime / Number(curPlayer.speed))
     moveInterval.current = setInterval(async () => {
       setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
       updatePlayerPosition(curPlayer, paths[pathIndex]);
@@ -496,6 +498,7 @@ const Game = () => {
       }}
     >
       <div className="mi-game" tabIndex={0}>
+      <div className="mi-game-head">
         <div className="mi-game-user-avatar">
           <UserAvatar
             username={curPlayer?.username}
@@ -510,8 +513,8 @@ const Game = () => {
             balance={balance}
           />
         </div>
-
-        {/*<Rank data={RankMockData} curId={account} />*/}
+        <Header onlyRight={true} /> 
+      </div>
         <Map
           width={MapConfig.visualWidth}
           height={MapConfig.visualHeight}
