@@ -19,6 +19,7 @@ import GameContext from '@/context';
 // import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
+import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
 import { triggerVertexUpdate } from '@/utils/map';
@@ -432,6 +433,7 @@ const Game = () => {
       }}
     >
       <div className="mi-game" tabIndex={0}>
+      <div className="mi-game-head">
         <div className="mi-game-user-avatar">
           <UserAvatar
             {...(curPlayer ?? {})}
@@ -439,12 +441,15 @@ const Game = () => {
             address={account}
           />
         </div>
+        <Header onlyRight={true} />
+      </div>
         {
           percentage < 100 ?
             <Loading percent={percentage}/>
             :
             <PIXIAPP/>
         }
+
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
@@ -477,7 +482,10 @@ const Game = () => {
             </div>
           </div>
         </Modal>
-        <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
+        {
+          percentage === 100 && <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
+        }
+
       </div>
     </GameContext.Provider>
   );

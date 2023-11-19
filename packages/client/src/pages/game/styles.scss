@@ -7,28 +7,33 @@
     overflow: hidden;
     background: #000;
 
-    .mi-game-user-avatar {
-        position: absolute;
-        z-index: 100;
-        left: 6px;
-        top: 6px;
-    }
+  .mi-game-head {
+    position: absolute;
+    z-index: 100;
+    left: 6px;
+    top: 6px;
+    right: 6px;
+  }
 
-    .opt-wrapper {
-        position: absolute;
-        z-index: 11;
-        padding: 20px;
-        bottom: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
+  .mi-game-user-avatar {
+    width: 310px;
+  }
 
-        .mi-btn {
-            margin: 0 10px;
-            width: 128px;
-            height: 128px;
-            font-size: 16px;
-            background-image: url("../../assets/img/btn_5.png");
-        }
+  .opt-wrapper {
+    position: absolute;
+    z-index: 11;
+    padding: 20px;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+
+    .mi-btn {
+      margin: 0 10px;
+      width: 128px;
+      height: 128px;
+      font-size: 16px;
+      background-image: url("../../assets/img/btn_5.png");
     }
+  }
 }

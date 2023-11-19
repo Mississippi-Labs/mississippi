@@ -95,7 +95,8 @@ const Test = () => {
       address: network.walletClient.account.address
     }).then(balance => {
       if (balance.toString() == 0) {
-        transferFun(network.walletClient.account.address)
+        // transferFun(network.walletClient.account.address)
+        setWalletBalance(0);
       } else {
         let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
         console.log(walletBalance)

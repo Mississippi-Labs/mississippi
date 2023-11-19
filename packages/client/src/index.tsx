@@ -18,7 +18,7 @@ setup().then(async (result) => {
       <App />
     </MUDProvider>
   );
-  if (!import.meta.env.DEV) {
+  // if (!import.meta.env.DEV) {
     const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
     mountDevTools({
       config: mudConfig,
@@ -32,6 +32,6 @@ setup().then(async (result) => {
       recsWorld: network.world,
     });
     localStorage.setItem("mud-dev-tools-shown", 'false');
-  }
+  // }
   
 });

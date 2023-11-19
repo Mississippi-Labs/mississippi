@@ -48,3 +48,30 @@ eth_rpc_url = "http://rpc.0xMssp.xyz"
 optimizer = true
 optimizer_runs = 3000
 
+
+[profile.REDSTONE-HOLESKY]
+eth_rpc_url = "https://rpc.holesky.redstone.xyz"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.scroll-sepolia]
+eth_rpc_url = "https://sepolia-rpc.scroll.io"
+
+[profile.optimism-goerli]
+eth_rpc_url = "https://goerli.optimism.io"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.linea-goerli]
+eth_rpc_url = "https://linea-goerli.infura.io/v3/8a5edc3264dd435391dad31e754031d6"
+optimizer = true
+optimizer_runs = 3000
+
+
+
+
+
+
+

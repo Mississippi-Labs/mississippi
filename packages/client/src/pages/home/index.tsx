@@ -39,8 +39,6 @@ const Home = () => {
     network
   } = useMUD();
 
-  const [walletAddress, setWalletAddress] = useState('');
-  const [walletBalance, setWalletBalance] = useState('');
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
   const [modalVisible, setModalVisible] = useState(false);
@@ -65,6 +63,8 @@ const Home = () => {
 
   const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
   const syncprogress = syncprogressData[0]
+  console.log(GameConfigData, 'GlobalConfigData', syncprogress)
+
   useEffect(() => {
     if (syncprogress?.percentage == 100) {
       console.log('syncprogress', syncprogress)
@@ -155,7 +155,6 @@ const Home = () => {
   // console.log(curPlayer, 'curPlayer', players)
 
   useEffect(() => {
-    getBalance()
     async function init() {
       if (curPlayer?.state >= 1 && curPlayer?.name) {
         let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: curPlayer.addr}))
@@ -176,7 +175,6 @@ const Home = () => {
         setUserUrl(curPlayer.userUrl);
         setLootUrl(curPlayer.lootUrl);
         setPlayer(curPlayer);
-        setStep('mint');
       }
     }
     init()
@@ -314,15 +312,8 @@ const Home = () => {
       message.error('waiting for wallet connection');
       return;
     }
-    if (curPlayer && curPlayer.state != 1 && curPlayer.state != 0) {
-      navigate('/game', {
-        state: {
-          username: '',
-          clothes: '',
-          handheld: '',
-          head: '',
-        }
-      });
+    if (curPlayer?.state >= 1) {
+      setStep('mint');
     } else {
       localStorage.removeItem('curPlayer');
       localStorage.removeItem('worldContractAddress');
@@ -330,55 +321,11 @@ const Home = () => {
     }
   }
 
-  const transferFun = async (to) => {
-    if (transfering) return
-    transfering = true
-    let PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-    console.log(wallet, 'wallet')
-    wallet.sendTransaction({
-      to,
-      value: ethers.utils.parseEther('1')
-    }).then(res => {
-      console.log(res, 'res')
-      transfering = false
-      getBalance()
-    }).catch(err => {
-      console.log(err)
-    })
-  }
-
-  const getBalance = async () => {
-    let balance = await network.publicClient.getBalance({
-      address: network.walletClient.account.address
-    })
-    if (balance.toString() == '0') {
-      transferFun(network.walletClient.account.address)
-    } else {
-      let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-      setWalletAddress(network.walletClient.account.address);
-      setWalletBalance(walletBalance);
-      localStorage.setItem('mi_user_address', network.walletClient.account.address)
-    }
-    // 转成eth
-  }
-
-  const initUserInfoFun = async () => {
-    await initUserInfo()
-    localStorage.removeItem('curPlayer');
-    localStorage.removeItem('worldContractAddress');
-    message.success('init success')
-  }
-
   return (
     <div className="mi-home-page">
       {contextHolder}
       <Header
         onPlayBtnClick={play}
-        walletAddress={walletAddress}
-        walletBalance={walletBalance}
       />
       {
         step === 'play' && (
@@ -396,7 +343,6 @@ const Home = () => {
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
                 <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
-                <button className="play-btn mi-btn" onClick={initUserInfoFun}>INIT USER</button>
 
               </div>
             </div>
