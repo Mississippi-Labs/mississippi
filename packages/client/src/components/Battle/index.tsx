@@ -436,7 +436,7 @@ export default function Battle(props) {
                     <div className='tactics-item bag'>Bag</div>
                     <div className='tactics-item' onClick={() => setTacticsStepFun(2, 'escape')}>Escape</div>
                   </div>) : tacticsStep == 2 ? (
-                    <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+                    <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF'}} >
                       <div className='tactics-item' onClick={() => setSelectTactic(1)}>Sprint</div>
                       <div className='tactics-item' onClick={() => setSelectTactic(2)}>Sneak</div>
                       <div className='tactics-item' onClick={() => setSelectTactic(3)}>Magic</div>
