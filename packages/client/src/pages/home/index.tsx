@@ -56,29 +56,27 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // 倒计时
-  const [isOpen, setIsOpen] = useState(null);
+  const [isOpen, setIsOpen] = useState(true);
   const [percentage, setPercentage] = useState(0);
 
   const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
 
-  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
-  const syncprogress = syncprogressData[0]
-  console.log(GameConfigData, 'GlobalConfigData', syncprogress)
+  // const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  // const syncprogress = syncprogressData[0]
+  // console.log(GameConfigData, 'GlobalConfigData', syncprogress)
 
-  useEffect(() => {
-    if (syncprogress?.percentage == 100) {
-      console.log('syncprogress', syncprogress)
-      setIsOpen(GameConfigData[0]?.isOpen)
-    }
-  }, [syncprogress?.percentage])
+  // useEffect(() => {
+  //   if (syncprogress?.percentage == 100) {
+  //     console.log('syncprogress', syncprogress)
+  //     setIsOpen(GameConfigData[0]?.isOpen)
+  //   }
+  // }, [syncprogress?.percentage])
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
     const author = params.get("author")
     if (author) {
       setIsOpen(true)
-    } else {
-      setIsOpen(null)
     }
   }, [])
 
