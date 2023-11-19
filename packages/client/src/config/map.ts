@@ -1,6 +1,18 @@
 export const DELIVERY = {
   x: 4,
   y: 5
+};
+
+export const MapConfig = {
+  visualWidth: 24,
+  visualHeight: 16,
+  cellSize: 48,
+  spriteCellSize: 16,
+}
+
+export const LimitSpace = {
+  x: ~~(MapConfig.visualWidth / 2),
+  y: ~~(MapConfig.visualHeight / 2)
 }
 
 const MAP_CFG = [

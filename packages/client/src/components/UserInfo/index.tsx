@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UserPackage from '@/components/UserPackage';
 import Appearance from '@/components/Appearance';
+import * as PIXI from 'pixi.js';
+import { Stage } from '@pixi/react';
+import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
+import { MapConfig } from '@/config/map';
+const { cellSize } = MapConfig;
+
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 export interface IUserInfo {
   head: string;
@@ -9,7 +16,7 @@ export interface IUserInfo {
   handheld: string;
   userUrl?: string;
   lootUrl?: string;
-  player?: any;
+  player?: IPlayer;
 }
 
 const UserInfo = (props: IUserInfo) => {
@@ -24,7 +31,9 @@ const UserInfo = (props: IUserInfo) => {
         <div className="user-detail-wrapper">
           <div className="user-appearance-wrapper">
             <div className="user-appearance-box">
-              <Appearance clothes={clothes || player?.equip?.clothes} handheld={handheld || player?.equip?.handheld} head={head || player?.equip?.head}/>
+              <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
+                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'idle'} />
+              </Stage>
             </div>
           </div>
           <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
@@ -42,7 +51,7 @@ const UserInfo = (props: IUserInfo) => {
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
-              <dd><span className="base-attr">{lootHasLoaded ? player?.hp.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.hp?.toString() : ''}</span></dd>
+              <dd><span className="base-attr">{lootHasLoaded ? player?.hp?.toString()  : 0}</span><span className="extra-attr">{lootHasLoaded ? player?.hp?.toString() : ''}</span></dd>
             </dl>
             <dl>
               <dt>Attack</dt>

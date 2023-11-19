@@ -40,6 +40,18 @@ $duration: 10s;
     100% {filter: hue-rotate(360deg)}
 }
 
+.mi-loading-wrap {
+    display: flex;
+    align-items: center;
+
+    .loading-percent {
+        margin-left: 40px;
+        font-size: 40px;
+        font-family: MISS, sans-serif;
+        color: #FCBD80;
+    }
+}
+
 
 // Set the rotation to '-135deg' to get a heart shaped loading indicator. 😘
 .loading {
@@ -47,7 +59,7 @@ $duration: 10s;
     width: $square * 3;
     height: $square * 3;
     transform: rotate(45deg);
-    animation: hue-rotate $duration linear infinite both;
+    //animation: hue-rotate $duration linear infinite both;
 }
 
 // Like I said, I'm using 'position: absolute' because of the background-attachment that otherwise doesn't work.
@@ -61,12 +73,10 @@ $duration: 10s;
     height: $square - 4px;
     margin: 2px;
     border-radius: 2px;
-    background: #07a;
-    background-image: linear-gradient(45deg, #fa0 40%, #0c9 60%);
-    background-image: -moz-linear-gradient(#fa0, #fa0);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    //background: #07a;
+    //background-image: linear-gradient(45deg, #FCBD80 40%, #0c9 60%);
+    //background-image: -moz-linear-gradient(#fa0, #fa0);
+    background: url("/assets/img/loading_bg.png") no-repeat center / 100%;
     animation: square-animation $duration ease-in-out infinite both;
 
     @for $i from 0 through 7 {

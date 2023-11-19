@@ -206,3 +206,60 @@ export const Hero = {
     'WoodcutterAxe'
   ]
 }
+
+export type ActionType = 'run' | 'idle' | 'slash' | 'die' | 'blink';
+export type FiltersType = 'blink';
+
+type BaseAction = {
+  step: number;
+  row: number;
+  loop: boolean;
+  filter?: FiltersType;
+};
+
+export type ActionsType = {
+  [key in ActionType]: BaseAction;
+};
+
+type EffectsRender = {
+  [key in FiltersType]: (frameIndex: number) => boolean;
+}
+
+export const EffectsRender: EffectsRender = {
+  blink: (frameIndex: number) => {
+    return frameIndex % 2 === 0;
+  }
+}
+
+export const Actions: ActionsType = {
+  run: {
+    step: 4,
+    row: 2, // first row is 0
+    loop: true
+  },
+  idle: {
+    step: 2,
+    row: 0,
+    loop: true
+  },
+  slash: {
+    step: 4,
+    row: 8,
+    loop: true
+  },
+  blink: {
+    step: 2,
+    row: 0,
+    loop: true,
+    filter: 'blink',
+  },
+  die: {
+    step: 3,
+    row: 13,
+    loop: false
+  }
+};
+
+export const FrameSize = 64;
+export const FrameOffsetY = FrameSize / 2;
+export const HeroRegions = ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon'];

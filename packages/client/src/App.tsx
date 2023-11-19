@@ -4,6 +4,7 @@ import Game from './pages/game';
 import Test from './pages/test';
 import Home from '@/pages/home';
 import HeroEdit from '@/pages/heroEdit';
+import PIXIAPP from '@/components/PIXIAPP';
 
 export const App = () => {
 
@@ -17,6 +18,7 @@ export const App = () => {
             <Route path="game" element={<Game />} />
             <Route path="test" element={<Test />} />
             <Route path="heroEdit" element={<HeroEdit />} />
+            <Route path="app" element={<PIXIAPP />} />
           </Route>
         </Routes>
       </BrowserRouter>
