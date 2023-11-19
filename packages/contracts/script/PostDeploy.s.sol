@@ -21,14 +21,14 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     console.log(" ========== PostDeploy  ========== ");
-    // MUser muser = new MUser(2, "MUser", "MUser", "", "");
-    // MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
-    // MPlugin mplugin = new MPlugin(address(mloot),address(muser));
+    MUser muser = new MUser(2, "MUser", "MUser", "", "");
+    MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
+    MPlugin mplugin = new MPlugin(address(mloot),address(muser));
 
     // ------------------ INIT ------------------
     GameConfigInit.initGameConfig(IWorld(worldAddress));
     BattleConfigInit.initBattleConfig(IWorld(worldAddress));
-    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress), address(0x394265F0592865D6aBecA8d98DcBC7B67D272944),address(0x394265F0592865D6aBecA8d98DcBC7B67D272944),address(0x394265F0592865D6aBecA8d98DcBC7B67D272944));
+    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress), address(muser),address(mloot),address(mplugin));
 
     vm.stopBroadcast();
 
