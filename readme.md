@@ -1,3 +1,5 @@
+note for EthGlobal Istanbul: Spoke with RAZA, verification exception because we are using MUD
+
 ## Installation
 
 ```text

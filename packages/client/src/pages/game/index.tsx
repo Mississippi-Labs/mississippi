@@ -28,6 +28,9 @@ import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+import PIXIAPP from '@/components/PIXIAPP';
+import { ICoordinate } from '@/components/MapCell';
+import Loading from '@/components/Loading';
 
 
 const toObject = (obj) => {
@@ -50,10 +53,6 @@ const Game = () => {
   } = useMUD();
 
   const [renderMapData, setRenderMapData] = useState([]);
-  const [vertexCoordinate, setVertexCoordinate] = useState({
-    x: 0,
-    y: 0,
-  });
 
   const simpleMapData = useMemo(() => {
     return simplifyMapData(renderMapData);
@@ -71,8 +70,6 @@ const Game = () => {
   const [balance, setBalance] = useState(0);
   const [openingBox, setOpeningBox] = useState();
 
-  const [percentage, setPercentage] = useState(0);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [gotBox, setGotBox] = useState(null);
@@ -80,14 +77,13 @@ const Game = () => {
   const { account } = network;
   const curId = account;
 
-  // const { Modal, open, close, setContent } = useModal();
-
   const mapDataRef = useRef([]);
-  const moveInterval = useRef<NodeJS.Timeout>();
-
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  // console.log(GlobalConfigData, 'GlobalConfigData')
+  const syncProgressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncProgress = (syncProgressData?.[0]?.percentage ?? 0);
+  // mud bug, if syncProgress not 100, it will return a decimals less 1.
+  const percentage = syncProgress < 1 ? ~~(syncProgress * 100) : syncProgress;
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -143,28 +139,8 @@ const Game = () => {
     return b.oreBalance - a.oreBalance
   })
 
-  const [renderPlayers, setRenderPlayers] = useState([]);
-  const playersCache = getPlayersCache(players);
-  useEffect(() => {
-    let renderPlayersArr = [...renderPlayers];
-    players.forEach((player) => {
-      const index = renderPlayers.findIndex((rPlayer) => rPlayer.addr === player.addr);
-      if (index === -1) {
-        // add
-        renderPlayersArr.push({ ...player });
-      } else {
-        // update
-        renderPlayersArr[index] = Object.assign(renderPlayersArr[index], player);
-      }
-    });
-    // remove players中不存在的
-    renderPlayersArr = renderPlayersArr.filter((player) => {
-      return players.findIndex((p) => p.addr === player.addr) !== -1;
-    });
-    setRenderPlayers(renderPlayersArr);
-  }, [playersCache])
 
-  const curPlayer = renderPlayers.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
@@ -216,14 +192,6 @@ const Game = () => {
     setBalance(walletBalance);  
   }
 
-  const syncprogress = getComponentValue(SyncProgress, singletonEntity);
-
-  useEffect(() => {
-    if (percentage < 100) {
-      console.log(syncprogress, 'syncprogress')
-      setPercentage(syncprogress?.percentage || 0);
-    }
-  }, [syncprogress])
 
   useEffect(() => {
     loadMapData().then((csv) => {
@@ -235,6 +203,7 @@ const Game = () => {
 
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
+    return;
     setStartBattleData(false);
     setBattleId(null);
     if (winner && attacker && defender) {
@@ -272,18 +241,34 @@ const Game = () => {
         return
       }
     }
-    
   }
 
-  const movePlayer = async (paths, merkelData) => {
-    if (curPlayer.waiting) {
+  const onMoveToDelivery = async () => {
+    let player = curPlayer
+    let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+    let userTokenId = addon.userId.toString()
+    let lootTokenId = addon.lootId.toString()
+
+    let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+    let url = urls[0]
+    let lootUrl = urls[1]
+
+    url = atobUrl(url)
+    lootUrl = atobUrl(lootUrl)
+
+    player.userUrl = url.image
+    player.lootUrl = lootUrl.image
+    player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
+    setUserInfoPlayer(player);
+    submitGemFun();
+  }
+
+  const isMovablePlayer = (player) => {
+    if (player.waiting) {
       message.error('Waiting for transaction');
-      return;
+      return false;
     }
-    let txFinished = false;
-    curPlayer.waiting = true;
-    let playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
-    console.log(playerLock, 'playerLock')
+    const playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
     if (playerLock && Number(playerLock.lockTime)) {
       message.error('You are locked');
       if (!timeout) {
@@ -292,58 +277,19 @@ const Game = () => {
           timeout = null
         }, 2000);
       }
-      txFinished = true;
       curPlayer.waiting = false;
-      return
+      return false;
     }
-    clearInterval(moveInterval.current);
-    let pathIndex = 0;
-    let blockTime = network?.publicClient?.chain?.id == 17001 ? 2500 : 1500
-    const timeInterval = ~~(blockTime / Number(curPlayer.speed))
-    moveInterval.current = setInterval(async () => {
-      setVertexCoordinate(triggerVertexUpdate(paths[pathIndex], curPlayer, mapDataRef.current, vertexCoordinate));
-      updatePlayerPosition(curPlayer, paths[pathIndex]);
-      setRenderPlayers([...renderPlayers]);
-      pathIndex++;
-      if (pathIndex === paths.length) {
-        clearInterval(moveInterval.current);
-        if (!txFinished) {
-          curPlayer.waiting = true;
-        }
-        const target = paths[pathIndex - 1];
-        const isDelivery = DELIVERY.x === target.x && DELIVERY.y === target.y;
-        if (isDelivery) {
-          let player = curPlayer
-          let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
-          let userTokenId = addon.userId.toString()
-          let lootTokenId = addon.lootId.toString()
-      
-          let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-          let url = urls[0]
-          let lootUrl = urls[1]
-        
-          url = atobUrl(url)
-          lootUrl = atobUrl(lootUrl)
+    return true;
+  }
 
-          player.userUrl = url.image
-          player.lootUrl = lootUrl.image
-          player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
-          setUserInfoPlayer(player);
-          submitGemFun();
-        }
-      }
-    }, timeInterval);
+  const movePlayer = async (paths, cb) => {
+    const merkelData = formatMovePath(paths.slice(1));
     const result = await move(merkelData);
-    txFinished = true;
-    curPlayer.waiting = false;
-    if (renderPreviewPaths.length > 0) {
-      const lastPreviewPath = renderPreviewPaths[renderPreviewPaths.length - 1];
-      previewPath(lastPreviewPath.x, lastPreviewPath.y);
-    }
+    cb?.();
     if (result?.type === 'error') {
       message.error(result.message);
     }
-
   };
 
   const atobUrl = (url) => {
@@ -450,7 +396,7 @@ const Game = () => {
       getCollectionsFun(box);
       return
     }
-    setOpeningBox(boxs[boxIndex].id);
+    setOpeningBox(id);
     await openBox(id);
     const blockNumber = await network.publicClient.getBlockNumber()
     // 每隔1s获取一次getBlockNumber
@@ -466,27 +412,15 @@ const Game = () => {
     }, 1000)
   }
 
-  const [renderPreviewPaths, setRenderPreviewPaths] = useState([]);
-  const previewPath = (x, y) => {
-    if (x === curPlayer?.x && y === curPlayer?.y) {
-      return;
-    }
-    if (curPlayer) {
-      const path = bfs(simpleMapData, curPlayer, { x, y }).slice(1);
-      if (!curPlayer.waiting) {
-        path.slice(0, Number(curPlayer.speed)).forEach(item => item.movable = true);
-      }
-      setRenderPreviewPaths(path);
-    }
-  }
 
   return (
     <GameContext.Provider
       value={{
         curId,
         curAddr: curPlayer?.addr,
-        players: renderPlayers,
-        renderPreviewPaths,
+        players,
+        curPlayer,
+        simpleMapData,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         openingBox,
@@ -494,32 +428,28 @@ const Game = () => {
         treasureChest: boxs,
         openTreasureChest,
         setStartBattle,
-        previewPath
+        isMovablePlayer,
+        onMoveToDelivery
       }}
     >
       <div className="mi-game" tabIndex={0}>
       <div className="mi-game-head">
         <div className="mi-game-user-avatar">
           <UserAvatar
-            username={curPlayer?.username}
-            hp={curPlayer?.hp}
-            maxHp={curPlayer?.maxHp}
-            ap={50}
-            maxAp={100}
-            clothes={curPlayer?.equip?.clothes}
-            handheld={curPlayer?.equip?.handheld}
-            head={curPlayer?.equip?.head}
-            address={account}
+            {...(curPlayer ?? {})}
             balance={balance}
+            address={account}
           />
         </div>
-        <Header onlyRight={true} /> 
+        <Header onlyRight={true} />
       </div>
-        <Map
-          width={MapConfig.visualWidth}
-          height={MapConfig.visualHeight}
-          vertexCoordinate={vertexCoordinate}
-        />
+        {
+          percentage < 100 ?
+            <Loading percent={percentage}/>
+            :
+            <PIXIAPP/>
+        }
+
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
@@ -552,7 +482,10 @@ const Game = () => {
             </div>
           </div>
         </Modal>
-        <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
+        {
+          percentage === 100 && <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
+        }
+
       </div>
     </GameContext.Provider>
   );

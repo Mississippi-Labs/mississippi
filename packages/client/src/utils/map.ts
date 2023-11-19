@@ -1,8 +1,8 @@
 import { CellType } from '@/constants';
 import { ICoordinate } from '@/components/MapCell';
 import { IPlayer } from '@/components/Player';
-import MAP_CFG from '@/config/map';
-import { LimitSpace, MapConfig } from '@/config';
+import MAP_CFG, { MapConfig, LimitSpace, DELIVERY } from '@/config/map';
+const { cellSize } = MapConfig;
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
   const { x: startX, y: startY} = startCoordinate;
@@ -39,9 +39,11 @@ export const loadMapData = async () => {
 const getNormalMovableCellClass = () => {
   const random = Math.random();
   if (random < 0.7) {
-    return 24;
+    return 23;
+    // return 24;
   } else if (random < 0.9) {
-    return 25;
+    return 24;
+    // return 25;
   } else {
     return 18;
   }
@@ -119,7 +121,7 @@ const getBlankCellClass = (movableConfig) => {
       wallIndexArr[productIndex - 1] = getBorderMovableCellClass();
       transforms.push({
         index: productWallIndexToFeIndex(productIndex),
-        transform: 'rotate(90deg)'
+        rotation: 90
       })
     });
     // 其他位置随机使用后缀0024，0025，0018的资源
@@ -146,7 +148,7 @@ const getBlankCellClass = (movableConfig) => {
       wallIndexArr[productIndex - 1] = getBorderMovableCellClass();
       transforms.push({
         index: productWallIndexToFeIndex(productIndex),
-        transform: 'rotate(90deg)'
+        rotation: 90
       })
     });
     // 其他位置随机使用后缀0024，0025，0018的资源
@@ -275,22 +277,22 @@ const getDeliveryCellClass = () => {
   const wallIndexArr = [27, 26, 27, 26, 28, 26, 27, 26, 27];
   const transforms = [ {
     index: 0,
-    transform: 'rotate(-90deg)'
+    rotation: -90
   }, {
     index: 3,
-    transform: 'rotate(-90deg)'
+    rotation: -90
   }, {
     index: 5,
-    transform: 'rotate(90deg)'
+    rotation: 90
   }, {
     index: 6,
-    transform: 'rotate(180deg)'
+    rotation: 180
   }, {
     index: 7,
-    transform: 'rotate(180deg)'
+    rotation: 180
   }, {
     index: 8,
-    transform: 'rotate(90deg)'
+    rotation: 90
   }];
 
   return {
@@ -406,6 +408,43 @@ export const triggerVertexUpdate = (cur, before, mapData, vertexCoordinate) => {
   });
 };
 
+export const triggerOffsetUpdate = (cur, before, mapData, offset) => {
+  const xDegree = cur.x - before.x;
+  const yDegree = cur.y - before.y;
+  if (xDegree > 0) {
+    const limitExceeded = cur.x > LimitSpace.x;
+    const lessBoundary = cur.x + LimitSpace.x < mapData[0].length - 1;
+    if (limitExceeded && lessBoundary) {
+      offset.x = (LimitSpace.x - cur.x) * cellSize;
+    }
+  } else if (xDegree < 0>) {
+    const limitExceeded = cur.x > LimitSpace.x;
+    if (limitExceeded) {
+      offset.x = (LimitSpace.x - cur.x ) * cellSize;
+    }
+  } else if (yDegree > 0) {
+    const limitExceeded = cur.y > LimitSpace.y;
+    const lessBoundary = cur.y + LimitSpace.y < mapData[0].length - 1;
+    if (limitExceeded && lessBoundary) {
+      offset.y = (LimitSpace.y - cur.y) * cellSize;
+    }
+  } else if (yDegree < 0) {
+    const limitExceeded = cur.y > LimitSpace.y;
+    if (limitExceeded) {
+      offset.y = (LimitSpace.y - cur.y) * cellSize;
+    }
+  }
+
+  return({
+    ...offset,
+  });
+};
+
 export const getDistance = (p1, p2) => {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 }
+
+export const isDelivery = (target: ICoordinate) => {
+  return DELIVERY.x === target.x && DELIVERY.y === target.y;
+}
+
