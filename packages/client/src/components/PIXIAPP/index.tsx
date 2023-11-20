@@ -29,7 +29,7 @@ const { cellSize, visualWidth, visualHeight } = MapConfig;
 const PIXIAPP = () => {
 
   const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
-    onMoveToDelivery, onPlayerMove, setStartBattle } = useContext(GameContext);
+    onMoveToDelivery, onPlayerMove, setStartBattle, blockTime = 1500 } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -94,7 +94,7 @@ const PIXIAPP = () => {
   const animateMove = (player, paths, onFinish) => {
     console.log(player, paths, 'animate move');
     let index = 0;
-    const linePath = createPathInterpolator(paths);
+    const linePath = createPathInterpolator(paths, ~~(blockTime / 16));
     const interval = setInterval(() => {
       const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
       if (!movingPlayer) {
