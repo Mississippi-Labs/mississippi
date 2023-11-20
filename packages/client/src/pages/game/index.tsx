@@ -203,7 +203,7 @@ const Game = () => {
 
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
-    return;
+    // return;
     setStartBattleData(false);
     setBattleId(null);
     if (winner && attacker && defender) {

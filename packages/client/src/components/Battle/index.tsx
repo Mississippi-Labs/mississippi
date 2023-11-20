@@ -31,6 +31,9 @@ export default function Battle(props) {
   const [showPlayer1Loss, setShowPlayer1Loss] = useState(false);
   const [showPlayer2Loss, setShowPlayer2Loss] = useState(false);
 
+  const [attackerAction, setAttackerAction] = useState('idle');
+  const [defenderAction, setDefenderAction] = useState('idle');
+
   const {
     components: { BattleList },
     systemCalls: { confirmBattle, revealBattle, forceEnd },
@@ -109,11 +112,13 @@ export default function Battle(props) {
         }
       }
     } else if (battleState == 2) {
+      console.log(battleState, battle)
       if (curType == 'attacker' && (battle?.attackerState == 2 || battle?.attackerState == 0)) {
         if (battle?.defenderState == 2 || battle?.defenderState == 0) {
           timeout && clearTimeout(timeout)
           timeout = null
           setBattleState(3)
+          console.log(3)
         } else {
           if (!timeout) {
             timeout = setTimeout(async () => {
@@ -153,6 +158,7 @@ export default function Battle(props) {
   console.log(battle, 'battles')
   useEffect(() => {
     if (battle) {
+      isFirst = false
       curType = battle?.attacker.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() ? 'attacker' : 'defender'
       if (battle && (!battleData.curHp || !battleData.targetHp)) {
         let data = {
@@ -168,20 +174,20 @@ export default function Battle(props) {
         state = 1
       } else if ((curType == 'attacker' && battle?.attackerState == 2) || (curType == 'defender' && battle?.defenderState == 2)) {
         state = 2
+      } else if (battle?.isEnd) {
+        isFirst = true
+        props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
+        return
       }
       setBattleState(state)
+      initBattle()
     }
   }, [])
 
-  if (battle && !battle?.isEnd) {
+  if (battle) {
     isFirst = false
     initBattle()
-  } else if (battle && battle?.isEnd && !isFirst) {
-    isFirst = true
-    props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
-    return
   }
-
   // if (battle) {
   //   if (!battleData.curHp || !battleData.targetHp) {
   //     let data = {
@@ -205,8 +211,11 @@ export default function Battle(props) {
   //   initBattle()
   // }
 
-  const [attackerAction, setAttackerAction] = useState('idle');
-  const [defenderAction, setDefenderAction] = useState('idle');
+  const finishBattleFun = () => {
+    if (battleState == 4) {
+      props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);
+    }
+  }
 
   useEffect(() => {
     if (battleState == 3) {
@@ -214,6 +223,10 @@ export default function Battle(props) {
       let data = JSON.parse(JSON.stringify(battleData))
       let battle1 = document.querySelector('.battle-1');
       let battle2 = document.querySelector('.battle-2');
+      if (battle.isEnd && battle?.attackerHP && battle?.defenderHP) {
+        props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
+        return
+      }
       if (battle1 && battle2) {
         console.log(battle?.attackerHP, battle?.defenderHP, data.attackerHP, data.defenderHP)
         setPlayer1LossData(Number(data.attackerHP) - Number(battle?.attackerHP))
@@ -234,10 +247,10 @@ export default function Battle(props) {
           setTimeout(() => {
             battle2.classList.remove('back');
             setShowPlayer2Loss(false)
-            if (defenderHP <= 0 || battle?.isEnd) {
+            if (defenderHP <= 0 && battle?.isEnd) {
               isFirst = true
               setDefenderAction('die');
-              setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
+              setBattleState(4)
               return
             }
             setTimeout(() => {
@@ -253,10 +266,10 @@ export default function Battle(props) {
                 setShowPlayer1Loss(true)
                 data.attackerHP = attackerHP
                 setBattleData(data)
-                if (attackerHP <= 0 || battle?.isEnd) {
+                if (attackerHP <= 0 && battle?.isEnd) {
                   setAttackerAction('die');
                   isFirst = true
-                  setTimeout(() => {props.finishBattle(battle?.winner, battle?.attacker, battle?.defender);}, 600)
+                  setBattleState(4)
                   return
                 }
                 setTimeout(() => {
@@ -264,7 +277,9 @@ export default function Battle(props) {
                   setPlayer1LossData(0);
                   setPlayer2LossData(0);
                   setShowPlayer1Loss(false)
-                  setBattleState(0)
+                  if (!battle?.isEnd) {
+                    setBattleState(0)
+                  }
                   setTacticsStep(1)
                 }, 400);
               }, 400);
@@ -338,7 +353,7 @@ export default function Battle(props) {
     // }
   }
   return (
-    <div className="mi-battle-wrap">
+    <div className="mi-battle-wrap" onClick={finishBattleFun}>
       <div className="mi-battle-content">
         <div className="mi-battle">
           <div className="mi-battle-main">
@@ -425,7 +440,7 @@ export default function Battle(props) {
                   battleState == 0 ? <p>what will you do ?</p> : (battleState == 1 || battleState == 2) ? <div >
                     <p>{curPlayer?.name} used a {confirmBattleData[1] == 1 ? 'Sprint' : confirmBattleData[1] == 2 ? 'Sneak' : 'Magic'}!</p>
                     <p>{targetPlayer?.name} is thinking...</p>
-                  </div> : battleState == 3 ? getDom() : null
+                  </div> : battleState == 3 ? getDom() : battleState == 4 ? <p>{battle?.winner.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() ? `You win the battle! Click anywhere on the screen to continue you adventure` : `You loss the battle! Don't worry. Click anywhere on the screen to return to the Base`}</p> : null
                 }
                 
               </div>
