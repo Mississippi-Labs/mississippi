@@ -151,6 +151,9 @@ export default function Battle(props) {
           }
         }
       }
+    } else if (battleState != 3 && battleState != 4 && battle?.isEnd) {
+      props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
+      return
     }
   }
 
@@ -358,7 +361,7 @@ export default function Battle(props) {
         <div className="mi-battle">
           <div className="mi-battle-main">
             <div className="mi-battle-character">
-              <div className="mi-battle-character-card battle-1" >
+              <div className="mi-battle-character-card" >
                 <div className="mi-battle-character-card-hp">
                   <div className='user-info'>
                     <div>{curPlayer?.addr == battleData.attacker ? curPlayer?.name : targetPlayer?.name}</div>
@@ -383,7 +386,7 @@ export default function Battle(props) {
                     showPlayer1Loss ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <div className='dark-attacker'>
+                <div className='dark-attacker battle-1'>
                   <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
                     <Player
                       size={128}
@@ -395,7 +398,7 @@ export default function Battle(props) {
                   </Stage>
                 </div>
               </div>
-              <div className="mi-battle-character-card battle-2" >
+              <div className="mi-battle-character-card" >
                 <div className="mi-battle-character-card-hp">
                   <div className='user-info'>
                     <div style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis'}}>{curPlayer?.addr == battleData.defender ? curPlayer?.name : targetPlayer?.name}</div>
@@ -420,7 +423,7 @@ export default function Battle(props) {
                     showPlayer2Loss ? <div className="hp-loss">-{player2LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <div className='dark-defender'>
+                <div className='dark-defender battle-2'>
                   <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
                     <Player
                       size={128}
