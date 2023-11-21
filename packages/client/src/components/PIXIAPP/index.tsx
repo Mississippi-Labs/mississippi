@@ -138,7 +138,7 @@ const PIXIAPP = () => {
 
   const createPreviewPath = (coordinate: ICoordinate) => {
     const { x, y } = coordinate;
-    if (!curPlayer || (x === curPlayer.x && y === curPlayer.y) || curPlayer.moving) {
+    if (!curPlayer || (x === curPlayer.x && y === curPlayer.y) || curPlayer.moving || curPlayer.x % 1 !== 0 || curPlayer.y % 1 !== 0) {
       return;
     }
 
@@ -165,7 +165,7 @@ const PIXIAPP = () => {
     onPlayerMove(paths, () => {
       curPlayer.waiting = false;
       setPreviewPaths((prevPath) => {
-        if (prevPath.length > 0) {
+        if (prevPath?.length > 0) {
           const lastPreviewPath = prevPath[prevPath.length - 1]
           return createPreviewPath(lastPreviewPath);
         }
