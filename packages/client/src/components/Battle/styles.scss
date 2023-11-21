@@ -51,27 +51,6 @@
       height: 319px;
       transition: all .3s;
 
-      &.battle-1 {
-        &.attack {
-          transform: translateX(300px);
-        }
-        &.back {
-          transform: translateX(-30px);
-        }
-        img {
-          transform: scaleX(-1);
-        }
-      }
-
-      &.battle-2 {
-        &.attack {
-          transform: translateX(-300px);
-        }
-        &.back {
-          transform: translateX(30px);
-        }
-      }
-
       img {
         // margin-top: 90px;
         width: 280px;
@@ -148,6 +127,27 @@
           }
         }
       }
+
+      .battle-1 {
+        &.attack {
+          transform: translateX(400px);
+        }
+        &.back {
+          transform: translateX(-30px);
+        }
+        img {
+          transform: scaleX(-1);
+        }
+      }
+
+      .battle-2 {
+        &.attack {
+          transform: translateX(-400px);
+        }
+        &.back {
+          transform: translateX(30px);
+        }
+      }
       .dark-attacker {
         position: relative;
         top: 20px;
@@ -201,7 +201,7 @@
       height: 108px;
       border-radius: 10px;
       background: #6F391E;
-      padding: 22px;
+      padding: 10px 22px;
       box-sizing: border-box;
       line-height: 2;
     }

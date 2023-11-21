@@ -412,12 +412,14 @@ const Game = () => {
     }, 1000)
   }
 
+  let blockTime = network?.publicclient?.chain?.id == 17001 ? 2500 : 1500
 
   return (
     <GameContext.Provider
       value={{
         curId,
         curAddr: curPlayer?.addr,
+        blockTime,
         players,
         curPlayer,
         simpleMapData,
