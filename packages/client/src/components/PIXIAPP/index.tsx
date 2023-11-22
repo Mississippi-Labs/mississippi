@@ -45,9 +45,7 @@ const PIXIAPP = () => {
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
-  console.log(players, 'players')
   const playersCache = getPlayersCache(players);
-  console.log(playersCache, 'players')
   useEffect(() => {
     let renderPlayersArr = [...renderPlayers];
     players.filter((player) => isValidPlayer(player)).forEach((player) => {
