@@ -257,6 +257,7 @@ const Home = () => {
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       let url = urls[0]
       let lootUrl = urls[1]
+      console.log("get loot and user success")
       console.log(urls, 'url')
       url = atobUrl(url)
       lootUrl = atobUrl(lootUrl)
