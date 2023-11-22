@@ -12,7 +12,7 @@ export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {
 }
 
 export const getPlayersCache = (players: IPlayer[] = []) => {
-  return players.map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
+  return players.filter((player) => isValidPlayer(player)).map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
 }
 
 export const isSamePosition = (p1, p2) => {

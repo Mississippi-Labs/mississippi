@@ -29,7 +29,7 @@ const { cellSize, visualWidth, visualHeight } = MapConfig;
 const PIXIAPP = () => {
 
   const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
-    onMoveToDelivery, onPlayerMove, setStartBattle } = useContext(GameContext);
+    onMoveToDelivery, onPlayerMove, setStartBattle, blockTime = 1500 } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -45,8 +45,9 @@ const PIXIAPP = () => {
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
-
+  console.log(players, 'players')
   const playersCache = getPlayersCache(players);
+  console.log(playersCache, 'players')
   useEffect(() => {
     let renderPlayersArr = [...renderPlayers];
     players.filter((player) => isValidPlayer(player)).forEach((player) => {
@@ -74,7 +75,7 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => players.find((p) => p.addr === player.addr));
+    renderPlayersArr = renderPlayersArr.filter((player) => players.filter((p) => isValidPlayer(p)).find((p) => p.addr === player.addr));
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
@@ -94,7 +95,7 @@ const PIXIAPP = () => {
   const animateMove = (player, paths, onFinish) => {
     console.log(player, paths, 'animate move');
     let index = 0;
-    const linePath = createPathInterpolator(paths);
+    const linePath = createPathInterpolator(paths, ~~(blockTime / 16));
     const interval = setInterval(() => {
       const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
       if (!movingPlayer) {
@@ -138,7 +139,7 @@ const PIXIAPP = () => {
 
   const createPreviewPath = (coordinate: ICoordinate) => {
     const { x, y } = coordinate;
-    if (!curPlayer || (x === curPlayer.x && y === curPlayer.y) || curPlayer.moving) {
+    if (!curPlayer || (x === curPlayer.x && y === curPlayer.y) || curPlayer.moving || curPlayer.x % 1 !== 0 || curPlayer.y % 1 !== 0) {
       return;
     }
 
@@ -165,7 +166,7 @@ const PIXIAPP = () => {
     onPlayerMove(paths, () => {
       curPlayer.waiting = false;
       setPreviewPaths((prevPath) => {
-        if (prevPath.length > 0) {
+        if (prevPath?.length > 0) {
           const lastPreviewPath = prevPath[prevPath.length - 1]
           return createPreviewPath(lastPreviewPath);
         }
