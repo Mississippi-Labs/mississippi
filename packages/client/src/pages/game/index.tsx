@@ -32,6 +32,7 @@ import PIXIAPP from '@/components/PIXIAPP';
 import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
+import discordImg from '@/assets/img/discord.png';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -413,7 +414,6 @@ const Game = () => {
   }
 
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
-
   return (
     <GameContext.Provider
       value={{
@@ -451,7 +451,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
-
+        <div className="discord">
+          <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
+        </div>
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }

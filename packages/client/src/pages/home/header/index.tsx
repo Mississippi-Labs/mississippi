@@ -102,7 +102,7 @@ const HomeHeader = (props: IProps) => {
                       <img src={imgTwitter} alt=""/>
                     </li>
                     <li>
-                      <a href="https://discord.gg/rg9V8J49" target="_blank" title="coming soon">Discord</a>
+                      <a href="https://discord.gg/UkarGN9Fjn" target="_blank" title="coming soon">Discord</a>
                       <img src={imgDiscord} alt=""/>
                     </li>
                     
