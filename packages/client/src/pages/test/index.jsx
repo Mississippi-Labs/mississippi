@@ -13,6 +13,7 @@ import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { loadMapData } from "@/utils";
 import { Switch } from 'antd';
+import { message } from 'antd';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
@@ -328,7 +329,7 @@ const Test = () => {
     if (!box) return
     console.log(box, 'box', boxi,boxData1 )
     await CreateBox(box.x, box.y);
-
+    message.success(`创建宝箱成功，坐标：${box.x}，${box.y}`);
     if (boxi >= boxData1.length) {
       // boxI = 0
     } else {
@@ -367,8 +368,10 @@ const Test = () => {
     setDefaultChecked(checked)
   }
 
-  const setGmaeOpenFun = () => {
-    setGmaeOpen(defaultChecked)
+  const setGmaeOpenFun = async () => {
+    message.loading('设置中...');
+    await setGmaeOpen(defaultChecked)
+    message.success('设置成功');
   }
 
   // useEffect(() => {
