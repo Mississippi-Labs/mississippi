@@ -10,11 +10,10 @@ interface IProps {
 const PIXIPlayers = (props: IProps) => {
 
   const { data = [] } = props;
-
   return (
     <Container>
       {
-        data.filter(player => !isDelivery(player)).map((player, index) => {
+        data.filter(player => !isDelivery(player) && (player.state == 2 || player.state == 3)).map((player, index) => {
           return <Player key={index} {...player}/>;
         })
       }

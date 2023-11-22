@@ -12,7 +12,7 @@ export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {
 }
 
 export const getPlayersCache = (players: IPlayer[] = []) => {
-  return players.map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
+  return players.filter((player) => isValidPlayer(player)).map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
 }
 
 export const isSamePosition = (p1, p2) => {
@@ -42,5 +42,5 @@ export const createPathInterpolator = (path, steps = 24) => {
 }
 
 export const isValidPlayer = (player: IPlayer) => {
-  return player.state === 2 || player.state === 3;
+  return player.state === 2;
 }

@@ -45,7 +45,6 @@ const PIXIAPP = () => {
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
-
   const playersCache = getPlayersCache(players);
   useEffect(() => {
     let renderPlayersArr = [...renderPlayers];
@@ -74,7 +73,7 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => players.find((p) => p.addr === player.addr));
+    renderPlayersArr = renderPlayersArr.filter((player) => players.filter((p) => isValidPlayer(p)).find((p) => p.addr === player.addr));
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
