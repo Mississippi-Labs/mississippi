@@ -31,8 +31,6 @@ let lootTokenIds: any
 
 let transfering = false
 
-console.log(import.meta.env.IS_OPEN )
-
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
@@ -58,7 +56,7 @@ const Home = () => {
   const [player, setPlayer] = useState<any>();
 
   // isOpen
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(import.meta.env.VITE_IS_OPEN == 'true' ? true : false);
   const [percentage, setPercentage] = useState(0);
 
   const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
