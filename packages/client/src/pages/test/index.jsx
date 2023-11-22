@@ -340,7 +340,10 @@ const Test = () => {
   }
 
   const CreateBoxFun = async () => {
-    CreateBox(boxData[0], boxData[1]);
+    message.loading('创建中...');
+    await CreateBox(boxData[0], boxData[1]);
+    message.success(`创建宝箱成功，坐标：${boxData[0]}，${boxData[1]}`);
+
   }
 
   const openBoxFun = () => {
