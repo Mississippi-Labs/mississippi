@@ -7,6 +7,7 @@ import imgDiscord from '@/assets/img/icon_d.png';
 import UserAddress from '@/components/UserAddress';
 import { useMUD } from '@/mud/MUDContext';
 import { ethers } from 'ethers';
+import { TRANSFER_GAS } from '@/config/chain';
 
 interface IProps {
   onPlayBtnClick: () => void;
@@ -39,9 +40,10 @@ const HomeHeader = (props: IProps) => {
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
     console.log(wallet, 'wallet')
+    let transferGas = TRANSFER_GAS[network.walletClient?.chain?.id || 31337]
     wallet.sendTransaction({
       to,
-      value: ethers.utils.parseEther('0.01')
+      value: ethers.utils.parseEther(transferGas)
     }).then(res => {
       console.log(res, 'res')
       transfering = false

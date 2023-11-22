@@ -55,7 +55,7 @@ const Home = () => {
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
 
-  // 倒计时
+  // isOpen
   const [isOpen, setIsOpen] = useState(true);
   const [percentage, setPercentage] = useState(0);
 

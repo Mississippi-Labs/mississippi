@@ -31,8 +31,7 @@ import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
 import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
-import BLOCK_TIME from '@/config/blockTime';
-
+import {BLOCK_TIME} from '@/config/chain';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
