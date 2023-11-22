@@ -42,5 +42,5 @@ export const createPathInterpolator = (path, steps = 24) => {
 }
 
 export const isValidPlayer = (player: IPlayer) => {
-  return player.state === 2 || player.state === 3;
+  return player.state === 2;
 }
