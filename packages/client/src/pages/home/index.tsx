@@ -31,6 +31,8 @@ let lootTokenIds: any
 
 let transfering = false
 
+console.log(import.meta.env.IS_OPEN )
+
 const Home = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
