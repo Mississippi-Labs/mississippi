@@ -156,19 +156,19 @@ const Game = () => {
   });
   const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
   if (battle && !startBattleData && percentage == 100) {
-      const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
-      const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
-      const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-      if (!battleCurPlayer) {
-        setBattleCurPlayer(cur)
-      }
-      if (!targetPlayer) {
-        setTargetPlayer(target)
-      }
-      if (!battleId) {
-        setBattleId(battle.id)
-      }
-      setStartBattleData(true);
+    const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
+    const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+    const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+    if (!battleCurPlayer) {
+      setBattleCurPlayer(cur)
+    }
+    if (!targetPlayer) {
+      setTargetPlayer(target)
+    }
+    if (!battleId) {
+      setBattleId(battle.id)
+    }
+    setStartBattleData(true);
   }
   
   const getCollectionsFun = (box: any) => {
@@ -242,6 +242,11 @@ const Game = () => {
         return
       }
     }
+  }
+
+  if (startBattleData && percentage == 100 && battle && battle.id != battleId) {
+    console.log('battle', battle, battleId)
+    finishBattle(null, null, null)
   }
 
   const onMoveToDelivery = async () => {
