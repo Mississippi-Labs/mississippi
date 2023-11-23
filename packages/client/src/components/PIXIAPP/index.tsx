@@ -12,7 +12,7 @@ import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
 import { ICoordinate } from '@/components/MapCell';
 import { CellType } from '@/constants';
-import { bfs, getDistance, isDelivery, isMovable, triggerOffsetUpdate } from '@/utils/map';
+import { bfs, calculateOffset, getDistance, isDelivery, isMovable } from '@/utils/map';
 import {
   createPathInterpolator,
   getPlayersCache,
@@ -69,6 +69,9 @@ const PIXIAPP = () => {
         }
       } else {
         renderPlayersArr.push({ ...player });
+        if (player.addr === curAddr) {
+          setOffset(calculateOffset(player));
+        }
         console.log(`load player ${player.name}`)
       }
     });
@@ -101,7 +104,7 @@ const PIXIAPP = () => {
         return;
       }
       if (movingPlayer.addr === curPlayer?.addr) {
-        setOffset(triggerOffsetUpdate(linePath[index], movingPlayer, simpleMapData, offset));
+        setOffset(calculateOffset(linePath[index]));
       }
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
