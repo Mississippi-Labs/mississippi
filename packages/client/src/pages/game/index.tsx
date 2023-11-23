@@ -334,7 +334,6 @@ const Game = () => {
       try {
         curPlayer.waiting = true;
         await goHome();
-        await joinBattlefield()
         curPlayer.waiting = false;
       } catch (error) {
         console.log(error)
@@ -347,12 +346,15 @@ const Game = () => {
     }
   }
 
-  const closeUserInfoDialog = () => {
+  const closeUserInfoDialog = async () => {
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
     } else {
+      message.loading('join battlefield')
+      await joinBattlefield()
       setUserInfoVisible(false);
+      message.destroy()
     }
   }
 
