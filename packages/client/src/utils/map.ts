@@ -408,37 +408,13 @@ export const triggerVertexUpdate = (cur, before, mapData, vertexCoordinate) => {
   });
 };
 
-export const triggerOffsetUpdate = (cur, before, mapData, offset) => {
-  const xDegree = cur.x - before.x;
-  const yDegree = cur.y - before.y;
-  if (xDegree > 0) {
-    const limitExceeded = cur.x > LimitSpace.x;
-    const lessBoundary = cur.x + LimitSpace.x < mapData[0].length - 1;
-    if (limitExceeded && lessBoundary) {
-      offset.x = (LimitSpace.x - cur.x) * cellSize;
-    }
-  } else if (xDegree < 0>) {
-    const limitExceeded = cur.x > LimitSpace.x;
-    if (limitExceeded) {
-      offset.x = (LimitSpace.x - cur.x ) * cellSize;
-    }
-  } else if (yDegree > 0) {
-    const limitExceeded = cur.y > LimitSpace.y;
-    const lessBoundary = cur.y + LimitSpace.y < mapData[0].length - 1;
-    if (limitExceeded && lessBoundary) {
-      offset.y = (LimitSpace.y - cur.y) * cellSize;
-    }
-  } else if (yDegree < 0) {
-    const limitExceeded = cur.y > LimitSpace.y;
-    if (limitExceeded) {
-      offset.y = (LimitSpace.y - cur.y) * cellSize;
-    }
-  }
-
-  return({
-    ...offset,
-  });
-};
+export const calculateOffset = (coordinate: ICoordinate) => {
+  const { x, y } = coordinate;
+  const { visualWidth, visualHeight, width, height, cellSize } = MapConfig;
+  const offsetX = Math.max(0, Math.min(x - visualWidth / 2, width - visualWidth));
+  const offsetY = Math.max(0, Math.min(y - visualHeight / 2, height - visualHeight));
+  return { x: -offsetX * cellSize, y: -offsetY * cellSize };
+}
 
 export const getDistance = (p1, p2) => {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
