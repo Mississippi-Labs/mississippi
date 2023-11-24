@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Has, HasValue, getComponentValue, ProxyRead } from '@latticexyz/recs';
 import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
@@ -22,7 +21,6 @@ import UserInfoDialog from '@/components/UserInfoDialog';
 import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
-import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';

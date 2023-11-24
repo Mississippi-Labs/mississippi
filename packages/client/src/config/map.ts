@@ -81,7 +81,3 @@ export const MapConfig = {
   height: MAP_CFG.length,
 }
 
-export const LimitSpace = {
-  x: ~~(MapConfig.visualWidth / 2),
-  y: ~~(MapConfig.visualHeight / 2)
-}
