@@ -25,13 +25,14 @@ const Fog = (props: IProps) => {
 
     const ctx = canvas.getContext('2d');
 
-    const gradient = ctx.createRadialGradient(width / 2, width / 2, width / 16, width / 2, width / 2, width / 8);
+    const gradient = ctx.createRadialGradient(width / 2, width / 2, width / 12, width / 2, width / 2, width / 6);
 
     gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, width);
+    ctx.fill();
     setTexture(PIXI.Texture.from(canvas));
   }, []);
 
