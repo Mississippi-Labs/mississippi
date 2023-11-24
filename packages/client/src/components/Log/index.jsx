@@ -35,9 +35,9 @@ const Log = () => {
   }, []);
 
   return (
-    <div ref={myLog} style={{ fontFamily: 'MISS', height: '200px', position: 'fixed', bottom: '40px', left: '18px', zIndex: '99' }}>
+    <div style={{ fontFamily: 'MISS', height: '200px', position: 'fixed', bottom: '40px', left: '18px', zIndex: '99' }}>
       <div className="title" style={{ width: '249px', height: '32px', color: '#FFF', fontSize: '18px' }}>Log</div>
-      <div style={{height: '168px',overflow: 'auto'}}>
+      <div ref={myLog} style={{height: '168px',overflow: 'auto'}}>
         {
           logs.map((log, index) => (
             <div key={index} style={{ color: log?.type == 'error' ? '#F00' : log.block ? '#FFF' : '#FFE303', fontSize: '10px', lineHeight: '1.4', marginBottom: '10px' }}>{log?.type == 'error' ? 'Error' : log.block || 'waiting'} {log.msg}</div>
