@@ -116,6 +116,11 @@ const Game = () => {
     const player = getComponentValue(Player, entity);
     player.addr = address
     player.username = player.name;
+    Object.keys(player).forEach((k) => {
+      if (typeof player[k] === 'bigint') {
+        player[k] = Number(player[k])
+      }
+    });
     LootList1Data.forEach((item) => {
       if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
         let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
