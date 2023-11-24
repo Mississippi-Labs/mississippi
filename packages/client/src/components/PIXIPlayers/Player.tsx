@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, AnimatedSprite, Text, Graphics } from '@pixi/react';
+import { Container, AnimatedSprite, Text, Graphics, Sprite } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { Actions, ActionType, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
@@ -50,12 +50,13 @@ export interface IPlayer {
   waiting?: boolean; // wait tx
   isPlaying?: boolean;
   hpVisible?: boolean;
+  hunted?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
   const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false,
-    moving, hpVisible = false, hp, maxHp } = props;
+    moving, hpVisible = false, hp, maxHp, hunted = false } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -211,6 +212,18 @@ const Player = (props: IPlayer) => {
               />
             )
         })
+      }
+      {
+        hunted && (
+          <Sprite
+            anchor={0.5}
+            x={cellSize / 2}
+            y={cellSize + 10}
+            image={'/assets/img/hunted.png'}
+            width={30}
+            height={30}
+          />
+        )
       }
       {/*<Graphics*/}
       {/*  x={1}*/}

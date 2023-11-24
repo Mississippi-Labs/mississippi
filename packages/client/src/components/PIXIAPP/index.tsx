@@ -40,6 +40,7 @@ const PIXIAPP = () => {
   });
   const [clickedPlayers, setClickedPlayers] = useState([]);
   const [activePlayerId, setActivePlayerId] = useState('');
+  const [huntingPlayerId, setHuntingActivePlayerId] = useState('');
 
   const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
@@ -175,6 +176,8 @@ const PIXIAPP = () => {
       })
       if (isDelivery(coordinate)) {
         onMoveToDelivery();
+      } else {
+        tryHunt();
       }
       setRenderPlayers([...renderPlayers]);
     });
@@ -223,6 +226,14 @@ const PIXIAPP = () => {
     }
   }
 
+  const tryHunt = () => {
+    const huntedPlayer = renderPlayers.find(player => player.addr === huntingPlayerId);
+    if (!huntedPlayer || getDistance(curPlayer, huntedPlayer) > curPlayer.attackRange) {
+      return;
+    }
+    setStartBattle(huntedPlayer);
+  }
+
   const exeAction = (action) => {
     setMenuVisible(false);
     const activePlayer = clickedPlayers.find((item) => item.addr === activePlayerId);
@@ -232,9 +243,19 @@ const PIXIAPP = () => {
         break;
       case 'attack':
         setStartBattle(activePlayer);
+        setHuntingActivePlayerId('');
         break;
       case 'info':
         showUserInfo(activePlayer);
+        break;
+      case 'hunt':
+        if (getDistance(curPlayer, activePlayer) <= curPlayer.attackRange) {
+          exeAction('attack')
+        }
+        setHuntingActivePlayerId(activePlayerId);
+        setTimeout(() => {
+          tryHunt()
+        })
         break;
     }
   }
@@ -256,7 +277,7 @@ const PIXIAPP = () => {
             data={treasureChest}
             openingBox={openingBox}
           />
-          <PIXIPlayers data={renderPlayers}/>
+          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId}/>
           <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
         </Container>
       </Stage>
@@ -288,24 +309,38 @@ const PIXIAPP = () => {
             <ul className="mi-cell-action-menu">
               {
                 activePlayerId !== curAddr && (
-                  <li>
-                    <button
-                      className="mi-btn"
-                      onClick={() => exeAction('move')}
-                    >move</button>
-                  </li>
+                  <>
+                    <li>
+                      <button
+                        className="mi-btn"
+                        onClick={() => exeAction('move')}
+                      >move</button>
+                    </li>
+                    <li>
+                      <button
+                        className="mi-btn"
+                        onClick={() => exeAction('attack')}
+                      >attack</button>
+                    </li>
+                    <li>
+                      <button
+                        className="mi-btn"
+                        onClick={() => exeAction('hunt')}
+                      >hunt</button>
+                    </li>
+                  </>
                 )
               }
-              {
-                activePlayerId !== curAddr && (
-                  <li>
-                    <button
-                      className="mi-btn"
-                      onClick={() => exeAction('attack')}
-                    >attack</button>
-                  </li>
-                )
-              }
+              {/*{*/}
+              {/*  activePlayerId !== curAddr && (*/}
+              {/*    <li>*/}
+              {/*      <button*/}
+              {/*        className="mi-btn"*/}
+              {/*        onClick={() => exeAction('attack')}*/}
+              {/*      >attack</button>*/}
+              {/*    </li>*/}
+              {/*  )*/}
+              {/*}*/}
               <li>
                 <button
                   className="mi-btn"
