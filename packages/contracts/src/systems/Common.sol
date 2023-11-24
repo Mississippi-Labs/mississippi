@@ -7,6 +7,11 @@ struct Position {
     bytes32[] proof;
 }
 
+struct Coordinate {
+       uint16 x;
+       uint16 y;
+    }
+
 // struct BattleParam {
 //     uint256 attackerPower;
 //     uint256 defenderPower;

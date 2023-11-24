@@ -4,6 +4,7 @@ pragma solidity >=0.8.0;
 import { System } from "@latticexyz/world/src/System.sol";
 import { Season, GameConfig, BoxList, GlobalConfig} from "@codegen/Tables.sol";
 import { GAME_CONFIG_KEY, GLOBAL_CONFIG_KEY } from "../Constants.sol";
+import { Coordinate } from "./Common.sol";
 
 contract GMSystem  is System {
     bytes32 constant MAP_KEY = keccak256("Season-Key");
@@ -40,9 +41,13 @@ contract GMSystem  is System {
         BoxList.setX(boxId, _x);
         BoxList.setY(boxId, _y);
         BoxList.setDropTime(boxId, block.timestamp);
-        // BoxList.setOreBalance(boxId, _oreBalance);
-        // BoxList.setTreasureBalance(boxId, _treasureBalance);
         GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
+    }
+
+    function multCreateBox(Coordinate[] memory cList) public {
+        for (uint i = 0; i < cList.length; i++) {
+            CreateBox(cList[i].x, cList[i].y);
+        }
     }
 
     // set user contract address 

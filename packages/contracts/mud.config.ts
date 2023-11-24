@@ -36,12 +36,12 @@ export default mudConfig({
     BattleEndType: ["NotEnd", "NormalEnd", "AllEscape", "RoundEnd"],
   },
   tables: {
+    
     Season: {
       schema: {
         start: "uint256",
         end: "uint256",
         no: "uint256",
-
       }
     },
     PlayerSeason: {
