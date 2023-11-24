@@ -5,16 +5,18 @@ import { isDelivery } from '@/utils/map';
 
 interface IProps {
   data: IPlayer[];
+  huntingPlayerId?: string;
 }
 
 const PIXIPlayers = (props: IProps) => {
 
-  const { data = [] } = props;
+  const { data = [], huntingPlayerId } = props;
   return (
     <Container>
       {
-        data.filter(player => !isDelivery(player) && (player.state == 2 || player.state == 3)).map((player, index) => {
-          return <Player key={index} {...player}/>;
+        data.filter(player => !isDelivery(player)).map((player, index) => {
+
+          return <Player key={index} hpVisible hunted={huntingPlayerId === player.addr} {...player}/>;
         })
       }
     </Container>

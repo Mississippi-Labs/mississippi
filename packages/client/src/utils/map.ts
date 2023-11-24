@@ -1,7 +1,7 @@
 import { CellType } from '@/constants';
 import { ICoordinate } from '@/components/MapCell';
 import { IPlayer } from '@/components/Player';
-import MAP_CFG, { MapConfig, LimitSpace, DELIVERY } from '@/config/map';
+import MAP_CFG, { MapConfig, DELIVERY } from '@/config/map';
 const { cellSize } = MapConfig;
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
@@ -372,73 +372,14 @@ export const simplifyMapData = (mapData: number[][]) => {
   return  mapData.map((row) => row.map(type => isMovable(type) ? 1 : 0));
 }
 
-export const triggerVertexUpdate = (cur, before, mapData, vertexCoordinate) => {
-  const xDegree = cur.x - before.x;
-  const yDegree = cur.y - before.y;
-  if (xDegree === 1) {
-    const limitExceeded = cur.x - vertexCoordinate.x > LimitSpace.x;
-    const lessBoundary =
-      vertexCoordinate.x + MapConfig.visualWidth < mapData[0].length - 1;
-    if (limitExceeded && lessBoundary) {
-      vertexCoordinate.x++;
-    }
-  } else if (xDegree === -1) {
-    const limitExceeded = cur.x - vertexCoordinate.x < LimitSpace.x;
-    const lessBoundary = vertexCoordinate.x > 0;
-    if (limitExceeded && lessBoundary) {
-      vertexCoordinate.x--;
-    }
-  } else if (yDegree === 1) {
-    const limitExceeded = cur.y - vertexCoordinate.y > LimitSpace.y;
-    const lessBoundary =
-      vertexCoordinate.y + MapConfig.visualHeight < mapData.length - 1;
-    if (limitExceeded && lessBoundary) {
-      vertexCoordinate.y++;
-    }
-  } else if (yDegree === -1) {
-    const limitExceeded = cur.y - vertexCoordinate.y < LimitSpace.y;
-    const lessBoundary = vertexCoordinate.y > 0;
-    if (limitExceeded && lessBoundary) {
-      vertexCoordinate.y--;
-    }
-  }
 
-  return({
-    ...vertexCoordinate,
-  });
-};
-
-export const triggerOffsetUpdate = (cur, before, mapData, offset) => {
-  const xDegree = cur.x - before.x;
-  const yDegree = cur.y - before.y;
-  if (xDegree > 0) {
-    const limitExceeded = cur.x > LimitSpace.x;
-    const lessBoundary = cur.x + LimitSpace.x < mapData[0].length - 1;
-    if (limitExceeded && lessBoundary) {
-      offset.x = (LimitSpace.x - cur.x) * cellSize;
-    }
-  } else if (xDegree < 0>) {
-    const limitExceeded = cur.x > LimitSpace.x;
-    if (limitExceeded) {
-      offset.x = (LimitSpace.x - cur.x ) * cellSize;
-    }
-  } else if (yDegree > 0) {
-    const limitExceeded = cur.y > LimitSpace.y;
-    const lessBoundary = cur.y + LimitSpace.y < mapData[0].length - 1;
-    if (limitExceeded && lessBoundary) {
-      offset.y = (LimitSpace.y - cur.y) * cellSize;
-    }
-  } else if (yDegree < 0) {
-    const limitExceeded = cur.y > LimitSpace.y;
-    if (limitExceeded) {
-      offset.y = (LimitSpace.y - cur.y) * cellSize;
-    }
-  }
-
-  return({
-    ...offset,
-  });
-};
+export const calculateOffset = (coordinate: ICoordinate) => {
+  const { x, y } = coordinate;
+  const { visualWidth, visualHeight, width, height, cellSize } = MapConfig;
+  const offsetX = Math.max(0, Math.min(x - visualWidth / 2, width - visualWidth));
+  const offsetY = Math.max(0, Math.min(y - visualHeight / 2, height - visualHeight));
+  return { x: -offsetX * cellSize, y: -offsetY * cellSize };
+}
 
 export const getDistance = (p1, p2) => {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
@@ -448,3 +389,11 @@ export const isDelivery = (target: ICoordinate) => {
   return DELIVERY.x === target.x && DELIVERY.y === target.y;
 }
 
+export const calculateMoveTime = (paths, blockTime) => {
+  const step = paths.length - 1;
+  const defaultTime = blockTime * 1.2;
+  if (step > 5) {
+    return defaultTime;
+  }
+  return defaultTime * step / 5;
+}

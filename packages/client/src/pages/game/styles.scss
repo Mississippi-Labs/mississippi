@@ -37,3 +37,15 @@
     }
   }
 }
+
+.discord {
+  z-index: 99;
+  position: fixed;
+  left: 18px;
+  bottom: 40px;
+  img {
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+  }
+}

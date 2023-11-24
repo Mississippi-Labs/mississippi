@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Has, HasValue, getComponentValue, ProxyRead } from '@latticexyz/recs';
 import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
-import { LimitSpace, MapConfig } from "@/config";
 import { loadMapData } from "@/utils";
 import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
@@ -22,7 +21,6 @@ import UserInfoDialog from '@/components/UserInfoDialog';
 import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
-import { triggerVertexUpdate } from '@/utils/map';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
@@ -31,8 +29,8 @@ import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
 import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
-import BLOCK_TIME from '@/config/blockTime';
-
+import {BLOCK_TIME} from '@/config/chain';
+import discordImg from '@/assets/img/discord.png';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -116,6 +114,11 @@ const Game = () => {
     const player = getComponentValue(Player, entity);
     player.addr = address
     player.username = player.name;
+    Object.keys(player).forEach((k) => {
+      if (typeof player[k] === 'bigint') {
+        player[k] = Number(player[k])
+      }
+    });
     LootList1Data.forEach((item) => {
       if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
         let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -156,19 +159,19 @@ const Game = () => {
   });
   const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
   if (battle && !startBattleData && percentage == 100) {
-      const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
-      const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
-      const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-      if (!battleCurPlayer) {
-        setBattleCurPlayer(cur)
-      }
-      if (!targetPlayer) {
-        setTargetPlayer(target)
-      }
-      if (!battleId) {
-        setBattleId(battle.id)
-      }
-      setStartBattleData(true);
+    const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
+    const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+    const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+    if (!battleCurPlayer) {
+      setBattleCurPlayer(cur)
+    }
+    if (!targetPlayer) {
+      setTargetPlayer(target)
+    }
+    if (!battleId) {
+      setBattleId(battle.id)
+    }
+    setStartBattleData(true);
   }
   
   const getCollectionsFun = (box: any) => {
@@ -242,6 +245,11 @@ const Game = () => {
         return
       }
     }
+  }
+
+  if (startBattleData && percentage == 100 && battle && battle.id != battleId) {
+    console.log('battle', battle, battleId)
+    finishBattle(null, null, null)
   }
 
   const onMoveToDelivery = async () => {
@@ -329,7 +337,6 @@ const Game = () => {
       try {
         curPlayer.waiting = true;
         await goHome();
-        await joinBattlefield()
         curPlayer.waiting = false;
       } catch (error) {
         console.log(error)
@@ -342,12 +349,15 @@ const Game = () => {
     }
   }
 
-  const closeUserInfoDialog = () => {
+  const closeUserInfoDialog = async () => {
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
     } else {
+      message.loading('join battlefield')
+      await joinBattlefield()
       setUserInfoVisible(false);
+      message.destroy()
     }
   }
 
@@ -414,7 +424,6 @@ const Game = () => {
   }
 
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
-
   return (
     <GameContext.Provider
       value={{
@@ -452,7 +461,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
-
+        <div className="discord">
+          <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
+        </div>
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }

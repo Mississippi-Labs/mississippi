@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, AnimatedSprite, Text, Graphics } from '@pixi/react';
+import { Container, AnimatedSprite, Text, Graphics, Sprite } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 
 import { Actions, ActionType, FrameOffsetY, FrameSize, HeroRegions } from '@/config/hero';
@@ -15,12 +15,22 @@ const textStyle = new PIXI.TextStyle({
   fontFamily: '"MISS", Helvetica, sans-serif',
   fontSize: 12,
   fontWeight: '400',
-  stroke: '#000',
+  fill: '#000',
   wordWrap: true,
-})
+});
+
+const huntedTextStyle = new PIXI.TextStyle({
+  align: 'center',
+  fontFamily: '"MISS", Helvetica, sans-serif',
+  fontSize: 12,
+  fontWeight: '400',
+  fill: '#f00',
+  wordWrap: true,
+});
 
 export interface IPlayer {
   // mud data field
+  addr: string;
   x: number;
   y: number;
   hp: number;
@@ -49,11 +59,14 @@ export interface IPlayer {
   moving?: boolean;
   waiting?: boolean; // wait tx
   isPlaying?: boolean;
+  hpVisible?: boolean;
+  hunted?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
-  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false, moving } = props;
+  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false,
+    moving, hpVisible = false, hp, maxHp, hunted = false } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -164,9 +177,26 @@ const Player = (props: IPlayer) => {
           text={name}
           anchor={0.5}
           x={cellSize / 2}
-          y={-20}
-          style={textStyle}
+          y={-30}
+          style={hunted ? huntedTextStyle : textStyle}
         />
+      }
+      {
+        hpVisible && (
+          <Graphics
+            y={-20}
+            draw={g => {
+              g.clear();
+              const color = 0xFF0000;
+              const height = 4;
+              g.beginFill(0xD9D9D9);
+              // g.lineStyle(1, color, 1);
+              g.drawRect(0, 0, size, height);
+              g.beginFill(color);
+              g.drawRect(0, 0, size * (hp / maxHp), height);
+            }}
+          />
+        )
       }
       {
         (waiting && !moving) && (
@@ -193,6 +223,18 @@ const Player = (props: IPlayer) => {
             )
         })
       }
+      {/*{*/}
+      {/*  hunted && (*/}
+      {/*    <Sprite*/}
+      {/*      anchor={0.5}*/}
+      {/*      x={cellSize / 2}*/}
+      {/*      y={cellSize + 10}*/}
+      {/*      image={'/assets/img/hunted.png'}*/}
+      {/*      width={30}*/}
+      {/*      height={30}*/}
+      {/*    />*/}
+      {/*  )*/}
+      {/*}*/}
       {/*<Graphics*/}
       {/*  x={1}*/}
       {/*  draw={g => {*/}

@@ -55,14 +55,14 @@ const Home = () => {
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
 
-  // 倒计时
-  const [isOpen, setIsOpen] = useState(true);
+  // isOpen
+  const [isOpen, setIsOpen] = useState(import.meta.env.VITE_IS_OPEN == 'true' ? true : false);
   const [percentage, setPercentage] = useState(0);
 
   const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
 
-  // const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
-  // const syncprogress = syncprogressData[0]
+  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncprogress = syncprogressData[0]
   // console.log(GameConfigData, 'GlobalConfigData', syncprogress)
 
   // useEffect(() => {
@@ -307,6 +307,10 @@ const Home = () => {
       message.error(`Please wait for open demo day`);
       return;
     }
+    if (syncprogress?.percentage < 100) {
+      message.error(`Please wait for sync progress`);
+      return;
+    }
     if (!network.account) {
       message.error('waiting for wallet connection');
       return;
@@ -341,7 +345,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : syncprogress?.percentage == 100 ? 'PLAY NOW' : 'WATING'}</button>
 
               </div>
             </div>
