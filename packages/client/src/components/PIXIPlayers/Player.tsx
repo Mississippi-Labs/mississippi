@@ -15,9 +15,18 @@ const textStyle = new PIXI.TextStyle({
   fontFamily: '"MISS", Helvetica, sans-serif',
   fontSize: 12,
   fontWeight: '400',
-  stroke: '#000',
+  fill: '#000',
   wordWrap: true,
-})
+});
+
+const huntedTextStyle = new PIXI.TextStyle({
+  align: 'center',
+  fontFamily: '"MISS", Helvetica, sans-serif',
+  fontSize: 12,
+  fontWeight: '400',
+  fill: '#f00',
+  wordWrap: true,
+});
 
 export interface IPlayer {
   // mud data field
@@ -169,9 +178,7 @@ const Player = (props: IPlayer) => {
           anchor={0.5}
           x={cellSize / 2}
           y={-30}
-          style={Object.assign({}, textStyle, {
-            stroke: hunted ? '#f00' : '#000'
-          })}
+          style={hunted ? huntedTextStyle : textStyle}
         />
       }
       {
