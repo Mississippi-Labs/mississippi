@@ -286,6 +286,9 @@ export function createSystemCalls(
       console.log('forceEnd', error);
       // message.error(error.cause.reason || error.cause.details);
       wait = false
+      return {
+        type: 'error'
+      }
     }
   }
 

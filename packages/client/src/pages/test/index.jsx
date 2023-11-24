@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
 import { Has, getComponentValue } from '@latticexyz/recs';
@@ -14,6 +14,7 @@ import useMerkel from '@/hooks/useMerkel';
 import { loadMapData } from "@/utils";
 import { Switch } from 'antd';
 import { message } from 'antd';
+import MAP_CFG from '@/config/map';
 
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
@@ -22,16 +23,7 @@ let userContract
 let lootContract
 let transfering = false
 
-
-
-
-let boxData1 = [{x: 13, y: 1}, {x: 23, y: 5}, {x: 26, y: 8}, {x: 23, y: 18}, {x: 30, y: 20},
-  {x: 8, y: 21}, {x: 5, y: 25}, {x: 30, y: 36}, {x: 19, y: 30}, {x: 3, y: 37}, {x: 29, y: 25},
-  {x: 28, y: 39}, {x: 36, y: 51}, {x: 40, y: 55}, {x: 27, y: 59}, {x: 13, y: 55}, {x: 41, y: 34},
-  {x: 3, y: 49}, {x: 3, y: 40}, {x: 21, y: 29}, {x: 41, y: 26}, {x: 59, y: 20}, {x: 8, y: 14}, {x: 23, y: 12},
-  {x: 39, y: 38}, {x: 29, y: 25}, {x: 12, y: 37}, {x: 11, y: 53}, {x: 21, y: 36}, {x: 33, y: 38}, {x: 36, y: 44}]
-
-  let boxI = 0
+let interval = null
 
 const Test = () => {
   const [stepData, setStepData] = useState([]);
@@ -45,11 +37,14 @@ const Test = () => {
   const [nftListData, setNftListData] = useState([]);
   const [walletBalance, setWalletBalance] = useState('');
   const [renderMapData, setRenderMapData] = useState([]);
+  const [createAmount, setCreateAmount] = useState(5);
 
   const [defaultChecked, setDefaultChecked] = useState(false);
 
+  const boxRef = useRef([]);
+
   const {
-    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig },
+    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, SyncProgress },
     systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, getBattlePlayerHp, setGmaeOpen },
     network
   } = useMUD();
@@ -65,7 +60,6 @@ const Test = () => {
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
-      mapDataRef.current = csv;
     });
   }, []);
 
@@ -78,12 +72,10 @@ const Test = () => {
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-    console.log(wallet, 'wallet')
     wallet.sendTransaction({
       to,
       value: ethers.utils.parseEther('1')
     }).then(res => {
-      console.log(res, 'res')
       transfering = false
       getBalance()
     }).catch(err => {
@@ -100,7 +92,6 @@ const Test = () => {
         setWalletBalance(0);
       } else {
         let walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-        console.log(walletBalance)
         setWalletBalance(walletBalance);
       }
     })
@@ -109,13 +100,10 @@ const Test = () => {
   getBalance()
 
   const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
-  console.log(GameData, 'GameData')
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  console.log(GlobalConfigData, 'GlobalConfigData')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract && !userContract) {
-    console.log(userAbi, 'userAbi')
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
@@ -125,7 +113,6 @@ const Test = () => {
   }
 
   if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
-    console.log(lootAbi, 'lootAbi')
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
@@ -137,11 +124,9 @@ const Test = () => {
   const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
     let id = decodeEntity({ battleId: "uint256" }, entity);
     let battle = getComponentValue(BattleList, entity)
-    console.log(battle, 'battle', id, entity)
     battle.id = id.battleId.toString()
     return battle;
   }).filter(e => !e.isEnd)
-  console.log(battles, 'battles')
 
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
     let id = decodeEntity({ boxId: "uint256" }, entity);
@@ -149,39 +134,51 @@ const Test = () => {
     box.id = id.boxId.toString()
     return box;
   }).filter(e => !e.opened);
-  console.log(boxs, 'boxs')
 
+  boxRef.current = boxs;
+
+  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
+  const syncprogress = syncprogressData[0]
+  console.log(syncprogress, 'syncprogress')
+
+  useEffect(() => {
+    if (!interval && syncprogress?.percentage == 100) {
+      interval = setInterval(() => {
+        console.log(boxRef.current.length, 'boxs.length')
+        if (boxRef.current.length < 20) {
+          CreateBoxMoreFun()
+        }
+      }, 600000)
+    }
+  }, [syncprogress?.percentage]);
+
+  
   // const GameConfig = useComponentValue(GameConfig, singletonEntity);
   // console.log(GameConfig, 'GameConfig')
   const players = useEntityQuery([Has(Player)]).map((entity) => {
-    console.log('entity', entity)
     let addr = account
     let entityData = decodeEntity({ addr: "address" }, entity);
     let address = entityData?.addr?.toLocaleLowerCase() || ''
     let player = getComponentValue(Player, entity);
     if (address.toLocaleLowerCase() == addr.toLocaleLowerCase()) {
-      console.log('当前用户')
-      console.log(player, 'player')
       player.isMe = true
     } else {
       player.isMe = false
     }
     player.addr = address
     return player;
-  });
-  console.log('players', players)
+  })
+
 
   const getNftList = async () => {
     let nftList = await userContract.getUserTokenIdList()
     nftList = nftList.map(e => e.toString())
-    console.log(nftList)
     setNftListData(nftList)
   }
 
   const mintFun = () => {
     userContract.mint().then(async res => {
       await res.wait()
-      console.log(res)
       getNftList()
       // userContract.tokenId().then(res => {
       //   console.log(res, 'tokenId')
@@ -191,13 +188,11 @@ const Test = () => {
   
   const revealNFTFun = () => {
     userContract.revealNFT(revealNFTData).then(async res => {
-      console.log(res)
       await res.wait()
     })
   }
 
   const stepChange = (e, i) => {
-    console.log(e)
     let value = e.target.value
     let step = [...stepData];
     step[i] = +value;
@@ -205,19 +200,16 @@ const Test = () => {
   }
 
   const boxIdChange = (e) => {
-    console.log(e)
     let value = e.target.value
     setBoxId(value);
   }
 
   const tokenIdChange = (e) => {
-    console.log(e)
     let value = +e.target.value
     setRevealNFTData(value);
   }
 
   const boxChange = (e, i) => {
-    console.log(e)
     let value = e.target.value
     let box = [...boxData];
     box[i] = +value;
@@ -225,7 +217,6 @@ const Test = () => {
   }
 
   const transferChange = (e, i) => {
-    console.log(e)
     let value = e.target.value
     let transfer = [...transferData];
     transfer[i] = +value;
@@ -233,7 +224,6 @@ const Test = () => {
   }
 
   const battleChange = (e, i) => {
-    console.log(e.target.value)
     let value = e.target.value
     let battle = [...battleData];
     battle[i] = +value;
@@ -244,7 +234,6 @@ const Test = () => {
     let value = i == 1 ? +e.target.value : e.target.value
     let confirmBattle = [...confirmBattleData];
     confirmBattle[i] = value;
-    console.log(confirmBattle)
     setConfirmBattleData(confirmBattle);
   }
 
@@ -253,7 +242,6 @@ const Test = () => {
   }
 
   const movePlayer = () => {
-    console.log(stepData, 'move')
     let player = players.find(item => item.isMe);
     let from = {x: player.x, y: player.y}
     let to = {x: stepData[0], y: stepData[1]}
@@ -262,12 +250,10 @@ const Test = () => {
   }
 
   const transferPlayer = () => {
-    console.log(transferData, 'transfer')
     transfer(account, transferData);
   }
 
   const battleInvitationFun = () => {
-    console.log(battleData, 'battle')
     let tragePlayer = players.find(item => item.x == battleData[0] && item.y == battleData[1]);
     if (!tragePlayer) alert('该位置没有玩家')
     else {
@@ -281,7 +267,6 @@ const Test = () => {
   }
 
   const confirmBattleFun = () => {
-    console.log(confirmBattleData, 'confirmBattle')
     let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
     let battlesDataTemp = [...battlesData];
     let battleItem = battlesDataTemp.find(item => item.id == battle.id);
@@ -289,7 +274,6 @@ const Test = () => {
       let action = confirmBattleData[0]
       let arg = confirmBattleData[1]
       let nonce = getRandomStr(18)
-      console.log(nonce, arg)
       let actionHex = ethers.utils.formatBytes32String(action);
       let nonceHex = ethers.utils.formatBytes32String(nonce);
       let hash = getProofHash(actionHex, arg, nonceHex);
@@ -314,7 +298,6 @@ const Test = () => {
   const revealBattleFun = () => {
     let battle = battles.filter(item => item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase())[0]
     let bettleItem = battlesData.filter(item => item.id == battle.id)[0]
-    console.log(bettleItem, 'bettleItem')
     revealBattle(battle.id, bettleItem.action, bettleItem.arg, bettleItem.nonce);
     // 删除bettleItem
     let battlesDataTemp = [...battlesData];
@@ -323,20 +306,65 @@ const Test = () => {
     setBattlesData(battlesDataTemp)
   }
 
-  const CreateBoxMoreFun = async (boxi) => {
-    if (boxi == undefined) boxi = 0
+  const airdrop = (amount, map) => {
+    // 获取地图尺寸和有效位置
+    const rows = map.length;
+    const cols = rows > 0 ? map[0].length : 0;
+    const validPositions = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (map[r][c] === 100) validPositions.push([r, c]);
+      }
+    }
+  
+    // 调整空投数量
+    amount = Math.min(amount, validPositions.length);
+  
+    // 随机选择空投位置，确保坐标不连续
+    const airdropPositions = [];
+    while (airdropPositions.length < amount) {
+      const index = Math.floor(Math.random() * validPositions.length);
+      const position = validPositions[index];
+  
+      // 检查新位置是否与已选位置足够远
+      let isFarEnough = true;
+      for (const existingPosition of airdropPositions) {
+        if (Math.abs(position[0] - existingPosition[0]) <= 1 && Math.abs(position[1] - existingPosition[1]) <= 1) {
+          isFarEnough = false;
+          break;
+        }
+      }
+  
+      if (isFarEnough) {
+        airdropPositions.push({x: position[0], y: position[1]});
+        validPositions.splice(index, 1); // 移除已选位置，防止重复选择
+      }
+    }
+  
+    return airdropPositions;
+  }
+
+  const ApplyCreateBoxMoreFun = async (boxi, boxData1) => {
     let box = boxData1[boxi]
     if (!box) return
-    console.log(box, 'box', boxi,boxData1 )
-    await CreateBox(box.x, box.y);
-    message.success(`创建宝箱成功，坐标：${box.x}，${box.y}`);
-    if (boxi >= boxData1.length) {
-      // boxI = 0
-    } else {
+    // 判断当前位置是否有宝箱
+    let boxsTemp = [...boxs]
+    let boxItem = boxsTemp.find(item => item.x == box.x && item.y == box.y)
+    if (!boxItem) {
+      await CreateBox(box.x, box.y);
+      message.success(`创建宝箱成功，坐标：${box.x}，${box.y}`);
+    }
+    if (boxi < boxData1.length) {
       setTimeout(() => {
-        CreateBoxMoreFun(boxi + 1)
+        ApplyCreateBoxMoreFun(boxi + 1, boxData1)
       }, 100)
     }
+  }
+
+  const CreateBoxMoreFun = async () => {
+    let boxData1 = airdrop(createAmount, MAP_CFG)
+    console.log(boxData1)
+    ApplyCreateBoxMoreFun(0, boxData1)
   }
 
   const CreateBoxFun = async () => {
@@ -367,7 +395,6 @@ const Test = () => {
   }
 
   const onSwitchChange = (checked) => {
-    console.log(checked)
     setDefaultChecked(checked)
   }
 
@@ -376,10 +403,6 @@ const Test = () => {
     await setGmaeOpen(defaultChecked)
     message.success('设置成功');
   }
-
-  // useEffect(() => {
-  //   getBalance()
-  // });
 
   return (
     <div className="content">
@@ -396,6 +419,7 @@ const Test = () => {
             <div style={{ marginTop: '8px' }}>attack: {item.attack.toString()}</div>
             <div style={{ marginTop: '8px' }}>oreBalance: {item.oreBalance.toString()}</div>
             <div style={{ marginTop: '8px' }}>treasureBalance: {item.treasureBalance.toString()}</div>
+            <div style={{ marginTop: '8px' }}>state：{item?.state}</div>
             <div style={{ marginTop: '8px' }}>坐标：{item?.x || 0}，{item?.y || 0}</div>
           </div>))
         }
@@ -494,8 +518,10 @@ const Test = () => {
         </div>
         <div className="section">
           <div className="title">批量创建宝箱</div>
-          <div className="input"></div>
-          <div className="btn" onClick={() => CreateBoxMoreFun(0)}>确认</div>
+          <div className="input">
+            <input type="text" onChange={(e) => setCreateAmount(e.target.value)} placeholder='数量' />
+          </div>
+          <div className="btn" onClick={CreateBoxMoreFun}>确认</div>
         </div>
         <div className="section">
           <div className="title">创建宝箱</div>

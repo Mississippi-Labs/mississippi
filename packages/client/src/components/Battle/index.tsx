@@ -56,6 +56,23 @@ export default function Battle(props) {
     return battle;
   });
 
+  const forceEndFun = async () => {
+    try {
+      let resultBattle:any = await forceEnd(battleId)
+      if (resultBattle?.type && resultBattle?.type == 'error') {
+        timeout = setTimeout(async () => {
+          forceEndFun()
+        }, 10000)
+      } else if (resultBattle?.isEnd && resultBattle?.winner) {
+        isFirst = true
+        props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
+        return
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const initBattle = async () => {
     if (battleState == 1) {
       if (curType == 'attacker' && battle?.attackerState == 1) {
@@ -74,13 +91,7 @@ export default function Battle(props) {
         } else {
           if (!timeout) {
             timeout = setTimeout(async () => {
-              let resultBattle:any = await forceEnd(battleId)
-              console.log(resultBattle)
-              if (resultBattle?.isEnd && resultBattle?.winner) {
-                isFirst = true
-                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
-                return
-              }
+              forceEndFun()
             }, 23000)
           }
         }
@@ -100,13 +111,7 @@ export default function Battle(props) {
         } else {
           if (!timeout) {
             timeout = setTimeout(async () => {
-              let resultBattle:any = await forceEnd(battleId)
-              console.log(resultBattle)
-              if (resultBattle?.isEnd && resultBattle?.winner) {
-                isFirst = true
-                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
-                return
-              }
+              forceEndFun()
             }, 23000)
           }
         }
@@ -122,13 +127,7 @@ export default function Battle(props) {
         } else {
           if (!timeout) {
             timeout = setTimeout(async () => {
-              let resultBattle:any = await forceEnd(battleId)
-              console.log(resultBattle)
-              if (resultBattle?.isEnd && resultBattle?.winner) {
-                isFirst = true
-                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
-                return
-              }
+              forceEndFun()
             }, 23000)
           }
         }
@@ -140,13 +139,7 @@ export default function Battle(props) {
         } else {
           if (!timeout) {
             timeout = setTimeout(async () => {
-              let resultBattle:any = await forceEnd(battleId)
-              console.log(resultBattle)
-              if (resultBattle?.isEnd && resultBattle?.winner) {
-                isFirst = true
-                props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
-                return
-              }
+              forceEndFun()
             }, 23000)
           }
         }
@@ -182,10 +175,12 @@ export default function Battle(props) {
         props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
         return
       }
+      setAttackerAction('idle');
+      setDefenderAction('idle');
       setBattleState(state)
       initBattle()
     }
-  }, [])
+  }, [battleId])
 
   if (battle) {
     isFirst = false
