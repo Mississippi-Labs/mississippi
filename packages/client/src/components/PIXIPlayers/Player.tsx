@@ -49,11 +49,13 @@ export interface IPlayer {
   moving?: boolean;
   waiting?: boolean; // wait tx
   isPlaying?: boolean;
+  hpVisible?: boolean;
 }
 
 const Player = (props: IPlayer) => {
 
-  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false, moving } = props;
+  const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false,
+    moving, hpVisible = false, hp, maxHp } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -164,9 +166,26 @@ const Player = (props: IPlayer) => {
           text={name}
           anchor={0.5}
           x={cellSize / 2}
-          y={-20}
+          y={-30}
           style={textStyle}
         />
+      }
+      {
+        hpVisible && (
+          <Graphics
+            y={-20}
+            draw={g => {
+              g.clear();
+              const color = 0xFF0000;
+              const height = 4;
+              g.beginFill(0xD9D9D9);
+              // g.lineStyle(1, color, 1);
+              g.drawRect(0, 0, size, height);
+              g.beginFill(color);
+              g.drawRect(0, 0, size * (hp / maxHp), height);
+            }}
+          />
+        )
       }
       {
         (waiting && !moving) && (

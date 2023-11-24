@@ -14,7 +14,7 @@ const PIXIPlayers = (props: IProps) => {
     <Container>
       {
         data.filter(player => !isDelivery(player) && (player.state == 2 || player.state == 3)).map((player, index) => {
-          return <Player key={index} {...player}/>;
+          return <Player key={index} hpVisible {...player}/>;
         })
       }
     </Container>
