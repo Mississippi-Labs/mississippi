@@ -21,6 +21,7 @@ const textStyle = new PIXI.TextStyle({
 
 export interface IPlayer {
   // mud data field
+  addr: string;
   x: number;
   y: number;
   hp: number;

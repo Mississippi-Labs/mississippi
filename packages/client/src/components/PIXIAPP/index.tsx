@@ -12,7 +12,7 @@ import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
 import { ICoordinate } from '@/components/MapCell';
 import { CellType } from '@/constants';
-import { bfs, calculateOffset, getDistance, isDelivery, isMovable } from '@/utils/map';
+import { bfs, calculateMoveTime, calculateOffset, getDistance, isDelivery, isMovable } from '@/utils/map';
 import {
   createPathInterpolator,
   getPlayersCache,
@@ -97,7 +97,8 @@ const PIXIAPP = () => {
   const animateMove = (player, paths, onFinish) => {
     console.log(player, paths, 'animate move');
     let index = 0;
-    const linePath = createPathInterpolator(paths, ~~(blockTime / 16));
+    const moveTime = calculateMoveTime(paths, blockTime);
+    const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
     const interval = setInterval(() => {
       const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
       if (!movingPlayer) {

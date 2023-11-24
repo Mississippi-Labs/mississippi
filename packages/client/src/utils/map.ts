@@ -389,3 +389,11 @@ export const isDelivery = (target: ICoordinate) => {
   return DELIVERY.x === target.x && DELIVERY.y === target.y;
 }
 
+export const calculateMoveTime = (paths, blockTime) => {
+  const step = paths.length - 1;
+  const defaultTime = blockTime * 1.2;
+  if (step > 5) {
+    return defaultTime;
+  }
+  return defaultTime * step / 5;
+}
