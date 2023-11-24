@@ -336,7 +336,7 @@ const Test = () => {
       }
   
       if (isFarEnough) {
-        airdropPositions.push({x: position[0], y: position[1]});
+        airdropPositions.push({x: position[1], y: position[0]});
         validPositions.splice(index, 1); // 移除已选位置，防止重复选择
       }
     }
