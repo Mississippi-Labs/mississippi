@@ -169,7 +169,9 @@ const Player = (props: IPlayer) => {
           anchor={0.5}
           x={cellSize / 2}
           y={-30}
-          style={textStyle}
+          style={Object.assign({}, textStyle, {
+            stroke: hunted ? '#f00' : '#000'
+          })}
         />
       }
       {
@@ -214,18 +216,18 @@ const Player = (props: IPlayer) => {
             )
         })
       }
-      {
-        hunted && (
-          <Sprite
-            anchor={0.5}
-            x={cellSize / 2}
-            y={cellSize + 10}
-            image={'/assets/img/hunted.png'}
-            width={30}
-            height={30}
-          />
-        )
-      }
+      {/*{*/}
+      {/*  hunted && (*/}
+      {/*    <Sprite*/}
+      {/*      anchor={0.5}*/}
+      {/*      x={cellSize / 2}*/}
+      {/*      y={cellSize + 10}*/}
+      {/*      image={'/assets/img/hunted.png'}*/}
+      {/*      width={30}*/}
+      {/*      height={30}*/}
+      {/*    />*/}
+      {/*  )*/}
+      {/*}*/}
       {/*<Graphics*/}
       {/*  x={1}*/}
       {/*  draw={g => {*/}
