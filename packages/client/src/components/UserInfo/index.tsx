@@ -6,6 +6,7 @@ import * as PIXI from 'pixi.js';
 import { Stage } from '@pixi/react';
 import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
 import { MapConfig } from '@/config/map';
+import Equipment from '@/components/Equipment';
 const { cellSize } = MapConfig;
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -27,27 +28,48 @@ const UserInfo = (props: IUserInfo) => {
   return (
     <div className={'mi-userinfo-wrapper'}>
       <div className="left-main-content">
-        <h3>User info</h3>
+        <h3>Equipment</h3>
         <div className="user-detail-wrapper">
-          <div className="user-appearance-wrapper">
-            <div className="user-appearance-box">
-              <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'idle'} />
-              </Stage>
+          <div className="user-detail-content">
+            <ul className="left-equipments equipments">
+              <li className="equipments-item helmet-item">
+                <Equipment type={'helmet'} name={player?.equip?.head}/>
+              </li>
+              <li className="equipments-item armor-item">
+                <Equipment type={'armor'} name={player?.equip?.clothes}/>
+              </li>
+              <li className="equipments-item"></li>
+              <li className="equipments-item"></li>
+            </ul>
+            <div className="user-appearance-wrapper">
+              <div className="user-appearance-box">
+                <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
+                  <Player size={128} x={0.5} y={0.5} equip={player?.equip ?? {}} action={'idle'} />
+                </Stage>
+              </div>
             </div>
+            <ul className="left-equipments equipments">
+              <li className="equipments-item"></li>
+              <li className="equipments-item"></li>
+              <li className="equipments-item weapon-item">
+                <Equipment type={'weapon'} name={player?.equip?.handheld}/>
+              </li>
+              <li className="equipments-item"></li>
+            </ul>
           </div>
-          <div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
-            <div className="loot-detail">
-              {
-                userUrl ? <img src={userUrl} alt=""/> : null
-              }
-            </div>
-            <div className="loot-detail">
-              {
-                lootUrl ? <img src={lootUrl} alt=""/> : null
-              }
-            </div>
-          </div>
+          {/*<div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>*/}
+          {/*  <div className="loot-detail">*/}
+          {/*    {*/}
+          {/*      userUrl ? <img src={userUrl} alt=""/> : null*/}
+          {/*    }*/}
+          {/*  </div>*/}
+          {/*  <div className="loot-detail">*/}
+          {/*    {*/}
+          {/*      lootUrl ? <img src={lootUrl} alt=""/> : null*/}
+          {/*    }*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+
           <div className={`user-attr-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>
             <dl>
               <dt>HP</dt>
@@ -79,11 +101,12 @@ const UserInfo = (props: IUserInfo) => {
       <div className="right-main-content">
         <UserPackage
           gem={player?.oreBalance}
-          title={'User Package'}
+          title={'Package'}
         />
         <UserPackage
           gem={player?.seasonOreBalance}
-          title={'Season Package'}
+          title={'Inventory'}
+
         />
       </div>
     </div>

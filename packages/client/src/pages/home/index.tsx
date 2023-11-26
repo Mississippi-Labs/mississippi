@@ -372,7 +372,7 @@ const Home = () => {
         )
       }
       <Modal
-        visible={modalVisible}
+        open={modalVisible}
         className="mi-modal"
         footer={null}
         onCancel={() => setModalVisible(false)}

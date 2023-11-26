@@ -5,15 +5,20 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        width: 600px;
+        padding: 12px;
+        min-height: 105px;
+        border: 5px solid #DCC7AF;
+        background: #FFF5E9;
     }
 
     .package-item {
         position: relative;
         margin-bottom: 14px;
-        width: 62px;
-        height: 62px;
+        width: 72px;
+        height: 72px;
         background: #FFF5E9;
-        border: 6px solid transparent;
+        border: 5px solid #DCC7AF;
 
         &:nth-child(-n+3) {
             border-color: #DCC7AF;
