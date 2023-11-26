@@ -30,7 +30,7 @@ const Log = () => {
     }
     eventEmitter.on('log', addLogCb);
     return () => {
-      eventEmitter.off('log', addLogCb);
+      eventEmitter?.off('log', addLogCb);
     };
   }, []);
 

@@ -18,6 +18,7 @@ import Log from "@/components/Log";
 import GameContext from '@/context';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
+import Talk from '@/components/Talk';
 import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
@@ -174,7 +175,6 @@ const Game = () => {
       navigate('/');
     }
   }
-  console.log(curPlayer, 'curPlayer')
   const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
     const id = decodeEntity({ battleId: "uint256" }, entity);
     const battle:any = getComponentValue(BattleList, entity)
@@ -487,6 +487,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
+        // {
+        //   curPlayer && percentage == 100 ? <Talk curPlayer={curPlayer} /> : null
+        // }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>

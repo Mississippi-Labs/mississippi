@@ -12,7 +12,6 @@ interface IProps extends IPlayer {
 const UserAvatar = (props: IProps) => {
   const [diffHp, setDiffHp] = useState(0);
   const { address, balance, ...rest } = props;
-  console.log(props, 'props')
   useEffect(() => {
     setDiffHp(props.diffHp)
     setTimeout(() => {
