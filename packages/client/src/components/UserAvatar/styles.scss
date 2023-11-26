@@ -1,42 +1,94 @@
 .mi-c-user-avatar {
-    position: relative;
-    padding-left: 80px;
-    //width: 160px;
+  position: relative;
+  padding-left: 80px;
+  //width: 160px;
+  height: 80px;
+
+  .avatar-box {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+    width: 80px;
     height: 80px;
+    border: 5px solid #5D2E1C;
+    border-radius: 10px;
+    background-color: #FCBD80;
+    box-sizing: border-box;
+  }
 
-    .avatar-box {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        left: 0;
-        top: 0;
-        width: 80px;
-        height: 80px;
-        border: 4px solid #5D2E1C;
-        border-radius: 10px;
-        background-color: #FCBD80;
-        box-sizing: border-box;
+  .hp {
+    background: red;
+  }
+
+  .ap {
+    background: yellow;
+  }
+
+  .hp-wrapper,
+  .ap-wrapper {
+    //height: 20px;
+    border: 2px solid;
+
+    &>div {
+      height: 16px;
     }
+  }
 
-    .hp {
-        background: red;
+  .user-address-wrapper {
+    padding: 10px;
+  }
+}
+
+.user-info {
+  margin-left: 10px;
+  .user-hp {
+    border-radius: 5px;
+    border: 5px solid #DDC9B2;
+    background: #FFF;
+    width: 300px;
+    height: 25px;
+    box-sizing: border-box;
+    position: relative;
+    .now-hp {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 15px;
+      background: #FF0000;
+      border-radius: 5px;
+      width: 50%;
     }
-
-    .ap {
-        background: yellow;
+    .diff-hp {
+      font-family: MISS;
+      font-size: 12px;
+      color: #f00;
+      position: absolute;
+      right: -50px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
     }
-
-    .hp-wrapper, .ap-wrapper {
-        //height: 20px;
-        border: 2px solid;
-
-        & > div {
-            height: 16px;
-        }
+  }
+  .gems {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    img {
+      width: 30px;
+      height: auto;
     }
-
-    .user-address-wrapper {
-        padding: 10px;
+    p {
+      color: #FFF;
+      font-family: MISS;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      margin-left: 10px;
+      padding-top: 5px;
     }
+  }
 }

@@ -14,8 +14,8 @@ import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } f
 import { IPlayer } from "@/components/Player";
 import { useMUD } from "@/mud/MUDContext";
 import Battle from "@/components/Battle";
+import Log from "@/components/Log";
 import GameContext from '@/context';
-// import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import Header from '../home/header'
@@ -119,6 +119,23 @@ const Game = () => {
         player[k] = Number(player[k])
       }
     });
+    if (player.lastBattleTime) {
+      let now = Math.floor(new Date().getTime() / 1000)
+      let lastBattleTime = player.lastBattleTime
+      let diff = now - lastBattleTime
+      let diffHp = diff * (player.maxHp / 1000)
+      player.hp = player.hp + diffHp
+      if (player.hp > player.maxHp) {
+        player.hp = player.maxHp
+      }
+      let localPlayer = localStorage.getItem('curPlayer')
+      if (localPlayer) {
+        localPlayer = JSON.parse(localPlayer)
+        if (localPlayer.addr.toLocaleLowerCase() == address.toLocaleLowerCase()) {
+          player.diffHp = Math.floor(player.hp - localPlayer.hp)
+        }
+      }
+    }
     LootList1Data.forEach((item) => {
       if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
         let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -145,12 +162,19 @@ const Game = () => {
 
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  if (curPlayer && curPlayer.state < 2 && percentage == 100) {
+    navigate('/');
+  }
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
   } else {
     // 返回首页
+    if (percentage == 100) {
+      navigate('/');
+    }
   }
+  console.log(curPlayer, 'curPlayer')
   const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
     const id = decodeEntity({ battleId: "uint256" }, entity);
     const battle:any = getComponentValue(BattleList, entity)
@@ -354,10 +378,12 @@ const Game = () => {
       message.error('Waiting for transaction');
       return;
     } else {
-      message.loading('join battlefield')
-      await joinBattlefield()
+      if (curPlayer?.state == 1) {
+        message.loading('join battlefield')
+        await joinBattlefield()
+        message.destroy() 
+      }
       setUserInfoVisible(false);
-      message.destroy()
     }
   }
 
@@ -464,6 +490,7 @@ const Game = () => {
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>
+        <Log />
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
