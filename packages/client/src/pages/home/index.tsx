@@ -246,18 +246,17 @@ const Home = () => {
     setMinting(true);
     try {
       if (!(userTokenIds?.length && lootTokenIds?.length)) {
-        messageApi.open({
-          type: 'loading',
-          content: 'minting loot and user,please wait...',
-          duration: 7,
-        })
+        message.loading('minting loot and user,please wait...')
         await mint()
+        message.destroy()
       }
       if (curPlayer?.state >= 2) {
         navigate('/game');
         return;
       } else if (curPlayer?.state == 1) {
+        message.loading('join battlefield')
         await joinBattlefield()
+        message.destroy()
         navigate('/game');
         return
       }

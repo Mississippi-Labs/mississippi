@@ -378,10 +378,12 @@ const Game = () => {
       message.error('Waiting for transaction');
       return;
     } else {
-      message.loading('join battlefield')
-      await joinBattlefield()
+      if (curPlayer?.state == 1) {
+        message.loading('join battlefield')
+        await joinBattlefield()
+        message.destroy() 
+      }
       setUserInfoVisible(false);
-      message.destroy()
     }
   }
 
