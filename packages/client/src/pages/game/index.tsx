@@ -14,8 +14,8 @@ import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } f
 import { IPlayer } from "@/components/Player";
 import { useMUD } from "@/mud/MUDContext";
 import Battle from "@/components/Battle";
+import Log from "@/components/Log";
 import GameContext from '@/context';
-// import useModal from '@/hooks/useModal';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import Header from '../home/header'
@@ -464,6 +464,7 @@ const Game = () => {
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>
+        <Log />
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }

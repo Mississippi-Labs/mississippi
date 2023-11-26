@@ -21,7 +21,7 @@ library CommonUtils {
   function isNear(uint16 _x1, uint16 _x2, uint16 _y1, uint16 _y2) internal pure returns (bool) {
     uint16 x_diff = abs_substruction(_x1, _x2);
     uint16 y_diff = abs_substruction(_y1, _y2);
-    return x_diff <= 1 && y_diff <= 1 && x_diff != y_diff;
+    return x_diff <= 1 && y_diff <= 1 ;
   }
 
   function zeroSub(uint8 a, uint8 b) internal pure returns (uint8) {

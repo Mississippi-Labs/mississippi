@@ -3,6 +3,7 @@ import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import { singletonEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { message } from 'antd';
+import eventEmitter from '../utils/eventEmitter';
 
 let wait = false;
 
@@ -20,12 +21,22 @@ export function createSystemCalls(
   };
 
   const move = async (steps: any) => {
-    console.log('move', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `move to ${steps[steps.length - 1][0]}, ${steps[steps.length - 1][1]}`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.move([steps]);
-      await waitForTransaction(tx);
-      console.log('move success', new Date().getTime(), tx);
+      let r = await waitForTransaction(tx);
+      let receipt = r.receipt
+      log.block = receipt.blockNumber.toString(),
+      eventEmitter.emit('log', log)
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'move:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('move', error);
       message.error(error.cause.reason || error.cause.details);
     }
@@ -41,14 +52,25 @@ export function createSystemCalls(
 
   const joinBattlefield = async () => {
     console.log('joinBattlefield', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `join battlefield`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.joinBattlefield();
-      await waitForTransaction(tx);
+      let r = await waitForTransaction(tx);
       console.log('joinBattlefield success', new Date().getTime(), tx);
+      let receipt = r.receipt
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       return tx
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'joinBattlefield:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('joinBattlefield', error);
-      message.error(error.cause.reason || error.cause.details);
     }
   }
 
@@ -68,15 +90,25 @@ export function createSystemCalls(
     if (wait) return
     wait = true
     console.log('battleInvitation', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `battle invitation with ${addr}`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.battleInvitation([addr, steps]);
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
       console.log('battleInvitation success', new Date().getTime(), tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       wait = false
       return tx
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'battleInvitation:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('battleInvitation', error);
-      message.error(error.cause.reason || error.cause.details);
       wait = false
     }
   }
@@ -85,18 +117,28 @@ export function createSystemCalls(
     if (wait) return
     wait = true
     console.log('confirmBattle', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `confirm battle`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
-      await waitForTransaction(tx);
+      let {receipt} = await waitForTransaction(tx);
       console.log('confirmBattle success', new Date().getTime(), tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       wait = false
       return {
         type: 'success',
         data: getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
       }
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'confirmBattle:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('confirmBattle', error);
-      message.error(error.cause.reason || error.cause.details);
       wait = false
       return {
         type: 'error',
@@ -109,10 +151,19 @@ export function createSystemCalls(
   const revealBattle = async (battleId: any, action: any, arg: any, nonce: any) => {
     if (wait) return
     wait = true
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `reveal battle`
+    }
+    eventEmitter.emit('log', log)
     return new Promise((resolve, reject) => {
       worldContract.write.revealBattle([battleId, action, arg, nonce]).then((tx: any) => {
         waitForTransaction(tx).then((res: any) => {
           console.log('revealBattle success', new Date().getTime(), tx);
+          let receipt = res.receipt
+          log.block = receipt.blockNumber.toString()
+          eventEmitter.emit('log', log)
           wait = false
           setTimeout(() => {
             resolve({
@@ -121,8 +172,10 @@ export function createSystemCalls(
             })
           }, 100)
         }).catch((error: any) => {
+          log.type = 'error'
+          log.msg = 'revealBattle:' + error.cause.reason || error.cause.details
+          eventEmitter.emit('log', log)
           console.log('revealBattle', error);
-          message.error(error.cause.reason || error.cause.details);
           wait = false
           reject({
             type: 'error',
@@ -130,8 +183,10 @@ export function createSystemCalls(
           })
         })
       }).catch((error: any) => {
+        log.type = 'error'
+        log.msg = 'revealBattle:' + error.cause.reason || error.cause.details
+        eventEmitter.emit('log', log)
         console.log('revealBattle', error);
-        message.error(error.cause.reason || error.cause.details);
         wait = false
         reject({
           type: 'error',
@@ -189,14 +244,24 @@ export function createSystemCalls(
     if (wait) return
     wait = true
     console.log('openBox', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `open box`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.openBox([boxId]);
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('openBox success', new Date().getTime(), tx);
       wait = false
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'openBox:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('openBox', error);
-      message.error(error.cause.reason || error.cause.details);
       wait = false
     }
   }
@@ -205,15 +270,25 @@ export function createSystemCalls(
     if (wait) return
     wait = true
     console.log('revealBox', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `reveal box`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.revealBox([boxId]);
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('revealBox success', new Date().getTime(), tx);
       wait = false
       return getComponentValue(BoxList, encodeEntity({ boxId: "uint256" }, { boxId:  boxId}));
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'revealBox:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('revealBox', error);
-      message.error(error.cause.reason || error.cause.details);
       wait = false
     }
   }
@@ -221,13 +296,23 @@ export function createSystemCalls(
   const getCollections = async (boxId: any, oreAmount: any, treasureAmount: any) => {
     if (wait) return
     wait = true
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `get collections ${oreAmount} Gems`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       wait = false
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'getCollections:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('getCollections', error);
-      message.error(error.cause.reason || error.cause.details);
       wait = false
     }
   }
@@ -276,15 +361,25 @@ export function createSystemCalls(
     if (wait) return
     wait = true
     console.log('forceEnd', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `force end`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.forceEnd([battleId]);
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('forceEnd success', new Date().getTime(), tx);
       wait = false
       return getComponentValue(BattleList, encodeEntity({ battleId: "uint256" }, { battleId:  battleId}))
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'forceEnd:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('forceEnd', error);
-      // message.error(error.cause.reason || error.cause.details);
       wait = false
       return {
         type: 'error'
@@ -294,39 +389,69 @@ export function createSystemCalls(
 
   const unlockUserLocation = async () => {
     console.log('unlockUserLocation', new Date().getTime());
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `unlock user location`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.unlockUserLocation();
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('unlockUserLocation success', new Date().getTime(), tx);
       return tx
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'unlockUserLocation:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('unlockUserLocation', error);
-      message.error(error.cause.reason || error.cause.details);
     }
   }
 
   const goHome = async () => {
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `go home`
+    }
+    eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.goHome();
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('goHome', new Date().getTime());
       return tx
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'goHome:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('goHome', error);
-      message.error(error.cause.reason || error.cause.details);
     }
   }
 
   const submitGem = async () => {
+    let time = new Date().getTime()
+    let log = {
+      time,
+      msg: `submit gem`
+    }
+    eventEmitter.emit('log', log)
     try {
       console.log('submitGem', new Date().getTime());
       const tx = await worldContract.write.submitGem();
-      await waitForTransaction(tx);
+      let { receipt } = await waitForTransaction(tx);
+      log.block = receipt.blockNumber.toString()
+      eventEmitter.emit('log', log)
       console.log('submitGem success', new Date().getTime(), tx);
       return tx
     } catch (error) {
+      log.type = 'error'
+      log.msg = 'submitGem:' + error.cause.reason || error.cause.details
+      eventEmitter.emit('log', log)
       console.log('submitGem', error);
-      message.error(error.cause.reason || error.cause.details);
     }
   }
 

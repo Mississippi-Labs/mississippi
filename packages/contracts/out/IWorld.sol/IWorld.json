@@ -994,6 +994,31 @@
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "uint16",
+              "name": "x",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "y",
+              "type": "uint16"
+            }
+          ],
+          "internalType": "struct Coordinate[]",
+          "name": "cList",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "multCreateBox",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "_boxId",
           "type": "uint256"
@@ -1559,6 +1584,7 @@
     "installRootModule(address,bytes)": "af068c9e",
     "joinBattlefield()": "9ebfc58a",
     "move((uint16,uint16,bytes32[])[])": "6f330272",
+    "multCreateBox((uint16,uint16)[])": "36752085",
     "openBox(uint256)": "b1e5e2b7",
     "popFromField(bytes32,bytes32[],uint8,uint256,bytes32)": "6e161b76",
     "pushToField(bytes32,bytes32[],uint8,bytes,bytes32)": "0edac7fd",
@@ -1585,7 +1611,7 @@
     "unlockUserLocation()": "7ad5cf14",
     "updateInField(bytes32,bytes32[],uint8,uint256,bytes,bytes32)": "31914148"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"}],\"name\":\"AccessDenied\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"functionSelector\",\"type\":\"bytes4\"}],\"name\":\"FunctionSelectorExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"functionSelector\",\"type\":\"bytes4\"}],\"name\":\"FunctionSelectorNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"InvalidSelector\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"module\",\"type\":\"string\"}],\"name\":\"ModuleAlreadyInstalled\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"ResourceExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"ResourceNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_DataIndexOverflow\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidDataLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidFieldNamesLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidKeyNamesLength\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"StoreCore_NotDynamicField\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"StoreCore_NotImplemented\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"tableId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"tableIdString\",\"type\":\"string\"}],\"name\":\"StoreCore_TableAlreadyExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"tableId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"tableIdString\",\"type\":\"string\"}],\"name\":\"StoreCore_TableNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"system\",\"type\":\"address\"}],\"name\":\"SystemExists\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"HelloWorld\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"}],\"name\":\"StoreDeleteRecord\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreEphemeralRecord\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreSetField\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreSetRecord\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"_y\",\"type\":\"uint16\"}],\"name\":\"CreateBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"GetSeasonInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_root\",\"type\":\"bytes32\"}],\"name\":\"SetMapMerkleRoot\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_end\",\"type\":\"uint256\"}],\"name\":\"SetSeasonInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"SetUserContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_targetAddress\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"},{\"internalType\":\"bytes32[]\",\"name\":\"proof\",\"type\":\"bytes32[]\"}],\"internalType\":\"struct Position[]\",\"name\":\"positionList\",\"type\":\"tuple[]\"}],\"name\":\"battleInvitation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"funcSelectorAndArgs\",\"type\":\"bytes\"}],\"name\":\"call\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_buffHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"confirmBattle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"deleteRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"emitEphemeralRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"forceEnd\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getBattlePlayerHp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"_oreAmount\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"_treasureAmount\",\"type\":\"uint16\"}],\"name\":\"getCollections\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getField\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getFieldLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getFieldSlice\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"}],\"name\":\"getKeySchema\",\"outputs\":[{\"internalType\":\"Schema\",\"name\":\"schema\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getPosition\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getRecord\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSenderPosition\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getUserInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"}],\"name\":\"getValueSchema\",\"outputs\":[{\"internalType\":\"Schema\",\"name\":\"schema\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"goHome\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"grantee\",\"type\":\"address\"}],\"name\":\"grantAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"}],\"name\":\"initPlayerHp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initUserInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IModule\",\"name\":\"module\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"}],\"name\":\"installModule\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IModule\",\"name\":\"module\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"}],\"name\":\"installRootModule\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"joinBattlefield\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"},{\"internalType\":\"bytes32[]\",\"name\":\"proof\",\"type\":\"bytes32[]\"}],\"internalType\":\"struct Position[]\",\"name\":\"moveList\",\"type\":\"tuple[]\"}],\"name\":\"move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"}],\"name\":\"openBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"byteLengthToPop\",\"type\":\"uint256\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"popFromField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"dataToPush\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"pushToField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"systemFunctionName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"systemFunctionArguments\",\"type\":\"string\"}],\"name\":\"registerFunctionSelector\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"worldFunctionSelector\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes16\",\"name\":\"namespace\",\"type\":\"bytes16\"}],\"name\":\"registerNamespace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"bytes4\",\"name\":\"worldFunctionSelector\",\"type\":\"bytes4\"},{\"internalType\":\"bytes4\",\"name\":\"systemFunctionSelector\",\"type\":\"bytes4\"}],\"name\":\"registerRootFunctionSelector\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"contract IStoreHook\",\"name\":\"hook\",\"type\":\"address\"}],\"name\":\"registerStoreHook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"contract System\",\"name\":\"system\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"publicAccess\",\"type\":\"bool\"}],\"name\":\"registerSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"contract ISystemHook\",\"name\":\"hook\",\"type\":\"address\"}],\"name\":\"registerSystemHook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"Schema\",\"name\":\"keySchema\",\"type\":\"bytes32\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"},{\"internalType\":\"string[]\",\"name\":\"keyNames\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"fieldNames\",\"type\":\"string[]\"}],\"name\":\"registerTable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_action\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_arg\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_nonce\",\"type\":\"bytes32\"}],\"name\":\"revealBattle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"}],\"name\":\"revealBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"revealWinner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"grantee\",\"type\":\"address\"}],\"name\":\"revokeAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_userTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_lootTokenId\",\"type\":\"uint256\"}],\"name\":\"selectBothNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"selectLootNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"selectUserNft\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"setField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"_b\",\"type\":\"bool\"}],\"name\":\"setGmaeOpen\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"}],\"name\":\"setInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"setRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"submitGem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"}],\"name\":\"transfer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unlockUserLocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"startByteIndex\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"dataToSet\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"updateInField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"call(bytes32,bytes)\":{\"notice\":\"Call the system at the given resource selector (namespace + name) If the system is not public, the caller must have access to the namespace or name.\"},\"installRootModule(address,bytes)\":{\"notice\":\"Install the given root module in the World. Requires the caller to own the root namespace. The module is delegatecalled and installed in the root namespace.\"}},\"notice\":\"The IWorld interface includes all systems dynamically added to the World during the deploy process.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IWorld.sol\":\"IWorld\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"node_modules/@latticexyz/schema-type/src/solidity/SchemaType.sol\":{\"keccak256\":\"0x7e86f39f7e0d29342d79144af3c48a3f9f103aca38603318e999483f33cbd966\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a7956d2a9b27689d615ae66d0e85f96c86509274fd8f1dc4c4f8dbd204936cea\",\"dweb:/ipfs/QmTgn4tdtbcDEoVcYcgQzS1u8epSbFnefWc9Nbt9eBkjbT\"]},\"node_modules/@latticexyz/store/src/Bytes.sol\":{\"keccak256\":\"0x52bd79fd98b47bddbc4ccae178b9258cf308c15d41ecbbce57ee46beb17e6787\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0a48beb7750a813f1b351299de1b78287e9b8e41e4a35762aaa11fb28679c2d8\",\"dweb:/ipfs/Qmcnm5Tb6mUcSjC22z4Ke6DBV1rkYJmZcU1w442QpgTbff\"]},\"node_modules/@latticexyz/store/src/IStore.sol\":{\"keccak256\":\"0x0a2728e859ae0ade6b6d425ac8656c83a4e665aa8192a2a4397948869bdc2eea\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d06c0fa440f8572adadd3c743791bdb8ffc4468d7cc475e03406acd75be38145\",\"dweb:/ipfs/QmezfepEFeDECZ3kZAwW2p3xuVmmJUbFRTDPnBPH6TAbdB\"]},\"node_modules/@latticexyz/store/src/IStoreErrors.sol\":{\"keccak256\":\"0x9db1089c5ae5ad585fdbc87f0ec14bdb82ec5098ebd27b67b1c6111853b72749\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fa6b81aa9d63d9bcf5e9a5b82b03df8c135519d10fa69d232f1ae658ed780b71\",\"dweb:/ipfs/QmNnf8KEDtMYofpT7iDd89chmw7zpvuZGVDhzjZXarQHE2\"]},\"node_modules/@latticexyz/store/src/Memory.sol\":{\"keccak256\":\"0x1edc427b0d26609d1ce739b82b78fc03ae9f7463c3a81e8f8c608516ca7b0089\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://41cfaaf85af74c83b20ef308daa69ac65101ffbb2690d6888a06cbb55bf37146\",\"dweb:/ipfs/QmQp4Sf98TfifmsSNU5nVeG7UABWobaUf5oVR38Dh1kpw1\"]},\"node_modules/@latticexyz/store/src/PackedCounter.sol\":{\"keccak256\":\"0x5b653faa6c1d6732f6d5e5feaff282bbea099d8d01c8f6d54b4f7732f5e2a8b6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://57e75c7aac764d3194a196daeea17a78f0bdc1471aa0c0fb5ba93b7f41ad2c01\",\"dweb:/ipfs/QmQHnzXtDLc9eryiXH1DopezvbQgnHChbxQS1ZNpscqHuw\"]},\"node_modules/@latticexyz/store/src/Schema.sol\":{\"keccak256\":\"0xb5952acdf7eb89759e1a09a698935c23b8f3cadad2dbb2c5629fc265189c9337\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b841654b762ac86a139e0bc5df49334ab5133f61e8fab59a66fbd57f9b6607e7\",\"dweb:/ipfs/Qmdn4DRGcU843BdWDWTk4n9aP79c4ybB9X92ejQxKvCYid\"]},\"node_modules/@latticexyz/store/src/Slice.sol\":{\"keccak256\":\"0x617c3624e15cb755857ac172a49ae11e0db688984c4d16a8de8e3c172a13ef7d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://71916605d89da3be4ac1b434e877dfac95dadea8b61b720a5204efac1ca94487\",\"dweb:/ipfs/QmTeZJRJ8Ev8LFQSCHuc6tYG7Vz6VtkBozbWzZgPWSXtcP\"]},\"node_modules/@latticexyz/store/src/Storage.sol\":{\"keccak256\":\"0xd3319f1bf70094e2a436419a7ed9cb4ea6a46efe2df3ccf64fa1b5b4107b54cc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ff7173aa1002730caade98fa7c8b8b8a7ad34b8f40dd405abae28269124aaf51\",\"dweb:/ipfs/QmdRrsS9yf27xHdgRuNwX7JoqttzyKmVGWQSnZeTmiMksm\"]},\"node_modules/@latticexyz/store/src/StoreCore.sol\":{\"keccak256\":\"0x0b65c36067dfff4ad8168dc2006ff9e53cde2469e4e21eccde010cff9ea78b2b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a5af9eadfefe1b54a13e402161783d697160bfe658e33803a11f55e9fa6b494\",\"dweb:/ipfs/QmbvEYmiLbSC1jpu65R93QkiB6DpsGHhzyauH9XyQdtfC9\"]},\"node_modules/@latticexyz/store/src/StoreSwitch.sol\":{\"keccak256\":\"0x853651c0be864e7f4f81dbbba4536bb159a5cb77c0b5ceb977a633321b1ff3e4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ec9b809cc7016225fee4781db22a360d65b4cddcb44a6ae315937b471f46363c\",\"dweb:/ipfs/QmTDUoqqXppFNvGnVUUZPpz1LNECYqX6bX341vUVwpYSDL\"]},\"node_modules/@latticexyz/store/src/Utils.sol\":{\"keccak256\":\"0x50a3bf74a64f0846c3212b599d2ebd6f220ae562a7ddd01584398d05c5206578\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4c44640063d30f054c20dc701b92cbefe64ef4c2cdde686746de4a11c76dfa5c\",\"dweb:/ipfs/QmawdG9zbqoMTCKGJUYfHNuBqeBgdKCdy18BftGd4c9hJA\"]},\"node_modules/@latticexyz/store/src/codegen/Tables.sol\":{\"keccak256\":\"0x567dac75ee912726ad29744f9ba7ef527e8148c213d62442c79010b406710273\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f744bcbd592a8ae5bfe8f99f8952665c44a61413184859080df1bc5947880979\",\"dweb:/ipfs/QmcRG7yXyEgfL8pSQXqjYNZ6G1DUdJkkDMRYCagMZLYUXT\"]},\"node_modules/@latticexyz/store/src/codegen/Types.sol\":{\"keccak256\":\"0x23ba2a20a16a4265f122c5e08e5b9881fd827f2cd7a92427740ee1eb3c4e7628\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://01236b9e7ffec2b6468e4b7dbc418453c2e5d73eaa14ebf4f5056619f46ad6b7\",\"dweb:/ipfs/QmSHA9efL43SUYbFtgCGv9ucZPD9ULi8o8ENpURAvDGhdB\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Callbacks.sol\":{\"keccak256\":\"0x8da9b947da2ce09f06aa0e8ef03c459f9a209de4546c1b48ff856306958d06bf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7ea33ce2a5cd10189c223a5553ccb8f07707328748f5ebf15ead50c1eeb72e47\",\"dweb:/ipfs/QmcPvNJ1992qaz278co4Yhjhr6eZCaY6PchqMHPMiuZRSj\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Hooks.sol\":{\"keccak256\":\"0xcdf71af7def6c165fdf07ae749baaf82717c1869a5c26e4cb8241c89fe82a6ca\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d5cf5cdc0ce87d3dcc9d71997410ca0bae5fdedeb71f4bf1b64363d83bc4e7fe\",\"dweb:/ipfs/QmPYAVErLNYZsF1iySgYvjUq3PuoXEW5MXyKDDQVuvM8fq\"]},\"node_modules/@latticexyz/store/src/codegen/tables/KeyEncoding.sol\":{\"keccak256\":\"0xdb8111fcf15adc44e70ecffe8147d831681bbd02f903e4018598802e8b40d16c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9a183262de5687b2d91f607c6d18b5b116d792bc3c45c09a92231cb6c9067df6\",\"dweb:/ipfs/QmNdwHZsVBRuMQjtntxuMbtYv9bXDZMepvhqge6h4rU6Nc\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Mixed.sol\":{\"keccak256\":\"0x1df0bb93269b94e8d5ef7e396e4d2cfb6aba795194799a5c7fc4b8d494a1fc16\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://dffc44bb6386a0fdfba116088a0dc66901e705c9079cd24ce613babb981a587f\",\"dweb:/ipfs/QmapF8fhrjG9uei97ANRdoMaxpv6tcA6nBts51bW8XVY8C\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Tables.sol\":{\"keccak256\":\"0x0fc67f4823698339c9316a8dccd99cf11cd2f189d961ddd6fe5e0ea766e0e02a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8937de034e2170d0eb9df2dfdb16fd13cc1826870831dfd071f2e85fffc84283\",\"dweb:/ipfs/QmVgfTWnBSreNJEd17bTt1GLrMGZ74DvGfzy7JSYiUMuhx\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Vector2.sol\":{\"keccak256\":\"0x9a0205729b68a920b554a9b5c3407f07fee5717aa5e6d9541d10a837f2ee9254\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5c873ef09df14a045a0ba9371ada2786460996d8279496f674eb0a530807f065\",\"dweb:/ipfs/QmaM1EhCyTt2CGEktTgKFfpZZNdarUXQWTNamcwpqL7gCC\"]},\"node_modules/@latticexyz/store/src/tightcoder/DecodeSlice.sol\":{\"keccak256\":\"0x63fa0cb7b7a2c225d17a3d22c3ba81e543da1388495c8747dfb3e129a3787d66\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a0f7bfe7f001bb00d95ad493e12b5220f4fb7d175161c747464e2d59c0a93eb8\",\"dweb:/ipfs/QmZeDyzinRWnfoQme8R9mbMpCu9KiUw1AzjPb1SQzNV5oC\"]},\"node_modules/@latticexyz/store/src/tightcoder/EncodeArray.sol\":{\"keccak256\":\"0xbf4ea9fa659ffb1581d417de93082ec9b4586bf7aeda078c2649bd382f0c54dd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6860d8f58c2e8f0dde310a1b1e94d2aa355ad060f3797708fcc978be304faf1e\",\"dweb:/ipfs/QmeypWegTQ89bUHab3yptatH6CA8xirJbCMGHqZ7WcXnzA\"]},\"node_modules/@latticexyz/store/src/tightcoder/TightCoder.sol\":{\"keccak256\":\"0x844f8ffa93563ff87cb959947879868a79c53aa0c034f2fa9beba4b571a8d304\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1686477bec31cff0460212420bf69e02be62288039a20f0d76d33dbb98615755\",\"dweb:/ipfs/QmWLijVaJk7FKTsBq7Cc2YuJom1ioRaGLX69NQybN9dNBR\"]},\"node_modules/@latticexyz/world/src/System.sol\":{\"keccak256\":\"0xf1342c8461adb4c5821c1ca106a67ba34402b36265fa63bf766eed937bd92bf9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ea41f96a27a26d56d62824e007b3b0234d44fcd94361e5c8f40fdb334cbf444b\",\"dweb:/ipfs/QmRfj4iS5Lu9V4e47wsPQy4op1qQ6hqaJpERLB5EyzqW38\"]},\"node_modules/@latticexyz/world/src/WorldContext.sol\":{\"keccak256\":\"0x2f2c8c55627287b9519ef57dae24c72bb82ec5abbd33ab9142bcdd931e62c1f8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d78c65acf3452474b023978dd13491f58ce4b98b3c2b87a1e0e6827d605d791a\",\"dweb:/ipfs/QmVHDrC2Jp4tp1nWLuzDVK5D8VLBP52w2pYVLtfkCKpLiC\"]},\"node_modules/@latticexyz/world/src/interfaces/IAccessManagementSystem.sol\":{\"keccak256\":\"0xb98e1732343d23c9c2d4bc59643da1798bf651b7c272cecd7b74e3d37ac7363c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e81c35c04c7deb9cbbea43c93d50bd685dd252eea3e4e2d25f0a29f8dcf4252\",\"dweb:/ipfs/QmZDUvrsFdTmBq5aTgP976Rbd3Yt1CHLpLeaUJQEVW4jCC\"]},\"node_modules/@latticexyz/world/src/interfaces/IBaseWorld.sol\":{\"keccak256\":\"0x9d15d5ac7512631590eda71cb19937d10a9b253d8a9b61bec54e7b0471b3b785\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://09b18f736784a0f38d5d6b62733fba106ecb84fc8d1b2390236ab8b162511e38\",\"dweb:/ipfs/QmPdvnPupSTBv8Vi2fRFe7A9NYfVuf2LtbdS1DiWXjHf9D\"]},\"node_modules/@latticexyz/world/src/interfaces/ICoreSystem.sol\":{\"keccak256\":\"0x21e72828243fbf26d21594a423e9a32e86df07d3e435ea216a27c326546df106\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e8ac8c4b2cdeddaf458e562e3f236a5c798664443eca1658038540d5585ee090\",\"dweb:/ipfs/QmPbh7JmBcxqJV4YP78zVXpsmCSGnSN6g7M27MTkyUjRgG\"]},\"node_modules/@latticexyz/world/src/interfaces/IModule.sol\":{\"keccak256\":\"0x0c9f5a12f8b27ae6f02b6ca7ccfd7ab1de349e5c4773f99cfab1fd4721bc4a06\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cafb66fbd4b3587121a2f2ff6fc5e4c32796e6469719899e181c3abac1479178\",\"dweb:/ipfs/QmT6GKskhqmLadhuNVVbgDEgJ92jMsCdyLcfrSaiVQeZYf\"]},\"node_modules/@latticexyz/world/src/interfaces/IModuleInstallationSystem.sol\":{\"keccak256\":\"0x77b05ecc98755a3b48f0296af3146486890d140eff7b1cc6e95be95a6aab80c0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://684155a7539c00796d2e00c3d67dc8d9c5e707e3fac37089df84a346607efdc2\",\"dweb:/ipfs/QmeAPVzvTmaiHBtvFVw92XNmWmQ63RqWAgzNqBGRYwyzkz\"]},\"node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol\":{\"keccak256\":\"0x1dc2adc81b6e82cd5c1040f5885b2b762647166ff1114ee0c79cd478bd8ce5da\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://77e5f86a4cf46f35d4514c9c3a8f47dfa359d8a7fbf726636010296e6955a1f0\",\"dweb:/ipfs/QmPePQhXzCnF4kmTvjcQwwJQZuNPuvnEtkJKccrvRErG6B\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldErrors.sol\":{\"keccak256\":\"0x214a9f68915fb01baad4a4ca2c65545d26e481fc14b0ceadb9e4f378c4eec08a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://54b93db1cb7d5212d54fe776587d5ceddf56ab276cc72c969f28604bddb8b665\",\"dweb:/ipfs/QmSQJ82HRvBaknXWnwXWNYJj9EHuaiBCPe7W9C9uwyUNCW\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldKernel.sol\":{\"keccak256\":\"0x6e69614573bd17550f9d0f820a7ed9077678b4aa00c71bfca51be8346a06bcb8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b49527c2f3396ccc4cacce17ef4c2aae1dc4bf74b07d2127543918579d424210\",\"dweb:/ipfs/QmQV8a2CeAHXwqzLshBcvK9EwEayLemzJCsjHfrTxPYkH6\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldRegistrationSystem.sol\":{\"keccak256\":\"0x918e79655a2724496ffd1130925e2cfbd7711e7e2759d47d15fd174e7ddd1540\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9d2854beec35e9047b41d5669eaa0cb4840f0331f0232164f659b67c5377f3ad\",\"dweb:/ipfs/QmfWzr97XvWTHwrfZ2RF3QZq6QKvd5fvNydSKyQAFDuuDs\"]},\"src/codegen/world/IBattleForceSystem.sol\":{\"keccak256\":\"0x99957a0151894f7611439537e3e13a3cd1f0ae2341bd17173fd9d5d18e25486a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7ecb3cbbe4824412fa22af7caed4a61de198da4611cce3a5e2d91393c9dbe0a0\",\"dweb:/ipfs/QmViuB8Lr2yQ9xnQhvpB8wJLUJqoSoHLRf1tkVF8oedzif\"]},\"src/codegen/world/IBattleInfoSystem.sol\":{\"keccak256\":\"0x99558a0ef33e4b84354fcd8fd6e0db1260da9ede0e8f5f0d6545774fad91cc0c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3903ffa69ba2b60a2b9f4928d375dd5a7d11c0d9f971a7d5f63a67d87322cffb\",\"dweb:/ipfs/QmduAGo4xsU4A6Xd7cpFUQJMkYMmcyeDWoT8Ur5ki2Tz1k\"]},\"src/codegen/world/IBattlePrepareSystem.sol\":{\"keccak256\":\"0x2a524080e4e5058c090100b05a4c68c863b69b32facc4529460ed7569ac8534a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2f271eb9eb85783e73a04a096f2216b0fbaff6e3ac9f554966a62ee925e7bb49\",\"dweb:/ipfs/QmbLNbVMUiDQB7RAURKVouSjTmCizKycUNLCmXy2LbZxs6\"]},\"src/codegen/world/IBattleSystem.sol\":{\"keccak256\":\"0x3a3900f49d7f50416838f03cb1d978a40cee79664919b01c61a1aa0d7cb758a6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bae16a85aa3f8c45adb539d28f422076958b434f3ff739059c1e63a5e0f70e9e\",\"dweb:/ipfs/QmW8mxoaKYu5vNozpBjNBGtNzMxfDfSMRavHnTv7qDv4pG\"]},\"src/codegen/world/IBoxSystem.sol\":{\"keccak256\":\"0x0a77ebe6ff0a0025b8e0c8f32ae08945c3215a1e993411d510fc09c73242e734\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://da8b753ad86100470dc3888be59c7ac0e619a7c33ad447aaa31088a5c00512d3\",\"dweb:/ipfs/QmcAJ8gmG6KM8MLdekHagaGVhat51AuqD2TmgJdoDTbCHc\"]},\"src/codegen/world/IGMSystem.sol\":{\"keccak256\":\"0xb217529a27d787da1d2c910cf4aaa601c18255091eece0905a1409b994f80e71\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1cf1ebc643868e0a7b5add9b6de40d8cc2a71d01522b7042e887f2f42b3d260b\",\"dweb:/ipfs/QmbARdtad1z2P4vU4omMRXSmy1RAnNaoAcuYnbVPpCrPJ8\"]},\"src/codegen/world/IGameSystem.sol\":{\"keccak256\":\"0x9a7cf5b861e49deda8793d9a2f4a4b80591e93b60727cc6d61ef70d76e205a03\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4706d646c8e1155d15cf2141a1a4d108ee7eb66459343ef38010fcf78d53656c\",\"dweb:/ipfs/QmY6GEsrH4jP46CZDCY8u3RnNonDo6cGFDyXXrbP2mvkZW\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x575faa695b3b5e5fe7ad93a0ba629a43bac28e5fe3b155551b383ac3411ff6ef\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://16e8701115764ff051937aaffe7fb7bad7a5aee311ac787b936dfeaa160c2f9a\",\"dweb:/ipfs/QmSDS2wqBNfeQEPqiygXSjHjCNYbQWnJ17cbphsG4p8v8s\"]},\"src/codegen/world/IPlayerSystem.sol\":{\"keccak256\":\"0xabf6b1e495a2e6ea98ccb6508f9299ff89d128c71839ace40235ceabb941484f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6f957b593598bc6b7712b630721b39707a10ae2f751b37d3adebe46aef0ff1a5\",\"dweb:/ipfs/QmWGwKzUQ8sy7koUM5APnGAGAsCHKdJEpTF8UUnTsupZZN\"]},\"src/codegen/world/IWorld.sol\":{\"keccak256\":\"0xc0ab5afcd25eb6ef00e9d480f87d80893c0bf3b1e8461bd28f3487bd29efb092\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://adae613b8fa01b76e2182c7a8a392f942bf36bb9a881e1c53ff07903bb5af07a\",\"dweb:/ipfs/QmdSih7Ust1BCqcuwXERF4fqnXJur2d2mLEj5LvJWZgfhr\"]},\"src/systems/Common.sol\":{\"keccak256\":\"0x25b1b37460f5741acb0549e81117b148505f656a8f93a0aff47720167e92e4e0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3c0ecd5e7ac72fb5f98f794ddb82bba865cf7fd72d95a19e7e6a51f6dd214983\",\"dweb:/ipfs/QmYPRFyZN6eWs9xCnU9k5Yz9vErMdHPyxBKP7UXwAsJ6gc\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"}],\"name\":\"AccessDenied\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"functionSelector\",\"type\":\"bytes4\"}],\"name\":\"FunctionSelectorExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"functionSelector\",\"type\":\"bytes4\"}],\"name\":\"FunctionSelectorNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"InvalidSelector\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"module\",\"type\":\"string\"}],\"name\":\"ModuleAlreadyInstalled\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"ResourceExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"resource\",\"type\":\"string\"}],\"name\":\"ResourceNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"length\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_DataIndexOverflow\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidDataLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidFieldNamesLength\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"expected\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"received\",\"type\":\"uint256\"}],\"name\":\"StoreCore_InvalidKeyNamesLength\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"StoreCore_NotDynamicField\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"StoreCore_NotImplemented\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"tableId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"tableIdString\",\"type\":\"string\"}],\"name\":\"StoreCore_TableAlreadyExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"tableId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"tableIdString\",\"type\":\"string\"}],\"name\":\"StoreCore_TableNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"system\",\"type\":\"address\"}],\"name\":\"SystemExists\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"HelloWorld\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"}],\"name\":\"StoreDeleteRecord\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreEphemeralRecord\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreSetField\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"StoreSetRecord\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"_y\",\"type\":\"uint16\"}],\"name\":\"CreateBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"GetSeasonInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_root\",\"type\":\"bytes32\"}],\"name\":\"SetMapMerkleRoot\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_end\",\"type\":\"uint256\"}],\"name\":\"SetSeasonInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"SetUserContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_targetAddress\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"},{\"internalType\":\"bytes32[]\",\"name\":\"proof\",\"type\":\"bytes32[]\"}],\"internalType\":\"struct Position[]\",\"name\":\"positionList\",\"type\":\"tuple[]\"}],\"name\":\"battleInvitation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"funcSelectorAndArgs\",\"type\":\"bytes\"}],\"name\":\"call\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_buffHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"confirmBattle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"deleteRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"emitEphemeralRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"forceEnd\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getBattlePlayerHp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"_oreAmount\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"_treasureAmount\",\"type\":\"uint16\"}],\"name\":\"getCollections\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getField\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getFieldLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getFieldSlice\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getInfo\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"}],\"name\":\"getKeySchema\",\"outputs\":[{\"internalType\":\"Schema\",\"name\":\"schema\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getPosition\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"getRecord\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSenderPosition\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getUserInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"}],\"name\":\"getValueSchema\",\"outputs\":[{\"internalType\":\"Schema\",\"name\":\"schema\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"goHome\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"grantee\",\"type\":\"address\"}],\"name\":\"grantAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"}],\"name\":\"initPlayerHp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initUserInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IModule\",\"name\":\"module\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"}],\"name\":\"installModule\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IModule\",\"name\":\"module\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"}],\"name\":\"installRootModule\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"joinBattlefield\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"},{\"internalType\":\"bytes32[]\",\"name\":\"proof\",\"type\":\"bytes32[]\"}],\"internalType\":\"struct Position[]\",\"name\":\"moveList\",\"type\":\"tuple[]\"}],\"name\":\"move\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"}],\"internalType\":\"struct Coordinate[]\",\"name\":\"cList\",\"type\":\"tuple[]\"}],\"name\":\"multCreateBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"}],\"name\":\"openBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"byteLengthToPop\",\"type\":\"uint256\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"popFromField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"dataToPush\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"pushToField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"systemFunctionName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"systemFunctionArguments\",\"type\":\"string\"}],\"name\":\"registerFunctionSelector\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"worldFunctionSelector\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes16\",\"name\":\"namespace\",\"type\":\"bytes16\"}],\"name\":\"registerNamespace\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"bytes4\",\"name\":\"worldFunctionSelector\",\"type\":\"bytes4\"},{\"internalType\":\"bytes4\",\"name\":\"systemFunctionSelector\",\"type\":\"bytes4\"}],\"name\":\"registerRootFunctionSelector\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"contract IStoreHook\",\"name\":\"hook\",\"type\":\"address\"}],\"name\":\"registerStoreHook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"contract System\",\"name\":\"system\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"publicAccess\",\"type\":\"bool\"}],\"name\":\"registerSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"contract ISystemHook\",\"name\":\"hook\",\"type\":\"address\"}],\"name\":\"registerSystemHook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"Schema\",\"name\":\"keySchema\",\"type\":\"bytes32\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"},{\"internalType\":\"string[]\",\"name\":\"keyNames\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"fieldNames\",\"type\":\"string[]\"}],\"name\":\"registerTable\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_action\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_arg\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_nonce\",\"type\":\"bytes32\"}],\"name\":\"revealBattle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_boxId\",\"type\":\"uint256\"}],\"name\":\"revealBox\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_battleId\",\"type\":\"uint256\"}],\"name\":\"revealWinner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"resourceSelector\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"grantee\",\"type\":\"address\"}],\"name\":\"revokeAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_userTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_lootTokenId\",\"type\":\"uint256\"}],\"name\":\"selectBothNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"selectLootNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"selectUserNft\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"setField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"_b\",\"type\":\"bool\"}],\"name\":\"setGmaeOpen\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"}],\"name\":\"setInfo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"setRecord\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"submitGem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"uint16\",\"name\":\"x\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"y\",\"type\":\"uint16\"}],\"name\":\"transfer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unlockUserLocation\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"table\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"key\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"schemaIndex\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"startByteIndex\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"dataToSet\",\"type\":\"bytes\"},{\"internalType\":\"Schema\",\"name\":\"valueSchema\",\"type\":\"bytes32\"}],\"name\":\"updateInField\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"call(bytes32,bytes)\":{\"notice\":\"Call the system at the given resource selector (namespace + name) If the system is not public, the caller must have access to the namespace or name.\"},\"installRootModule(address,bytes)\":{\"notice\":\"Install the given root module in the World. Requires the caller to own the root namespace. The module is delegatecalled and installed in the root namespace.\"}},\"notice\":\"The IWorld interface includes all systems dynamically added to the World during the deploy process.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/codegen/world/IWorld.sol\":\"IWorld\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"node_modules/@latticexyz/schema-type/src/solidity/SchemaType.sol\":{\"keccak256\":\"0x7e86f39f7e0d29342d79144af3c48a3f9f103aca38603318e999483f33cbd966\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a7956d2a9b27689d615ae66d0e85f96c86509274fd8f1dc4c4f8dbd204936cea\",\"dweb:/ipfs/QmTgn4tdtbcDEoVcYcgQzS1u8epSbFnefWc9Nbt9eBkjbT\"]},\"node_modules/@latticexyz/store/src/Bytes.sol\":{\"keccak256\":\"0x52bd79fd98b47bddbc4ccae178b9258cf308c15d41ecbbce57ee46beb17e6787\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0a48beb7750a813f1b351299de1b78287e9b8e41e4a35762aaa11fb28679c2d8\",\"dweb:/ipfs/Qmcnm5Tb6mUcSjC22z4Ke6DBV1rkYJmZcU1w442QpgTbff\"]},\"node_modules/@latticexyz/store/src/IStore.sol\":{\"keccak256\":\"0x0a2728e859ae0ade6b6d425ac8656c83a4e665aa8192a2a4397948869bdc2eea\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d06c0fa440f8572adadd3c743791bdb8ffc4468d7cc475e03406acd75be38145\",\"dweb:/ipfs/QmezfepEFeDECZ3kZAwW2p3xuVmmJUbFRTDPnBPH6TAbdB\"]},\"node_modules/@latticexyz/store/src/IStoreErrors.sol\":{\"keccak256\":\"0x9db1089c5ae5ad585fdbc87f0ec14bdb82ec5098ebd27b67b1c6111853b72749\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fa6b81aa9d63d9bcf5e9a5b82b03df8c135519d10fa69d232f1ae658ed780b71\",\"dweb:/ipfs/QmNnf8KEDtMYofpT7iDd89chmw7zpvuZGVDhzjZXarQHE2\"]},\"node_modules/@latticexyz/store/src/Memory.sol\":{\"keccak256\":\"0x1edc427b0d26609d1ce739b82b78fc03ae9f7463c3a81e8f8c608516ca7b0089\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://41cfaaf85af74c83b20ef308daa69ac65101ffbb2690d6888a06cbb55bf37146\",\"dweb:/ipfs/QmQp4Sf98TfifmsSNU5nVeG7UABWobaUf5oVR38Dh1kpw1\"]},\"node_modules/@latticexyz/store/src/PackedCounter.sol\":{\"keccak256\":\"0x5b653faa6c1d6732f6d5e5feaff282bbea099d8d01c8f6d54b4f7732f5e2a8b6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://57e75c7aac764d3194a196daeea17a78f0bdc1471aa0c0fb5ba93b7f41ad2c01\",\"dweb:/ipfs/QmQHnzXtDLc9eryiXH1DopezvbQgnHChbxQS1ZNpscqHuw\"]},\"node_modules/@latticexyz/store/src/Schema.sol\":{\"keccak256\":\"0xb5952acdf7eb89759e1a09a698935c23b8f3cadad2dbb2c5629fc265189c9337\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b841654b762ac86a139e0bc5df49334ab5133f61e8fab59a66fbd57f9b6607e7\",\"dweb:/ipfs/Qmdn4DRGcU843BdWDWTk4n9aP79c4ybB9X92ejQxKvCYid\"]},\"node_modules/@latticexyz/store/src/Slice.sol\":{\"keccak256\":\"0x617c3624e15cb755857ac172a49ae11e0db688984c4d16a8de8e3c172a13ef7d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://71916605d89da3be4ac1b434e877dfac95dadea8b61b720a5204efac1ca94487\",\"dweb:/ipfs/QmTeZJRJ8Ev8LFQSCHuc6tYG7Vz6VtkBozbWzZgPWSXtcP\"]},\"node_modules/@latticexyz/store/src/Storage.sol\":{\"keccak256\":\"0xd3319f1bf70094e2a436419a7ed9cb4ea6a46efe2df3ccf64fa1b5b4107b54cc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ff7173aa1002730caade98fa7c8b8b8a7ad34b8f40dd405abae28269124aaf51\",\"dweb:/ipfs/QmdRrsS9yf27xHdgRuNwX7JoqttzyKmVGWQSnZeTmiMksm\"]},\"node_modules/@latticexyz/store/src/StoreCore.sol\":{\"keccak256\":\"0x0b65c36067dfff4ad8168dc2006ff9e53cde2469e4e21eccde010cff9ea78b2b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a5af9eadfefe1b54a13e402161783d697160bfe658e33803a11f55e9fa6b494\",\"dweb:/ipfs/QmbvEYmiLbSC1jpu65R93QkiB6DpsGHhzyauH9XyQdtfC9\"]},\"node_modules/@latticexyz/store/src/StoreSwitch.sol\":{\"keccak256\":\"0x853651c0be864e7f4f81dbbba4536bb159a5cb77c0b5ceb977a633321b1ff3e4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ec9b809cc7016225fee4781db22a360d65b4cddcb44a6ae315937b471f46363c\",\"dweb:/ipfs/QmTDUoqqXppFNvGnVUUZPpz1LNECYqX6bX341vUVwpYSDL\"]},\"node_modules/@latticexyz/store/src/Utils.sol\":{\"keccak256\":\"0x50a3bf74a64f0846c3212b599d2ebd6f220ae562a7ddd01584398d05c5206578\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4c44640063d30f054c20dc701b92cbefe64ef4c2cdde686746de4a11c76dfa5c\",\"dweb:/ipfs/QmawdG9zbqoMTCKGJUYfHNuBqeBgdKCdy18BftGd4c9hJA\"]},\"node_modules/@latticexyz/store/src/codegen/Tables.sol\":{\"keccak256\":\"0x567dac75ee912726ad29744f9ba7ef527e8148c213d62442c79010b406710273\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f744bcbd592a8ae5bfe8f99f8952665c44a61413184859080df1bc5947880979\",\"dweb:/ipfs/QmcRG7yXyEgfL8pSQXqjYNZ6G1DUdJkkDMRYCagMZLYUXT\"]},\"node_modules/@latticexyz/store/src/codegen/Types.sol\":{\"keccak256\":\"0x23ba2a20a16a4265f122c5e08e5b9881fd827f2cd7a92427740ee1eb3c4e7628\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://01236b9e7ffec2b6468e4b7dbc418453c2e5d73eaa14ebf4f5056619f46ad6b7\",\"dweb:/ipfs/QmSHA9efL43SUYbFtgCGv9ucZPD9ULi8o8ENpURAvDGhdB\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Callbacks.sol\":{\"keccak256\":\"0x8da9b947da2ce09f06aa0e8ef03c459f9a209de4546c1b48ff856306958d06bf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7ea33ce2a5cd10189c223a5553ccb8f07707328748f5ebf15ead50c1eeb72e47\",\"dweb:/ipfs/QmcPvNJ1992qaz278co4Yhjhr6eZCaY6PchqMHPMiuZRSj\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Hooks.sol\":{\"keccak256\":\"0xcdf71af7def6c165fdf07ae749baaf82717c1869a5c26e4cb8241c89fe82a6ca\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d5cf5cdc0ce87d3dcc9d71997410ca0bae5fdedeb71f4bf1b64363d83bc4e7fe\",\"dweb:/ipfs/QmPYAVErLNYZsF1iySgYvjUq3PuoXEW5MXyKDDQVuvM8fq\"]},\"node_modules/@latticexyz/store/src/codegen/tables/KeyEncoding.sol\":{\"keccak256\":\"0xdb8111fcf15adc44e70ecffe8147d831681bbd02f903e4018598802e8b40d16c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9a183262de5687b2d91f607c6d18b5b116d792bc3c45c09a92231cb6c9067df6\",\"dweb:/ipfs/QmNdwHZsVBRuMQjtntxuMbtYv9bXDZMepvhqge6h4rU6Nc\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Mixed.sol\":{\"keccak256\":\"0x1df0bb93269b94e8d5ef7e396e4d2cfb6aba795194799a5c7fc4b8d494a1fc16\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://dffc44bb6386a0fdfba116088a0dc66901e705c9079cd24ce613babb981a587f\",\"dweb:/ipfs/QmapF8fhrjG9uei97ANRdoMaxpv6tcA6nBts51bW8XVY8C\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Tables.sol\":{\"keccak256\":\"0x0fc67f4823698339c9316a8dccd99cf11cd2f189d961ddd6fe5e0ea766e0e02a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8937de034e2170d0eb9df2dfdb16fd13cc1826870831dfd071f2e85fffc84283\",\"dweb:/ipfs/QmVgfTWnBSreNJEd17bTt1GLrMGZ74DvGfzy7JSYiUMuhx\"]},\"node_modules/@latticexyz/store/src/codegen/tables/Vector2.sol\":{\"keccak256\":\"0x9a0205729b68a920b554a9b5c3407f07fee5717aa5e6d9541d10a837f2ee9254\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5c873ef09df14a045a0ba9371ada2786460996d8279496f674eb0a530807f065\",\"dweb:/ipfs/QmaM1EhCyTt2CGEktTgKFfpZZNdarUXQWTNamcwpqL7gCC\"]},\"node_modules/@latticexyz/store/src/tightcoder/DecodeSlice.sol\":{\"keccak256\":\"0x63fa0cb7b7a2c225d17a3d22c3ba81e543da1388495c8747dfb3e129a3787d66\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a0f7bfe7f001bb00d95ad493e12b5220f4fb7d175161c747464e2d59c0a93eb8\",\"dweb:/ipfs/QmZeDyzinRWnfoQme8R9mbMpCu9KiUw1AzjPb1SQzNV5oC\"]},\"node_modules/@latticexyz/store/src/tightcoder/EncodeArray.sol\":{\"keccak256\":\"0xbf4ea9fa659ffb1581d417de93082ec9b4586bf7aeda078c2649bd382f0c54dd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6860d8f58c2e8f0dde310a1b1e94d2aa355ad060f3797708fcc978be304faf1e\",\"dweb:/ipfs/QmeypWegTQ89bUHab3yptatH6CA8xirJbCMGHqZ7WcXnzA\"]},\"node_modules/@latticexyz/store/src/tightcoder/TightCoder.sol\":{\"keccak256\":\"0x844f8ffa93563ff87cb959947879868a79c53aa0c034f2fa9beba4b571a8d304\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1686477bec31cff0460212420bf69e02be62288039a20f0d76d33dbb98615755\",\"dweb:/ipfs/QmWLijVaJk7FKTsBq7Cc2YuJom1ioRaGLX69NQybN9dNBR\"]},\"node_modules/@latticexyz/world/src/System.sol\":{\"keccak256\":\"0xf1342c8461adb4c5821c1ca106a67ba34402b36265fa63bf766eed937bd92bf9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ea41f96a27a26d56d62824e007b3b0234d44fcd94361e5c8f40fdb334cbf444b\",\"dweb:/ipfs/QmRfj4iS5Lu9V4e47wsPQy4op1qQ6hqaJpERLB5EyzqW38\"]},\"node_modules/@latticexyz/world/src/WorldContext.sol\":{\"keccak256\":\"0x2f2c8c55627287b9519ef57dae24c72bb82ec5abbd33ab9142bcdd931e62c1f8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d78c65acf3452474b023978dd13491f58ce4b98b3c2b87a1e0e6827d605d791a\",\"dweb:/ipfs/QmVHDrC2Jp4tp1nWLuzDVK5D8VLBP52w2pYVLtfkCKpLiC\"]},\"node_modules/@latticexyz/world/src/interfaces/IAccessManagementSystem.sol\":{\"keccak256\":\"0xb98e1732343d23c9c2d4bc59643da1798bf651b7c272cecd7b74e3d37ac7363c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e81c35c04c7deb9cbbea43c93d50bd685dd252eea3e4e2d25f0a29f8dcf4252\",\"dweb:/ipfs/QmZDUvrsFdTmBq5aTgP976Rbd3Yt1CHLpLeaUJQEVW4jCC\"]},\"node_modules/@latticexyz/world/src/interfaces/IBaseWorld.sol\":{\"keccak256\":\"0x9d15d5ac7512631590eda71cb19937d10a9b253d8a9b61bec54e7b0471b3b785\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://09b18f736784a0f38d5d6b62733fba106ecb84fc8d1b2390236ab8b162511e38\",\"dweb:/ipfs/QmPdvnPupSTBv8Vi2fRFe7A9NYfVuf2LtbdS1DiWXjHf9D\"]},\"node_modules/@latticexyz/world/src/interfaces/ICoreSystem.sol\":{\"keccak256\":\"0x21e72828243fbf26d21594a423e9a32e86df07d3e435ea216a27c326546df106\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e8ac8c4b2cdeddaf458e562e3f236a5c798664443eca1658038540d5585ee090\",\"dweb:/ipfs/QmPbh7JmBcxqJV4YP78zVXpsmCSGnSN6g7M27MTkyUjRgG\"]},\"node_modules/@latticexyz/world/src/interfaces/IModule.sol\":{\"keccak256\":\"0x0c9f5a12f8b27ae6f02b6ca7ccfd7ab1de349e5c4773f99cfab1fd4721bc4a06\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cafb66fbd4b3587121a2f2ff6fc5e4c32796e6469719899e181c3abac1479178\",\"dweb:/ipfs/QmT6GKskhqmLadhuNVVbgDEgJ92jMsCdyLcfrSaiVQeZYf\"]},\"node_modules/@latticexyz/world/src/interfaces/IModuleInstallationSystem.sol\":{\"keccak256\":\"0x77b05ecc98755a3b48f0296af3146486890d140eff7b1cc6e95be95a6aab80c0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://684155a7539c00796d2e00c3d67dc8d9c5e707e3fac37089df84a346607efdc2\",\"dweb:/ipfs/QmeAPVzvTmaiHBtvFVw92XNmWmQ63RqWAgzNqBGRYwyzkz\"]},\"node_modules/@latticexyz/world/src/interfaces/ISystemHook.sol\":{\"keccak256\":\"0x1dc2adc81b6e82cd5c1040f5885b2b762647166ff1114ee0c79cd478bd8ce5da\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://77e5f86a4cf46f35d4514c9c3a8f47dfa359d8a7fbf726636010296e6955a1f0\",\"dweb:/ipfs/QmPePQhXzCnF4kmTvjcQwwJQZuNPuvnEtkJKccrvRErG6B\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldErrors.sol\":{\"keccak256\":\"0x214a9f68915fb01baad4a4ca2c65545d26e481fc14b0ceadb9e4f378c4eec08a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://54b93db1cb7d5212d54fe776587d5ceddf56ab276cc72c969f28604bddb8b665\",\"dweb:/ipfs/QmSQJ82HRvBaknXWnwXWNYJj9EHuaiBCPe7W9C9uwyUNCW\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldKernel.sol\":{\"keccak256\":\"0x6e69614573bd17550f9d0f820a7ed9077678b4aa00c71bfca51be8346a06bcb8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b49527c2f3396ccc4cacce17ef4c2aae1dc4bf74b07d2127543918579d424210\",\"dweb:/ipfs/QmQV8a2CeAHXwqzLshBcvK9EwEayLemzJCsjHfrTxPYkH6\"]},\"node_modules/@latticexyz/world/src/interfaces/IWorldRegistrationSystem.sol\":{\"keccak256\":\"0x918e79655a2724496ffd1130925e2cfbd7711e7e2759d47d15fd174e7ddd1540\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9d2854beec35e9047b41d5669eaa0cb4840f0331f0232164f659b67c5377f3ad\",\"dweb:/ipfs/QmfWzr97XvWTHwrfZ2RF3QZq6QKvd5fvNydSKyQAFDuuDs\"]},\"src/codegen/world/IBattleForceSystem.sol\":{\"keccak256\":\"0x99957a0151894f7611439537e3e13a3cd1f0ae2341bd17173fd9d5d18e25486a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7ecb3cbbe4824412fa22af7caed4a61de198da4611cce3a5e2d91393c9dbe0a0\",\"dweb:/ipfs/QmViuB8Lr2yQ9xnQhvpB8wJLUJqoSoHLRf1tkVF8oedzif\"]},\"src/codegen/world/IBattleInfoSystem.sol\":{\"keccak256\":\"0x99558a0ef33e4b84354fcd8fd6e0db1260da9ede0e8f5f0d6545774fad91cc0c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3903ffa69ba2b60a2b9f4928d375dd5a7d11c0d9f971a7d5f63a67d87322cffb\",\"dweb:/ipfs/QmduAGo4xsU4A6Xd7cpFUQJMkYMmcyeDWoT8Ur5ki2Tz1k\"]},\"src/codegen/world/IBattlePrepareSystem.sol\":{\"keccak256\":\"0x2a524080e4e5058c090100b05a4c68c863b69b32facc4529460ed7569ac8534a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2f271eb9eb85783e73a04a096f2216b0fbaff6e3ac9f554966a62ee925e7bb49\",\"dweb:/ipfs/QmbLNbVMUiDQB7RAURKVouSjTmCizKycUNLCmXy2LbZxs6\"]},\"src/codegen/world/IBattleSystem.sol\":{\"keccak256\":\"0x3a3900f49d7f50416838f03cb1d978a40cee79664919b01c61a1aa0d7cb758a6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bae16a85aa3f8c45adb539d28f422076958b434f3ff739059c1e63a5e0f70e9e\",\"dweb:/ipfs/QmW8mxoaKYu5vNozpBjNBGtNzMxfDfSMRavHnTv7qDv4pG\"]},\"src/codegen/world/IBoxSystem.sol\":{\"keccak256\":\"0x0a77ebe6ff0a0025b8e0c8f32ae08945c3215a1e993411d510fc09c73242e734\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://da8b753ad86100470dc3888be59c7ac0e619a7c33ad447aaa31088a5c00512d3\",\"dweb:/ipfs/QmcAJ8gmG6KM8MLdekHagaGVhat51AuqD2TmgJdoDTbCHc\"]},\"src/codegen/world/IGMSystem.sol\":{\"keccak256\":\"0x5d3e4f97cac728a0c5225d5061436e54638f59cddf8812baf429770e411185d5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://20ab089f55c710e5bb0548b45eac0efe0901bb8fbadcde21f42a9d59baff4f5c\",\"dweb:/ipfs/QmRZ1j4bud39zjKEz69grL34JA4mdSdp6qm9oTK1Rtzoiu\"]},\"src/codegen/world/IGameSystem.sol\":{\"keccak256\":\"0x9a7cf5b861e49deda8793d9a2f4a4b80591e93b60727cc6d61ef70d76e205a03\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4706d646c8e1155d15cf2141a1a4d108ee7eb66459343ef38010fcf78d53656c\",\"dweb:/ipfs/QmY6GEsrH4jP46CZDCY8u3RnNonDo6cGFDyXXrbP2mvkZW\"]},\"src/codegen/world/IMoveSystem.sol\":{\"keccak256\":\"0x575faa695b3b5e5fe7ad93a0ba629a43bac28e5fe3b155551b383ac3411ff6ef\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://16e8701115764ff051937aaffe7fb7bad7a5aee311ac787b936dfeaa160c2f9a\",\"dweb:/ipfs/QmSDS2wqBNfeQEPqiygXSjHjCNYbQWnJ17cbphsG4p8v8s\"]},\"src/codegen/world/IPlayerSystem.sol\":{\"keccak256\":\"0xabf6b1e495a2e6ea98ccb6508f9299ff89d128c71839ace40235ceabb941484f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6f957b593598bc6b7712b630721b39707a10ae2f751b37d3adebe46aef0ff1a5\",\"dweb:/ipfs/QmWGwKzUQ8sy7koUM5APnGAGAsCHKdJEpTF8UUnTsupZZN\"]},\"src/codegen/world/IWorld.sol\":{\"keccak256\":\"0xc0ab5afcd25eb6ef00e9d480f87d80893c0bf3b1e8461bd28f3487bd29efb092\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://adae613b8fa01b76e2182c7a8a392f942bf36bb9a881e1c53ff07903bb5af07a\",\"dweb:/ipfs/QmdSih7Ust1BCqcuwXERF4fqnXJur2d2mLEj5LvJWZgfhr\"]},\"src/systems/Common.sol\":{\"keccak256\":\"0x7f0c618195bd5527963d727da8d9352467e256aba71275b6265af7342eeb18cf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b5448d0d232ad7627306dcabe161701c3b7ead08db487d9aa018aae562ca01b3\",\"dweb:/ipfs/QmdGnWSMVyQdAxE8NYzngsN3oMGhZmr16TBakk77XhhL7d\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.13+commit.abaa5c0e"
@@ -2570,6 +2596,30 @@
         {
           "inputs": [
             {
+              "internalType": "struct Coordinate[]",
+              "name": "cList",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "x",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "y",
+                  "type": "uint16"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "multCreateBox"
+        },
+        {
+          "inputs": [
+            {
               "internalType": "uint256",
               "name": "_boxId",
               "type": "uint256"
@@ -3425,10 +3475,10 @@
         "license": "MIT"
       },
       "src/codegen/world/IGMSystem.sol": {
-        "keccak256": "0xb217529a27d787da1d2c910cf4aaa601c18255091eece0905a1409b994f80e71",
+        "keccak256": "0x5d3e4f97cac728a0c5225d5061436e54638f59cddf8812baf429770e411185d5",
         "urls": [
-          "bzz-raw://1cf1ebc643868e0a7b5add9b6de40d8cc2a71d01522b7042e887f2f42b3d260b",
-          "dweb:/ipfs/QmbARdtad1z2P4vU4omMRXSmy1RAnNaoAcuYnbVPpCrPJ8"
+          "bzz-raw://20ab089f55c710e5bb0548b45eac0efe0901bb8fbadcde21f42a9d59baff4f5c",
+          "dweb:/ipfs/QmRZ1j4bud39zjKEz69grL34JA4mdSdp6qm9oTK1Rtzoiu"
         ],
         "license": "MIT"
       },
@@ -3465,10 +3515,10 @@
         "license": "MIT"
       },
       "src/systems/Common.sol": {
-        "keccak256": "0x25b1b37460f5741acb0549e81117b148505f656a8f93a0aff47720167e92e4e0",
+        "keccak256": "0x7f0c618195bd5527963d727da8d9352467e256aba71275b6265af7342eeb18cf",
         "urls": [
-          "bzz-raw://3c0ecd5e7ac72fb5f98f794ddb82bba865cf7fd72d95a19e7e6a51f6dd214983",
-          "dweb:/ipfs/QmYPRFyZN6eWs9xCnU9k5Yz9vErMdHPyxBKP7UXwAsJ6gc"
+          "bzz-raw://b5448d0d232ad7627306dcabe161701c3b7ead08db487d9aa018aae562ca01b3",
+          "dweb:/ipfs/QmdGnWSMVyQdAxE8NYzngsN3oMGhZmr16TBakk77XhhL7d"
         ],
         "license": "MIT"
       }
@@ -3477,47 +3527,47 @@
   },
   "ast": {
     "absolutePath": "src/codegen/world/IWorld.sol",
-    "id": 119069,
+    "id": 119030,
     "exportedSymbols": {
       "IBaseWorld": [
         71348
       ],
       "IBattleForceSystem": [
-        118794
+        118746
       ],
       "IBattleInfoSystem": [
-        118806
+        118758
       ],
       "IBattlePrepareSystem": [
-        118840
+        118792
       ],
       "IBattleSystem": [
-        118859
+        118811
       ],
       "IBoxSystem": [
-        118881
+        118833
       ],
       "IGMSystem": [
-        118922
+        118883
       ],
       "IGameSystem": [
-        118928
+        118889
       ],
       "IMoveSystem": [
-        118943
+        118904
       ],
       "IPlayerSystem": [
-        119024
+        118985
       ],
       "IWorld": [
-        119068
+        119029
       ]
     },
     "nodeType": "SourceUnit",
     "src": "32:952:169",
     "nodes": [
       {
-        "id": 119026,
+        "id": 118987,
         "nodeType": "PragmaDirective",
         "src": "32:24:169",
         "nodes": [],
@@ -3529,19 +3579,19 @@
         ]
       },
       {
-        "id": 119028,
+        "id": 118989,
         "nodeType": "ImportDirective",
         "src": "107:77:169",
         "nodes": [],
         "absolutePath": "node_modules/@latticexyz/world/src/interfaces/IBaseWorld.sol",
         "file": "@latticexyz/world/src/interfaces/IBaseWorld.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
+        "scope": 119030,
         "sourceUnit": 71349,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119027,
+              "id": 118988,
               "name": "IBaseWorld",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
@@ -3555,23 +3605,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119030,
+        "id": 118991,
         "nodeType": "ImportDirective",
         "src": "186:62:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleForceSystem.sol",
         "file": "./IBattleForceSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118795,
+        "scope": 119030,
+        "sourceUnit": 118747,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119029,
+              "id": 118990,
               "name": "IBattleForceSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118794,
+              "referencedDeclaration": 118746,
               "src": "195:18:169",
               "typeDescriptions": {}
             },
@@ -3581,23 +3631,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119032,
+        "id": 118993,
         "nodeType": "ImportDirective",
         "src": "249:60:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleInfoSystem.sol",
         "file": "./IBattleInfoSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118807,
+        "scope": 119030,
+        "sourceUnit": 118759,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119031,
+              "id": 118992,
               "name": "IBattleInfoSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118806,
+              "referencedDeclaration": 118758,
               "src": "258:17:169",
               "typeDescriptions": {}
             },
@@ -3607,23 +3657,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119034,
+        "id": 118995,
         "nodeType": "ImportDirective",
         "src": "310:66:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattlePrepareSystem.sol",
         "file": "./IBattlePrepareSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118841,
+        "scope": 119030,
+        "sourceUnit": 118793,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119033,
+              "id": 118994,
               "name": "IBattlePrepareSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118840,
+              "referencedDeclaration": 118792,
               "src": "319:20:169",
               "typeDescriptions": {}
             },
@@ -3633,23 +3683,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119036,
+        "id": 118997,
         "nodeType": "ImportDirective",
         "src": "377:52:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBattleSystem.sol",
         "file": "./IBattleSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118860,
+        "scope": 119030,
+        "sourceUnit": 118812,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119035,
+              "id": 118996,
               "name": "IBattleSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118859,
+              "referencedDeclaration": 118811,
               "src": "386:13:169",
               "typeDescriptions": {}
             },
@@ -3659,23 +3709,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119038,
+        "id": 118999,
         "nodeType": "ImportDirective",
         "src": "430:46:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IBoxSystem.sol",
         "file": "./IBoxSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118882,
+        "scope": 119030,
+        "sourceUnit": 118834,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119037,
+              "id": 118998,
               "name": "IBoxSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118881,
+              "referencedDeclaration": 118833,
               "src": "439:10:169",
               "typeDescriptions": {}
             },
@@ -3685,23 +3735,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119040,
+        "id": 119001,
         "nodeType": "ImportDirective",
         "src": "477:48:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IGameSystem.sol",
         "file": "./IGameSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118929,
+        "scope": 119030,
+        "sourceUnit": 118890,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119039,
+              "id": 119000,
               "name": "IGameSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118928,
+              "referencedDeclaration": 118889,
               "src": "486:11:169",
               "typeDescriptions": {}
             },
@@ -3711,23 +3761,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119042,
+        "id": 119003,
         "nodeType": "ImportDirective",
         "src": "526:44:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IGMSystem.sol",
         "file": "./IGMSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118923,
+        "scope": 119030,
+        "sourceUnit": 118884,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119041,
+              "id": 119002,
               "name": "IGMSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118922,
+              "referencedDeclaration": 118883,
               "src": "535:9:169",
               "typeDescriptions": {}
             },
@@ -3737,23 +3787,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119044,
+        "id": 119005,
         "nodeType": "ImportDirective",
         "src": "571:48:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IMoveSystem.sol",
         "file": "./IMoveSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 118944,
+        "scope": 119030,
+        "sourceUnit": 118905,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119043,
+              "id": 119004,
               "name": "IMoveSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 118943,
+              "referencedDeclaration": 118904,
               "src": "580:11:169",
               "typeDescriptions": {}
             },
@@ -3763,23 +3813,23 @@
         "unitAlias": ""
       },
       {
-        "id": 119046,
+        "id": 119007,
         "nodeType": "ImportDirective",
         "src": "620:52:169",
         "nodes": [],
         "absolutePath": "src/codegen/world/IPlayerSystem.sol",
         "file": "./IPlayerSystem.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 119069,
-        "sourceUnit": 119025,
+        "scope": 119030,
+        "sourceUnit": 118986,
         "symbolAliases": [
           {
             "foreign": {
-              "id": 119045,
+              "id": 119006,
               "name": "IPlayerSystem",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "referencedDeclaration": 119024,
+              "referencedDeclaration": 118985,
               "src": "629:13:169",
               "typeDescriptions": {}
             },
@@ -3789,7 +3839,7 @@
         "unitAlias": ""
       },
       {
-        "id": 119068,
+        "id": 119029,
         "nodeType": "ContractDefinition",
         "src": "788:195:169",
         "nodes": [],
@@ -3797,121 +3847,121 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 119048,
+              "id": 119009,
               "name": "IBaseWorld",
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 71348,
               "src": "810:10:169"
             },
-            "id": 119049,
+            "id": 119010,
             "nodeType": "InheritanceSpecifier",
             "src": "810:10:169"
           },
           {
             "baseName": {
-              "id": 119050,
+              "id": 119011,
               "name": "IBattleForceSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118794,
+              "referencedDeclaration": 118746,
               "src": "824:18:169"
             },
-            "id": 119051,
+            "id": 119012,
             "nodeType": "InheritanceSpecifier",
             "src": "824:18:169"
           },
           {
             "baseName": {
-              "id": 119052,
+              "id": 119013,
               "name": "IBattleInfoSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118806,
+              "referencedDeclaration": 118758,
               "src": "846:17:169"
             },
-            "id": 119053,
+            "id": 119014,
             "nodeType": "InheritanceSpecifier",
             "src": "846:17:169"
           },
           {
             "baseName": {
-              "id": 119054,
+              "id": 119015,
               "name": "IBattlePrepareSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118840,
+              "referencedDeclaration": 118792,
               "src": "867:20:169"
             },
-            "id": 119055,
+            "id": 119016,
             "nodeType": "InheritanceSpecifier",
             "src": "867:20:169"
           },
           {
             "baseName": {
-              "id": 119056,
+              "id": 119017,
               "name": "IBattleSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118859,
+              "referencedDeclaration": 118811,
               "src": "891:13:169"
             },
-            "id": 119057,
+            "id": 119018,
             "nodeType": "InheritanceSpecifier",
             "src": "891:13:169"
           },
           {
             "baseName": {
-              "id": 119058,
+              "id": 119019,
               "name": "IBoxSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118881,
+              "referencedDeclaration": 118833,
               "src": "908:10:169"
             },
-            "id": 119059,
+            "id": 119020,
             "nodeType": "InheritanceSpecifier",
             "src": "908:10:169"
           },
           {
             "baseName": {
-              "id": 119060,
+              "id": 119021,
               "name": "IGameSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118928,
+              "referencedDeclaration": 118889,
               "src": "922:11:169"
             },
-            "id": 119061,
+            "id": 119022,
             "nodeType": "InheritanceSpecifier",
             "src": "922:11:169"
           },
           {
             "baseName": {
-              "id": 119062,
+              "id": 119023,
               "name": "IGMSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118922,
+              "referencedDeclaration": 118883,
               "src": "937:9:169"
             },
-            "id": 119063,
+            "id": 119024,
             "nodeType": "InheritanceSpecifier",
             "src": "937:9:169"
           },
           {
             "baseName": {
-              "id": 119064,
+              "id": 119025,
               "name": "IMoveSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 118943,
+              "referencedDeclaration": 118904,
               "src": "950:11:169"
             },
-            "id": 119065,
+            "id": 119026,
             "nodeType": "InheritanceSpecifier",
             "src": "950:11:169"
           },
           {
             "baseName": {
-              "id": 119066,
+              "id": 119027,
               "name": "IPlayerSystem",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 119024,
+              "referencedDeclaration": 118985,
               "src": "965:13:169"
             },
-            "id": 119067,
+            "id": 119028,
             "nodeType": "InheritanceSpecifier",
             "src": "965:13:169"
           }
@@ -3920,34 +3970,34 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 119047,
+          "id": 119008,
           "nodeType": "StructuredDocumentation",
           "src": "674:113:169",
           "text": " The IWorld interface includes all systems dynamically added to the World\n during the deploy process."
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          119068,
-          119024,
-          118943,
-          118922,
-          118928,
-          118881,
-          118859,
-          118840,
-          118806,
-          118794,
+          119029,
+          118985,
+          118904,
+          118883,
+          118889,
+          118833,
+          118811,
+          118792,
+          118758,
+          118746,
           71348,
-          130160,
-          130069,
-          130053,
-          130056,
-          130108,
-          173818,
-          130098,
-          130087,
+          130146,
+          130055,
+          130039,
+          130042,
+          130094,
+          173804,
+          130084,
+          130073,
           64435,
-          127326,
+          127312,
           64393,
           64426,
           64399,
@@ -3956,24 +4006,24 @@
         ],
         "name": "IWorld",
         "nameLocation": "798:6:169",
-        "scope": 119069,
+        "scope": 119030,
         "usedErrors": [
-          127291,
-          127297,
+          127277,
+          127283,
+          127285,
+          127287,
+          127293,
           127299,
-          127301,
-          127307,
-          127313,
-          127319,
-          127325,
+          127305,
+          127311,
+          173773,
+          173777,
+          173783,
           173787,
           173791,
-          173797,
-          173801,
-          173805,
-          173809,
-          173813,
-          173817
+          173795,
+          173799,
+          173803
         ]
       }
     ],
