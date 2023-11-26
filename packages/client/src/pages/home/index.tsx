@@ -63,7 +63,6 @@ const Home = () => {
 
   const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
   const syncprogress = syncprogressData[0]
-  // console.log(GameConfigData, 'GlobalConfigData', syncprogress)
 
   // useEffect(() => {
   //   if (syncprogress?.percentage == 100) {
@@ -110,6 +109,9 @@ const Home = () => {
 
   const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
 
+  console.log(GlobalConfigData, 'GlobalConfigData', syncprogress?.percentage)
+
+
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
@@ -133,6 +135,7 @@ const Home = () => {
       lootTokenIds = res
     })
   }
+
 
   if (GlobalConfigData.length && GlobalConfigData[0].pluginContract && !pluginContract) {
     let privateKey = network.privateKey
@@ -192,7 +195,7 @@ const Home = () => {
     }
     setUsername(usernameRef.current.value);
     setModalVisible(false);
-    setStep('mint');
+    mintAndGo();
   }
 
   const handleKeyUp = (e) => {
@@ -232,21 +235,28 @@ const Home = () => {
 }
 
   const mintAndGo = async () => {
+    if (syncprogress?.percentage != 100) {
+      message.error('Waiting for sync...');
+      return;
+    }
+    if (!username) {
+      createWallet();
+      return;
+    }
     setMinting(true);
     try {
       if (!(userTokenIds?.length && lootTokenIds?.length)) {
-        messageApi.open({
-          type: 'loading',
-          content: 'minting loot and user,please wait...',
-          duration: 7,
-        })
+        message.loading('minting loot and user,please wait...')
         await mint()
+        message.destroy()
       }
       if (curPlayer?.state >= 2) {
         navigate('/game');
         return;
       } else if (curPlayer?.state == 1) {
+        message.loading('join battlefield')
         await joinBattlefield()
+        message.destroy()
         navigate('/game');
         return
       }
@@ -307,10 +317,6 @@ const Home = () => {
       message.error(`Please wait for open demo day`);
       return;
     }
-    if (syncprogress?.percentage < 100) {
-      message.error(`Please wait for sync progress`);
-      return;
-    }
     if (!network.account) {
       message.error('waiting for wallet connection');
       return;
@@ -320,7 +326,8 @@ const Home = () => {
     } else {
       localStorage.removeItem('curPlayer');
       localStorage.removeItem('worldContractAddress');
-      createWallet();
+      setStep('mint');
+      // createWallet();
     }
   }
 
@@ -345,7 +352,7 @@ const Home = () => {
 
                   Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
                 </p>
-                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : syncprogress?.percentage == 100 ? 'PLAY NOW' : 'WATING'}</button>
+                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
 
               </div>
             </div>
@@ -362,7 +369,7 @@ const Home = () => {
               <h2 className="mint-title">HOME</h2>
               <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
-                {minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO'}
+                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': 'Waiting for sync...'}
               </button>
               {
                 minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null
