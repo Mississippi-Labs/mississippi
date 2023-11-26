@@ -40,6 +40,7 @@ export interface IPlayer {
   strength: number;
   space: number;
   oreBalance: number;
+  seasonOreBalance: number;
   treasureBalance: number;
   state: number;
   lastBattleTime: number;

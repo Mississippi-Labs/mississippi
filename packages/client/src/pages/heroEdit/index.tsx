@@ -27,7 +27,7 @@ const HeroEdit = () => {
 
   return (
     <div className={'mi-hero-page'}>
-      <UserInfo player={{ equip }}/>
+      <UserInfo player={{ equip, oreBalance: 3, seasonOreBalance: 6 }}/>
       {/*<div className="actions">*/}
       {/*  <select*/}
       {/*    onChange={(e) => {*/}

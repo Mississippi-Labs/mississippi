@@ -5,8 +5,16 @@ import Test from './pages/test';
 import Home from '@/pages/home';
 import HeroEdit from '@/pages/heroEdit';
 import PIXIAPP from '@/components/PIXIAPP';
+import { useEffect } from 'react';
 
 export const App = () => {
+
+  useEffect(() => {
+    document.body.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    })
+  }, [])
 
   return (
     <div className="mi-app">
