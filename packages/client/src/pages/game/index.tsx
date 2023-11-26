@@ -163,9 +163,9 @@ const Game = () => {
 
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-  if (curPlayer && curPlayer.state < 2 && percentage == 100) {
-    navigate('/');
-  }
+  // if (curPlayer && curPlayer.state < 2 && percentage == 100) {
+  //   navigate('/');
+  // }
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
@@ -374,6 +374,7 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
+    console.log(curPlayer)
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -487,7 +488,7 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
-        
+ 
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>

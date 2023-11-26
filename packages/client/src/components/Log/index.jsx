@@ -18,8 +18,6 @@ const Log = () => {
 
   useEffect(() => {
     function addLogCb(e) {
-      console.log('e', e);
-      console.log('logsTemp', logs);
       let index = logs.findIndex(log => log.time === e.time);
       if (index > -1) {
         logs[index] = e;
@@ -28,7 +26,7 @@ const Log = () => {
       }
       setLogs([...logs]);
     }
-    eventEmitter.on('log', addLogCb);
+    eventEmitter?.on('log', addLogCb);
     return () => {
       eventEmitter?.off('log', addLogCb);
     };
