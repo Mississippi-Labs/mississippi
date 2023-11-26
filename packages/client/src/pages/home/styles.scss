@@ -77,7 +77,8 @@
         .mi-btn {
             display: block;
             margin: 36px auto;
-            width: 238px;
+            padding: 0 24px;
+            box-sizing: border-box;
             height: 66px;
             font-size: 16px;
         }
