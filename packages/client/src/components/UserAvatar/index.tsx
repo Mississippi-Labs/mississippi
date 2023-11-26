@@ -29,7 +29,7 @@ const UserAvatar = (props: IProps) => {
 
       <div className='user-info'>
         <div className='user-hp'>
-          <div className='now-hp' style={{width: (props.hp / props.maxHp) * 100 + '%'}}></div>
+          <div className='now-hp' ><div className='hp' style={{width: (props.hp / props.maxHp) * 100 + '%'}}></div></div>
           {
             diffHp > 0 ? <div className='diff-hp'>+{diffHp}</div> : null
           }
