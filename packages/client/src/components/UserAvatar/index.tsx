@@ -12,7 +12,6 @@ interface IProps extends IPlayer {
 const UserAvatar = (props: IProps) => {
   const [diffHp, setDiffHp] = useState(0);
   const { address, balance, ...rest } = props;
-  console.log(props, 'props')
   useEffect(() => {
     setDiffHp(props.diffHp)
     setTimeout(() => {
@@ -29,7 +28,7 @@ const UserAvatar = (props: IProps) => {
 
       <div className='user-info'>
         <div className='user-hp'>
-          <div className='now-hp' style={{width: (props.hp / props.maxHp) * 100 + '%'}}></div>
+          <div className='now-hp' ><div className='hp' style={{width: (props.hp / props.maxHp) * 100 + '%'}}></div></div>
           {
             diffHp > 0 ? <div className='diff-hp'>+{diffHp}</div> : null
           }

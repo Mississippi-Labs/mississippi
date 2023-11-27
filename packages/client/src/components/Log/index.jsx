@@ -18,8 +18,6 @@ const Log = () => {
 
   useEffect(() => {
     function addLogCb(e) {
-      console.log('e', e);
-      console.log('logsTemp', logs);
       let index = logs.findIndex(log => log.time === e.time);
       if (index > -1) {
         logs[index] = e;
@@ -28,16 +26,17 @@ const Log = () => {
       }
       setLogs([...logs]);
     }
-    eventEmitter.on('log', addLogCb);
-    return () => {
-      eventEmitter.off('log', addLogCb);
-    };
+    try {
+      eventEmitter?.on('log', addLogCb);
+    } catch (error) {
+      console.log('eventEmitter.on error', error);
+    }
   }, []);
 
   return (
-    <div style={{ fontFamily: 'MISS', height: '200px', position: 'fixed', bottom: '40px', left: '18px', zIndex: '99' }}>
+    <div style={{ fontFamily: 'MISS', height: '200px', position: 'fixed', bottom: '40px', left: '18px', zIndex: '99', width: '250px' }}>
       <div className="title" style={{ width: '249px', height: '32px', color: '#FFF', fontSize: '18px' }}>Log</div>
-      <div ref={myLog} style={{height: '168px',overflow: 'auto'}}>
+      <div className='log-content' ref={myLog} style={{height: '168px',overflow: 'auto', width: '250px'}}>
         {
           logs.map((log, index) => (
             <div key={index} style={{ color: log?.type == 'error' ? '#F00' : log.block ? '#FFF' : '#FFE303', fontSize: '10px', lineHeight: '1.4', marginBottom: '10px' }}>{log?.type == 'error' ? 'Error' : log.block || 'waiting'} {log.msg}</div>

@@ -206,7 +206,7 @@ const PIXIAPP = () => {
         break;
       case 'click':
         targetChests = treasureChest.filter(item => item.x === coordinate.x && item.y === coordinate.y);
-        if (targetChests.length > 0 && getDistance(curPlayer, coordinate) <= 1) {
+        if (targetChests.length > 0 && getDistance(curPlayer, coordinate) < 2) {
           openTreasureChest(targetChests[0].id);
           return;
         }

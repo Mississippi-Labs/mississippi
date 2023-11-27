@@ -18,6 +18,7 @@ import Log from "@/components/Log";
 import GameContext from '@/context';
 import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
+import Talk from '@/components/Talk';
 import Header from '../home/header'
 import { DELIVERY } from '@/config/map';
 import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
@@ -162,9 +163,9 @@ const Game = () => {
 
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-  if (curPlayer && curPlayer.state < 2 && percentage == 100) {
-    navigate('/');
-  }
+  // if (curPlayer && curPlayer.state < 2 && percentage == 100) {
+  //   navigate('/');
+  // }
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
@@ -174,7 +175,6 @@ const Game = () => {
       navigate('/');
     }
   }
-  console.log(curPlayer, 'curPlayer')
   const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
     const id = decodeEntity({ battleId: "uint256" }, entity);
     const battle:any = getComponentValue(BattleList, entity)
@@ -512,7 +512,7 @@ const Game = () => {
                 modalType === 'submitGem' ? <div className="mi-modal-title">Congrats,you submitted {gotBox?.oreBalance} gems!</div> : null
               }
               {
-                modalType === 'getCollections' ? <div className="mi-modal-title">Congrats,you got {gotBox?.oreBalance} gems!</div> : null
+                modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
                 <TreasureChest/>
