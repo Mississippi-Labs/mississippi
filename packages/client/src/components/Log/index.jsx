@@ -26,10 +26,11 @@ const Log = () => {
       }
       setLogs([...logs]);
     }
-    eventEmitter?.on('log', addLogCb);
-    return () => {
-      eventEmitter?.off('log', addLogCb);
-    };
+    try {
+      eventEmitter?.on('log', addLogCb);
+    } catch (error) {
+      console.log('eventEmitter.on error', error);
+    }
   }, []);
 
   return (

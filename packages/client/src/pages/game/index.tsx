@@ -487,7 +487,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
-
+        {
+          curPlayer && percentage == 100 ? <Talk curPlayer={curPlayer} /> : null
+        }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>
