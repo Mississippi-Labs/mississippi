@@ -374,7 +374,6 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
-    console.log(curPlayer)
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -488,7 +487,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
- 
+        {
+          curPlayer && percentage == 100 ? <Talk curPlayer={curPlayer} /> : null
+        }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>
@@ -514,7 +515,7 @@ const Game = () => {
                 modalType === 'submitGem' ? <div className="mi-modal-title">Congrats,you submitted {gotBox?.oreBalance} gems!</div> : null
               }
               {
-                modalType === 'getCollections' ? <div className="mi-modal-title">Congrats,you got {gotBox?.oreBalance} gems!</div> : null
+                modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
                 <TreasureChest/>
