@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './styles.scss';
 import Player from '@/components/PIXIPlayers/Player';
+import Typewriter from '@/components/Typewriter';
 import { Stage } from '@pixi/react';
+import dark from '@/assets/img/duck_index.png';
 
 const Talk = (props) => {
-  const {position, text, curPlayer } = props;
+  const {position, text = 'I used to be an adventurer like you, then I took an arrow in the knee', curPlayer } = props;
   console.log('curPlayer', curPlayer);
   return (
     <div className='talk'>
@@ -20,8 +22,11 @@ const Talk = (props) => {
                   equip={curPlayer?.equip}
                 />
               </Stage>
-            ) : null
+            ) : <img src={dark} className='dark' />
           }
+        </div>
+        <div className='text'>
+          <Typewriter text={text} typingSpeed={50} name={curPlayer?.name || ''} />
         </div>
       </div>
     </div>

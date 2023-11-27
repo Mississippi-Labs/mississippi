@@ -9,5 +9,34 @@
   .talk-main {
     width: 1280px;
     margin: auto;
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    .player {
+
+    }
+    .dark {
+      transform: rotateY(180deg) translateY(-80px);
+      width: 200px;
+      height: auto;
+      margin-top: -100px;
+    }
+    .text {
+      border-radius: 20px;
+      border: 10px solid #DCC7AF;
+      background: #6F391E;
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      width: 1280px;
+      height: 190px;
+      box-sizing: border-box;
+      margin-top: -100px;
+      position: relative;
+      z-index: 9;
+      padding: 16px 20px;
+      color: #FFF;
+      font-size: 22px;
+      font-family: 'MISS';
+    }
   }
 }
