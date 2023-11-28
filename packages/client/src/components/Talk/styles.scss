@@ -41,6 +41,11 @@
       color: #FFF;
       font-size: 22px;
       font-family: 'MISS';
+      .step {
+        position: absolute;
+        top: -40px;
+        right: 0px;
+      }
     }
   }
 }
