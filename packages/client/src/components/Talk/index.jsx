@@ -6,11 +6,13 @@ import { Stage } from '@pixi/react';
 import dark from '@/assets/img/duck_index.png';
 
 const Talk = (props) => {
-  const {position, text = 'I used to be an adventurer like you, then I took an arrow in the knee', curPlayer } = props;
-  console.log('curPlayer', curPlayer);
+  const {position, text, curPlayer, step, sample } = props;
   return (
     <div className='talk'>
       <div className='talk-main'>
+        <div className='sample'>
+          <img src={sample}></img>
+        </div>
         <div className='player'>
           {
             curPlayer?.equip ? (
@@ -25,8 +27,10 @@ const Talk = (props) => {
             ) : <img src={dark} className='dark' />
           }
         </div>
-        <div className='text'>
-          <Typewriter text={text} typingSpeed={50} name={curPlayer?.name || ''} />
+        <div className='text' onClick={() => props.onNext()}>
+          <div className='name' style={{marginBottom: '18px'}}>{curPlayer?.name || 'Mistery Duck'}:</div>
+          <Typewriter text={text} typingSpeed={30} step={step} />
+          <div style={{position: 'absolute', bottom: '18px', right: '18px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)'}}>Click any button to continue</div>
         </div>
       </div>
     </div>

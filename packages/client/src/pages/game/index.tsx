@@ -32,6 +32,7 @@ import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
+import { TALK_MAIN } from '@/config/talk';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -51,6 +52,8 @@ const Game = () => {
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
+
+  const [step, setStep] = useState(0);
 
   const [renderMapData, setRenderMapData] = useState([]);
 
@@ -449,6 +452,18 @@ const Game = () => {
     }, 1000)
   }
 
+  const [talked, setTalked] = useState(localStorage.getItem('talked') || 'false')
+  const onNext = async () => {
+    console.log(step, TALK_MAIN.length)
+    if (step < TALK_MAIN.length - 1) {
+      setStep(step + 1)
+    } else {
+      setTalked('true')
+      localStorage.setItem('talked', 'true')
+      return
+    }
+  }
+
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
   return (
     <GameContext.Provider
@@ -486,6 +501,9 @@ const Game = () => {
             <Loading percent={percentage}/>
             :
             <PIXIAPP/>
+        }
+        {
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
         }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>

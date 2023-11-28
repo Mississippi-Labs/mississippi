@@ -6,7 +6,7 @@ function Typewriter({ text, typingSpeed, step, name }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentIndex < text.length) {
+      if (text && (currentIndex < text.length)) {
         setDisplayText((prevText) => prevText + text[currentIndex]);
         setCurrentIndex((prevIndex) => prevIndex + 1);
       } else {
@@ -20,14 +20,12 @@ function Typewriter({ text, typingSpeed, step, name }) {
   }, [text, typingSpeed, currentIndex]);
 
   useEffect(() => {
+    console.log(1)
     setDisplayText('');
     setCurrentIndex(0);
   }, [step]);
 
-  return <div style={{width: '100%', height: '100%', position: 'relative'}}>
-    <div className='name' style={{marginBottom: '18px'}}>{name || 'Mistery Duck'}:</div>
-    {displayText}
-    <div style={{position: 'absolute', bottom: '0px', right: '0px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)'}}>Click any button to continue</div>
+  return <div style={{width: '100%', height: '100%', position: 'relative'}} dangerouslySetInnerHTML={{ __html: displayText }}>
   </div>;
 }
 
