@@ -16,9 +16,6 @@ export const TALK_MAIN = [{
   img: talk_2,
   text: 'Move next to the chest box.Left-click on the chest box to mine the treasure. '
 }, {
-  img: talk_3,
-  text: 'Make sure to click on the “OK” button to claim your gems.  '
-}, {
   img: talk_4,
   text: 'Go back to home to submit gems and increase the leaderboard score. '
 }, {

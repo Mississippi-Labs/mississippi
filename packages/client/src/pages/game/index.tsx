@@ -201,10 +201,14 @@ const Game = () => {
     setStartBattleData(true);
   }
   
-  const getCollectionsFun = (box: any) => {
+  const getCollectionsFun = async (box: any) => {
     setGotBox(box);
     setModalType('getCollections');
-    setModalVisible(true);
+    let res = await getCollections(box.id, box.oreBalance, box.treasureBalance);
+    setOpeningBox(null);
+    if (res.type == 'success') {
+      setModalVisible(true);
+    }
   }
   
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
@@ -408,9 +412,7 @@ const Game = () => {
   }
 
   const closeModal = async () => {
-    if (modalType === 'getCollections') {
-      await getCollections(gotBox.id, gotBox.oreBalance, gotBox.treasureBalance);
-    } else if (modalType === 'submitGem') {
+    if (modalType === 'submitGem') {
       curPlayer.oreBalance = 0;
       curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
     }
@@ -446,7 +448,6 @@ const Game = () => {
         clearInterval(interval)
         let boxData = await revealBox(id)
         boxData.id = id
-        setOpeningBox(null);
         getCollectionsFun(boxData);
       }
     }, 1000)

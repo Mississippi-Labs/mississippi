@@ -308,12 +308,18 @@ export function createSystemCalls(
       log.block = receipt.blockNumber.toString()
       eventEmitter.emit('log', log)
       wait = false
+      return {
+        type: 'success'
+      }
     } catch (error) {
       log.type = 'error'
       log.msg = 'getCollections:' + error.cause.reason || error.cause.details
       eventEmitter.emit('log', log)
       console.log('getCollections', error);
       wait = false
+      return {
+        type: 'error'
+      }
     }
   }
 
