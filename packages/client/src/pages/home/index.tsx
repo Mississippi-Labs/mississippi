@@ -312,6 +312,18 @@ const Home = () => {
     }
   }
 
+  const getProgress = () => {
+    if (syncprogress?.percentage == 100) {
+      return '100%'
+    } else {
+      if (syncprogress?.percentage) {
+        return Math.floor(syncprogress?.percentage * 100) + '%'
+      } else {
+        return '0%'
+      }
+    }
+  }
+
   const play = () => {
     if (!isOpen) {
       message.error(`Please wait for open demo day`);
@@ -369,7 +381,7 @@ const Home = () => {
               <h2 className="mint-title">HOME</h2>
               <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
-                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': 'Waiting for sync...'}
+                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': `Waiting for sync... ${getProgress()}`}
               </button>
               {
                 minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null
