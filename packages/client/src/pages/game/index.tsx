@@ -32,6 +32,7 @@ import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
+import { TALK_MAIN } from '@/config/talk';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -51,6 +52,8 @@ const Game = () => {
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
+
+  const [step, setStep] = useState(0);
 
   const [renderMapData, setRenderMapData] = useState([]);
 
@@ -198,10 +201,14 @@ const Game = () => {
     setStartBattleData(true);
   }
   
-  const getCollectionsFun = (box: any) => {
+  const getCollectionsFun = async (box: any) => {
     setGotBox(box);
     setModalType('getCollections');
-    setModalVisible(true);
+    let res = await getCollections(box.id, box.oreBalance, box.treasureBalance);
+    setOpeningBox(null);
+    if (res.type == 'success') {
+      setModalVisible(true);
+    }
   }
   
   const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
@@ -374,7 +381,6 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
-    console.log(curPlayer)
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -406,9 +412,7 @@ const Game = () => {
   }
 
   const closeModal = async () => {
-    if (modalType === 'getCollections') {
-      await getCollections(gotBox.id, gotBox.oreBalance, gotBox.treasureBalance);
-    } else if (modalType === 'submitGem') {
+    if (modalType === 'submitGem') {
       curPlayer.oreBalance = 0;
       curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
     }
@@ -444,10 +448,21 @@ const Game = () => {
         clearInterval(interval)
         let boxData = await revealBox(id)
         boxData.id = id
-        setOpeningBox(null);
         getCollectionsFun(boxData);
       }
     }, 1000)
+  }
+
+  const [talked, setTalked] = useState(localStorage.getItem('talked') || 'false')
+  const onNext = async () => {
+    console.log(step, TALK_MAIN.length)
+    if (step < TALK_MAIN.length - 1) {
+      setStep(step + 1)
+    } else {
+      setTalked('true')
+      localStorage.setItem('talked', 'true')
+      return
+    }
   }
 
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
@@ -488,7 +503,9 @@ const Game = () => {
             :
             <PIXIAPP/>
         }
- 
+        {
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
+        }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
         </div>
@@ -514,7 +531,7 @@ const Game = () => {
                 modalType === 'submitGem' ? <div className="mi-modal-title">Congrats,you submitted {gotBox?.oreBalance} gems!</div> : null
               }
               {
-                modalType === 'getCollections' ? <div className="mi-modal-title">Congrats,you got {gotBox?.oreBalance} gems!</div> : null
+                modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
                 <TreasureChest/>
