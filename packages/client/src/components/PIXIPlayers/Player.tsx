@@ -62,12 +62,15 @@ export interface IPlayer {
   isPlaying?: boolean;
   hpVisible?: boolean;
   hunted?: boolean;
+  onActionEnd?: (type: ActionType) => void;
 }
+
+
 
 const Player = (props: IPlayer) => {
 
   const { action = 'idle', size = cellSize, toward = 'Right', x = 0, y = 0, equip = {}, name, isPlaying = true, waiting = false,
-    moving, hpVisible = false, hp, maxHp, hunted = false } = props;
+    moving, hpVisible = false, hp, maxHp, hunted = false, onActionEnd } = props;
   const { clothes, handheld, head: cap } = equip;
   const [textureMap, setTextureMap] = useState({
     body: null,
@@ -127,7 +130,8 @@ const Player = (props: IPlayer) => {
         } else {
           setFrameIndex(prevIndex => {
             if (prevIndex === Actions[action].step - 1) {
-              clearInterval(frameInterval.current)
+              clearInterval(frameInterval.current);
+              onActionEnd?.(action as ActionType);
               return prevIndex;
             }
             return (prevIndex + 1) % Actions[action].step;

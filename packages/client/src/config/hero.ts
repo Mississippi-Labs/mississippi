@@ -245,7 +245,7 @@ export const Actions: ActionsType = {
   slash: {
     step: 4,
     row: 8,
-    loop: true
+    loop: false
   },
   blink: {
     step: 2,
@@ -263,3 +263,22 @@ export const Actions: ActionsType = {
 export const FrameSize = 64;
 export const FrameOffsetY = FrameSize / 2;
 export const HeroRegions = ['body', 'head', 'hair', 'eyes',  'arms', 'armor', 'helmet', 'weapon'];
+
+export const EffectFrameCount = 30;
+export const EffectCfg = {
+  sprint: {
+    col: 7,
+    width: 120,
+    height: 109
+  },
+  sneak: {
+    col: 6,
+    width: 291,
+    height: 301,
+  },
+  magic: {
+    col: 6,
+    width: 265,
+    height: 265
+  }
+}
