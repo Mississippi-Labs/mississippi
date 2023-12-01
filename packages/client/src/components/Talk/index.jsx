@@ -8,7 +8,7 @@ import dark from '@/assets/img/duck_index.png';
 const Talk = (props) => {
   const {position, text, curPlayer, step, sample } = props;
 
-  const skip = () => {
+  const skip = (event) => {
     // 阻止冒泡
     event.stopPropagation();
     props.onSkip();
