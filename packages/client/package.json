@@ -28,6 +28,7 @@
     "antd": "^5.9.2",
     "buffer": "^6.0.3",
     "contracts": "workspace:*",
+    "dayjs": "^1.11.10",
     "ethers": "^5.7.2",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.3.10",

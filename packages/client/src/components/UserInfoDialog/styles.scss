@@ -18,7 +18,8 @@
     .close-btn {
         display: block;
         margin: 32px auto 0;
-        width: 158px;
+        padding: 0 20px;
+        box-sizing: border-box;
         height: 42px;
     }
 }
