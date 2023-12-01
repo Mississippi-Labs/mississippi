@@ -111,6 +111,7 @@ const Home = () => {
 
   console.log(GlobalConfigData, 'GlobalConfigData', syncprogress?.percentage)
 
+  // console.log(lootAbi, 'lootAbi', userAbi, 'userAbi', pluginAbi, 'pluginAbi')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -218,6 +219,7 @@ const Home = () => {
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
             let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds?.length - 1].toString(), userTokenIds[userTokenIds?.length - 1].toString())
+            console.log(revealres, 'revealres')
             await revealres.wait()
             resolve('success')
           }
@@ -234,7 +236,7 @@ const Home = () => {
   ))
 }
 
-  const mintAndGo = async () => {
+  const mintAndGo = async (type) => {
     if (syncprogress?.percentage != 100) {
       message.error('Waiting for sync...');
       return;
@@ -245,7 +247,7 @@ const Home = () => {
     }
     setMinting(true);
     try {
-      if (!(userTokenIds?.length && lootTokenIds?.length)) {
+      if (!(userTokenIds?.length && lootTokenIds?.length) || (type == 'mint')) {
         message.loading('minting loot and user,please wait...')
         await mint()
         message.destroy()
@@ -263,14 +265,19 @@ const Home = () => {
       let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
   
-  
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       let url = urls[0]
       let lootUrl = urls[1]
       console.log("get loot and user success")
       console.log(urls, 'url')
-      url = atobUrl(url)
-      lootUrl = atobUrl(lootUrl)
+      try {
+        url = atobUrl(url)
+        lootUrl = atobUrl(lootUrl)
+      } catch (error) {
+        mintAndGo('mint')
+        console.log(error)
+      }
+      
 
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
@@ -309,6 +316,18 @@ const Home = () => {
       setMinting(false);
       console.log(error)
       message.error(error);
+    }
+  }
+
+  const getProgress = () => {
+    if (syncprogress?.percentage == 100) {
+      return '100%'
+    } else {
+      if (syncprogress?.percentage) {
+        return Math.floor(syncprogress?.percentage * 100) + '%'
+      } else {
+        return '0%'
+      }
     }
   }
 
@@ -369,7 +388,7 @@ const Home = () => {
               <h2 className="mint-title">HOME</h2>
               <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
-                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': 'Waiting for sync...'}
+                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': `Waiting for sync... ${getProgress()}`}
               </button>
               {
                 minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null

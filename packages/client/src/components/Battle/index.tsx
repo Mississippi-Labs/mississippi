@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
-import Appearance from '@/components/Appearance';
+import React, { useEffect, useState, useRef } from 'react';
+import DuelField, { AttackType, IDuelFieldMethod } from '@/components/DuelField';
 import "./styles.scss";
 import { useEntityQuery } from "@latticexyz/react";
 import { Has, getComponentValue, NotValue, HasValue } from '@latticexyz/recs';
@@ -10,10 +9,9 @@ import { getRandomStr } from '@/utils/utils';
 import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { message } from 'antd';
-import Player from '@/components/PIXIPlayers/Player';
-import { Stage } from '@pixi/react';
+import CountDown from '@/hooks/useCountDown';
 
-let timeout:any = null
+let interval:any = null
 let nonceHex = ''
 
 let curType = ''
@@ -21,6 +19,8 @@ let curType = ''
 let isFirst = false
 
 export default function Battle(props) {
+  const duel = useRef<IDuelFieldMethod>();
+
   let {battleId, curPlayer, targetPlayer} = props
   const [tacticsStep, setTacticsStep] = useState(1);
   const [confirmBattleData, setConfirmBattleData] = useState([]);
@@ -31,8 +31,8 @@ export default function Battle(props) {
   const [showPlayer1Loss, setShowPlayer1Loss] = useState(false);
   const [showPlayer2Loss, setShowPlayer2Loss] = useState(false);
 
-  const [attackerAction, setAttackerAction] = useState('idle');
-  const [defenderAction, setDefenderAction] = useState('idle');
+  curPlayer.toward = 'Right'
+  targetPlayer.toward = 'Left'
 
   const {
     components: { BattleList },
@@ -56,13 +56,20 @@ export default function Battle(props) {
     return battle;
   });
 
+  const setTimer = (s) => {
+    console.log(s)
+    const seconds = Number(s)
+    if (seconds == 0) {
+      forceEndFun()
+    } else {
+      return (<p style={{height: '20px', background: '#fff', width: (seconds / 30 * 100) + '%'}}>{seconds}</p>)
+    }
+  }
+
   const forceEndFun = async () => {
     try {
       let resultBattle:any = await forceEnd(battleId)
       if (resultBattle?.type && resultBattle?.type == 'error') {
-        timeout = setTimeout(async () => {
-          forceEndFun()
-        }, 10000)
       } else if (resultBattle?.isEnd && resultBattle?.winner) {
         isFirst = true
         props.finishBattle(resultBattle?.winner, resultBattle?.attacker, resultBattle?.defender)
@@ -74,11 +81,9 @@ export default function Battle(props) {
   }
 
   const initBattle = async () => {
-    if (battleState == 1) {
+    if (battleState == 1 || battleState == 5) {
       if (curType == 'attacker' && battle?.attackerState == 1) {
         if (battle?.defenderState >= 1) {
-          timeout && clearTimeout(timeout)
-          timeout = null
           let localConfirmBattleData = JSON.parse(localStorage.getItem('confirmBattleData') || '[]')
           let action = confirmBattleData[0] || localConfirmBattleData[0] || 'attack'
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
@@ -87,18 +92,13 @@ export default function Battle(props) {
           let src = await revealBattle(battleId, actionHex, arg, nonceHex)
           if (src && src?.type == 'success') {
             setBattleState(2)
+          } else {
+            // initBattle()
           }
         } else {
-          if (!timeout) {
-            timeout = setTimeout(async () => {
-              forceEndFun()
-            }, 23000)
-          }
         }
       } else if (curType == 'defender' && battle?.defenderState == 1) {
         if (battle?.attackerState >= 1) {
-          timeout && clearTimeout(timeout)
-          timeout = null
           let localConfirmBattleData = JSON.parse(localStorage.getItem('confirmBattleData') || '[]')
           let action = confirmBattleData[0] || localConfirmBattleData[0] || 'attack'
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
@@ -107,12 +107,8 @@ export default function Battle(props) {
           let src = await revealBattle(battleId, actionHex, arg, nonceHex)
           if (src && src?.type == 'success') {
             setBattleState(2)
-          }
-        } else {
-          if (!timeout) {
-            timeout = setTimeout(async () => {
-              forceEndFun()
-            }, 23000)
+          } else {
+            // initBattle()
           }
         }
       }
@@ -120,28 +116,12 @@ export default function Battle(props) {
       console.log(battleState, battle)
       if (curType == 'attacker' && (battle?.attackerState == 2 || battle?.attackerState == 0)) {
         if (battle?.defenderState == 2 || battle?.defenderState == 0) {
-          timeout && clearTimeout(timeout)
-          timeout = null
           setBattleState(3)
           console.log(3)
-        } else {
-          if (!timeout) {
-            timeout = setTimeout(async () => {
-              forceEndFun()
-            }, 23000)
-          }
         }
       } else if (curType == 'defender' && (battle?.defenderState == 2 || battle?.defenderState == 0)) {
         if (battle?.attackerState == 2 || battle?.attackerState == 0) {
-          timeout && clearTimeout(timeout)
-          timeout = null
           setBattleState(3)
-        } else {
-          if (!timeout) {
-            timeout = setTimeout(async () => {
-              forceEndFun()
-            }, 23000)
-          }
         }
       }
     } else if (battleState != 3 && battleState != 4 && battle?.isEnd) {
@@ -151,7 +131,6 @@ export default function Battle(props) {
   }
 
   const battle = battles.find((battle) => battle.id == battleId);
-  console.log(battle, 'battles')
   useEffect(() => {
     if (battle) {
       isFirst = false
@@ -166,17 +145,15 @@ export default function Battle(props) {
         setBattleData(data)
       }
       let state = 0
-      if ((curType == 'attacker' && battle?.attackerState == 1) || (curType == 'defender' && battle?.defenderState == 1)) {
-        state = 1
-      } else if ((curType == 'attacker' && battle?.attackerState == 2) || (curType == 'defender' && battle?.defenderState == 2)) {
-        state = 2
-      } else if (battle?.isEnd) {
+      if (battle?.isEnd) {
         isFirst = true
         props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
         return
+      } else if ((curType == 'attacker' && battle?.attackerState == 1) || (curType == 'defender' && battle?.defenderState == 1)) {
+        state = 1
+      } else if ((curType == 'attacker' && battle?.attackerState == 2) || (curType == 'defender' && battle?.defenderState == 2)) {
+        state = 2
       }
-      setAttackerAction('idle');
-      setDefenderAction('idle');
       setBattleState(state)
       initBattle()
     }
@@ -186,28 +163,6 @@ export default function Battle(props) {
     isFirst = false
     initBattle()
   }
-  // if (battle) {
-  //   if (!battleData.curHp || !battleData.targetHp) {
-  //     let data = {
-  //       attackerHP: battle?.attackerHP.toString(),
-  //       defenderHP: battle?.defenderHP.toString(),
-  //       attacker: battle?.attacker.toLocaleLowerCase(),
-  //       defender: battle?.defender.toLocaleLowerCase(),
-  //     }
-  //     setBattleData(data)
-  //   }
-  //   let state = 0
-  //   if ((battle?.attacker.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() && battle?.attackerState == 1) || (battle?.defender.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() && battle?.defenderState == 1)) {
-  //     state = 1
-  //   } else if ((battle?.attacker.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() && battle?.attackerState == 2) || (battle?.defender.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() && battle?.defenderState == 2)) {
-  //     state = 2
-  //   } else if (battle?.isEnd) {
-  //     props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
-  //     return
-  //   }
-  //   setBattleState(state)
-  //   initBattle()
-  // }
 
   const finishBattleFun = () => {
     if (battleState == 4) {
@@ -215,75 +170,100 @@ export default function Battle(props) {
     }
   }
 
+  const hiddenPlayerLoss = () => {
+    setTimeout(() => {
+      setShowPlayer1Loss(false)
+      setShowPlayer2Loss(false)
+    }, 1000)
+  }
+
+  const afterAttack = (role: string) => {
+    console.log(role)
+    let attackType = battle.defenderArg.toString() == '1' ? 'sprint' : battle.defenderArg.toString() == '2' ? 'sneak' : 'magic'
+    let data = JSON.parse(JSON.stringify(battleData))
+    if (role == 'left') {
+      if (curType == 'attacker') {
+        let defenderHP = battle?.defenderHP?.toString()
+        setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
+        setShowPlayer2Loss(true)
+        hiddenPlayerLoss()
+        data.defenderHP = defenderHP
+        setBattleData(data)
+        if (battle?.defenderHP == 0) {
+          duel.current.kill('right')
+          setBattleState(4)
+        } else {
+          setTimeout(() => {
+            duel.current.rightAttack(attackType);
+          }, 1000)
+        }
+      } else {
+        let attackerHP = battle?.attackerHP?.toString()
+        setPlayer2LossData(Number(data.attackerHP) - Number(attackerHP))
+        setShowPlayer2Loss(true)
+        hiddenPlayerLoss()
+        data.attackerHP = attackerHP
+        setBattleData(data)
+        if (battle?.attackerHP == 0) {
+          duel.current.kill('left')
+          setBattleState(4)
+        } else {
+          if (!battle?.isEnd) {
+            setBattleState(0)
+          }
+          setTacticsStep(1)
+        }
+      }
+    } else if (role == 'right') {
+      if (curType == 'attacker') {
+        let attackerHP = battle?.attackerHP?.toString()
+        setPlayer1LossData(Number(data.attackerHP) - Number(attackerHP))
+        setShowPlayer1Loss(true)
+        hiddenPlayerLoss()
+        data.attackerHP = attackerHP
+        setBattleData(data)
+        if (battle?.attackerHP == 0) {
+          duel.current.kill('right')
+          setBattleState(4)
+        } else {
+          if (!battle?.isEnd) {
+            setBattleState(0)
+          }
+          setTacticsStep(1)
+        }
+      } else {
+        let defenderHP = battle?.defenderHP?.toString()
+        setPlayer1LossData(Number(data.defenderHP) - Number(defenderHP))
+        setShowPlayer1Loss(true)
+        hiddenPlayerLoss()
+        data.defenderHP = defenderHP
+        setBattleData(data)
+        if (battle?.defenderHP == 0) {
+          duel.current.kill('left')
+          setBattleState(4)
+        } else {
+          setTimeout(() => {
+            duel.current.leftAttack(attackType);
+          }, 1000)
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if (battleState == 3) {
-      console.log(battleData)
       let data = JSON.parse(JSON.stringify(battleData))
-      let battle1 = document.querySelector('.battle-1');
-      let battle2 = document.querySelector('.battle-2');
       if (battle.isEnd && battle?.attackerHP && battle?.defenderHP) {
         props.finishBattle(battle?.winner, battle?.attacker, battle?.defender)
         return
       }
-      if (battle1 && battle2) {
-        console.log(battle?.attackerHP, battle?.defenderHP, data.attackerHP, data.defenderHP)
-        setPlayer1LossData(Number(data.attackerHP) - Number(battle?.attackerHP))
-        setPlayer2LossData(Number(data.defenderHP) - Number(battle?.defenderHP))
-        battle1.classList.add('attack');
-        setTimeout(() => {
-          setAttackerAction('slash');
-        }, 300)
-        setTimeout(() => {
-          battle1.classList.remove('attack');
-          setAttackerAction('idle');
-          battle2.classList.add('back');
-          let defenderHP = battle?.defenderHP?.toString()
-          setPlayer2LossData(Number(data.defenderHP) - Number(defenderHP))
-          setShowPlayer2Loss(true)
-          data.defenderHP = defenderHP
-          setBattleData(data)
-          setTimeout(() => {
-            battle2.classList.remove('back');
-            setShowPlayer2Loss(false)
-            if (defenderHP <= 0 && battle?.isEnd) {
-              isFirst = true
-              setDefenderAction('die');
-              setBattleState(4)
-              return
-            }
-            setTimeout(() => {
-              battle2.classList.add('attack');
-              setTimeout(() => {
-                setDefenderAction('slash');
-              }, 300)
-              setTimeout(() => {
-                battle2.classList.remove('attack');
-                battle1.classList.add('back');
-                setDefenderAction('idle');
-                let attackerHP = battle?.attackerHP?.toString()
-                setShowPlayer1Loss(true)
-                data.attackerHP = attackerHP
-                setBattleData(data)
-                if (attackerHP <= 0 && battle?.isEnd) {
-                  setAttackerAction('die');
-                  isFirst = true
-                  setBattleState(4)
-                  return
-                }
-                setTimeout(() => {
-                  battle1.classList.remove('back');
-                  setPlayer1LossData(0);
-                  setPlayer2LossData(0);
-                  setShowPlayer1Loss(false)
-                  if (!battle?.isEnd) {
-                    setBattleState(0)
-                  }
-                  setTacticsStep(1)
-                }, 400);
-              }, 400);
-            }, 500)
-          }, 400);
-        }, 400);
+      setPlayer1LossData(Number(data.attackerHP) - Number(battle?.attackerHP))
+      setPlayer2LossData(Number(data.defenderHP) - Number(battle?.defenderHP))
+      let attackType = battle.attackerArg.toString() == '1' ? 'sprint' : battle.attackerArg.toString() == '2' ? 'sneak' : 'magic'
+      if (curType == 'attacker') {
+        duel.current.leftAttack(attackType);
+      } else {
+        duel.current.rightAttack(attackType);
       }
     } else {
       initBattle()
@@ -343,12 +323,16 @@ export default function Battle(props) {
     setConfirmBattleData([action, arg])
     localStorage.setItem('confirmBattleData', JSON.stringify([action, arg]))
     setBattleState(1)
-    console.log(hash, battleId)
     let res = await confirmBattle(hash, battleId);
-    // if (res.type == 'error' && res.msg.indexOf('Battle is timeout') > -1) {
-    //   forceEnd(battleId)
-    //   return
-    // }
+    if (res?.type && res?.type == 'error') {
+      message.error(res?.msg)
+      setBattleState(0)
+      localStorage.removeItem('confirmBattleData')
+      return
+    } else {
+      console.log(res)
+      setBattleState(5)
+    }
   }
   return (
     <div className="mi-battle-wrap" onClick={finishBattleFun}>
@@ -359,8 +343,8 @@ export default function Battle(props) {
               <div className="mi-battle-character-card" >
                 <div className="mi-battle-character-card-hp">
                   <div className='user-info'>
-                    <div>{curPlayer?.addr == battleData.attacker ? curPlayer?.name : targetPlayer?.name}</div>
-                    <div>ATK:{curPlayer?.addr == battleData.attacker ? curPlayer?.attack?.toString() : targetPlayer?.attack.toString()}</div>
+                    <div>{curPlayer?.name}</div>
+                    <div>ATK:{curPlayer?.attack?.toString()}</div>
                   </div>
                   <div className='hp-wrap'>
                     <div
@@ -371,33 +355,22 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(battleData?.attackerHP) / Number(curPlayer?.addr == battleData?.attacker ? curPlayer?.maxHp : targetPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP) / Number(curPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(battleData?.attackerHP)}/{Number(curPlayer?.addr == battleData?.attacker ? curPlayer?.maxHp : targetPlayer?.maxHp)}</div>
+                    <div className='hp-text'>{Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP)}/{curPlayer?.maxHp}</div>
                   </div>
                   {
                     showPlayer1Loss ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <div className='dark-attacker battle-1'>
-                  <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                    <Player
-                      size={128}
-                      x={0.5}
-                      y={0.5}
-                      action={attackerAction}
-                      equip={curPlayer?.addr == battleData.attacker ? {...curPlayer?.equip} : {...targetPlayer?.equip}}
-                    />
-                  </Stage>
-                </div>
               </div>
               <div className="mi-battle-character-card" >
                 <div className="mi-battle-character-card-hp">
                   <div className='user-info'>
-                    <div style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis'}}>{curPlayer?.addr == battleData.defender ? curPlayer?.name : targetPlayer?.name}</div>
-                    <div>ATK:{curPlayer?.addr == battleData.defender ? curPlayer?.attack?.toString() : targetPlayer?.attack.toString()}</div>
+                    <div style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis'}}>{targetPlayer?.name}</div>
+                    <div>ATK:{targetPlayer?.attack.toString()}</div>
                   </div>
                   <div className='hp-wrap'>
                     <div
@@ -408,43 +381,48 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(battleData?.defenderHP) / Number(curPlayer?.addr == battleData?.defender ? curPlayer?.maxHp : targetPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP) / Number(targetPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(battleData?.defenderHP)}/{Number(curPlayer?.addr == battleData?.defender ? curPlayer?.maxHp : targetPlayer?.maxHp)}</div>
+                    <div className='hp-text'>{Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP)}/{Number(targetPlayer?.maxHp)}</div>
                   </div>
                   {
                     showPlayer2Loss ? <div className="hp-loss">-{player2LossData.toFixed(0)}</div> : null
                   }
                 </div>
-                <div className='dark-defender battle-2'>
-                  <Stage width={256} height={256} options={{ resolution: 1, backgroundAlpha: 0 }}>
-                    <Player
-                      size={128}
-                      x={0.5}
-                      y={0.5}
-                      toward={'Left'}
-                      action={defenderAction}
-                      equip={curPlayer?.addr == battleData.defender ? {...curPlayer?.equip} : {...targetPlayer?.equip}}
-                    />
-                  </Stage>
-                </div>
               </div>
+            </div>
+            <div style={{position: 'absolute', top: '50px', height: '380px'}}>
+              <DuelField
+                ref={duel}
+                leftPlayer={curPlayer}
+                rightPlayer={targetPlayer}
+                afterAttack={afterAttack}
+              />
             </div>
             <div className='battle-action'>
               <div className='action-step'>
                 {
-                  battleState == 0 ? <p>what will you do ?</p> : (battleState == 1 || battleState == 2) ? <div >
+                  battleState == 0 ? <p>what will you do ?</p> : (battleState == 1 || battleState == 5 || battleState == 2) ? <div >
                     <p>{curPlayer?.name} used a {confirmBattleData[1] == 1 ? 'Sprint' : confirmBattleData[1] == 2 ? 'Sneak' : 'Magic'}!</p>
                     <p>{targetPlayer?.name} is thinking...</p>
+                    {
+                      <CountDown
+                        // 要倒计时20s
+                        duration={30}
+                        formatString="s"
+                      >
+                        {(str) => setTimer(str)}
+                      </CountDown>
+                    }
                   </div> : battleState == 3 ? getDom() : battleState == 4 ? <p>{battle?.winner.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() ? `You win the battle! Click anywhere on the screen to continue you adventure` : `You loss the battle! Don't worry. Click anywhere on the screen to return to the Base`}</p> : null
                 }
                 
               </div>
               <div className='battle-tactics'>
                 {
-                  tacticsStep == 1 ? (<div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+                  tacticsStep == 1 ? (<div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF'}}>
                     <div className='tactics-item' onClick={() => setTacticsStepFun(2, 'attack')}>Attack</div>
                     <div className='tactics-item bag'>Bag</div>
                     <div className='tactics-item' onClick={() => setTacticsStepFun(2, 'escape')}>Escape</div>

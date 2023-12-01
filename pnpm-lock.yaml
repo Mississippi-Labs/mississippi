@@ -83,6 +83,9 @@ importers:
       contracts:
         specifier: workspace:*
         version: link:../contracts
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       ethers:
         specifier: ^5.7.2
         version: 5.7.2
