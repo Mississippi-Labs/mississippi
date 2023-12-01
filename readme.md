@@ -22,8 +22,13 @@ The equipment synthesis system allows for tremendous depth in the game. It allow
 Our long-term goal is to establish an SLG (simulation game). Rogue-like mining serves as the foundation for acquiring basic treasures, while our alliance and team system will complement this with a range of PVP battles and the synthesis of resources. This system also allows players to form **nations on-chain**, with customizable systems and governance established as long as they remain united and adhere to a common goal. In this way, We will explore **Autonomous Worlds**. 
 
 
-## 3. How to play
-### 3.1 Local Installation
+## 3. How To Play
+Go to the website: https://test.0xmssp.xyz 
+
+And refer to the manual: https://mississippi.gitbook.io/mississippi/
+
+
+## 4 How To Deploy Your Local Mississippi
 
 ```text
 pnpm i
@@ -38,20 +43,17 @@ install git bash (gitforwindows.org)
 install nodejs, including “native modules” (nodejs.org/en/download) (re native modules: just keep the checkmark, it’s enabled by default in the installer)
 Install foundry via foundryup using Git bash
 ```
-### 3.2 Gameplay
-Go to the website: https://test.0xmssp.xyz 
-And refer to the mannual: https://mississippi.gitbook.io/mississippi/
 
 
-## 4. Tech Stack
+## 5. Tech Stack
 Solidity, Mud, Foundry
 
-## 5. Core Contributors: lidamao, tom, vimo, tiyo,jojo
+## 6. Core Contributors:
 LidamaoHub, tiankonglan, Vivomo, TiyoSheng, jojoo-eth
 
 Shout out to our genius devs!
 
-## 6. Social links:
+## 7. Social links:
 Website: https://test.0xmssp.xyz/
 
 Twitter:https://twitter.com/0xMississippi
