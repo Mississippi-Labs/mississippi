@@ -19,6 +19,7 @@ export interface IDuelFieldMethod {
   leftAttack: (type: AttackType) => void;
   rightAttack: (type: AttackType) => void;
   kill: (role: RoleType) => void;
+  reset: () => void;
 }
 
 
@@ -63,6 +64,10 @@ const DuelField = React.forwardRef<IDuelFieldMethod>((props: IProps, ref) => {
         setRightAction('die');
       }
     },
+    reset: () => {
+      setLeftAction('idle');
+      setRightAction('idle');
+    }
   }));
 
   useEffect(() => {
