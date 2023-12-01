@@ -154,6 +154,7 @@ export default function Battle(props) {
       } else if ((curType == 'attacker' && battle?.attackerState == 2) || (curType == 'defender' && battle?.defenderState == 2)) {
         state = 2
       }
+      duel.current.reset()
       setBattleState(state)
       initBattle()
     }
