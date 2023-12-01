@@ -46,7 +46,7 @@ Install foundry via foundryup using Git bash
 
 
 ## 5. Tech Stack
-Solidity, Mud, Foundry
+Solidity, Mud, Foundry, Pixi/React
 
 ## 6. Core Contributors:
 LidamaoHub, tiankonglan, Vivomo, TiyoSheng, jojoo-eth
