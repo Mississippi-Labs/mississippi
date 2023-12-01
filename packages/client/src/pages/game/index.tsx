@@ -458,6 +458,12 @@ const Game = () => {
     }
   }
 
+  const onSkip = async () => {
+    setTalked('true')
+    localStorage.setItem('talked', 'true')
+    return
+  }
+
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
   return (
     <GameContext.Provider
@@ -497,7 +503,7 @@ const Game = () => {
             <PIXIAPP/>
         }
         {
-          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} onSkip={onSkip} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
         }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>

@@ -7,6 +7,12 @@ import dark from '@/assets/img/duck_index.png';
 
 const Talk = (props) => {
   const {position, text, curPlayer, step, sample } = props;
+
+  const skip = () => {
+    // 阻止冒泡
+    event.stopPropagation();
+    props.onSkip();
+  };
   return (
     <div className='talk'>
       <div className='talk-main'>
@@ -31,7 +37,7 @@ const Talk = (props) => {
           <div className='step'>{step} / 9</div>
           <div className='name' style={{marginBottom: '18px'}}>{curPlayer?.name || 'Mistery Duck'}:</div>
           <Typewriter text={text} typingSpeed={30} step={step} />
-          <div style={{position: 'absolute', bottom: '18px', right: '18px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)'}}>Click any button to continue</div>
+          <div style={{position: 'absolute', bottom: '18px', right: '18px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)', cursor: 'pointer'}} onClick={skip}>Skip The Tutorial {'>'}</div>
         </div>
       </div>
     </div>
