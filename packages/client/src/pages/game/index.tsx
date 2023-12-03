@@ -164,8 +164,6 @@ const Game = () => {
     return b.oreBalance - a.oreBalance
   })
 
-  console.log('PlayerSeasonData', PlayerSeasonData)
-
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
@@ -292,6 +290,7 @@ const Game = () => {
   }
 
   const onMoveToDelivery = async () => {
+    console.log('onMoveToDelivery')
     submitGemFun();
   }
 

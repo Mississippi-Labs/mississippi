@@ -34,10 +34,10 @@ const Talk = (props) => {
           }
         </div>
         <div className='text' onClick={() => props.onNext()}>
-          <div className='step'>{step} / 9</div>
+          <div className='step'>{step} / 9 <p onClick={skip}>Skip {'>'}</p></div>
           <div className='name' style={{marginBottom: '18px'}}>{curPlayer?.name || 'Mistery Duck'}:</div>
           <Typewriter text={text} typingSpeed={30} step={step} />
-          <div style={{position: 'absolute', bottom: '18px', right: '18px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)', cursor: 'pointer'}} onClick={skip}>Skip The Tutorial {'>'}</div>
+          <div style={{position: 'absolute', bottom: '18px', right: '18px', fontSize: '12px', color: 'rgba(255, 255, 255, 0.80)', cursor: 'pointer'}}>Click any button to continue</div>
         </div>
       </div>
     </div>

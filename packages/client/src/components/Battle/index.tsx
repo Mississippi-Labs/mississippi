@@ -206,7 +206,7 @@ export default function Battle(props) {
         data.attackerHP = attackerHP
         setBattleData(data)
         if (battle?.attackerHP == 0) {
-          duel.current.kill('left')
+          duel.current.kill('right')
           setBattleState(4)
         } else {
           if (!battle?.isEnd) {
@@ -224,7 +224,7 @@ export default function Battle(props) {
         data.attackerHP = attackerHP
         setBattleData(data)
         if (battle?.attackerHP == 0) {
-          duel.current.kill('right')
+          duel.current.kill('left')
           setBattleState(4)
         } else {
           if (!battle?.isEnd) {

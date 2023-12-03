@@ -10,7 +10,6 @@ interface IProps extends IUserInfo {
 const UserInfoDialog = (props: IProps) => {
 
   const { visible, onClose, ...rest } = props;
-  console.log(props)
 
   return (
     <div className={`mi-userinfo-dialog ${visible ? '' : 'hidden'}`}>
