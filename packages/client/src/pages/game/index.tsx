@@ -171,7 +171,7 @@ const Game = () => {
   } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
     setUserInfoVisible(true);
   } else {
-    if (percentage == 100) {
+    if (percentage == 100 && curPlayer && curPlayer.addr) {
       curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
       console.log(curPlayer)
     }
