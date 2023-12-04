@@ -517,12 +517,14 @@ const Game = () => {
             <UserInfoDialog
               visible={userInfoVisible}
               onClose={closeUserInfoDialog}
+              oneself={false}
               {...userInfoPlayer}
             />
           ) : (
             <UserInfoDialog
               visible={userInfoVisible}
               onClose={closeUserInfoDialog}
+              oneself={true}
               {...curPlayer}
             />
           )
