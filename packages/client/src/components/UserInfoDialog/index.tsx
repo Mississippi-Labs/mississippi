@@ -14,7 +14,7 @@ const UserInfoDialog = (props: IProps) => {
   return (
     <div className={`mi-userinfo-dialog ${visible ? '' : 'hidden'}`}>
       <UserInfo {...rest} player={rest} />
-      <button className="mi-btn close-btn" onClick={onClose}>{props.state == 1 ? 'Join The Game' : 'Waiting'}</button>
+      <button className="mi-btn close-btn" onClick={onClose}>{props.state == 1 ? 'Join The Game' : (props.x == 4 && props.y == 5) ? 'Waiting' : 'Ok'}</button>
     </div>
   );
 };

@@ -331,22 +331,22 @@ const Game = () => {
   }
 
   const showUserInfo = async (player) => {
-    if (!player.userUrl || !player.lootUrl) {
-      let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
-      console.log(addon)
-      let userTokenId = addon.userId.toString()
-      let lootTokenId = addon.lootId.toString()
+    // if (!player.userUrl || !player.lootUrl) {
+    //   let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+    //   console.log(addon)
+    //   let userTokenId = addon.userId.toString()
+    //   let lootTokenId = addon.lootId.toString()
   
-      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-      let url = urls[0]
-      let lootUrl = urls[1]
+    //   let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+    //   let url = urls[0]
+    //   let lootUrl = urls[1]
     
-      url = atobUrl(url)
-      lootUrl = atobUrl(lootUrl)
+    //   url = atobUrl(url)
+    //   lootUrl = atobUrl(lootUrl)
 
-      player.userUrl = url.image
-      player.lootUrl = lootUrl.image
-    }
+    //   player.userUrl = url.image
+    //   player.lootUrl = lootUrl.image
+    // }
 
     player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
     
@@ -372,7 +372,7 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
-    if (curPlayer.state != 1) return;
+    if (curPlayer.state != 1 && (curPlayer.x == 4 && curPlayer.y == 5) && !userInfoPlayer) return;
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -383,6 +383,7 @@ const Game = () => {
         message.destroy() 
       }
       setUserInfoVisible(false);
+      setUserInfoPlayer(null);
     }
   }
 
@@ -511,11 +512,22 @@ const Game = () => {
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
-        <UserInfoDialog
-          visible={userInfoVisible}
-          onClose={closeUserInfoDialog}
-          {...curPlayer}
-        />
+        {
+          userInfoPlayer ? (
+            <UserInfoDialog
+              visible={userInfoVisible}
+              onClose={closeUserInfoDialog}
+              {...userInfoPlayer}
+            />
+          ) : (
+            <UserInfoDialog
+              visible={userInfoVisible}
+              onClose={closeUserInfoDialog}
+              {...curPlayer}
+            />
+          )
+        }
+        
 
         <Modal
           visible={modalVisible}
