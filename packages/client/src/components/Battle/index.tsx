@@ -332,7 +332,9 @@ export default function Battle(props) {
       return
     } else {
       console.log(res)
-      setBattleState(5)
+      setTimeout(() => {
+        setBattleState(5)
+      }, 100)
     }
   }
   return (
