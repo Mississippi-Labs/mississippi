@@ -41,7 +41,7 @@ export async function setupNetwork() {
     config: mudConfig,
     address: networkConfig.worldAddress as Hex,
     publicClient,
-    startBlock: BigInt(networkConfig.initialBlockNumber),
+    startBlock: BigInt(networkConfig.initialBlockNumber)
   });
 
   // Request drip from faucet

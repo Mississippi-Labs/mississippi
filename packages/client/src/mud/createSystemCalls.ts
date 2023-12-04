@@ -346,12 +346,12 @@ export function createSystemCalls(
     }
   }
 
-  const initUserInfo = async () => {
+  const initUserInfo = async (addr) => {
     if (wait) return
     wait = true
     console.log('initUserInfo', new Date().getTime());
     try {
-      const tx = await worldContract.write.initUserInfo();
+      const tx = await worldContract.write.initUserInfo([addr]);
       await waitForTransaction(tx);
       console.log('initUserInfo success', new Date().getTime(), tx);
       wait = false

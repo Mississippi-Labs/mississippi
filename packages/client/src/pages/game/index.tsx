@@ -166,9 +166,16 @@ const Game = () => {
 
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-  // if (curPlayer && curPlayer.state < 2 && percentage == 100) {
-  //   navigate('/');
-  // }
+  if (curPlayer && curPlayer.state == 0 && percentage == 100) {
+    navigate('/');
+  } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
+    setUserInfoVisible(true);
+  } else {
+    if (percentage == 100) {
+      curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
+      console.log(curPlayer)
+    }
+  }
   if (curPlayer && curPlayer.addr) {
     localStorage.setItem('curPlayer', JSON.stringify(toObject(curPlayer)))
     localStorage.setItem('worldContractAddress', network.worldContract.address)
@@ -262,7 +269,6 @@ const Game = () => {
         let cur = getComponentValue(Player, network.playerEntity);
         if (cur?.state == 1 || cur?.state == 0) {
           message.error('You lose the battle');
-          navigate('/');
           return
         } else {
           // 逃跑成功
@@ -284,22 +290,7 @@ const Game = () => {
   }
 
   const onMoveToDelivery = async () => {
-    let player = curPlayer
-    let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
-    let userTokenId = addon.userId.toString()
-    let lootTokenId = addon.lootId.toString()
-
-    let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-    let url = urls[0]
-    let lootUrl = urls[1]
-
-    url = atobUrl(url)
-    lootUrl = atobUrl(lootUrl)
-
-    player.userUrl = url.image
-    player.lootUrl = lootUrl.image
-    player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
-    setUserInfoPlayer(player);
+    console.log('onMoveToDelivery')
     submitGemFun();
   }
 
@@ -381,6 +372,7 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
+    if (curPlayer.state != 1) return;
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -465,6 +457,12 @@ const Game = () => {
     }
   }
 
+  const onSkip = async () => {
+    setTalked('true')
+    localStorage.setItem('talked', 'true')
+    return
+  }
+
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
   return (
     <GameContext.Provider
@@ -504,7 +502,7 @@ const Game = () => {
             <PIXIAPP/>
         }
         {
-          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} onSkip={onSkip} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
         }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
@@ -516,7 +514,7 @@ const Game = () => {
         <UserInfoDialog
           visible={userInfoVisible}
           onClose={closeUserInfoDialog}
-          {...userInfoPlayer}
+          {...curPlayer}
         />
 
         <Modal
@@ -534,7 +532,7 @@ const Game = () => {
                 modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
-                <TreasureChest/>
+                <TreasureChest opening={false} />
               </div>
             </div>
             <div className="mi-modal-footer">

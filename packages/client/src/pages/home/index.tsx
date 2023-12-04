@@ -111,6 +111,7 @@ const Home = () => {
 
   console.log(GlobalConfigData, 'GlobalConfigData', syncprogress?.percentage)
 
+  // console.log(lootAbi, 'lootAbi', userAbi, 'userAbi', pluginAbi, 'pluginAbi')
 
   if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
     let privateKey = network.privateKey
@@ -189,13 +190,14 @@ const Home = () => {
     setModalVisible(true);
   }
   const toMint = async () => {
+    console.log(usernameRef.current.value, 'usernameRef.current.value')
     if (!usernameRef.current.value) {
       message.error('Please input your username');
       return;
     }
     setUsername(usernameRef.current.value);
     setModalVisible(false);
-    mintAndGo();
+    mintAndGo('', usernameRef.current.value);
   }
 
   const handleKeyUp = (e) => {
@@ -218,6 +220,7 @@ const Home = () => {
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
             let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds?.length - 1].toString(), userTokenIds[userTokenIds?.length - 1].toString())
+            console.log(revealres, 'revealres')
             await revealres.wait()
             resolve('success')
           }
@@ -234,18 +237,19 @@ const Home = () => {
   ))
 }
 
-  const mintAndGo = async () => {
+  const mintAndGo = async (type, uName) => {
+    console.log('mintAndGo')
     if (syncprogress?.percentage != 100) {
       message.error('Waiting for sync...');
       return;
     }
-    if (!username) {
+    if (!username && !uName) {
       createWallet();
       return;
     }
     setMinting(true);
     try {
-      if (!(userTokenIds?.length && lootTokenIds?.length)) {
+      if (!(userTokenIds?.length && lootTokenIds?.length) || (type == 'mint')) {
         message.loading('minting loot and user,please wait...')
         await mint()
         message.destroy()
@@ -263,14 +267,19 @@ const Home = () => {
       let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
   
-  
       let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       let url = urls[0]
       let lootUrl = urls[1]
       console.log("get loot and user success")
       console.log(urls, 'url')
-      url = atobUrl(url)
-      lootUrl = atobUrl(lootUrl)
+      try {
+        url = atobUrl(url)
+        lootUrl = atobUrl(lootUrl)
+      } catch (error) {
+        mintAndGo('mint')
+        console.log(error)
+      }
+      
 
       setUserUrl(url.image)
       setLootUrl(lootUrl.image)
@@ -290,11 +299,11 @@ const Home = () => {
         head,
       }
 
-      let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
+      let player = Object.assign(playerData, {username: username || uName, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
       console.log(player, 'player')
       // localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
       
-      let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
+      let result = await Promise.all([setInfo(player.username, ''), joinBattlefield()])
       console.log(result, 'result')
       setMinting(false);
       navigate('/game', {

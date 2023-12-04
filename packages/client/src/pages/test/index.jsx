@@ -12,7 +12,7 @@ import './index.scss';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { loadMapData } from "@/utils";
-import { Switch } from 'antd';
+import { Switch, Select } from 'antd';
 import { message } from 'antd';
 import MAP_CFG from '@/config/map';
 
@@ -45,7 +45,7 @@ const Test = () => {
 
   const {
     components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, SyncProgress },
-    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, getBattlePlayerHp, setGmaeOpen },
+    systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, initUserInfo, setGmaeOpen },
     network
   } = useMUD();
 
@@ -166,6 +166,8 @@ const Test = () => {
       player.isMe = false
     }
     player.addr = address
+    // address 取前6位和后4位
+    player.label = `${player.name}(${address.substring(address.length-4)})`
     return player;
   })
 
@@ -404,6 +406,20 @@ const Test = () => {
     message.success('设置成功');
   }
 
+  const [userAddr, setUserAddr] = useState('')
+
+  const addrChange = (e) => {
+    console.log(e, 'e')
+    setUserAddr(e) 
+  }
+
+  const resetUser = async () => {
+    message.loading('重置中...');
+    await initUserInfo(userAddr)
+    message.success('重置成功');
+    setUserAddr('')
+  }
+
   return (
     <div className="content">
       <div className="nav">
@@ -476,6 +492,23 @@ const Test = () => {
           <div className="btn" onClick={setGmaeOpenFun}>确认</div>
         </div>
         <div className="section">
+          <div className="title">重置user</div>
+          <div className="input">
+            {/* <input type="text" value={userAddr} onChange={addrChange} placeholder='userAddress' /> */}
+            <Select
+              showSearch
+              placeholder="Select a person"
+              optionFilterProp="children"
+              onChange={addrChange}
+              fieldNames={{ label: 'label', value: 'addr' }}
+              options={players.filter(item => item.state != 0)}
+              value={userAddr}
+              style={{width: '100%'}}
+            />
+          </div>
+          <div className="btn" onClick={resetUser}>确认</div>
+        </div>
+        <div className="section">
           <div className="title">mintNFT</div>
           <div className="input"></div>
           <div className="btn" onClick={mintFun}>确认</div>
@@ -493,7 +526,7 @@ const Test = () => {
           <div className="btn" onClick={revealNFTFun}>确认</div>
         </div>
         <div className="section">
-          <div className="title">初始化玩家</div>
+          <div className="title">selectUserNft</div>
           <div className="input">
             <select value={revealNFTData} onChange={tokenIdChange}>
               {
