@@ -8,6 +8,10 @@ import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
 import { MapConfig } from '@/config/map';
 import Equipment from '@/components/Equipment';
 const { cellSize } = MapConfig;
+import defaultFoot from '@/assets/default-equip/Foot.png';
+import defaultHand from '@/assets/default-equip/hand1.png';
+import defaultNeck from '@/assets/default-equip/neck.png';
+import defaultWaist from '@/assets/default-equip/Waist.png';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -39,7 +43,9 @@ const UserInfo = (props: IUserInfo) => {
                 <Equipment type={'armor'} name={player?.equip?.clothes}/>
               </li>
               <li className="equipments-item"></li>
-              <li className="equipments-item"></li>
+              <li className="equipments-item equipments-default-item">
+                <img src={defaultFoot} alt="" className="default-equip"/>
+              </li>
             </ul>
             <div className="user-appearance-wrapper">
               <div className="user-appearance-box">
@@ -49,12 +55,18 @@ const UserInfo = (props: IUserInfo) => {
               </div>
             </div>
             <ul className="left-equipments equipments">
-              <li className="equipments-item"></li>
-              <li className="equipments-item"></li>
+              <li className="equipments-item equipments-default-item">
+                <img src={defaultNeck} alt="" className="default-equip"/>
+              </li>
+              <li className="equipments-item equipments-default-item">
+                <img src={defaultHand} alt="" className="default-equip"/>
+              </li>
               <li className="equipments-item weapon-item">
                 <Equipment type={'weapon'} name={player?.equip?.handheld}/>
               </li>
-              <li className="equipments-item"></li>
+              <li className="equipments-item equipments-default-item">
+                <img src={defaultWaist} alt="" className="default-equip"/>
+              </li>
             </ul>
           </div>
           {/*<div className={`loot-wrapper ${lootHasLoaded ? 'loaded' : ''}`}>*/}
