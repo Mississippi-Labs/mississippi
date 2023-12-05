@@ -12,6 +12,7 @@ import defaultFoot from '@/assets/default-equip/Foot.png';
 import defaultHand from '@/assets/default-equip/hand1.png';
 import defaultNeck from '@/assets/default-equip/neck.png';
 import defaultWaist from '@/assets/default-equip/Waist.png';
+import defaultRing from '@/assets/default-equip/ring.png';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -42,7 +43,9 @@ const UserInfo = (props: IUserInfo) => {
               <li className="equipments-item armor-item">
                 <Equipment type={'armor'} name={player?.equip?.clothes}/>
               </li>
-              <li className="equipments-item"></li>
+              <li className="equipments-item equipments-default-item">
+                <img src={defaultRing} alt="" className="default-equip"/>
+              </li>
               <li className="equipments-item equipments-default-item">
                 <img src={defaultFoot} alt="" className="default-equip"/>
               </li>
