@@ -176,7 +176,10 @@ const PIXIAPP = () => {
         return [];
       })
       if (isDelivery(coordinate)) {
-        onMoveToDelivery();
+        let path = paths[paths.length - 1];
+        if (path.x === 4 && path.y === 5) {
+          onMoveToDelivery();
+        }
       } else {
         tryHunt();
       }

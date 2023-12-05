@@ -164,8 +164,6 @@ const Game = () => {
     return b.oreBalance - a.oreBalance
   })
 
-  console.log('PlayerSeasonData', PlayerSeasonData)
-
 
   const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
@@ -173,7 +171,7 @@ const Game = () => {
   } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
     setUserInfoVisible(true);
   } else {
-    if (percentage == 100) {
+    if (percentage == 100 && curPlayer && curPlayer.addr) {
       curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
       console.log(curPlayer)
     }
@@ -292,6 +290,7 @@ const Game = () => {
   }
 
   const onMoveToDelivery = async () => {
+    console.log('onMoveToDelivery')
     submitGemFun();
   }
 
@@ -332,22 +331,22 @@ const Game = () => {
   }
 
   const showUserInfo = async (player) => {
-    if (!player.userUrl || !player.lootUrl) {
-      let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
-      console.log(addon)
-      let userTokenId = addon.userId.toString()
-      let lootTokenId = addon.lootId.toString()
+    // if (!player.userUrl || !player.lootUrl) {
+    //   let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+    //   console.log(addon)
+    //   let userTokenId = addon.userId.toString()
+    //   let lootTokenId = addon.lootId.toString()
   
-      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-      let url = urls[0]
-      let lootUrl = urls[1]
+    //   let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+    //   let url = urls[0]
+    //   let lootUrl = urls[1]
     
-      url = atobUrl(url)
-      lootUrl = atobUrl(lootUrl)
+    //   url = atobUrl(url)
+    //   lootUrl = atobUrl(lootUrl)
 
-      player.userUrl = url.image
-      player.lootUrl = lootUrl.image
-    }
+    //   player.userUrl = url.image
+    //   player.lootUrl = lootUrl.image
+    // }
 
     player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
     
@@ -373,7 +372,7 @@ const Game = () => {
   }
 
   const closeUserInfoDialog = async () => {
-    if (curPlayer.state != 1) return;
+    if (curPlayer.state != 1 && (curPlayer.x == 4 && curPlayer.y == 5) && !userInfoPlayer) return;
     if (curPlayer.waiting) {
       message.error('Waiting for transaction');
       return;
@@ -384,6 +383,7 @@ const Game = () => {
         message.destroy() 
       }
       setUserInfoVisible(false);
+      setUserInfoPlayer(null);
     }
   }
 
@@ -458,6 +458,12 @@ const Game = () => {
     }
   }
 
+  const onSkip = async () => {
+    setTalked('true')
+    localStorage.setItem('talked', 'true')
+    return
+  }
+
   const blockTime = BLOCK_TIME[network?.publicClient?.chain?.id]
   return (
     <GameContext.Provider
@@ -497,7 +503,7 @@ const Game = () => {
             <PIXIAPP/>
         }
         {
-          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} onSkip={onSkip} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
         }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
@@ -506,11 +512,24 @@ const Game = () => {
         {
           startBattleData ? <Battle curPlayer={battleCurPlayer} targetPlayer={targetPlayer} battleId={battleId} finishBattle={finishBattle} /> : null
         }
-        <UserInfoDialog
-          visible={userInfoVisible}
-          onClose={closeUserInfoDialog}
-          {...curPlayer}
-        />
+        {
+          userInfoPlayer ? (
+            <UserInfoDialog
+              visible={userInfoVisible}
+              onClose={closeUserInfoDialog}
+              oneself={false}
+              {...userInfoPlayer}
+            />
+          ) : (
+            <UserInfoDialog
+              visible={userInfoVisible}
+              onClose={closeUserInfoDialog}
+              oneself={true}
+              {...curPlayer}
+            />
+          )
+        }
+        
 
         <Modal
           visible={modalVisible}

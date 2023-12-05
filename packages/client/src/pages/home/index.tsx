@@ -190,13 +190,14 @@ const Home = () => {
     setModalVisible(true);
   }
   const toMint = async () => {
+    console.log(usernameRef.current.value, 'usernameRef.current.value')
     if (!usernameRef.current.value) {
       message.error('Please input your username');
       return;
     }
     setUsername(usernameRef.current.value);
     setModalVisible(false);
-    mintAndGo();
+    mintAndGo('', usernameRef.current.value);
   }
 
   const handleKeyUp = (e) => {
@@ -236,12 +237,13 @@ const Home = () => {
   ))
 }
 
-  const mintAndGo = async (type) => {
+  const mintAndGo = async (type, uName) => {
+    console.log('mintAndGo')
     if (syncprogress?.percentage != 100) {
       message.error('Waiting for sync...');
       return;
     }
-    if (!username) {
+    if (!username && !uName) {
       createWallet();
       return;
     }
@@ -297,11 +299,11 @@ const Home = () => {
         head,
       }
 
-      let player = Object.assign(playerData, {username, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
+      let player = Object.assign(playerData, {username: username || uName, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
       console.log(player, 'player')
       // localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
       
-      let result = await Promise.all([setInfo(username, ''), joinBattlefield()])
+      let result = await Promise.all([setInfo(player.username, ''), joinBattlefield()])
       console.log(result, 'result')
       setMinting(false);
       navigate('/game', {

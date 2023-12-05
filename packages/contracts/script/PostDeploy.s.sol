@@ -24,9 +24,9 @@ contract PostDeploy is Script {
     // MUser muser = new MUser(2, "MUser", "MUser", "", "");
     // MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
     // MPlugin mplugin = new MPlugin(address(mloot),address(muser));
-    address muser = 0x2428109A9e775E4406fe079132F216dc77117333;
-   address mloot = 0x4A16f2658De79278Bce592258e7e38aB4c222787;
-   address mplugin = 0xcE34c3d4373A094d6e22ab15f0b0C36c771663cb;
+    address muser = 0x09EC9819B6c3777c5C28C9Eebf5fb62cd0DbA479;
+   address mloot = 0x1e2d1f94c944490D9151724D1809Ba5BF95D4dae;
+   address mplugin = 0x89bEceA0d28b8b12314CC0b676cb2252639eC88f;
 
     // ------------------ INIT ------------------
     GameConfigInit.initGameConfig(IWorld(worldAddress));
