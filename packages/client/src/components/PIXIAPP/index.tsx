@@ -77,7 +77,13 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => players.filter((p) => isValidPlayer(p)).find((p) => p.addr === player.addr));
+    renderPlayersArr = renderPlayersArr.filter((player) => {
+      const hasFound = players.find((p) => p.addr === player.addr);
+      if (!hasFound) {
+        console.log(`removed player ${player.name}`)
+      }
+      return hasFound;
+    });
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
