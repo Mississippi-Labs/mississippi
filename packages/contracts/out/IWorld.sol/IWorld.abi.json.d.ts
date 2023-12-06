@@ -553,6 +553,11 @@ declare const abi: [
         "internalType": "address",
         "name": "_pluginContract",
         "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_merkleRoot",
+        "type": "bytes32"
       }
     ],
     "name": "Init",

@@ -3,19 +3,11 @@ pragma solidity >=0.8.0;
 
 import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
-import { IWorld } from "../src/codegen/world/IWorld.sol";
+import { IWorld } from "@codegen/world/IWorld.sol";
 import { GameConfigInit } from "./GameConfigInit.sol";
-import { BattleConfigInit } from "./BattleConfigInit.sol";
-import { GlobalConfigInit } from "./GlobalConfigInit.sol";
 import { console } from "forge-std/console.sol";
 
 import { GameConfig, GameConfigData } from "../src/codegen/index.sol";
-
-
-
-// import "../src/other/User.sol";
-// import "../src/other/Loot.sol";
-// import '../src/other/Plugin.sol';
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -26,25 +18,15 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     console.log(" ========== PostDeploy  ========== ");
-    // MUser muser = new MUser(2, "MUser", "MUser", "", "");
-    // MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
-    // MPlugin mplugin = new MPlugin(address(mloot),address(muser));
-    address muser = 0x870526b7973b56163a6997bB7C886F5E4EA53638;
-   address mloot = 0xD49a0e9A4CD5979aE36840f542D2d7f02C4817Be;
-   address mplugin = 0xe1Fd27F4390DcBE165f4D60DBF821e4B9Bb02dEd;
-  IWorld(worldAddress).Init(muser,mloot,mplugin);
-  // 
 
+    address muser = 0x09EC9819B6c3777c5C28C9Eebf5fb62cd0DbA479;
+    address mloot = 0x1e2d1f94c944490D9151724D1809Ba5BF95D4dae;
+    address mplugin = 0x89bEceA0d28b8b12314CC0b676cb2252639eC88f;
+    bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 
-
-// GameConfigInit.initGameConfig(IWorld(worldAddress));
-    // BattleConfigInit.initBattleConfig(IWorld(worldAddress));
-    // GlobalConfigInit.initGlobalConfig(IWorld(worldAddress), muser,mloot,mplugin);
-   
+    IWorld(worldAddress).Init(muser, mloot, mplugin,merkleRoot);
 
     vm.stopBroadcast();
-     // ------------------ INIT ------------------
-    
-
+    // ------------------ INIT ------------------
   }
 }

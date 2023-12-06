@@ -26,10 +26,9 @@ export default mudConfig({
       name: "move",
       openAccess: true,
     },
-    TempSystem: {
-      name: "temp",
-      openAccess: false,
-      accessList:['0xd5d9aad645671a285d2cadf8e68aef7d74a8a7d1']
+    InitSystem: {
+      name: "init",
+      openAccess: true,
     }
   },
   enums: {
@@ -121,7 +120,6 @@ export default mudConfig({
         maxTimeLimit: "uint256",
         maxUserLocationLockTime: "uint256",
         maxBoxBindTime: "uint256",
-        battlefieldPlayers: "address[]",
       }
     },
     Board: {

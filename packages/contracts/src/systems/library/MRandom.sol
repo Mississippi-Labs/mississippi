@@ -16,8 +16,8 @@ library MRandom {
     require(sender == RandomList.getAuthor(_randomId), "only random creator can get random");
     uint8[] memory randomNumberList = new uint8[](_count);
     RandomListData memory r = RandomList.get(_randomId);
-    require(block.number >= r.blockNumber + 2, "too early to get random seed");
-    uint256 seed = uint256(blockhash(r.blockNumber + 2));
+    require(block.number >= r.blockNumber + 1, "too early to get random seed");
+    uint256 seed = uint256(blockhash(r.blockNumber + 1));
     // 一次处理一个uint256随机数
     uint256 randomNumber = uint256(keccak256(abi.encodePacked(seed)));
     // 截断后存入属性数组
