@@ -44,12 +44,11 @@ const Test = () => {
   const boxRef = useRef([]);
 
   const {
-    components: { Player, GameConfig, BattleList, BoxList, GlobalConfig, SyncProgress },
     systemCalls: { move, joinBattlefield, transfer, battleInvitation, confirmBattle, selectUserNft, revealBattle, openBox, revealBox, getCollections, CreateBox, initUserInfo, setGmaeOpen },
     network
   } = useMUD();
 
-  const { account } = network;
+  const {tables, useStore, account} = network
 
   const simpleMapData = useMemo(() => {
     return simplifyMapData(renderMapData);
@@ -99,77 +98,47 @@ const Test = () => {
 
   getBalance()
 
-  const GameData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
+  const PlayerParamsData = useStore((state) => {
+    const records = Object.values(state.getRecords(tables.PlayerParams));
+    return records.map((e) => Object.assign(e.value, {addr: e.key.addr}));
+  });
 
-  const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
+  const boxs = []
+  const battles = []
 
-  if (GlobalConfigData.length && GlobalConfigData[0].userContract && !userContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
-    let userContractAddress = GlobalConfigData[0].userContract
-    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
-  }
-
-  if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
-    let lootContractAddress = GlobalConfigData[0].lootContract
-    lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
-  }
-
-  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
-    let id = decodeEntity({ battleId: "uint256" }, entity);
-    let battle = getComponentValue(BattleList, entity)
-    battle.id = id.battleId.toString()
-    return battle;
-  }).filter(e => !e.isEnd)
-
-  const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
-    let id = decodeEntity({ boxId: "uint256" }, entity);
-    let box = getComponentValue(BoxList, entity)
-    box.id = id.boxId.toString()
-    return box;
-  }).filter(e => !e.opened);
-
-  boxRef.current = boxs;
-
-  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
-  const syncprogress = syncprogressData[0]
-  console.log(syncprogress, 'syncprogress')
-
-  useEffect(() => {
-    if (!interval && syncprogress?.percentage == 100) {
-      interval = setInterval(() => {
-        console.log(boxRef.current.length, 'boxs.length')
-        if (boxRef.current.length < 20) {
-          CreateBoxMoreFun()
+  const players = useStore((state) => {
+    const records = Object.values(state.getRecords(tables.Player));
+    return records.map((e) => {
+      let playerItem = Object.assign(e.value, {addr: e.key.addr})
+      // PlayerParamsData
+      let playerParams = PlayerParamsData.find((player) => player.addr == e.key.addr) || {}
+      playerItem = Object.assign(playerItem, playerParams)
+      Object.keys(playerItem).forEach((k) => {
+        if (typeof playerItem[k] === 'bigint') {
+          playerItem[k] = Number(playerItem[k])
         }
-      }, 600000)
-    }
-  }, [syncprogress?.percentage]);
-
-  
-  // const GameConfig = useComponentValue(GameConfig, singletonEntity);
-  // console.log(GameConfig, 'GameConfig')
-  const players = useEntityQuery([Has(Player)]).map((entity) => {
-    let addr = account
-    let entityData = decodeEntity({ addr: "address" }, entity);
-    let address = entityData?.addr?.toLocaleLowerCase() || ''
-    let player = getComponentValue(Player, entity);
-    if (address.toLocaleLowerCase() == addr.toLocaleLowerCase()) {
-      player.isMe = true
-    } else {
-      player.isMe = false
-    }
-    player.addr = address
-    // address 取前6位和后4位
-    player.label = `${player.name}(${address.substring(address.length-4)})`
-    return player;
-  })
+      });
+      if (playerItem.lastBattleTime) {
+        let now = Math.floor(new Date().getTime() / 1000)
+        let lastBattleTime = playerItem.lastBattleTime
+        let diff = now - lastBattleTime
+        let diffHp = diff * (playerItem.maxHp / 1000)
+        playerItem.hp = playerItem.hp + diffHp
+        if (playerItem.hp > playerItem.maxHp) {
+          playerItem.hp = playerItem.maxHp
+        }
+        let localPlayer = localStorage.getItem('curPlayer') || {}
+        if (localPlayer) {
+          localPlayer = JSON.parse(localPlayer)
+          if (localPlayer.addr.toLocaleLowerCase() == e.key.addr.toLocaleLowerCase()) {
+            playerItem.diffHp = Math.floor(playerItem.hp - localPlayer.hp)
+          }
+        }
+      }
+      playerItem.label = `${playerItem.name}(${e.key.addr.substring(playerItem.length-4)})`
+      return playerItem
+    })
+  });
 
 
   const getNftList = async () => {
@@ -419,6 +388,7 @@ const Test = () => {
     message.success('重置成功');
     setUserAddr('')
   }
+  
 
   return (
     <div className="content">

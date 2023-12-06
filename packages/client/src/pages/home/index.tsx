@@ -1,19 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '@/pages/home/header';
 import './styles.scss';
-import Loading from '@/components/Loading';
-import MintList from '@/config/mint';
 import { message, Modal } from 'antd';
 import UserInfo from '@/components/UserInfo';
-import { UserAddress } from '@/mock/data';
-import { UserAddressKey } from '@/config';
 import { useNavigate } from 'react-router-dom';
-import Duck from '@/config/duck';
-import { delay } from '@/utils';
 import { useMUD } from '@/mud/MUDContext';
-import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue } from '@latticexyz/recs';
-import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { ethers } from 'ethers';
 
 import indexDuckImg from '@/assets/img/duck_index.svg';
@@ -29,15 +20,13 @@ let pluginContract: any
 let userTokenIds: any
 let lootTokenIds: any
 
-let transfering = false
-
 const Home = () => {
-  const [messageApi, contextHolder] = message.useMessage();
   const {
-    components: { GlobalConfig, Player, LootList1, PlayerAddon, GameConfig, SyncProgress },
-    systemCalls: { selectBothNFT, joinBattlefield, setInfo, initUserInfo },
-    network
+    systemCalls: { selectBothNFT, joinBattlefield, setInfo },
+    network,
   } = useMUD();
+
+  const { tables, useStore } = network;
 
   const [step, setStep] = useState('play');
   const usernameRef = useRef<HTMLInputElement>();
@@ -55,21 +44,78 @@ const Home = () => {
   const [lootUrl, setLootUrl] = useState<string>();
   const [player, setPlayer] = useState<any>();
 
+  // getMUDData
+  const GameConfigData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.GameConfig));
+    return records.map((e:any) => e.value);
+  });
+  const GlobalConfigData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.GlobalConfig));
+    return records.map((e:any) => e.value);
+  });
+  const LootList1Data = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.LootList1));
+    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+  });
+
+  const PlayerParamsData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.PlayerParams));
+    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+  });
+  const PlayerData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.Player));
+    return records.map((e:any) => {
+      let playerItem = Object.assign(e.value, {addr: e.key.addr})
+      //LootList1Data
+      let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {}
+      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      playerItem.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+      // PlayerParamsData
+      let playerParams = PlayerParamsData.find((player: any) => player.addr == e.key.addr) || {}
+      playerItem = Object.assign(playerItem, playerParams)
+      return playerItem
+    })
+  });
+
+  const PlayerAddonData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.PlayerAddon));
+    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+  });
+
+  const curPlayer = PlayerData.find((player: any) => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
+
+  const privateKey = network.privateKey
+  const rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+  const provider = new ethers.providers.JsonRpcProvider(rpc)
+  const wallet = new ethers.Wallet(privateKey, provider)
+
+  if (GlobalConfigData.length) {
+    let userContractAddress = GlobalConfigData[0].userContract
+    let lootContractAddress = GlobalConfigData[0].lootContract
+    let pluginContractAddress = GlobalConfigData[0].pluginContract
+    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
+    lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
+    pluginContract = new ethers.Contract(pluginContractAddress, pluginAbi, wallet)
+    userContract?.getUserTokenIdList().then((res:any) => {
+      userTokenIds = res
+    })
+    lootContract?.getUserTokenIdList().then((res:any) => {
+      lootTokenIds = res
+    })
+  }
+
+  console.log(PlayerAddonData, GameConfigData, GlobalConfigData, LootList1Data, PlayerData, 'PlayerAddonData, GameConfigData, SyncProgressData, GlobalConfigData, LootList1Data, PlayerData')
+
+  const syncprogress = {percentage: 100}
   // isOpen
   const [isOpen, setIsOpen] = useState(import.meta.env.VITE_IS_OPEN == 'true' ? true : false);
-  const [percentage, setPercentage] = useState(0);
 
-  const GameConfigData = useEntityQuery([Has(GameConfig)]).map((entity) => getComponentValue(GameConfig, entity));
-
-  const syncprogressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
-  const syncprogress = syncprogressData[0]
-
-  // useEffect(() => {
-  //   if (syncprogress?.percentage == 100) {
-  //     console.log('syncprogress', syncprogress)
-  //     setIsOpen(GameConfigData[0]?.isOpen)
-  //   }
-  // }, [syncprogress?.percentage])
   useEffect(() => {
     // 获取参数
     const params = new URLSearchParams(window.location.search);
@@ -78,74 +124,6 @@ const Home = () => {
       setIsOpen(true)
     }
   }, [])
-
-  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
-    const loot = getComponentValue(LootList1, entity);
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    loot.addr = address
-    return loot;
-  })
-
-  const players = useEntityQuery([Has(Player)]).map((entity) => {
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    const player = getComponentValue(Player, entity);
-    player.addr = address
-    LootList1Data.forEach((item) => {
-      if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
-        let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        let handheld = item.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        let head = item.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        player.equip = {
-          clothes,
-          handheld,
-          head,
-        }
-      }
-    })
-    return player;
-  })
-
-  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
-
-  const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-
-  console.log(GlobalConfigData, 'GlobalConfigData', syncprogress?.percentage)
-
-  // console.log(lootAbi, 'lootAbi', userAbi, 'userAbi', pluginAbi, 'pluginAbi')
-
-  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
-    let userContractAddress = GlobalConfigData[0].userContract
-    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
-    userContract?.getUserTokenIdList().then(res => {
-      userTokenIds = res
-    })
-  }
-
-  if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
-    let lootContractAddress = GlobalConfigData[0].lootContract
-    lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
-    lootContract?.getUserTokenIdList().then(res => {
-      lootTokenIds = res
-    })
-  }
-
-
-  if (GlobalConfigData.length && GlobalConfigData[0].pluginContract && !pluginContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
-    let pluginContractAddress = GlobalConfigData[0].pluginContract
-    pluginContract = new ethers.Contract(pluginContractAddress, pluginAbi, wallet)
-  }
 
   const atobUrl = (url) => {
     url = url.replace('data:application/json;base64,', '')
@@ -158,8 +136,9 @@ const Home = () => {
 
   useEffect(() => {
     async function init() {
-      if (curPlayer?.state >= 1 && curPlayer?.name) {
-        let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: curPlayer.addr}))
+      if (curPlayer?.state >= 1) {
+        let addon = PlayerAddonData.find((addon: any) => addon.addr.toLocaleLowerCase() == curPlayer?.addr.toLocaleLowerCase())
+        console.log(addon)
         let userTokenId = addon.userId.toString()
         let lootTokenId = addon.lootId.toString()
     
@@ -214,7 +193,7 @@ const Home = () => {
         let blockNumber = await network.publicClient.getBlockNumber()
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber >= 2) {
+          if (currentBlockNumber - blockNumber >= 1) {
             clearInterval(interval)
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
@@ -238,7 +217,6 @@ const Home = () => {
 }
 
   const mintAndGo = async (type, uName) => {
-    console.log('mintAndGo')
     if (syncprogress?.percentage != 100) {
       message.error('Waiting for sync...');
       return;
@@ -267,24 +245,23 @@ const Home = () => {
       let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
       let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
   
-      let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-      let url = urls[0]
-      let lootUrl = urls[1]
-      console.log("get loot and user success")
-      console.log(urls, 'url')
-      try {
-        url = atobUrl(url)
-        lootUrl = atobUrl(lootUrl)
-      } catch (error) {
-        mintAndGo('mint')
-        console.log(error)
-      }
-      
+      // let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
+      // let url = urls[0]
+      // let lootUrl = urls[1]
+      // console.log("get loot and user success")
+      // console.log(urls, 'url')
+      // try {
+      //   url = atobUrl(url)
+      //   lootUrl = atobUrl(lootUrl)
+      // } catch (error) {
+      //   mintAndGo('mint')
+      //   console.log(error)
+      // }
+      // setUserUrl(url.image)
+      // setLootUrl(lootUrl.image)
 
-      setUserUrl(url.image)
-      setLootUrl(lootUrl.image)
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
-  
+
       let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -299,12 +276,9 @@ const Home = () => {
         head,
       }
 
-      let player = Object.assign(playerData, {username: username || uName, clothes, handheld, head, userUrl: url.image, lootUrl: lootUrl.image})
-      console.log(player, 'player')
-      // localStorage.setItem('playerInfo', JSON.stringify(toObject(player)));
-      
-      let result = await Promise.all([setInfo(player.username, ''), joinBattlefield()])
-      console.log(result, 'result')
+      let player = Object.assign(playerData, {username: username || uName, clothes, handheld, head})
+      console.log(player, 'player', username, uName)
+      await Promise.all([setInfo(username || uName, ''), joinBattlefield()])
       setMinting(false);
       navigate('/game', {
         state: {
@@ -354,7 +328,6 @@ const Home = () => {
 
   return (
     <div className="mi-home-page">
-      {contextHolder}
       <Header
         onPlayBtnClick={play}
       />

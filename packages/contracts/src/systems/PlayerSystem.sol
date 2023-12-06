@@ -2,22 +2,22 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Player, PlayerAddon, GlobalConfig, LootList1, LootList2 } from "@codegen/Tables.sol";
-import { PlayerState } from "@codegen/Types.sol";
+import { Player, PlayerAddon,PlayerParams, GlobalConfig, LootList1, LootList2 } from "../codegen/index.sol";
+import { PlayerState } from "../codegen/common.sol";
 
 import { GLOBAL_CONFIG_KEY, PLAYER_KEY } from "../Constants.sol";
 import { User, Loot } from "./library/Interface.sol";
 import { console } from "forge-std/console.sol";
 
 contract PlayerSystem is System {
-  function getInfo(address addr) public view returns (string memory, string memory) {
-    return (Player.getName(addr), Player.getUrl(addr));
+  function getInfo(address addr) public view returns (string memory) {
+    return (PlayerParams.getName(addr));
   }
 
-  function setInfo(string memory name, string memory url) public {
+  function setInfo(string memory name) public {
     address addr = _msgSender();
-    Player.setName(addr, name);
-    Player.setUrl(addr, url);
+    PlayerParams.setName(addr, name);
+    // Player.setUrl(addr, url);
   }
 
   function transfer(address addr, uint16 x, uint16 y) public {
@@ -45,13 +45,13 @@ contract PlayerSystem is System {
     require(user.ownerOf(_tokenId) == sender, "You are not the owner of this NFT");
     (uint256 hp, uint256 attack, uint256 attackRange, uint256 speed, uint256 strength, uint256 space) = user
       .getStructInfo(_tokenId);
-    Player.setMaxHp(sender, hp);
-    Player.setHp(sender, hp);
-    Player.setAttack(sender, attack);
-    Player.setAttackRange(sender, attackRange);
-    Player.setSpeed(sender, speed);
-    Player.setStrength(sender, strength);
-    Player.setSpace(sender, space);
+    PlayerParams.setMaxHp(sender, hp);
+    PlayerParams.setHp(sender, hp);
+    PlayerParams.setAttack(sender, attack);
+    PlayerParams.setAttackRange(sender, attackRange);
+    PlayerParams.setSpeed(sender, speed);
+    PlayerParams.setStrength(sender, strength);
+    PlayerParams.setSpace(sender, space);
 
     PlayerAddon.setUserId(sender,_tokenId);
   }
@@ -98,6 +98,6 @@ contract PlayerSystem is System {
     Player.setX(_player, 0);
     Player.setY(_player, 0);
     Player.setState(_player, PlayerState.Idle);
-    Player.setHp(_player, 0);
+    PlayerParams.setHp(_player, 0);
   }
 }

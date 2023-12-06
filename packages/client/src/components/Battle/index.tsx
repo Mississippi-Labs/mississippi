@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import DuelField, { AttackType, IDuelFieldMethod } from '@/components/DuelField';
 import "./styles.scss";
-import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue, NotValue, HasValue } from '@latticexyz/recs';
 import { useMUD } from '@/mud/MUDContext';
-import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { getRandomStr } from '@/utils/utils';
 import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
@@ -35,10 +32,11 @@ export default function Battle(props) {
   targetPlayer.toward = 'Left'
 
   const {
-    components: { BattleList },
     systemCalls: { confirmBattle, revealBattle, forceEnd },
     network
   } = useMUD();
+
+  const { tables, useStore } = network
 
   let nonce = localStorage.getItem('nonce') || '';
   if (!nonce) {
@@ -49,11 +47,22 @@ export default function Battle(props) {
     nonceHex = (ethers.utils.formatBytes32String(nonce))
   }
 
-  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
-    const id = decodeEntity({ battleId: "uint256" }, entity);
-    const battle:any = getComponentValue(BattleList, entity)
-    battle.id = id.battleId.toString()
-    return battle;
+  const battleList = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BattleList1));
+    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
+  });
+
+  const battles = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BattleList));
+    return records.map((e:any) => {
+      let battleItem = Object.assign(e.value, {id: e.key.battleId})
+      // battleList
+      let battle = battleList.find((e: any) => e.id == battleItem.id) || {}
+      if (battle) {
+        battleItem = Object.assign(battleItem, battle)
+      }
+      return battleItem
+    });
   });
 
   const setTimer = (s) => {
@@ -89,8 +98,10 @@ export default function Battle(props) {
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
           let actionHex = ethers.utils.formatBytes32String(action);
           console.log(arg, action)
-          let src = await revealBattle(battleId, actionHex, arg, nonceHex)
-          if (src && src?.type == 'success') {
+          let res = await revealBattle(battleId, actionHex, arg, nonceHex)
+          if (res && res?.type == 'success') {
+            battle.attackerState = res.data.attackerState
+            battle.defenderState = res.data.defenderState
             setBattleState(2)
           } else {
             // initBattle()
@@ -104,8 +115,10 @@ export default function Battle(props) {
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
           let actionHex = ethers.utils.formatBytes32String(action);
           console.log(arg, action)
-          let src = await revealBattle(battleId, actionHex, arg, nonceHex)
-          if (src && src?.type == 'success') {
+          let res = await revealBattle(battleId, actionHex, arg, nonceHex)
+          if (res && res?.type == 'success') {
+            battle.attackerState = res.data.attackerState
+            battle.defenderState = res.data.defenderState
             setBattleState(2)
           } else {
             // initBattle()
@@ -358,11 +371,11 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP) / Number(curPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(curType == 'attacker' ? battleData?.attackerHP : battleData?.defenderHP) / Number(curPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP)}/{curPlayer?.maxHp}</div>
+                    <div className='hp-text'>{Number(curType == 'attacker' ? battleData?.attackerHP : battleData?.defenderHP)}/{curPlayer?.maxHp}</div>
                   </div>
                   {
                     showPlayer1Loss ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
@@ -384,11 +397,11 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP) / Number(targetPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(curType == 'attacker' ? battleData?.defenderHP : battleData?.attackerHP) / Number(targetPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP)}/{Number(targetPlayer?.maxHp)}</div>
+                    <div className='hp-text'>{Number(curType == 'attacker' ? battleData?.defenderHP : battleData?.attackerHP)}/{Number(targetPlayer?.maxHp)}</div>
                   </div>
                   {
                     showPlayer2Loss ? <div className="hp-loss">-{player2LossData.toFixed(0)}</div> : null

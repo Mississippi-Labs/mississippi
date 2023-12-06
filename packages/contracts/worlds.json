@@ -1,25 +1,5 @@
 {
-  "4242": {
-    "address": "0x06b2F63321C54D946BA419F7dAee2a931B24D7a4",
-    "blockNumber": 29582781
-  },
-  "17001": {
-    "address": "0x050499eBdbBBc1216011dE07A48b5182c983Ae74",
-    "blockNumber": 1069273
-  },
   "31337": {
-    "address": "0x9377776E73C47111C48e692dC2CD10732e143A96"
-  },
-  "33784": {
-    "address": "0xa77f9D88c149383f45A261316CcE04A5f4F0a4ce",
-    "blockNumber": 344808
-  },
-  "421613": {
-    "address": "0x2Bc1034975c3df48D6f3026802f372677844b85d",
-    "blockNumber": 46508363
-  },
-  "11155111": {
-    "address": "0xec7F8CF3B3640b1C5E8fD3c208776aad056D4fc3",
-    "blockNumber": 4450305
+    "address": "0xd5d9aad645671a285d1cadf8e68aef7d74a8a7d0"
   }
 }

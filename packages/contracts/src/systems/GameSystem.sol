@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import { GameConfig,Player,PlayerSeason } from "@codegen/Tables.sol";
-import { BattleState, Buff, PlayerState } from "@codegen/Types.sol";
-import { BattleListData, BattleList, Player, PlayerData, PlayerLocationLock, BoxListData, BoxList, RandomList, RandomListData } from "../codegen/Tables.sol";
+import { GameConfig,Player,PlayerSeason } from "../codegen/index.sol";
+import { BattleState, Buff, PlayerState } from "../codegen/common.sol";
+import { BattleListData, BattleList, Player, PlayerData, PlayerLocationLock, BoxListData, BoxList, RandomList, RandomListData } from "../codegen/index.sol";
 import { Position } from "./Common.sol";
 
 contract GameSystem is System {

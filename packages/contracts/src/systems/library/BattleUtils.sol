@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
-import { BattleListData,BattleList, Player, BattleConfig, GameConfig, PlayerData, BoxListData, BoxList } from "../../codegen/Tables.sol";
+import { BattleState, Buff, PlayerState } from "../../codegen/common.sol";
+import { BattleListData,BattleList1Data,BattleList,BattleList1, Player, PlayerParams,BattleConfig, GameConfig, PlayerData, BoxListData, BoxList } from "../../codegen/index.sol";
 import { BATTLE_CONFIG_KEY, GAME_CONFIG_KEY } from "../../Constants.sol";
 
 library BattleUtils {
@@ -28,7 +28,7 @@ library BattleUtils {
   }
 
   function _goPreparing(address _player) internal {
-    Player.setHp(_player, Player.getMaxHp(_player));
+    PlayerParams.setHp(_player, PlayerParams.getMaxHp(_player));
     Player.setLastBattleTime(_player, 0); //清除战斗标记
     Player.setState(_player, PlayerState.Preparing);
   }
@@ -53,10 +53,12 @@ library BattleUtils {
 
   function checkBattlePlayer(
     BattleListData memory _battle,
+    BattleList1Data  memory _battle1,
     address _msgSender,
     BattleState _battleState
   ) internal pure {
-    BattleState battleState = _battle.attacker == _msgSender ? _battle.attackerState : _battle.defenderState;
+    
+    BattleState battleState = _battle.attacker == _msgSender ? _battle1.attackerState : _battle1.defenderState;
 
     require(_battle.attacker == _msgSender || _battle.defender == _msgSender, "You are not in this _battle");
     require(battleState == _battleState, "You are in the wrong state");
@@ -81,7 +83,7 @@ library BattleUtils {
     box.owner = _winner;
     box.oreBalance = losser.oreBalance;
     box.treasureBalance = losser.treasureBalance;
-    box.dropTime = block.timestamp;
+    // box.dropTime = block.timestamp;
     BoxList.set(boxId, box);
     Player.setOreBalance(_looser, 0);
     Player.setTreasureBalance(_looser, 0);
@@ -93,7 +95,7 @@ library BattleUtils {
     // 处理战胜方
     Player.setState(_winner, PlayerState.Exploring);
     Player.setLastBattleTime(_winner, block.timestamp);
-    Player.setHp(_winner, BattleList.getAttackerHP(_battleId));
+    PlayerParams.setHp(_winner, BattleList.getAttackerHP(_battleId));
 
 
   }

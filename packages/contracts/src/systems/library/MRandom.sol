@@ -3,8 +3,8 @@ pragma solidity >=0.8.0;
 
 import {console} from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
-import { BattleState, Buff, PlayerState } from "@codegen/Types.sol";
-import { GameConfig, BattleConfig, RandomList, RandomListData, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock } from "@codegen/Tables.sol";
+import { BattleState, Buff, PlayerState } from "../../codegen/common.sol";
+import { GameConfig, BattleConfig, RandomList, RandomListData, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock } from "../../codegen/index.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../../Constants.sol";
 import { CommonUtils } from "@library/CommonUtils.sol";
 

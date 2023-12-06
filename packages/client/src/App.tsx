@@ -1,3 +1,19 @@
+// import { useMUD } from "./MUDContext";
+
+//   const {
+//     network: { tables, useStore },
+//     systemCalls: { addTask, toggleTask, deleteTask },
+//   } = useMUD();
+
+//   console.log("tables", tables);
+
+//   const tasks = useStore((state) => {
+//     const records = Object.values(state.getRecords(tables.Tasks));
+//     records.sort((a, b) => Number(a.value.createdAt - b.value.createdAt));
+//     return records;
+//   });
+
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
 import Game from './pages/game';
@@ -22,13 +38,9 @@ export const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            {/*<Route index element={<Game />} />*/}
             <Route index element={<Home />} />
             <Route path="game" element={<Game />} />
             <Route path="test" element={<Test />} />
-            <Route path="heroEdit" element={<HeroEdit />} />
-            <Route path="app" element={<PIXIAPP />} />
-            <Route path="testBattle" element={<TestBattle />} />
           </Route>
         </Routes>
       </BrowserRouter>

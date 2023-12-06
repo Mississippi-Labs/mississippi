@@ -5,8 +5,8 @@ import { System } from "@latticexyz/world/src/System.sol";
 
  
 
-import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
-import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock} from "@codegen/Tables.sol";
+import { BattleState, Buff, PlayerState } from "../codegen/common.sol";
+import { GameConfig, BattleConfig, RandomList, RandomListData,BattleList, BoxList, BoxListData, Player,PlayerParams, PlayerData, PlayerLocationLock} from "../codegen/index.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 import {console} from "forge-std/console.sol";
 import { CommonUtils } from "./library/CommonUtils.sol";
@@ -31,7 +31,7 @@ contract MoveSystem is System {
             moveList.length > 0 && moveList.length <= BattleConfig.getMaxMoveDistance(BATTLE_CONFIG_KEY),
             "invalid move distance"
         );
-        require(moveList.length <= Player.getSpeed(_msgSender()), "exceed player speed");
+        require(moveList.length <= PlayerParams.getSpeed(_msgSender()), "exceed player speed");
         // check player lock 
         require(PlayerLocationLock.get(_msgSender()) == 0, "You are locked");
         // check continuity

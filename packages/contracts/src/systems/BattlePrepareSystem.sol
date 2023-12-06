@@ -2,8 +2,8 @@
 pragma solidity >=0.8.0;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { BattleState, Buff, PlayerState } from "../codegen/Types.sol";
-import { GameConfig, BattleConfig, BattleList, BattleListData, Player, PlayerData, PlayerLocationLock } from "../codegen/Tables.sol";
+import { BattleState, Buff, PlayerState } from "../codegen/common.sol";
+import { GameConfig, BattleConfig, BattleList,BattleList1, BattleListData,BattleList1Data, Player,PlayerParams, PlayerData, PlayerLocationLock } from "../codegen/index.sol";
 import { BattleUtils } from "./library/BattleUtils.sol";
 import { CommonUtils } from "./library/CommonUtils.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
@@ -46,7 +46,7 @@ contract BattlePrepareSystem is System {
       positionList.length > 0 && positionList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
       "invalid attack distance"
     );
-    require(positionList.length <= Player.getAttackRange(_msgSender()), "exceed player attackRange"); //Todo: temp remove
+    require(positionList.length <= PlayerParams.getAttackRange(_msgSender()), "exceed player attackRange"); //Todo: temp remove
 
     require(
       Player.getState(_msgSender()) == PlayerState.Exploring &&
@@ -72,7 +72,7 @@ contract BattlePrepareSystem is System {
     BattleList.setDefender(battleId, _targetAddress);
     BattleList.setAttackerHP(battleId, initPlayerHp(_msgSender()));
     BattleList.setDefenderHP(battleId, initPlayerHp(_targetAddress));
-    BattleList.setStartTimestamp(battleId, block.timestamp);
+    // BattleList.setStartTimestamp(battleId, block.timestamp);
     // BattleList.setEndTimestamp(battleId, block.timestamp); //结束时才需要设置
     GameConfig.setBattleId(GAME_CONFIG_KEY, battleId + 1);
 
@@ -85,18 +85,19 @@ contract BattlePrepareSystem is System {
     
     
     BattleListData memory battle = BattleList.get(_battleId);
-    BattleUtils.checkBattlePlayer(battle, _msgSender(), BattleState.Inited);
+    BattleList1Data memory battle1 = BattleList1.get(_battleId);
+    BattleUtils.checkBattlePlayer(battle,battle1, _msgSender(), BattleState.Inited);
 
     // require(block.timestamp - battle.startTimestamp < BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "Battle is timeout");
     // TODO超时不可选择buff
     
     // 当前实现方法非常不优雅,使用两个额外存储槽来存储用户的选择
     if (battle.attacker == _msgSender()) {
-      BattleList.setAttackerBuffHash(_battleId, _buffHash);
-      BattleList.setAttackerState(_battleId, BattleState.Confirmed);
+      BattleList1.setAttackerBuffHash(_battleId, _buffHash);
+      BattleList1.setAttackerState(_battleId, BattleState.Confirmed);
     } else {
-      BattleList.setDefenderBuffHash(_battleId, _buffHash);
-      BattleList.setDefenderState(_battleId, BattleState.Confirmed);
+      BattleList1.setDefenderBuffHash(_battleId, _buffHash);
+      BattleList1.setDefenderState(_battleId, BattleState.Confirmed);
     }
 
     BattleList.setEndTimestamp(_battleId, block.timestamp);
@@ -107,12 +108,12 @@ contract BattlePrepareSystem is System {
 
   function initPlayerHp(address _player) public returns (uint256) {
     uint256 lastBattleTime = Player.getLastBattleTime(_player);
-    uint256 maxHp = Player.getMaxHp(_player);
+    uint256 maxHp = PlayerParams.getMaxHp(_player);
     uint256 increase;
     if (lastBattleTime != 0) {
       increase = (((block.timestamp - lastBattleTime) / 10) * maxHp) / 100;
     }
-    uint256 hp = Player.getHp(_player) + increase;
+    uint256 hp = PlayerParams.getHp(_player) + increase;
     Player.setLastBattleTime(_player, 0);
 
     return hp > maxHp ? maxHp : hp;
