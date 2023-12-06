@@ -58,6 +58,8 @@ export async function getNetworkConfig() {
     throw new Error(`Chain ${chainId} not found`);
   }
 
+  const indexerUrl = chain.indexerUrl;
+
   /*
    * Get the address of the World. If you want to use a
    * different address than the one in worlds.json,
@@ -87,5 +89,6 @@ export async function getNetworkConfig() {
     faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
     worldAddress,
     initialBlockNumber,
+    indexerUrl,
   };
 }
