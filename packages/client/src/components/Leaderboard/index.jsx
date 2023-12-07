@@ -13,11 +13,11 @@ const Appearance = (props) => {
         leaderboard.map((player, index) => (
           <div key={index} className='leaderboard-item'>
             <span className="player-score">{index + 1}.</span>
-            <span className="player-name">{player.username}</span>
+            <span className="player-name">{player.name}</span>
             <span className="player-gems">{player.oreBalance}</span>
           </div>
         ))
-      }
+      }Leaderboard
     </div>
   );
 };

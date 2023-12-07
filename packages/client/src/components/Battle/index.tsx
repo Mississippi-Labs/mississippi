@@ -102,9 +102,7 @@ export default function Battle(props) {
           if (res && res?.type == 'success') {
             battle.attackerState = res.data.attackerState
             battle.defenderState = res.data.defenderState
-            setTimeout(() => {
-              setBattleState(2)
-            }, 200)
+            setBattleState(2)
           } else {
             // initBattle()
           }
@@ -121,9 +119,7 @@ export default function Battle(props) {
           if (res && res?.type == 'success') {
             battle.attackerState = res.data.attackerState
             battle.defenderState = res.data.defenderState
-            setTimeout(() => {
-              setBattleState(2)
-            }, 200)
+            setBattleState(2)
           } else {
             // initBattle()
           }
