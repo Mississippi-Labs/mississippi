@@ -106,7 +106,13 @@ const Game = () => {
   });
   const PlayerSeasonData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.PlayerSeason));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr})).sort((a, b) => b.oreBalance - a.oreBalance);
+    return records.map((e:any) => {
+      let item = Object.assign(e.value, {addr: e.key.addr})
+      // 获取PlayerParamsData.name
+      let PlayerParamsDataItem = PlayerParamsData.find((player: any) => player.addr.toLocaleLowerCase() == e.key.addr.toLocaleLowerCase()) || {}
+      item.name = PlayerParamsDataItem.name
+      return item
+    }).sort((a, b) => b.oreBalance - a.oreBalance);
   });
   const PlayersData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.Player));
@@ -147,6 +153,7 @@ const Game = () => {
           }
         }
       }
+      playerItem.username = playerItem.name
       return playerItem
     })
   });
