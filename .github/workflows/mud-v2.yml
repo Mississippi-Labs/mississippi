@@ -1,4 +1,4 @@
-name: cf_auto_deploy
+name: cf_auto_deploy_mud-v2
 
 on:
   push:
