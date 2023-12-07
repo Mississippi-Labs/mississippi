@@ -47,7 +47,8 @@ export async function getNetworkConfig() {
    *    vite dev server was started or client was built
    * 4. The default, 31337 (anvil)
    */
-  const chainId = Number(params.get("chainId") || params.get("chainid") || import.meta.env.VITE_CHAIN_ID || 31337);
+  let lsChainId = localStorage.getItem('chainId');
+  const chainId = Number(params.get("chainId") || params.get("chainid") || lsChainId || (import.meta.env.DEV ? import.meta.env.VITE_TEST_CHAIN_ID : import.meta.env.VITE_CHAIN_ID) || 31337);
 
   /*
    * Find the chain (unless it isn't in the list of supported chains).
