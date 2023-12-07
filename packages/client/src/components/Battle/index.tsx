@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import DuelField, { AttackType, IDuelFieldMethod } from '@/components/DuelField';
 import "./styles.scss";
 import { useMUD } from '@/mud/MUDContext';
@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { message } from 'antd';
 import CountDown from '@/hooks/useCountDown';
+import GameContext from '@/context';
 
 let interval:any = null
 let nonceHex = ''
@@ -28,6 +29,8 @@ export default function Battle(props) {
   const [showPlayer1Loss, setShowPlayer1Loss] = useState(false);
   const [showPlayer2Loss, setShowPlayer2Loss] = useState(false);
 
+  const { battles } = useContext(GameContext);
+
   curPlayer.toward = 'Right'
   targetPlayer.toward = 'Left'
 
@@ -47,31 +50,13 @@ export default function Battle(props) {
     nonceHex = (ethers.utils.formatBytes32String(nonce))
   }
 
-  const battleList = useStore((state: any) => {
-    const records = Object.values(state.getRecords(tables.BattleList1));
-    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
-  });
-
-  const battles = useStore((state: any) => {
-    const records = Object.values(state.getRecords(tables.BattleList));
-    return records.map((e:any) => {
-      let battleItem = Object.assign(e.value, {id: e.key.battleId})
-      // battleList
-      let battle = battleList.find((e: any) => e.id == battleItem.id) || {}
-      if (battle) {
-        battleItem = Object.assign(battleItem, battle)
-      }
-      return battleItem
-    });
-  });
-
   const setTimer = (s) => {
     console.log(s)
     const seconds = Number(s)
     if (seconds == 0) {
       forceEndFun()
     } else {
-      return (<p style={{height: '20px', background: '#fff', width: (seconds / 30 * 100) + '%'}}>{seconds}</p>)
+      return (<p style={{height: '20px', background: '#fff', width: (seconds / 300 * 100) + '%'}}>{seconds}</p>)
     }
   }
 
@@ -100,9 +85,13 @@ export default function Battle(props) {
           console.log(arg, action)
           let res = await revealBattle(battleId, actionHex, arg, nonceHex)
           if (res && res?.type == 'success') {
-            battle.attackerState = res.data.attackerState
-            battle.defenderState = res.data.defenderState
-            setBattleState(2)
+            let data = res.data
+            if (data?.attackerState == 1) {
+              initBattle()
+              return
+            } else {
+              setBattleState(2)
+            }
           } else {
             // initBattle()
           }
@@ -117,9 +106,13 @@ export default function Battle(props) {
           console.log(arg, action)
           let res = await revealBattle(battleId, actionHex, arg, nonceHex)
           if (res && res?.type == 'success') {
-            battle.attackerState = res.data.attackerState
-            battle.defenderState = res.data.defenderState
-            setBattleState(2)
+            let data = res.data
+            if (data?.defenderState == 1) {
+              initBattle()
+              return
+            } else {
+              setBattleState(2)
+            }
           } else {
             // initBattle()
           }
@@ -345,6 +338,18 @@ export default function Battle(props) {
       return
     } else {
       console.log(res)
+      let data = res.data
+      if (curType == 'attacker' && data?.attackerState == 0) {
+        setBattleState(0)
+        localStorage.removeItem('confirmBattleData')
+        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        return
+      } else if (curType == 'defender' && data?.defenderState == 0) {
+        setBattleState(0)
+        localStorage.removeItem('confirmBattleData')
+        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        return
+      }
       setTimeout(() => {
         setBattleState(5)
       }, 100)
@@ -426,7 +431,7 @@ export default function Battle(props) {
                     {
                       <CountDown
                         // 要倒计时20s
-                        duration={30}
+                        duration={300}
                         formatString="s"
                       >
                         {(str) => setTimer(str)}

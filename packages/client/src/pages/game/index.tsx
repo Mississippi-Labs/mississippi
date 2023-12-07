@@ -187,10 +187,23 @@ const Game = () => {
     return records.map((e:any) => Object.assign(e.value, {id: e.key.boxId})).filter((e: any) => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
   })
 
+  const BattleList1Data = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BattleList1));
+    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
+  });
+
   const BattleListData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.BattleList));
-    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
-  });  
+    return records.map((e:any) => {
+      let battleItem = Object.assign(e.value, {id: e.key.battleId})
+      // battleList
+      let battle = BattleList1Data.find((e: any) => e.id == battleItem.id) || {}
+      if (battle) {
+        battleItem = Object.assign(battleItem, battle)
+      }
+      return battleItem
+    });
+  });
 
   const battle:any = BattleListData.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
   
@@ -478,7 +491,8 @@ const Game = () => {
         openTreasureChest,
         setStartBattle,
         isMovablePlayer,
-        onMoveToDelivery
+        onMoveToDelivery,
+        battles: BattleListData
       }}
     >
       <div className="mi-game" tabIndex={0}>

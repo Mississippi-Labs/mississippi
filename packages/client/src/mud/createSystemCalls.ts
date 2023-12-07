@@ -36,9 +36,9 @@ export function createSystemCalls(
   { tables, useStore, worldContract, waitForTransaction, publicClient }: SetupNetworkResult
 ) {
 
-  const getBlockNumber = async () => {
-    let blockNumber = await publicClient.getBlockNumber();
-    return blockNumber.toString()
+  const getBlockNumber = async (tx: any) => {
+    const receipt = await publicClient.getTransactionReceipt({ hash: tx });
+    return receipt.blockNumber.toString()
   }
 
   const transfer = async (addr: any, transferData: any) => {
@@ -62,9 +62,11 @@ export function createSystemCalls(
     eventEmitter.emit('log', log)
     try {
       const tx = await worldContract.write.move([steps]);
-      let r = await waitForTransaction(tx);
+      await waitForTransaction(tx);
+      const receipt = await publicClient.getTransactionReceipt({ hash: tx });
+      console.log(receipt)
       // let receipt = r.receipt
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
     } catch (error) {
       console.log('move', error);
@@ -118,7 +120,7 @@ export function createSystemCalls(
       let r = await waitForTransaction(tx);
       console.log('joinBattlefield success', new Date().getTime(), tx);
       // let receipt = r.receipt
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       return tx
     } catch (error) {
@@ -151,7 +153,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.openBox([boxId]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
     } catch (error) {
@@ -176,7 +178,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.revealBox([boxId]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       console.log('revealBox success', new Date().getTime(), tx);
       wait = false
@@ -202,7 +204,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.getCollections([boxId, oreAmount, treasureAmount]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
       return {
@@ -232,7 +234,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.battleInvitation([addr, steps]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
       return tx
@@ -257,7 +259,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.confirmBattle([buffHash, battleId]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
       return {
@@ -289,7 +291,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.revealBattle([battleId, action, arg, nonce])
       await waitForTransaction(tx)
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
       return {
@@ -321,7 +323,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.forceEnd([battleId]);
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
       return useStore.getState().getValue(tables.BattleList, { battleId })
@@ -347,7 +349,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.unlockUserLocation();
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       console.log('unlockUserLocation success', new Date().getTime(), tx);
       return tx
@@ -369,7 +371,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.goHome();
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       return tx
     } catch (error) {
@@ -390,7 +392,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.submitGem();
       await waitForTransaction(tx);
-      log.block = await getBlockNumber()
+      log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       console.log('submitGem success', new Date().getTime(), tx);
       return tx
