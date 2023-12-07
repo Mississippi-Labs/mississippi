@@ -2,6 +2,8 @@ name: cf_auto_deploy
 
 on:
   push:
+    branches:
+      - feat-mvp  # 指定触发此 action 的分支
 
 env:
   FOUNDRY_PROFILE: ci
