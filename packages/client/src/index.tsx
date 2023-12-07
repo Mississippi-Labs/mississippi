@@ -18,7 +18,7 @@ setup().then(async (result) => {
   );
 
   // https://vitejs.dev/guide/env-and-mode.html
-  if (import.meta.env.DEV) {
+  // if (import.meta.env.DEV) {
     const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
     mountDevTools({
       config: mudConfig,
@@ -31,5 +31,5 @@ setup().then(async (result) => {
       write$: result.network.write$,
       useStore: result.network.useStore,
     });
-  }
+  // }
 });
