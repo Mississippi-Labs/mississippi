@@ -17,7 +17,7 @@ const Appearance = (props) => {
             <span className="player-gems">{player.oreBalance}</span>
           </div>
         ))
-      }Leaderboard
+      }
     </div>
   );
 };
