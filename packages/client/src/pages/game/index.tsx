@@ -1,31 +1,24 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { loadMapData } from "@/utils";
-import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
 import Leaderboard from "@/components/Leaderboard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message, Modal } from 'antd';
 import "./styles.scss";
-import Rank from "@/components/Rank";
-import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
 import { IPlayer } from "@/components/Player";
 import { useMUD } from "@/mud/MUDContext";
 import Battle from "@/components/Battle";
 import Log from "@/components/Log";
 import GameContext from '@/context';
-import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import Talk from '@/components/Talk';
 import Header from '../home/header'
-import { DELIVERY } from '@/config/map';
-import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
-import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
@@ -82,9 +75,8 @@ const Game = () => {
   const mapDataRef = useRef([]);
 
   // getMUDTables();
-  const syncProgress = 100;
   // mud bug, if syncProgress not 100, it will return a decimals less 1.
-  const percentage = syncProgress < 1 ? ~~(syncProgress * 100) : syncProgress;
+  let percentage = 0
 
   const GlobalConfigData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.GlobalConfig));
@@ -159,7 +151,10 @@ const Game = () => {
     })
   });
 
+  if (PlayersData.length) percentage = 100
+
   const curPlayer = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  console.log(curPlayer)
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
     navigate('/');
   } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
