@@ -1,9 +1,9 @@
-name: cf_auto_deploy
+name: cf_auto_deploy_mud-v2
 
 on:
   push:
     branches:
-      - feat-mvp  # 指定触发此 action 的分支
+      - mud-v2  # 指定触发此 action 的分支
 
 env:
   FOUNDRY_PROFILE: ci
@@ -59,7 +59,7 @@ jobs:
           # Cloudflare Account ID
           accountId: ${{ secrets.cfAccountId }}
           # The name of the Pages project to upload to
-          projectName: mississippi
+          projectName: mississippi-mud-v2
           # The directory of static assets to upload
           directory: ./packages/client/dist
           # The name of the branch you want to deploy to
