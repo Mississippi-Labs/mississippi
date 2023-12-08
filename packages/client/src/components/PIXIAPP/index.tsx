@@ -101,7 +101,7 @@ const PIXIAPP = () => {
   }
 
   const animateMove = (player, paths, onFinish) => {
-    console.log(player, paths, 'animate move');
+    // console.log(player, paths, 'animate move');
     let index = 0;
     const moveTime = calculateMoveTime(paths, blockTime);
     const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
@@ -134,16 +134,10 @@ const PIXIAPP = () => {
   const stageRef = useRef();
 
   useEffect(() => {
-    const handleRightClick = (event) => {
-      event.preventDefault();
-    };
-
-    const canvas = stageRef.current.app.view;
-    canvas.addEventListener('contextmenu', handleRightClick);
-
-    return () => {
-      canvas.removeEventListener('contextmenu', handleRightClick);
-    };
+    document.body.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    })
   }, []);
 
   const createPreviewPath = (coordinate: ICoordinate) => {

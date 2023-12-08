@@ -10,20 +10,11 @@ import TestBattle from '@/pages/testBattle';
 import FFA from '@/pages/ffa';
 
 export const App = () => {
-
-  useEffect(() => {
-    document.body.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    })
-  }, [])
-
   return (
     <div className="mi-app">
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            {/*<Route index element={<Game />} />*/}
             <Route index element={<Home />} />
             <Route path="game" element={<Game />} />
             <Route path="test" element={<Test />} />
