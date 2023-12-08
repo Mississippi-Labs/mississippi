@@ -8371,7 +8371,7 @@ packages:
     dev: false
 
   github.com/dapphub/ds-test/e282159d5170298eb2455a6c05280ab5a73a4ef0:
-    resolution: {tarball: https://codeload.github.com/dapphub/ds-test/tar.gz/e282159d5170298eb2455a6c05280ab5a73a4ef0}
+    resolution: {commit: e282159d5170298eb2455a6c05280ab5a73a4ef0, repo: git+ssh://git@github.com/dapphub/ds-test.git, type: git}
     name: ds-test
     version: 1.0.0
     dev: true

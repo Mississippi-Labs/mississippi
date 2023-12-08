@@ -21,6 +21,7 @@ import indexDuckImg from '@/assets/img/duck_index.svg';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
+import StaticInfo from '@/pages/home/StaticInfo';
 
 let userContract: any
 let lootContract: any
@@ -360,26 +361,30 @@ const Home = () => {
       />
       {
         step === 'play' && (
-          <section className="mi-section index-section">
-            <div className="section-box">
-              <div className="intro-box">
-                <h1 className={'intro-title'}>Welcome to Mississippi</h1>
-                <p>
-                  An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
-
-                  The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
-
-                  The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
-
-                  Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
-                </p>
-                <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
-
-              </div>
-            </div>
-            <img src={indexDuckImg} alt="duck" className={'duck-index'}/>
-
-          </section>
+          <StaticInfo
+            onPlay={play}
+            isOpen={isOpen}
+          />
+          // <section className="mi-section index-section">
+          //   <div className="section-box">
+          //     <div className="intro-box">
+          //       <h1 className={'intro-title'}>Welcome to Mississippi</h1>
+          //       <p>
+          //         An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
+          //
+          //         The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
+          //
+          //         The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
+          //
+          //         Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
+          //       </p>
+          //       <button className="play-btn mi-btn" onClick={play}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+          //
+          //     </div>
+          //   </div>
+          //   <img src={indexDuckImg} alt="duck" className={'duck-index'}/>
+          //
+          // </section>
         )
       }
 
