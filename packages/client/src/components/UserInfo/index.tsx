@@ -34,7 +34,7 @@ const UserInfo = (props: IUserInfo) => {
     <div className={'mi-userinfo-wrapper'}>
       <div className="left-main-content">
         <h3>Equipment</h3>
-        <div className="user-detail-wrapper">
+        <div className={`user-detail-wrapper ${lootHasLoaded ? 'user-loaded' : ''}`}>
           <div className="user-detail-content">
             <ul className="left-equipments equipments">
               <li className="equipments-item helmet-item">

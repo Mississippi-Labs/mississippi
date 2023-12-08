@@ -42,6 +42,10 @@
 
     }
 
+    .user-loaded .equipments.equipments-default-item {
+        visibility: visible;
+    }
+
     .equipments {
         width: 72px;
 
@@ -67,6 +71,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                visibility: visible;
 
                 img {
                     width: 80%;
