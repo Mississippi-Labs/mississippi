@@ -19,9 +19,9 @@ contract PostDeploy is Script {
 
     console.log(" ========== PostDeploy  ========== ");
 
-    address muser = 0xDde063eBe8E85D666AD99f731B4Dbf8C98F29708;
-    address mloot = 0xD5724171C2b7f0AA717a324626050BD05767e2C6;
-    address mplugin = 0x70eE76691Bdd9696552AF8d4fd634b3cF79DD529;
+    address muser = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
+    address mloot = 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9;
+    address mplugin = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 
     IWorld(worldAddress).Init(muser, mloot, mplugin,merkleRoot);
