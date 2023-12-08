@@ -78,6 +78,7 @@ const PIXIAPP = () => {
     });
     // filter non-existent player
     renderPlayersArr = renderPlayersArr.filter((player) => players.filter((p) => isValidPlayer(p)).find((p) => p.addr === player.addr));
+    console.log('renderPlayersArr', renderPlayersArr);
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
@@ -263,7 +264,6 @@ const PIXIAPP = () => {
         break;
     }
   }
-
 
   return (
     <div style={{ position: 'relative' }}>

@@ -56,7 +56,7 @@ export default function Battle(props) {
     if (seconds == 0) {
       forceEndFun()
     } else {
-      return (<p style={{height: '20px', background: '#fff', width: (seconds / 300 * 100) + '%'}}>{seconds}</p>)
+      return (<p style={{height: '20px', background: '#fff', width: (seconds / 30 * 100) + '%'}}>{seconds}</p>)
     }
   }
 
@@ -431,7 +431,7 @@ export default function Battle(props) {
                     {
                       <CountDown
                         // 要倒计时20s
-                        duration={300}
+                        duration={30}
                         formatString="s"
                       >
                         {(str) => setTimer(str)}

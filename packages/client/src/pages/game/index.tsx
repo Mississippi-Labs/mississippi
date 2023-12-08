@@ -256,6 +256,8 @@ const Game = () => {
     // return;
     setStartBattleData(false);
     setBattleId(null);
+    setBattleCurPlayer(null);
+    setTargetPlayer(null);
     if (winner && attacker && defender) {
       let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
       let loserData = useStore.getState().getValue(tables.Player, { addr: loser })
