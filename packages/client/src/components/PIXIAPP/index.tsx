@@ -77,7 +77,13 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => players.filter((p) => isValidPlayer(p)).find((p) => p.addr === player.addr));
+    renderPlayersArr = renderPlayersArr.filter((player) => {
+      const hasFound = players.find((p) => p.addr === player.addr);
+      if (!hasFound) {
+        console.log(`removed player ${player.name}`)
+      }
+      return hasFound;
+    });
     console.log('renderPlayersArr', renderPlayersArr);
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
@@ -96,7 +102,7 @@ const PIXIAPP = () => {
   }
 
   const animateMove = (player, paths, onFinish) => {
-    console.log(player, paths, 'animate move');
+    // console.log(player, paths, 'animate move');
     let index = 0;
     const moveTime = calculateMoveTime(paths, blockTime);
     const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
@@ -129,16 +135,10 @@ const PIXIAPP = () => {
   const stageRef = useRef();
 
   useEffect(() => {
-    const handleRightClick = (event) => {
-      event.preventDefault();
-    };
-
-    const canvas = stageRef.current.app.view;
-    canvas.addEventListener('contextmenu', handleRightClick);
-
-    return () => {
-      canvas.removeEventListener('contextmenu', handleRightClick);
-    };
+    document.body.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    })
   }, []);
 
   const createPreviewPath = (coordinate: ICoordinate) => {

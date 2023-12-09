@@ -11,8 +11,13 @@ export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {
   }
 }
 
+/**
+ * record play's data with addr, position and state as a string
+ * if the string changed, the map's player will rerender
+ * @param players
+ */
 export const getPlayersCache = (players: IPlayer[] = []) => {
-  return players.filter((player) => isValidPlayer(player)).map(player => `${player.addr}-${player.x}-${player.y}`).join('*');
+  return players.map(player => `${player.addr}-${player.x}-${player.y}-${player.state}`).join('*');
 }
 
 export const isSamePosition = (p1, p2) => {

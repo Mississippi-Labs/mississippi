@@ -55,13 +55,31 @@
                 background-color: #6f553c;
             }
 
-            &.helmet-item {
-                border-color: #f00;
-            }
+            //&.helmet-item {
+            //    border-color: #f00;
+            //}
+            //
+            //&.weapon-item {
+            //    border-color: #00FF38;
+            //}
 
-            &.weapon-item {
-                border-color: #00FF38;
+            &.equipments-default-item {
+                display: flex;
+                background: #FFF5E9;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 80%;
+                    height: 80%;
+                    image-rendering: pixelated;
+                }
             }
+            //.default-equip {
+            //    display: block;
+            //    width: 100%;
+            //    height: 100%;
+            //}
         }
     }
 

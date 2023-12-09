@@ -26,13 +26,6 @@ import TestBattle from '@/pages/testBattle';
 
 export const App = () => {
 
-  useEffect(() => {
-    document.body.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    })
-  }, [])
-
   return (
     <div className="mi-app">
       <BrowserRouter>
