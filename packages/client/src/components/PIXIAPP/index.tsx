@@ -47,9 +47,10 @@ const PIXIAPP = () => {
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
   const playersCache = getPlayersCache(players);
-  useEffect(() => {
+
+  const updaterenderPlayers = () => {
     let renderPlayersArr = [...renderPlayers];
-    players.filter((player) => isValidPlayer(player)).forEach((player) => {
+    players.forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
       if (renderPlayer) {
         // update
@@ -77,13 +78,16 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => {
+    return renderPlayersArr.filter((player) => isValidPlayer(player)).filter((player) => {
       const hasFound = players.find((p) => p.addr === player.addr);
       if (!hasFound) {
         console.log(`removed player ${player.name}`)
       }
       return hasFound;
     });
+  }
+  useEffect(() => {
+    let renderPlayersArr = updaterenderPlayers();
     console.log('renderPlayersArr', renderPlayersArr);
     setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
@@ -106,6 +110,7 @@ const PIXIAPP = () => {
     let index = 0;
     const moveTime = calculateMoveTime(paths, blockTime);
     const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
+    let renderPlayersArr = updaterenderPlayers();
     const interval = setInterval(() => {
       const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
       if (!movingPlayer) {
@@ -118,12 +123,12 @@ const PIXIAPP = () => {
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
       movingPlayer.moving = true;
-      setRenderPlayers([...renderPlayers]);
+      setRenderPlayers([...renderPlayersArr]);
       index++;
       if (index >= linePath.length) {
         movingPlayer.action = 'idle';
         movingPlayer.moving = false;
-        setRenderPlayers([...renderPlayers]);
+        setRenderPlayers([...renderPlayersArr]);
         clearInterval(interval);
         onFinish?.()
       }
