@@ -85,7 +85,7 @@
 
         h2 {
             background: #55225e;
-            font-size: 36px;
+            font-size: 18px;
             line-height: 60px;
             color: #fae1cc;
         }
@@ -111,7 +111,7 @@
 
         .p2 {
             right: 10px;
-            transform: rotateY(180deg);
+            //transform: rotateY(180deg);
         }
     }
 
@@ -145,7 +145,7 @@
         flex-direction: column;
 
         h2 {
-            font-size: 42px;
+            font-size: 22px;
             margin-bottom: 30px;
             color: #fff;
         }
@@ -216,6 +216,25 @@
             font-size: 22px;
             text-align: center;
             color: #fff;
+        }
+
+        .backed-by-wrapper {
+            margin-top: 40px;
+            color: #fff;
+            ul {
+                margin-top: 24px;
+            }
+            li {
+                display: flex;
+                margin-bottom: 24px;
+                align-items: center;
+
+                img {
+                    margin-right: 24px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
         }
     }
 }

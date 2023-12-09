@@ -7,8 +7,13 @@ import './staticInfo.scss';
 import FAQ from '@/config/faq';
 
 import imgPlayer from '@/assets/img/player_1.png';
+import imgPlayer2 from '@/assets/img/player_2.png';
 import imgPlayers from '@/assets/img/players.png';
 import indexDuckImg from '@/assets/img/duck_index.svg';
+
+import lxDaoIcon from '@/assets/img/lxdao.png';
+import web3Icon from '@/assets/img/web3.png';
+import crownIcon from '@/assets/img/crown.png';
 
 interface IProps {
   onPlay: () => void;
@@ -61,20 +66,22 @@ const StaticInfo = (props: IProps) => {
               </div>
               <p>y'all! Just a heads up, your neighbors ain't the friendliest bunch. It's a wild ride of plunderin' and survivin', so go hunt that treasure and claim your bounty.</p>
               <img src={imgPlayer} alt="" className="player p1"/>
-              <img src={imgPlayer} alt="" className="player p2"/>
+              <img src={imgPlayer2} alt="" className="player p2"/>
             </div>
             <div className="mi-home-desc-wrapper">
               <dl className="mi-home-desc-item">
-                <dt>Gameplay</dt>
-                <dd>Mississippi is a fully on-chain roguelike PVP game where players battle for limited resources within a complex cave. Welcome to Mississippi for gold prospecting! Compete with others, take on greed, and see who comes out on top!</dd>
+                <dt>What is the game all about</dt>
+                <dd>We start from a PVP rogue-like game. Explore randomly-dropped gems, strategically forge godlike equipment, and loot each other's treasures. All within the expansive Mississippi cave. </dd>
               </dl>
               <dl className="mi-home-desc-item">
-                <dt>Mission</dt>
-                <dd>To create great games only enabled by Web3. We are striving to find and leverage the unique fun factor that Web3 offers.</dd>
+                <dt>How does it evolve into a world</dt>
+                <dd>We plan to expand the game to be a simulation game. Players will be divided into factions, with the game's purpose evolving from individual competition to collective competition.
+
+                  Each fraction will have their own unique economies, political systems, technical capabilities, foreign policies, and even cultural beliefs. Members will collaborate to create a joint, on-chain history, driven by Web3's public ledger.</dd>
               </dl>
               <dl className="mi-home-desc-item">
-                <dt>Approach</dt>
-                <dd>We will keep exploring the potential of Autonomous Worlds. The composability of Autonomous Worlds will pave the way for a new labor relations between developers and game players.</dd>
+                <dt>Why we are based on Lootverse</dt>
+                <dd>Lootverse is a series of communities derived from the original Loot bags, representing the the core value of Autonomous Worlds: To create 5% of the fundamental rules, while encouraging others to create the remaining 95% and even more.</dd>
               </dl>
             </div>
           </section>
@@ -104,6 +111,20 @@ const StaticInfo = (props: IProps) => {
             <img src={imgPlayers} alt="" className="players"/>
             <div className="player-desc">
               Hey, buddy, you've reached the horizon, <br/>  but the real excitement begins when you enter the cave!
+            </div>
+            <div className="backed-by-wrapper">
+              <h3>Backed by</h3>
+              <ul>
+                <li><img src={lxDaoIcon} alt=""/>
+                  <p>LXDAO, an R&D driven DAO in APAC, dedicated to developing public goods</p>
+                </li>
+                <li><img src={crownIcon} alt=""/>
+                  <p>Realms.World, the largest and most valuable on-chain game community</p>
+                </li>
+                <li><img src={web3Icon} alt=""/>
+                  <p>Web3 social ecosystem with a strong focus on Autonomous Worlds</p>
+                </li>
+              </ul>
             </div>
           </section>
         </SwiperSlide>
