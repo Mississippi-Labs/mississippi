@@ -32,4 +32,5 @@ setup().then(async (result) => {
       useStore: result.network.useStore,
     });
   // }
+  localStorage.setItem("mud-dev-tools-shown", 'false');
 });
