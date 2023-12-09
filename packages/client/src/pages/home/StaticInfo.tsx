@@ -86,6 +86,17 @@ const StaticInfo = (props: IProps) => {
             </div>
           </section>
         </SwiperSlide>
+
+        <SwiperSlide>
+          <section className={"mi-section mi-section-video"}>
+            <h2>Official Trailer of Mississippi</h2>
+            <iframe width="1280" height="720" src="https://www.youtube.com/embed/6Liyv37K7lM"
+                    title="Official Trailer of Mississippi V1.2" frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen/>
+          </section>
+        </SwiperSlide>
+
         <SwiperSlide>
           <section className={"mi-section mi-section-faq"}>
             <h2>Frequently Asked Questions</h2>
