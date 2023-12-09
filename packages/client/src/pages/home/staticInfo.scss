@@ -19,9 +19,9 @@
         .play-btn {
             display: block;
             margin: 40px auto;
+            width: 216px;
             height: 66px;
             font-size: 16px;
-            padding: 0 30px;
             box-sizing: border-box;
         }
 
@@ -106,7 +106,8 @@
         }
 
         .p1 {
-            left: 10px;
+            left: -10px;
+            bottom: 16px;
         }
 
         .p2 {

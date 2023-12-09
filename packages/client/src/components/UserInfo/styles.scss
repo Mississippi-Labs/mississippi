@@ -42,8 +42,15 @@
 
     }
 
-    .user-loaded .equipments.equipments-default-item {
-        visibility: visible;
+    .user-loaded .equipments .equipments-item {
+
+        &:not(:empty) {
+            background-color: #6f553c;
+        }
+
+        &.equipments-default-item img{
+            visibility: visible;
+        }
     }
 
     .equipments {
@@ -55,35 +62,18 @@
             border: 4px solid #DCC7AF;
             background: #FFF5E9;
 
-            &:not(:empty) {
-                background-color: #6f553c;
-            }
-
-            //&.helmet-item {
-            //    border-color: #f00;
-            //}
-            //
-            //&.weapon-item {
-            //    border-color: #00FF38;
-            //}
-
             &.equipments-default-item {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                visibility: visible;
 
                 img {
                     width: 80%;
                     height: 80%;
                     image-rendering: pixelated;
+                    visibility: hidden;
                 }
             }
-            //.default-equip {
-            //    display: block;
-            //    width: 100%;
-            //    height: 100%;
-            //}
         }
     }
 

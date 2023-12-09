@@ -5,6 +5,18 @@ import DuelField, { AttackType, IDuelFieldMethod } from '@/components/DuelField'
 
 import './styles.scss';
 
+const hunterEquip = {
+  head: 'Demon Crown',
+  clothes: 'Demon Husk',
+  handheld: 'Demon\'s Hands'
+}
+
+const warriorEquip = {
+  head: 'Ancient Helm',
+  clothes: 'Holy Chestplate',
+  handheld: 'Holy Gauntlets'
+}
+
 const playerA = {
   "x": 0.5,
   "y": 1.5,
@@ -23,11 +35,7 @@ const playerA = {
   "url": "",
   "addr": "0xb53c83ef2467da36c687c81cb23140d92e3d10ba",
   "username": "V2",
-  "equip": {
-    "clothes": "Chain Mail",
-    "handheld": "Bone Wand",
-    "head": "Great Helm"
-  },
+  "equip": warriorEquip,
   "waiting": false,
   "action": "idle",
   "moving": false,
@@ -52,11 +60,7 @@ const playerB = {
   "url": "",
   "addr": "0xb58fd9cb0c9100bb6694a4d18627fb238d3bb893",
   "username": "V",
-  "equip": {
-    "clothes": "Chain Mail",
-    "handheld": "Falchion",
-    "head": "Helm"
-  },
+  "equip": hunterEquip,
   "waiting": false,
   "action": "idle",
   "moving": false,

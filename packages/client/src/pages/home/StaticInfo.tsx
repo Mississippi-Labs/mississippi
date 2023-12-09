@@ -112,6 +112,7 @@ const StaticInfo = (props: IProps) => {
             <div className="player-desc">
               Hey, buddy, you've reached the horizon, <br/>  but the real excitement begins when you enter the cave!
             </div>
+            <button className="play-btn mi-btn" onClick={onPlay}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
             <div className="backed-by-wrapper">
               <h3>Backed by</h3>
               <ul>
