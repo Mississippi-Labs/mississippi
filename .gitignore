@@ -18,3 +18,5 @@ packages/contracts/types/*
 !packages/contracts/out/User.sol/
 !packages/contracts/out/Plugin.sol/
 !packages/contracts/out/IWorld.sol/
+
+packages/client/dist/*
