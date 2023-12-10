@@ -21,6 +21,7 @@ import {
   updatePlayerPosition
 } from '@/utils/player';
 
+
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, visualWidth, visualHeight } = MapConfig;
 
@@ -49,7 +50,8 @@ const PIXIAPP = () => {
   const playersCache = getPlayersCache(players);
   useEffect(() => {
     let renderPlayersArr = [...renderPlayers];
-    players.filter((player) => isValidPlayer(player)).forEach((player) => {
+    const validPlayer = players.filter((player) => isValidPlayer(player));
+    validPlayer.forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
       if (renderPlayer) {
         // update
@@ -78,7 +80,7 @@ const PIXIAPP = () => {
     });
     // filter non-existent player
     renderPlayersArr = renderPlayersArr.filter((player) => {
-      const hasFound = players.find((p) => p.addr === player.addr);
+      const hasFound = validPlayer.find((p) => p.addr === player.addr);
       if (!hasFound) {
         console.log(`removed player ${player.name}`)
       }
@@ -176,10 +178,7 @@ const PIXIAPP = () => {
         return [];
       })
       if (isDelivery(coordinate)) {
-        let path = paths[paths.length - 1];
-        if (path.x === 4 && path.y === 5) {
-          onMoveToDelivery();
-        }
+        onMoveToDelivery();
       } else {
         tryHunt();
       }
@@ -208,6 +207,10 @@ const PIXIAPP = () => {
         setMenuVisible(false);
         break;
       case 'click':
+        // it will ignore the event when click delivery
+        if (isDelivery(coordinate)) {
+          return;
+        }
         targetChests = treasureChest.filter(item => item.x === coordinate.x && item.y === coordinate.y);
         if (targetChests.length > 0 && getDistance(curPlayer, coordinate) < 2) {
           openTreasureChest(targetChests[0].id);
