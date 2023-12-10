@@ -40,7 +40,8 @@ jobs:
 
 
       - name: Install dependencies
-        run: pnpm install --loglevel verbose --no-frozen-lockfile
+        run: pnpm install 
+        # run: pnpm install --loglevel verbose --no-frozen-lockfile
 
       # - name: deploy on lattice testnet
       #   run: cd packages/contracts; pnpm run deploy:testnet
