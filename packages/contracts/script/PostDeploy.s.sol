@@ -3,14 +3,11 @@ pragma solidity >=0.8.0;
 
 import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
-import { IWorld } from "../src/codegen/world/IWorld.sol";
+import { IWorld } from "@codegen/world/IWorld.sol";
 import { GameConfigInit } from "./GameConfigInit.sol";
-import { BattleConfigInit } from "./BattleConfigInit.sol";
-import { GlobalConfigInit } from "./GlobalConfigInit.sol";
 import { console } from "forge-std/console.sol";
-// import "../src/other/User.sol";
-// import "../src/other/Loot.sol";
-// import '../src/other/Plugin.sol';
+
+import { GameConfig, GameConfigData } from "../src/codegen/index.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -20,20 +17,16 @@ contract PostDeploy is Script {
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    // console.log(" ========== PostDeploy  ========== ");
-    // MUser muser = new MUser(2, "MUser", "MUser", "", "");
-    // MLoot mloot = new MLoot("", "MLOOT", "MLOOT", "", 2);
-    // MPlugin mplugin = new MPlugin(address(mloot),address(muser));
-    address muser = 0xBC9129Dc0487fc2E169941C75aABC539f208fb01;
-   address mloot = 0x6e989C01a3e3A94C973A62280a72EC335598490e;
-   address mplugin = 0xF6168876932289D073567f347121A267095f3DD6;
+    console.log(" ========== PostDeploy  ========== ");
 
-    // ------------------ INIT ------------------
-    GameConfigInit.initGameConfig(IWorld(worldAddress));
-    BattleConfigInit.initBattleConfig(IWorld(worldAddress));
-    GlobalConfigInit.initGlobalConfig(IWorld(worldAddress), muser,mloot,mplugin);
+    address muser = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
+    address mloot = 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9;
+    address mplugin = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
+    bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
+
+    IWorld(worldAddress).Init(muser, mloot, mplugin,merkleRoot);
 
     vm.stopBroadcast();
-
+    // ------------------ INIT ------------------
   }
 }

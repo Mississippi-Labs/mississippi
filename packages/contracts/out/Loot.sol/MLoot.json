@@ -32,6 +32,109 @@
       "type": "constructor"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721IncorrectOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC721InsufficientApproval",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "approver",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721InvalidApprover",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721InvalidOperator",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721InvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721InvalidReceiver",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "ERC721InvalidSender",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC721NonexistentToken",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -733,10 +836,10 @@
     "withdraw(address)": "51cff8d9",
     "withdrawErc20(address,address,uint256)": "1593dee1"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_desc\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_notRevealedInfo\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_waitBlockCount\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"approved\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"randomId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"}],\"name\":\"NewRandom\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getStructIndexInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getStructInfo\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUserTokenIdList\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"lootList\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"randomId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"Weapon\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Chest\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Head\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Waist\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Foot\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Hand\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Neck\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Ring\",\"type\":\"string\"},{\"internalType\":\"enum MRandom.RandomState\",\"name\":\"state\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_addr\",\"type\":\"address\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"randomId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"randomList\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"revealNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tokenId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"waitBlockCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_targetAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdrawErc20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"approve(address,uint256)\":{\"details\":\"See {IERC721-approve}.\"},\"balanceOf(address)\":{\"details\":\"See {IERC721-balanceOf}.\"},\"getApproved(uint256)\":{\"details\":\"See {IERC721-getApproved}.\"},\"isApprovedForAll(address,address)\":{\"details\":\"See {IERC721-isApprovedForAll}.\"},\"name()\":{\"details\":\"See {IERC721Metadata-name}.\"},\"ownerOf(uint256)\":{\"details\":\"See {IERC721-ownerOf}.\"},\"safeTransferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"safeTransferFrom(address,address,uint256,bytes)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"setApprovalForAll(address,bool)\":{\"details\":\"See {IERC721-setApprovalForAll}.\"},\"supportsInterface(bytes4)\":{\"details\":\"See {IERC165-supportsInterface}.\"},\"symbol()\":{\"details\":\"See {IERC721Metadata-symbol}.\"},\"transferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-transferFrom}.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/other/Loot.sol\":\"MLoot\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5\",\"dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol\":{\"keccak256\":\"0x2c309e7df9e05e6ce15bedfe74f3c61b467fc37e0fae9eab496acf5ea0bbd7ff\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7063b5c98711a98018ba4635ac74cee1c1cfa2ea01099498e062699ed9530005\",\"dweb:/ipfs/QmeJ8rGXkcv7RrqLdAW8PCXPAykxVsddfYY6g5NaTwmRFE\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x5bce51e11f7d194b79ea59fe00c9e8de9fa2c5530124960f29a24d4c740a3266\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7e66dfde185df46104c11bc89d08fa0760737aa59a2b8546a656473d810a8ea4\",\"dweb:/ipfs/QmXvyqtXPaPss2PD7eqPoSao5Szm2n6UMoiG8TZZDjmChR\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\":{\"keccak256\":\"0xa82b58eca1ee256be466e536706850163d2ec7821945abd6b4778cfb3bee37da\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6e75cf83beb757b8855791088546b8337e9d4684e169400c20d44a515353b708\",\"dweb:/ipfs/QmYvPafLfoquiDMEj7CKHtvbgHu7TJNPSVPSCjrtjV8HjV\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol\":{\"keccak256\":\"0x75b829ff2f26c14355d1cba20e16fe7b29ca58eb5fef665ede48bc0f9c6c74b9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a0a107160525724f9e1bbbab031defc2f298296dd9e331f16a6f7130cec32146\",\"dweb:/ipfs/QmemujxSd7gX8A9M8UwmNbz4Ms3U9FG9QfudUgxwvTmPWf\"]},\"node_modules/@openzeppelin/contracts/utils/Address.sol\":{\"keccak256\":\"0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931\",\"dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm\"]},\"node_modules/@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92\",\"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3\"]},\"node_modules/@openzeppelin/contracts/utils/Strings.sol\":{\"keccak256\":\"0x3088eb2868e8d13d89d16670b5f8612c4ab9ff8956272837d8e90106c59c14a0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b81d9ff6559ea5c47fc573e17ece6d9ba5d6839e213e6ebc3b4c5c8fe4199d7f\",\"dweb:/ipfs/QmPCW1bFisUzJkyjroY3yipwfism9RRCigCcK1hbXtVM8n\"]},\"node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0xd10975de010d89fd1c78dc5e8a9a7e7f496198085c151648f20cba166b32582b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fb0048dee081f6fffa5f74afc3fb328483c2a30504e94a0ddd2a5114d731ec4d\",\"dweb:/ipfs/QmZptt1nmYoA5SgjwnSgWqgUSDgm4q52Yos3xhnMv3MV43\"]},\"node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f\",\"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy\"]},\"node_modules/@openzeppelin/contracts/utils/math/Math.sol\":{\"keccak256\":\"0xe4455ac1eb7fc497bb7402579e7b4d64d928b846fce7d2b6fde06d366f21c2b3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cc8841b3cd48ad125e2f46323c8bad3aa0e88e399ec62acb9e57efa7e7c8058c\",\"dweb:/ipfs/QmSqE4mXHA2BXW58deDbXE8MTcsL5JSKNDbm23sVQxRLPS\"]},\"node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol\":{\"keccak256\":\"0xf92515413956f529d95977adc9b0567d583c6203fc31ab1c23824c35187e3ddc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c50fcc459e49a9858b6d8ad5f911295cb7c9ab57567845a250bf0153f84a95c7\",\"dweb:/ipfs/QmcEW85JRzvDkQggxiBBLVAasXWdkhEysqypj9EaB6H2g6\"]},\"src/other/Base64.sol\":{\"keccak256\":\"0xbdcb80ee065eb92a6998a7c7694ef376695e2dd5d86c71e17c9e7b281d500675\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://eeb7b18875e89c3a29b991552955bb52b11587a41366cd46560a1efd6daa2aa2\",\"dweb:/ipfs/QmYndJRH6mSv6Kvh49tm8RbPQBBd7SKNL4GMenASN4uSwt\"]},\"src/other/Loot.sol\":{\"keccak256\":\"0x6a3cebf8df977c691cb7a68e8b1509399098e113b5fa4e9695894de03018600f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a47c1135ac397e857e332989475f98bc3d7640c1f9b08a5b185bf8c25574d745\",\"dweb:/ipfs/QmZVZLAGnGwHvdkvy6HvyzQbz1ba1YBQFdZZax1NDcUz1B\"]},\"src/other/LootSuit.sol\":{\"keccak256\":\"0x1f16eb64c95c06b3549a0a080f1f407f5710637e6b5f5acfcd5bb10fd029fadf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7023e085f42a30832f4f701855ada24ce31897ba87dfc013c502b7d67b5eed4f\",\"dweb:/ipfs/QmQTZxCqiUQXLDwghriSeakVD7C9QVT4mR1WY5Eg1PV5aB\"]},\"src/other/MRandom.sol\":{\"keccak256\":\"0x99fc41438ee428108b9c340930e0f11acf905069fb0ca527a86e455421afa1e5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7b5a5c47cf3328a6ab3a98b0c11271a7ac52ffecb8600a63dafb29a5c5bd4fd3\",\"dweb:/ipfs/QmRgdqVGY1QwK8dBkPmYfR2TuDz3xegDEmY54FU2cAB5rT\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_desc\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_notRevealedInfo\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_waitBlockCount\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"ERC721IncorrectOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ERC721InsufficientApproval\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"approver\",\"type\":\"address\"}],\"name\":\"ERC721InvalidApprover\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"ERC721InvalidOperator\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"ERC721InvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"receiver\",\"type\":\"address\"}],\"name\":\"ERC721InvalidReceiver\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"ERC721InvalidSender\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ERC721NonexistentToken\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"approved\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"randomId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"}],\"name\":\"NewRandom\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getStructIndexInfo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getStructInfo\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUserTokenIdList\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"lootList\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"randomId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"Weapon\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Chest\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Head\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Waist\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Foot\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Hand\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Neck\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"Ring\",\"type\":\"string\"},{\"internalType\":\"enum MRandom.RandomState\",\"name\":\"state\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_addr\",\"type\":\"address\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"randomId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"randomList\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"author\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"revealNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"tokenId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"waitBlockCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_targetAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdrawErc20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"errors\":{\"ERC721IncorrectOwner(address,uint256,address)\":[{\"details\":\"Indicates an error related to the ownership over a particular token. Used in transfers.\",\"params\":{\"owner\":\"Address of the current owner of a token.\",\"sender\":\"Address whose tokens are being transferred.\",\"tokenId\":\"Identifier number of a token.\"}}],\"ERC721InsufficientApproval(address,uint256)\":[{\"details\":\"Indicates a failure with the `operator`\\u2019s approval. Used in transfers.\",\"params\":{\"operator\":\"Address that may be allowed to operate on tokens without being their owner.\",\"tokenId\":\"Identifier number of a token.\"}}],\"ERC721InvalidApprover(address)\":[{\"details\":\"Indicates a failure with the `approver` of a token to be approved. Used in approvals.\",\"params\":{\"approver\":\"Address initiating an approval operation.\"}}],\"ERC721InvalidOperator(address)\":[{\"details\":\"Indicates a failure with the `operator` to be approved. Used in approvals.\",\"params\":{\"operator\":\"Address that may be allowed to operate on tokens without being their owner.\"}}],\"ERC721InvalidOwner(address)\":[{\"details\":\"Indicates that an address can't be an owner. For example, `address(0)` is a forbidden owner in EIP-20. Used in balance queries.\",\"params\":{\"owner\":\"Address of the current owner of a token.\"}}],\"ERC721InvalidReceiver(address)\":[{\"details\":\"Indicates a failure with the token `receiver`. Used in transfers.\",\"params\":{\"receiver\":\"Address to which tokens are being transferred.\"}}],\"ERC721InvalidSender(address)\":[{\"details\":\"Indicates a failure with the token `sender`. Used in transfers.\",\"params\":{\"sender\":\"Address whose tokens are being transferred.\"}}],\"ERC721NonexistentToken(uint256)\":[{\"details\":\"Indicates a `tokenId` whose `owner` is the zero address.\",\"params\":{\"tokenId\":\"Identifier number of a token.\"}}]},\"events\":{\"Approval(address,address,uint256)\":{\"details\":\"Emitted when `owner` enables `approved` to manage the `tokenId` token.\"},\"ApprovalForAll(address,address,bool)\":{\"details\":\"Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.\"},\"Transfer(address,address,uint256)\":{\"details\":\"Emitted when `tokenId` token is transferred from `from` to `to`.\"}},\"kind\":\"dev\",\"methods\":{\"approve(address,uint256)\":{\"details\":\"See {IERC721-approve}.\"},\"balanceOf(address)\":{\"details\":\"See {IERC721-balanceOf}.\"},\"getApproved(uint256)\":{\"details\":\"See {IERC721-getApproved}.\"},\"isApprovedForAll(address,address)\":{\"details\":\"See {IERC721-isApprovedForAll}.\"},\"name()\":{\"details\":\"See {IERC721Metadata-name}.\"},\"ownerOf(uint256)\":{\"details\":\"See {IERC721-ownerOf}.\"},\"safeTransferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"safeTransferFrom(address,address,uint256,bytes)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"setApprovalForAll(address,bool)\":{\"details\":\"See {IERC721-setApprovalForAll}.\"},\"supportsInterface(bytes4)\":{\"details\":\"See {IERC165-supportsInterface}.\"},\"symbol()\":{\"details\":\"See {IERC721Metadata-symbol}.\"},\"transferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-transferFrom}.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/other/Loot.sol\":\"MLoot\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol\":{\"keccak256\":\"0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f\",\"dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt\"]},\"node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c\",\"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol\":{\"keccak256\":\"0x13dd061770956c8489b80cfc89d9cdfc8ea2783d953691ea037a380731d52784\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ed37f0f86e7fe31659e48c3a2a5920a92dd7f13c85cf8991fb79fe5f01e08efd\",\"dweb:/ipfs/QmUtm9bQGvjr9hHGwkPWrbgFmVqzaJcxjkaYDex2oGsonS\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2f8f2a76e23b02fc69e8cd24c3cb47da6c7af3a2d6c3a382f8ac25c6e094ade7\",\"dweb:/ipfs/QmPV4ZS4tPVv4mTCf9ejyZ1ai57EEibDRj7mN2ARDCLV5n\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol\":{\"keccak256\":\"0x7f7a26306c79a65fb8b3b6c757cd74660c532cd8a02e165488e30027dd34ca49\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d01e0b2b837ee2f628545e54d8715b49c7ef2befd08356c2e7f6c50dde8a1c22\",\"dweb:/ipfs/QmWBAn6y2D1xgftci97Z3qR9tQnkvwQpYwFwkTvDMvqU4i\"]},\"node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol\":{\"keccak256\":\"0x37d1aaaa5a2908a09e9dcf56a26ddf762ecf295afb5964695937344fc6802ce1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ed0bfc1b92153c5000e50f4021367b931bbe96372ac6facec3c4961b72053d02\",\"dweb:/ipfs/Qmbwp8VDerjS5SV1quwHH1oMXxPQ93fzfLVqJ2RCqbowGE\"]},\"node_modules/@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x75a4ee64c68dbd5f38bddd06e664a64c8271b4caa554fb6f0607dfd672bb4bf3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0c4e6cb30d3601e2f7af5af09e265508147cb275a8dcd99d6f7363645cc56867\",\"dweb:/ipfs/QmNgFkoXNWoUbAyw71rr1sKQ95Rj2GfvYiWg79xEYDn2NY\"]},\"node_modules/@openzeppelin/contracts/utils/Strings.sol\":{\"keccak256\":\"0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6e52e0a7765c943ef14e5bcf11e46e6139fa044be564881378349236bf2e3453\",\"dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i\"]},\"node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8\",\"dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA\"]},\"node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df\",\"dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL\"]},\"node_modules/@openzeppelin/contracts/utils/math/Math.sol\":{\"keccak256\":\"0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875\",\"dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L\"]},\"node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol\":{\"keccak256\":\"0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc\",\"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT\"]},\"src/other/Base64.sol\":{\"keccak256\":\"0xbdcb80ee065eb92a6998a7c7694ef376695e2dd5d86c71e17c9e7b281d500675\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://eeb7b18875e89c3a29b991552955bb52b11587a41366cd46560a1efd6daa2aa2\",\"dweb:/ipfs/QmYndJRH6mSv6Kvh49tm8RbPQBBd7SKNL4GMenASN4uSwt\"]},\"src/other/Loot.sol\":{\"keccak256\":\"0x6a3cebf8df977c691cb7a68e8b1509399098e113b5fa4e9695894de03018600f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a47c1135ac397e857e332989475f98bc3d7640c1f9b08a5b185bf8c25574d745\",\"dweb:/ipfs/QmZVZLAGnGwHvdkvy6HvyzQbz1ba1YBQFdZZax1NDcUz1B\"]},\"src/other/LootSuit.sol\":{\"keccak256\":\"0x1f16eb64c95c06b3549a0a080f1f407f5710637e6b5f5acfcd5bb10fd029fadf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7023e085f42a30832f4f701855ada24ce31897ba87dfc013c502b7d67b5eed4f\",\"dweb:/ipfs/QmQTZxCqiUQXLDwghriSeakVD7C9QVT4mR1WY5Eg1PV5aB\"]},\"src/other/MRandom.sol\":{\"keccak256\":\"0x99fc41438ee428108b9c340930e0f11acf905069fb0ca527a86e455421afa1e5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7b5a5c47cf3328a6ab3a98b0c11271a7ac52ffecb8600a63dafb29a5c5bd4fd3\",\"dweb:/ipfs/QmRgdqVGY1QwK8dBkPmYfR2TuDz3xegDEmY54FU2cAB5rT\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
-      "version": "0.8.13+commit.abaa5c0e"
+      "version": "0.8.21+commit.d9974bed"
     },
     "language": "Solidity",
     "output": {
@@ -771,6 +874,109 @@
           ],
           "stateMutability": "nonpayable",
           "type": "constructor"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721IncorrectOwner"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InsufficientApproval"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "approver",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InvalidApprover"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InvalidOperator"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InvalidOwner"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InvalidReceiver"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721InvalidSender"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "type": "error",
+          "name": "ERC721NonexistentToken"
         },
         {
           "inputs": [
@@ -1500,99 +1706,99 @@
       "libraries": {}
     },
     "sources": {
-      "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-        "keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+      "node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+        "keccak256": "0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7",
         "urls": [
-          "bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
-          "dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+          "bzz-raw://ea290300e0efc4d901244949dc4d877fd46e6c5e43dc2b26620e8efab3ab803f",
+          "dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+        "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+        "urls": [
+          "bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+          "dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-        "keccak256": "0x2c309e7df9e05e6ce15bedfe74f3c61b467fc37e0fae9eab496acf5ea0bbd7ff",
+        "keccak256": "0x13dd061770956c8489b80cfc89d9cdfc8ea2783d953691ea037a380731d52784",
         "urls": [
-          "bzz-raw://7063b5c98711a98018ba4635ac74cee1c1cfa2ea01099498e062699ed9530005",
-          "dweb:/ipfs/QmeJ8rGXkcv7RrqLdAW8PCXPAykxVsddfYY6g5NaTwmRFE"
+          "bzz-raw://ed37f0f86e7fe31659e48c3a2a5920a92dd7f13c85cf8991fb79fe5f01e08efd",
+          "dweb:/ipfs/QmUtm9bQGvjr9hHGwkPWrbgFmVqzaJcxjkaYDex2oGsonS"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-        "keccak256": "0x5bce51e11f7d194b79ea59fe00c9e8de9fa2c5530124960f29a24d4c740a3266",
+        "keccak256": "0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4",
         "urls": [
-          "bzz-raw://7e66dfde185df46104c11bc89d08fa0760737aa59a2b8546a656473d810a8ea4",
-          "dweb:/ipfs/QmXvyqtXPaPss2PD7eqPoSao5Szm2n6UMoiG8TZZDjmChR"
+          "bzz-raw://2f8f2a76e23b02fc69e8cd24c3cb47da6c7af3a2d6c3a382f8ac25c6e094ade7",
+          "dweb:/ipfs/QmPV4ZS4tPVv4mTCf9ejyZ1ai57EEibDRj7mN2ARDCLV5n"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-        "keccak256": "0xa82b58eca1ee256be466e536706850163d2ec7821945abd6b4778cfb3bee37da",
+        "keccak256": "0x7f7a26306c79a65fb8b3b6c757cd74660c532cd8a02e165488e30027dd34ca49",
         "urls": [
-          "bzz-raw://6e75cf83beb757b8855791088546b8337e9d4684e169400c20d44a515353b708",
-          "dweb:/ipfs/QmYvPafLfoquiDMEj7CKHtvbgHu7TJNPSVPSCjrtjV8HjV"
+          "bzz-raw://d01e0b2b837ee2f628545e54d8715b49c7ef2befd08356c2e7f6c50dde8a1c22",
+          "dweb:/ipfs/QmWBAn6y2D1xgftci97Z3qR9tQnkvwQpYwFwkTvDMvqU4i"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
-        "keccak256": "0x75b829ff2f26c14355d1cba20e16fe7b29ca58eb5fef665ede48bc0f9c6c74b9",
+        "keccak256": "0x37d1aaaa5a2908a09e9dcf56a26ddf762ecf295afb5964695937344fc6802ce1",
         "urls": [
-          "bzz-raw://a0a107160525724f9e1bbbab031defc2f298296dd9e331f16a6f7130cec32146",
-          "dweb:/ipfs/QmemujxSd7gX8A9M8UwmNbz4Ms3U9FG9QfudUgxwvTmPWf"
-        ],
-        "license": "MIT"
-      },
-      "node_modules/@openzeppelin/contracts/utils/Address.sol": {
-        "keccak256": "0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa",
-        "urls": [
-          "bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931",
-          "dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm"
+          "bzz-raw://ed0bfc1b92153c5000e50f4021367b931bbe96372ac6facec3c4961b72053d02",
+          "dweb:/ipfs/Qmbwp8VDerjS5SV1quwHH1oMXxPQ93fzfLVqJ2RCqbowGE"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/Context.sol": {
-        "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+        "keccak256": "0x75a4ee64c68dbd5f38bddd06e664a64c8271b4caa554fb6f0607dfd672bb4bf3",
         "urls": [
-          "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
-          "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+          "bzz-raw://0c4e6cb30d3601e2f7af5af09e265508147cb275a8dcd99d6f7363645cc56867",
+          "dweb:/ipfs/QmNgFkoXNWoUbAyw71rr1sKQ95Rj2GfvYiWg79xEYDn2NY"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-        "keccak256": "0x3088eb2868e8d13d89d16670b5f8612c4ab9ff8956272837d8e90106c59c14a0",
+        "keccak256": "0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792",
         "urls": [
-          "bzz-raw://b81d9ff6559ea5c47fc573e17ece6d9ba5d6839e213e6ebc3b4c5c8fe4199d7f",
-          "dweb:/ipfs/QmPCW1bFisUzJkyjroY3yipwfism9RRCigCcK1hbXtVM8n"
+          "bzz-raw://6e52e0a7765c943ef14e5bcf11e46e6139fa044be564881378349236bf2e3453",
+          "dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-        "keccak256": "0xd10975de010d89fd1c78dc5e8a9a7e7f496198085c151648f20cba166b32582b",
+        "keccak256": "0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133",
         "urls": [
-          "bzz-raw://fb0048dee081f6fffa5f74afc3fb328483c2a30504e94a0ddd2a5114d731ec4d",
-          "dweb:/ipfs/QmZptt1nmYoA5SgjwnSgWqgUSDgm4q52Yos3xhnMv3MV43"
+          "bzz-raw://1777404f1dcd0fac188e55a288724ec3c67b45288e49cc64723e95e702b49ab8",
+          "dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-        "keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
+        "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
         "urls": [
-          "bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f",
-          "dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
+          "bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+          "dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-        "keccak256": "0xe4455ac1eb7fc497bb7402579e7b4d64d928b846fce7d2b6fde06d366f21c2b3",
+        "keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
         "urls": [
-          "bzz-raw://cc8841b3cd48ad125e2f46323c8bad3aa0e88e399ec62acb9e57efa7e7c8058c",
-          "dweb:/ipfs/QmSqE4mXHA2BXW58deDbXE8MTcsL5JSKNDbm23sVQxRLPS"
+          "bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875",
+          "dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L"
         ],
         "license": "MIT"
       },
       "node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol": {
-        "keccak256": "0xf92515413956f529d95977adc9b0567d583c6203fc31ab1c23824c35187e3ddc",
+        "keccak256": "0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72",
         "urls": [
-          "bzz-raw://c50fcc459e49a9858b6d8ad5f911295cb7c9ab57567845a250bf0153f84a95c7",
-          "dweb:/ipfs/QmcEW85JRzvDkQggxiBBLVAasXWdkhEysqypj9EaB6H2g6"
+          "bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc",
+          "dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
         ],
         "license": "MIT"
       },
@@ -1648,13 +1854,13 @@
         131817
       ],
       "ERC721": [
-        72425
+        76770
       ],
       "IERC165": [
         174098
       ],
       "IERC20": [
-        71498
+        75761
       ],
       "IERC721": [
         131396
@@ -1678,7 +1884,7 @@
         132788
       ],
       "Strings": [
-        72654
+        77025
       ],
       "Suit": [
         120412
@@ -1791,6 +1997,9 @@
             "libraryName": {
               "id": 119193,
               "name": "Strings",
+              "nameLocations": [
+                "348:7:209"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 72654,
               "src": "348:7:173"
@@ -1899,6 +2108,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "617:6:209",
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "src": "613:10:173",
@@ -2040,6 +2250,9 @@
                 "modifierName": {
                   "id": 119207,
                   "name": "ERC721",
+                  "nameLocations": [
+                    "552:6:209"
+                  ],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 72425,
                   "src": "552:6:173"
@@ -2502,6 +2715,9 @@
                   "pathNode": {
                     "id": 119251,
                     "name": "RandomState",
+                    "nameLocations": [
+                      "975:11:209"
+                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 120418,
                     "src": "975:11:173"
@@ -2699,12 +2915,17 @@
                 "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Loot_$119254_storage_$",
                 "typeString": "mapping(uint256 => struct MLoot.Loot)"
               },
+              "valueName": "",
+              "valueNameLocation": "-1:-1:-1",
               "valueType": {
                 "id": 119267,
                 "nodeType": "UserDefinedTypeName",
                 "pathNode": {
                   "id": 119266,
                   "name": "Loot",
+                  "nameLocations": [
+                    "1154:4:209"
+                  ],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 119254,
                   "src": "1154:4:173"
@@ -2761,6 +2982,7 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
+                          "memberLocation": "1225:6:209",
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
                           "src": "1221:10:173",
@@ -2817,6 +3039,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "1213:28:173",
@@ -2947,6 +3170,9 @@
                         "pathNode": {
                           "id": 119295,
                           "name": "Loot",
+                          "nameLocations": [
+                            "1404:4:209"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 119254,
                           "src": "1404:4:173"
@@ -3031,6 +3257,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "1459:5:209",
                       "memberName": "state",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119253,
@@ -3060,6 +3287,7 @@
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
+                      "memberLocation": "1480:7:209",
                       "memberName": "Pending",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 120416,
@@ -3178,6 +3406,7 @@
                                 "isLValue": false,
                                 "isPure": true,
                                 "lValueRequested": false,
+                                "memberLocation": "1544:12:209",
                                 "memberName": "encodePacked",
                                 "nodeType": "MemberAccess",
                                 "src": "1540:16:173",
@@ -3192,6 +3421,7 @@
                               "isPure": false,
                               "kind": "functionCall",
                               "lValueRequested": false,
+                              "nameLocations": [],
                               "names": [],
                               "nodeType": "FunctionCall",
                               "src": "1540:112:173",
@@ -3234,6 +3464,7 @@
                           "isPure": false,
                           "kind": "typeConversion",
                           "lValueRequested": false,
+                          "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
                           "src": "1520:142:173",
@@ -3298,6 +3529,7 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
+                          "memberLocation": "1717:5:209",
                           "memberName": "state",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 119253,
@@ -3327,6 +3559,7 @@
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
+                          "memberLocation": "1738:6:209",
                           "memberName": "Inited",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 120415,
@@ -3390,6 +3623,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "1704:60:173",
@@ -3547,6 +3781,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2090:6:209",
                       "memberName": "Weapon",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119236,
@@ -3710,6 +3945,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2187:5:209",
                       "memberName": "Chest",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119238,
@@ -3873,6 +4109,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2283:4:209",
                       "memberName": "Head",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119240,
@@ -4036,6 +4273,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2378:5:209",
                       "memberName": "Waist",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119242,
@@ -4199,6 +4437,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2475:4:209",
                       "memberName": "Foot",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119244,
@@ -4362,6 +4601,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2573:4:209",
                       "memberName": "Hand",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119246,
@@ -4525,6 +4765,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2671:4:209",
                       "memberName": "Neck",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119248,
@@ -4688,6 +4929,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "2769:4:209",
                       "memberName": "Ring",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119250,
@@ -5247,6 +5489,7 @@
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
+                          "memberLocation": "2869:12:209",
                           "memberName": "encodePacked",
                           "nodeType": "MemberAccess",
                           "src": "2865:16:173",
@@ -5261,6 +5504,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "2865:264:173",
@@ -5303,6 +5547,7 @@
                     "isPure": false,
                     "kind": "typeConversion",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "2845:294:173",
@@ -5737,6 +5982,7 @@
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
+                            "memberLocation": "3182:12:209",
                             "memberName": "encodePacked",
                             "nodeType": "MemberAccess",
                             "src": "3178:16:173",
@@ -5751,6 +5997,7 @@
                           "isPure": false,
                           "kind": "functionCall",
                           "lValueRequested": false,
+                          "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
                           "src": "3178:269:173",
@@ -5793,6 +6040,7 @@
                       "isPure": false,
                       "kind": "typeConversion",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "3158:299:173",
@@ -5891,12 +6139,13 @@
                                       "isLValue": false,
                                       "isPure": false,
                                       "lValueRequested": false,
+                                      "memberLocation": "3663:8:209",
                                       "memberName": "toString",
                                       "nodeType": "MemberAccess",
                                       "referencedDeclaration": 72484,
                                       "src": "3654:17:173",
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$bound_to$_t_uint256_$",
+                                        "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$attached_to$_t_uint256_$",
                                         "typeString": "function (uint256) pure returns (string memory)"
                                       }
                                     },
@@ -5906,6 +6155,7 @@
                                     "isPure": false,
                                     "kind": "functionCall",
                                     "lValueRequested": false,
+                                    "nameLocations": [],
                                     "names": [],
                                     "nodeType": "FunctionCall",
                                     "src": "3654:19:173",
@@ -6008,6 +6258,7 @@
                                         "isPure": false,
                                         "kind": "typeConversion",
                                         "lValueRequested": false,
+                                        "nameLocations": [],
                                         "names": [],
                                         "nodeType": "FunctionCall",
                                         "src": "3855:13:173",
@@ -6042,6 +6293,7 @@
                                       "isLValue": false,
                                       "isPure": false,
                                       "lValueRequested": false,
+                                      "memberLocation": "3848:6:209",
                                       "memberName": "encode",
                                       "nodeType": "MemberAccess",
                                       "referencedDeclaration": 119177,
@@ -6057,6 +6309,7 @@
                                     "isPure": false,
                                     "kind": "functionCall",
                                     "lValueRequested": false,
+                                    "nameLocations": [],
                                     "names": [],
                                     "nodeType": "FunctionCall",
                                     "src": "3841:28:173",
@@ -6131,6 +6384,7 @@
                                   "isLValue": false,
                                   "isPure": true,
                                   "lValueRequested": false,
+                                  "memberLocation": "3571:12:209",
                                   "memberName": "encodePacked",
                                   "nodeType": "MemberAccess",
                                   "src": "3567:16:173",
@@ -6145,6 +6399,7 @@
                                 "isPure": false,
                                 "kind": "functionCall",
                                 "lValueRequested": false,
+                                "nameLocations": [],
                                 "names": [],
                                 "nodeType": "FunctionCall",
                                 "src": "3567:354:173",
@@ -6187,6 +6442,7 @@
                             "isPure": false,
                             "kind": "typeConversion",
                             "lValueRequested": false,
+                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "3539:400:173",
@@ -6229,6 +6485,7 @@
                         "isPure": false,
                         "kind": "typeConversion",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "3516:437:173",
@@ -6263,6 +6520,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "3496:6:209",
                       "memberName": "encode",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119177,
@@ -6278,6 +6536,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "3489:474:173",
@@ -6372,6 +6631,7 @@
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
+                            "memberLocation": "4006:12:209",
                             "memberName": "encodePacked",
                             "nodeType": "MemberAccess",
                             "src": "4002:16:173",
@@ -6386,6 +6646,7 @@
                           "isPure": false,
                           "kind": "functionCall",
                           "lValueRequested": false,
+                          "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
                           "src": "4002:55:173",
@@ -6428,6 +6689,7 @@
                       "isPure": false,
                       "kind": "typeConversion",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "3982:85:173",
@@ -6468,7 +6730,7 @@
               ]
             },
             "baseFunctions": [
-              71703
+              75957
             ],
             "functionSelector": "c87b56dd",
             "implemented": true,
@@ -6656,6 +6918,7 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "4283:6:209",
                         "memberName": "length",
                         "nodeType": "MemberAccess",
                         "src": "4271:18:173",
@@ -6931,6 +7194,7 @@
                                         "isLValue": false,
                                         "isPure": false,
                                         "lValueRequested": false,
+                                        "memberLocation": "4462:6:209",
                                         "memberName": "length",
                                         "nodeType": "MemberAccess",
                                         "src": "4453:15:173",
@@ -6989,6 +7253,7 @@
                                   "isLValue": false,
                                   "isPure": true,
                                   "lValueRequested": false,
+                                  "memberLocation": "4411:12:209",
                                   "memberName": "encodePacked",
                                   "nodeType": "MemberAccess",
                                   "src": "4407:16:173",
@@ -7003,6 +7268,7 @@
                                 "isPure": false,
                                 "kind": "functionCall",
                                 "lValueRequested": false,
+                                "nameLocations": [],
                                 "names": [],
                                 "nodeType": "FunctionCall",
                                 "src": "4407:63:173",
@@ -7045,6 +7311,7 @@
                             "isPure": false,
                             "kind": "typeConversion",
                             "lValueRequested": false,
+                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "4383:101:173",
@@ -7290,6 +7557,7 @@
                                 "isLValue": false,
                                 "isPure": false,
                                 "lValueRequested": false,
+                                "memberLocation": "4617:6:209",
                                 "memberName": "length",
                                 "nodeType": "MemberAccess",
                                 "src": "4604:19:173",
@@ -7431,6 +7699,7 @@
                                 "isLValue": false,
                                 "isPure": false,
                                 "lValueRequested": false,
+                                "memberLocation": "4681:6:209",
                                 "memberName": "length",
                                 "nodeType": "MemberAccess",
                                 "src": "4668:19:173",
@@ -7750,6 +8019,7 @@
                                         "isLValue": false,
                                         "isPure": true,
                                         "lValueRequested": false,
+                                        "memberLocation": "4934:12:209",
                                         "memberName": "encodePacked",
                                         "nodeType": "MemberAccess",
                                         "src": "4930:16:173",
@@ -7764,6 +8034,7 @@
                                       "isPure": false,
                                       "kind": "functionCall",
                                       "lValueRequested": false,
+                                      "nameLocations": [],
                                       "names": [],
                                       "nodeType": "FunctionCall",
                                       "src": "4930:255:173",
@@ -7806,6 +8077,7 @@
                                   "isPure": false,
                                   "kind": "typeConversion",
                                   "lValueRequested": false,
+                                  "nameLocations": [],
                                   "names": [],
                                   "nodeType": "FunctionCall",
                                   "src": "4902:301:173",
@@ -8047,6 +8319,7 @@
                                         "isLValue": false,
                                         "isPure": true,
                                         "lValueRequested": false,
+                                        "memberLocation": "4782:12:209",
                                         "memberName": "encodePacked",
                                         "nodeType": "MemberAccess",
                                         "src": "4778:16:173",
@@ -8061,6 +8334,7 @@
                                       "isPure": false,
                                       "kind": "functionCall",
                                       "lValueRequested": false,
+                                      "nameLocations": [],
                                       "names": [],
                                       "nodeType": "FunctionCall",
                                       "src": "4778:58:173",
@@ -8103,6 +8377,7 @@
                                   "isPure": false,
                                   "kind": "typeConversion",
                                   "lValueRequested": false,
+                                  "nameLocations": [],
                                   "names": [],
                                   "nodeType": "FunctionCall",
                                   "src": "4750:104:173",
@@ -8299,6 +8574,9 @@
                         "pathNode": {
                           "id": 119689,
                           "name": "Loot",
+                          "nameLocations": [
+                            "5319:4:209"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 119254,
                           "src": "5319:4:173"
@@ -8417,6 +8695,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "5414:8:209",
                         "memberName": "randomId",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119232,
@@ -8487,6 +8766,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "5399:42:173",
@@ -8524,6 +8804,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5456:6:209",
                       "memberName": "Weapon",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119236,
@@ -8619,6 +8900,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5465:32:173",
@@ -8663,6 +8945,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5512:5:209",
                       "memberName": "Chest",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119238,
@@ -8758,6 +9041,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5520:35:173",
@@ -8802,6 +9086,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5570:4:209",
                       "memberName": "Head",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119240,
@@ -8897,6 +9182,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5577:34:173",
@@ -8941,6 +9227,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5626:5:209",
                       "memberName": "Waist",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119242,
@@ -9036,6 +9323,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5634:35:173",
@@ -9080,6 +9368,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5684:4:209",
                       "memberName": "Foot",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119244,
@@ -9175,6 +9464,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5691:34:173",
@@ -9219,6 +9509,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5740:4:209",
                       "memberName": "Hand",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119246,
@@ -9314,6 +9605,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5747:34:173",
@@ -9358,6 +9650,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5796:4:209",
                       "memberName": "Neck",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119248,
@@ -9453,6 +9746,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5803:34:173",
@@ -9497,6 +9791,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5852:4:209",
                       "memberName": "Ring",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119250,
@@ -9592,6 +9887,7 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "5859:30:173",
@@ -9636,6 +9932,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "5904:5:209",
                       "memberName": "state",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119253,
@@ -9665,6 +9962,7 @@
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
+                      "memberLocation": "5924:9:209",
                       "memberName": "Confirmed",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 120417,
@@ -9774,6 +10072,9 @@
                         "pathNode": {
                           "id": 119809,
                           "name": "Loot",
+                          "nameLocations": [
+                            "6019:4:209"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 119254,
                           "src": "6019:4:173"
@@ -9854,6 +10155,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "6071:5:209",
                       "memberName": "owner",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119234,
@@ -9912,6 +10214,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "6099:5:209",
                       "memberName": "state",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119253,
@@ -9941,6 +10244,7 @@
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
+                      "memberLocation": "6119:7:209",
                       "memberName": "Pending",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 120416,
@@ -9985,6 +10289,7 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
+                      "memberLocation": "6141:8:209",
                       "memberName": "randomId",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 119232,
@@ -10058,6 +10363,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6170:23:173",
@@ -10127,6 +10433,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6203:21:173",
@@ -10351,6 +10658,7 @@
                       "isPure": false,
                       "kind": "typeConversion",
                       "lValueRequested": false,
+                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "6357:13:173",
@@ -10365,6 +10673,7 @@
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
+                    "memberLocation": "6371:7:209",
                     "memberName": "balance",
                     "nodeType": "MemberAccess",
                     "src": "6357:21:173",
@@ -10473,6 +10782,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6388:40:173",
@@ -10557,6 +10867,7 @@
                         "isPure": false,
                         "kind": "typeConversion",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "6438:11:173",
@@ -10571,6 +10882,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "6450:8:209",
                       "memberName": "transfer",
                       "nodeType": "MemberAccess",
                       "src": "6438:20:173",
@@ -10585,6 +10897,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6438:29:173",
@@ -10610,6 +10923,9 @@
                 "modifierName": {
                   "id": 119855,
                   "name": "onlyOwner",
+                  "nameLocations": [
+                    "6319:9:209"
+                  ],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 119280,
                   "src": "6319:9:173"
@@ -10745,7 +11061,7 @@
                           "referencedDeclaration": 71498,
                           "src": "6629:6:173",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_type$_t_contract$_IERC20_$71498_$",
+                            "typeIdentifier": "t_type$_t_contract$_IERC20_$75761_$",
                             "typeString": "type(contract IERC20)"
                           }
                         },
@@ -10755,12 +11071,13 @@
                         "isPure": false,
                         "kind": "typeConversion",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "6629:24:173",
                         "tryCall": false,
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$71498",
+                          "typeIdentifier": "t_contract$_IERC20_$75761",
                           "typeString": "contract IERC20"
                         }
                       },
@@ -10769,6 +11086,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "6654:8:209",
                       "memberName": "transfer",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 71465,
@@ -10784,6 +11102,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6629:58:173",
@@ -10809,6 +11128,9 @@
                 "modifierName": {
                   "id": 119890,
                   "name": "onlyOwner",
+                  "nameLocations": [
+                    "6609:9:209"
+                  ],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 119280,
                   "src": "6609:9:173"
@@ -10957,6 +11279,9 @@
                         "pathNode": {
                           "id": 119923,
                           "name": "Loot",
+                          "nameLocations": [
+                            "6884:4:209"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 119254,
                           "src": "6884:4:173"
@@ -11043,6 +11368,7 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
+                          "memberLocation": "6944:5:209",
                           "memberName": "state",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 119253,
@@ -11072,6 +11398,7 @@
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
+                          "memberLocation": "6965:9:209",
                           "memberName": "Confirmed",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 120417,
@@ -11135,6 +11462,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6931:62:173",
@@ -11169,6 +11497,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7028:6:209",
                         "memberName": "Weapon",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119236,
@@ -11196,6 +11525,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7053:5:209",
                         "memberName": "Chest",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119238,
@@ -11223,6 +11553,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7077:4:209",
                         "memberName": "Head",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119240,
@@ -11250,6 +11581,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7100:5:209",
                         "memberName": "Waist",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119242,
@@ -11277,6 +11609,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7124:4:209",
                         "memberName": "Foot",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119244,
@@ -11304,6 +11637,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7147:4:209",
                         "memberName": "Hand",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119246,
@@ -11331,6 +11665,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7170:4:209",
                         "memberName": "Neck",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119248,
@@ -11358,6 +11693,7 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7193:4:209",
                         "memberName": "Ring",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 119250,
@@ -11693,6 +12029,9 @@
                         "pathNode": {
                           "id": 119979,
                           "name": "Loot",
+                          "nameLocations": [
+                            "7361:4:209"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 119254,
                           "src": "7361:4:173"
@@ -11779,6 +12118,7 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
+                          "memberLocation": "7421:5:209",
                           "memberName": "state",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 119253,
@@ -11808,6 +12148,7 @@
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
+                          "memberLocation": "7442:9:209",
                           "memberName": "Confirmed",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 120417,
@@ -11871,6 +12212,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "7408:62:173",
@@ -11919,6 +12261,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7521:6:209",
                             "memberName": "Weapon",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119236,
@@ -11957,6 +12300,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7500:28:173",
@@ -11998,6 +12342,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7566:5:209",
                             "memberName": "Chest",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119238,
@@ -12036,6 +12381,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7542:30:173",
@@ -12077,6 +12423,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7609:4:209",
                             "memberName": "Head",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119240,
@@ -12115,6 +12462,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7586:28:173",
@@ -12156,6 +12504,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7652:5:209",
                             "memberName": "Waist",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119242,
@@ -12194,6 +12543,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7628:30:173",
@@ -12235,6 +12585,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7695:4:209",
                             "memberName": "Foot",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119244,
@@ -12273,6 +12624,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7672:28:173",
@@ -12314,6 +12666,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7737:4:209",
                             "memberName": "Hand",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119246,
@@ -12352,6 +12705,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7714:28:173",
@@ -12393,6 +12747,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7779:4:209",
                             "memberName": "Neck",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119248,
@@ -12431,6 +12786,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7756:28:173",
@@ -12472,6 +12828,7 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "7817:4:209",
                             "memberName": "Ring",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 119250,
@@ -12510,6 +12867,7 @@
                         "isPure": false,
                         "kind": "functionCall",
                         "lValueRequested": false,
+                        "nameLocations": [],
                         "names": [],
                         "nodeType": "FunctionCall",
                         "src": "7798:24:173",
@@ -12873,6 +13231,7 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
+                        "memberLocation": "7956:6:209",
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "src": "7952:10:173",
@@ -12906,6 +13265,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "7942:21:173",
@@ -13020,6 +13380,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "8001:22:173",
@@ -13125,6 +13486,7 @@
                             "isPure": false,
                             "kind": "functionCall",
                             "lValueRequested": false,
+                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "8101:10:173",
@@ -13154,6 +13516,7 @@
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
+                            "memberLocation": "8119:6:209",
                             "memberName": "sender",
                             "nodeType": "MemberAccess",
                             "src": "8115:10:173",
@@ -13614,6 +13977,7 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
+                          "memberLocation": "8466:6:209",
                           "memberName": "length",
                           "nodeType": "MemberAccess",
                           "src": "8460:12:173",
@@ -13694,6 +14058,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "8452:41:173",
@@ -13790,6 +14155,7 @@
                                   "isLValue": false,
                                   "isPure": true,
                                   "lValueRequested": false,
+                                  "memberLocation": "8567:12:209",
                                   "memberName": "encodePacked",
                                   "nodeType": "MemberAccess",
                                   "src": "8563:16:173",
@@ -13804,6 +14170,7 @@
                                 "isPure": false,
                                 "kind": "functionCall",
                                 "lValueRequested": false,
+                                "nameLocations": [],
                                 "names": [],
                                 "nodeType": "FunctionCall",
                                 "src": "8563:26:173",
@@ -13838,6 +14205,7 @@
                             "isPure": false,
                             "kind": "functionCall",
                             "lValueRequested": false,
+                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "8553:37:173",
@@ -13890,6 +14258,7 @@
                                   "isLValue": false,
                                   "isPure": true,
                                   "lValueRequested": false,
+                                  "memberLocation": "8608:12:209",
                                   "memberName": "encodePacked",
                                   "nodeType": "MemberAccess",
                                   "src": "8604:16:173",
@@ -13904,6 +14273,7 @@
                                 "isPure": false,
                                 "kind": "functionCall",
                                 "lValueRequested": false,
+                                "nameLocations": [],
                                 "names": [],
                                 "nodeType": "FunctionCall",
                                 "src": "8604:23:173",
@@ -13938,6 +14308,7 @@
                             "isPure": false,
                             "kind": "functionCall",
                             "lValueRequested": false,
+                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "8594:34:173",
@@ -14056,6 +14427,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "8525:6:209",
                       "memberName": "length",
                       "nodeType": "MemberAccess",
                       "src": "8519:12:173",
@@ -14284,6 +14656,9 @@
             "baseName": {
               "id": 119187,
               "name": "Suit",
+              "nameLocations": [
+                "315:4:209"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 120412,
               "src": "315:4:173"
@@ -14296,6 +14671,9 @@
             "baseName": {
               "id": 119189,
               "name": "ERC721",
+              "nameLocations": [
+                "321:6:209"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 72425,
               "src": "321:6:173"
@@ -14308,6 +14686,9 @@
             "baseName": {
               "id": 119191,
               "name": "MRandom",
+              "nameLocations": [
+                "328:7:209"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 120609,
               "src": "328:7:173"

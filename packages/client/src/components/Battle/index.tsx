@@ -1,15 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import DuelField, { AttackType, IDuelFieldMethod } from '@/components/DuelField';
 import "./styles.scss";
-import { useEntityQuery } from "@latticexyz/react";
-import { Has, getComponentValue, NotValue, HasValue } from '@latticexyz/recs';
 import { useMUD } from '@/mud/MUDContext';
-import { decodeEntity, encodeEntity } from "@latticexyz/store-sync/recs";
 import { getRandomStr } from '@/utils/utils';
 import { ethers } from 'ethers';
 import { solidityKeccak256 } from 'ethers/lib/utils';
 import { message } from 'antd';
 import CountDown from '@/hooks/useCountDown';
+import GameContext from '@/context';
 
 let interval:any = null
 let nonceHex = ''
@@ -31,14 +29,17 @@ export default function Battle(props) {
   const [showPlayer1Loss, setShowPlayer1Loss] = useState(false);
   const [showPlayer2Loss, setShowPlayer2Loss] = useState(false);
 
+  const { battles } = useContext(GameContext);
+
   curPlayer.toward = 'Right'
   targetPlayer.toward = 'Left'
 
   const {
-    components: { BattleList },
     systemCalls: { confirmBattle, revealBattle, forceEnd },
     network
   } = useMUD();
+
+  const { tables, useStore } = network
 
   let nonce = localStorage.getItem('nonce') || '';
   if (!nonce) {
@@ -48,13 +49,6 @@ export default function Battle(props) {
   if (!nonceHex) {
     nonceHex = (ethers.utils.formatBytes32String(nonce))
   }
-
-  const battles = useEntityQuery([Has(BattleList)]).map((entity) => {
-    const id = decodeEntity({ battleId: "uint256" }, entity);
-    const battle:any = getComponentValue(BattleList, entity)
-    battle.id = id.battleId.toString()
-    return battle;
-  });
 
   const setTimer = (s) => {
     console.log(s)
@@ -89,9 +83,15 @@ export default function Battle(props) {
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
           let actionHex = ethers.utils.formatBytes32String(action);
           console.log(arg, action)
-          let src = await revealBattle(battleId, actionHex, arg, nonceHex)
-          if (src && src?.type == 'success') {
-            setBattleState(2)
+          let res = await revealBattle(battleId, actionHex, arg, nonceHex)
+          if (res && res?.type == 'success') {
+            let data = res.data
+            if (data?.attackerState == 1) {
+              initBattle()
+              return
+            } else {
+              setBattleState(2)
+            }
           } else {
             // initBattle()
           }
@@ -104,9 +104,15 @@ export default function Battle(props) {
           let arg = confirmBattleData[1] || localConfirmBattleData[1] || 0
           let actionHex = ethers.utils.formatBytes32String(action);
           console.log(arg, action)
-          let src = await revealBattle(battleId, actionHex, arg, nonceHex)
-          if (src && src?.type == 'success') {
-            setBattleState(2)
+          let res = await revealBattle(battleId, actionHex, arg, nonceHex)
+          if (res && res?.type == 'success') {
+            let data = res.data
+            if (data?.defenderState == 1) {
+              initBattle()
+              return
+            } else {
+              setBattleState(2)
+            }
           } else {
             // initBattle()
           }
@@ -332,6 +338,18 @@ export default function Battle(props) {
       return
     } else {
       console.log(res)
+      let data = res.data
+      if (curType == 'attacker' && data?.attackerState == 0) {
+        setBattleState(0)
+        localStorage.removeItem('confirmBattleData')
+        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        return
+      } else if (curType == 'defender' && data?.defenderState == 0) {
+        setBattleState(0)
+        localStorage.removeItem('confirmBattleData')
+        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        return
+      }
       setTimeout(() => {
         setBattleState(5)
       }, 100)
@@ -358,11 +376,11 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP) / Number(curPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(curType == 'attacker' ? battleData?.attackerHP : battleData?.defenderHP) / Number(curPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(curPlayer?.addr == battleData?.attacker ? battleData?.attackerHP : battleData?.defenderHP)}/{curPlayer?.maxHp}</div>
+                    <div className='hp-text'>{Number(curType == 'attacker' ? battleData?.attackerHP : battleData?.defenderHP)}/{curPlayer?.maxHp}</div>
                   </div>
                   {
                     showPlayer1Loss ? <div className="hp-loss">-{player1LossData.toFixed(0)}</div> : null
@@ -384,11 +402,11 @@ export default function Battle(props) {
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
                         background: "#FF6161",
-                        width: Math.floor(272 * (Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP) / Number(targetPlayer?.maxHp))) + 'px',
+                        width: Math.floor(272 * (Number(curType == 'attacker' ? battleData?.defenderHP : battleData?.attackerHP) / Number(targetPlayer?.maxHp))) + 'px',
                         height: "22px",
                       }}
                     />
-                    <div className='hp-text'>{Number(targetPlayer?.addr == battleData?.defender ? battleData?.defenderHP : battleData?.attackerHP)}/{Number(targetPlayer?.maxHp)}</div>
+                    <div className='hp-text'>{Number(curType == 'attacker' ? battleData?.defenderHP : battleData?.attackerHP)}/{Number(targetPlayer?.maxHp)}</div>
                   </div>
                   {
                     showPlayer2Loss ? <div className="hp-loss">-{player2LossData.toFixed(0)}</div> : null

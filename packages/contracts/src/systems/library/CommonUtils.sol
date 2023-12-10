@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 import {console} from "forge-std/console.sol";
-import { BattleState, Buff, PlayerState } from "../../codegen/Types.sol";
+import { BattleState, Buff, PlayerState } from "../../codegen/common.sol";
 import { Position } from "../Common.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../../Constants.sol";
-import { Player, GameConfig, BattleListData, BattleList } from "../../codegen/Tables.sol";
+import { Player, GameConfig, BattleListData, BattleList,BattleList1Data,BattleList1 } from "../../codegen/index.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 
@@ -46,8 +46,9 @@ library CommonUtils {
   function onlyBattlePlayer(uint256 _battleId, BattleState _battleState) internal view returns (bool) {
     bool r = true;
     BattleListData memory battle = BattleList.get(_battleId);
+    BattleList1Data memory battle1 = BattleList1.get(_battleId);
 
-    BattleState battleState = battle.attacker == msg.sender ? battle.attackerState : battle.defenderState;
+    BattleState battleState = battle.attacker == msg.sender ? battle1.attackerState : battle1.defenderState;
 
     require(battle.attacker == msg.sender || battle.defender == msg.sender, "You are not in this battle");
     require(battleState == _battleState, "You are in the wrong state");

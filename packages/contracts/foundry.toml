@@ -1,5 +1,5 @@
 [profile.default]
-solc_version = "0.8.13"
+solc = "0.8.21"
 ffi = false
 fuzz_runs = 256
 optimizer = true
@@ -21,7 +21,6 @@ extra_output_files = [
   "evm.bytecode"
 ]
 fs_permissions = [{ access = "read", path = "./"}]
-gas_reports = ["*"]
 
 [profile.lattice-testnet]
 eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
@@ -44,7 +43,7 @@ optimizer_runs = 3000
 
 
 [profile.Mississippi-testnet]
-eth_rpc_url = "http://rpc.0xMssp.xyz"
+eth_rpc_url = "http://rpc1.0xMssp.xyz"
 optimizer = true
 optimizer_runs = 3000
 
@@ -68,10 +67,3 @@ optimizer_runs = 3000
 eth_rpc_url = "https://linea-goerli.infura.io/v3/8a5edc3264dd435391dad31e754031d6"
 optimizer = true
 optimizer_runs = 3000
-
-
-
-
-
-
-

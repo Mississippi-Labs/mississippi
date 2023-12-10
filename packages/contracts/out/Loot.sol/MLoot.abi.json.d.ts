@@ -1,19 +1,19 @@
-[
+declare const abi: [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_waitBlockCount",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
-        "name": "_symbol",
+        "name": "_desc",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "_name",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
         "type": "string"
       },
       {
@@ -22,9 +22,9 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "_revealedDesc",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "_waitBlockCount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -291,7 +291,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getStructInfo",
+    "name": "getStructIndexInfo",
     "outputs": [
       {
         "internalType": "uint256",
@@ -322,6 +322,70 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getStructInfo",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -367,6 +431,75 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "lootList",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "randomId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "Weapon",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Chest",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Head",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Waist",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Foot",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Hand",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Neck",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "Ring",
+        "type": "string"
+      },
+      {
+        "internalType": "enum MRandom.RandomState",
+        "name": "state",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_addr",
         "type": "address"
@@ -385,19 +518,6 @@
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -629,65 +749,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "userList",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "randomId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "HP",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "Attack",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "AttackRange",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "Speed",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "Strength",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "Space",
-        "type": "uint256"
-      },
-      {
-        "internalType": "enum MRandom.RandomState",
-        "name": "state",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "waitBlockCount",
     "outputs": [
@@ -699,5 +760,41 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_targetAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_contractAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawErc20",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
-]
+]; export default abi;

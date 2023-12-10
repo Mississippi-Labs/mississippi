@@ -84,10 +84,10 @@
     "multRevealNFT(uint256,uint256)": "1b9cb7e8",
     "userAddress()": "e4128fb3"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lootAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_userAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"lootAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"multMint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_lootTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_userTokenId\",\"type\":\"uint256\"}],\"name\":\"multRevealNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"userAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/other/Plugin.sol\":\"MPlugin\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/other/Plugin.sol\":{\"keccak256\":\"0x97abb338aefc1d78621c1b9cb72ea8fad986a64d8f84067b52b5198e3d815c5c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://57b18625c00036db38b6015a44024415da14a4f8c37ab0dacc7b292ff53c3fb5\",\"dweb:/ipfs/QmTNfWtySH1Yv2sWknZ4txSGrDg6QpQHqFBPbz2sH8k7nh\"]},\"src/systems/library/Interface.sol\":{\"keccak256\":\"0x575834f9bd85b515de6dfd855d93393cfdf29c67a9195b0dae9c1c4d483d2c1d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e42a8328248642f46b67fdcf7d3f2caf5c8abd859cea97df8fba7ad270b19009\",\"dweb:/ipfs/QmUXaFVJStEyTG4mKf4u8ezC7EZtJCX57etePkWrSWiqMR\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lootAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_userAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"lootAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"multMint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_lootTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_userTokenId\",\"type\":\"uint256\"}],\"name\":\"multRevealNFT\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"userAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/other/Plugin.sol\":\"MPlugin\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@codegen/=src/codegen/\",\":@latticexyz/=node_modules/@latticexyz/\",\":@library/=src/systems/library/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@src/=src/\",\":@systems/=src/systems/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"src/other/Plugin.sol\":{\"keccak256\":\"0x97abb338aefc1d78621c1b9cb72ea8fad986a64d8f84067b52b5198e3d815c5c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://57b18625c00036db38b6015a44024415da14a4f8c37ab0dacc7b292ff53c3fb5\",\"dweb:/ipfs/QmTNfWtySH1Yv2sWknZ4txSGrDg6QpQHqFBPbz2sH8k7nh\"]},\"src/systems/library/Interface.sol\":{\"keccak256\":\"0x575834f9bd85b515de6dfd855d93393cfdf29c67a9195b0dae9c1c4d483d2c1d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e42a8328248642f46b67fdcf7d3f2caf5c8abd859cea97df8fba7ad270b19009\",\"dweb:/ipfs/QmUXaFVJStEyTG4mKf4u8ezC7EZtJCX57etePkWrSWiqMR\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
-      "version": "0.8.13+commit.abaa5c0e"
+      "version": "0.8.21+commit.d9974bed"
     },
     "language": "Solidity",
     "output": {
@@ -559,6 +559,9 @@
                         "pathNode": {
                           "id": 120637,
                           "name": "User",
+                          "nameLocations": [
+                            "389:4:212"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 125025,
                           "src": "389:4:176"
@@ -613,6 +616,7 @@
                     "isPure": false,
                     "kind": "typeConversion",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "401:17:176",
@@ -651,6 +655,9 @@
                         "pathNode": {
                           "id": 120644,
                           "name": "Loot",
+                          "nameLocations": [
+                            "428:4:212"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 125064,
                           "src": "428:4:176"
@@ -705,6 +712,7 @@
                     "isPure": false,
                     "kind": "typeConversion",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "440:17:176",
@@ -770,6 +778,7 @@
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
+                    "memberLocation": "487:6:212",
                     "memberName": "sender",
                     "nodeType": "MemberAccess",
                     "src": "483:10:176",
@@ -821,6 +830,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "508:4:212",
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 125019,
@@ -836,6 +846,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "503:16:176",
@@ -889,6 +900,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "534:4:212",
                       "memberName": "mint",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 125058,
@@ -904,6 +916,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "529:16:176",
@@ -979,6 +992,9 @@
                         "pathNode": {
                           "id": 120676,
                           "name": "User",
+                          "nameLocations": [
+                            "643:4:212"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 125025,
                           "src": "643:4:176"
@@ -1033,6 +1049,7 @@
                     "isPure": false,
                     "kind": "typeConversion",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "655:17:176",
@@ -1071,6 +1088,9 @@
                         "pathNode": {
                           "id": 120683,
                           "name": "Loot",
+                          "nameLocations": [
+                            "682:4:212"
+                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 125064,
                           "src": "682:4:176"
@@ -1125,6 +1145,7 @@
                     "isPure": false,
                     "kind": "typeConversion",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "694:17:176",
@@ -1177,6 +1198,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "726:9:212",
                       "memberName": "revealNFT",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 125063,
@@ -1192,6 +1214,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "721:28:176",
@@ -1245,6 +1268,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
+                      "memberLocation": "764:9:212",
                       "memberName": "revealNFT",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 125024,
@@ -1260,6 +1284,7 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
+                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "759:28:176",

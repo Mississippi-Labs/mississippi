@@ -264,7 +264,6 @@ const PIXIAPP = () => {
     }
   }
 
-
   return (
     <div style={{ position: 'relative' }}>
       <Stage

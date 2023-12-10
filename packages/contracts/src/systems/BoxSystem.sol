@@ -3,16 +3,16 @@ pragma solidity >=0.8.0;
 
 import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
-import { BattleState, Buff, PlayerState } from "@codegen/Types.sol";
-import { GameConfig, BattleConfig, RandomList, RandomListData, BoxList, BoxListData, Player, PlayerData, PlayerLocationLock } from "../codegen/Tables.sol";
+import { BattleState, Buff, PlayerState } from "../codegen/common.sol";
+import { GameConfig, BattleConfig, RandomList, RandomListData, BoxList, BoxListData, Player,PlayerParams, PlayerData, PlayerLocationLock } from "../codegen/index.sol";
 import { GAME_CONFIG_KEY, BATTLE_CONFIG_KEY } from "../Constants.sol";
 import { CommonUtils } from "@library/CommonUtils.sol";
 import { MRandom } from "@library/MRandom.sol";
 
 contract BoxSystem is System {
   function openBox(uint256 _boxId) external {
-    // TODO use lock 
-    require(BoxList.getDropTime(_boxId) != 0, "Invalid box");
+    // TODO use lock 去除了真实性判断
+    // require(BoxList.getDropTime(_boxId) != 0, "Invalid box");
     BoxListData memory box = BoxList.get(_boxId);
     console.log(" box owner ", box.owner);
     if (box.owner != address(0) && box.owner != _msgSender()) {
@@ -63,7 +63,7 @@ contract BoxSystem is System {
     
     require(_oreAmount <= _box.oreBalance && _treasureAmount <= _box.treasureBalance, "Invalid amount");
     // check player strength 
-    require(Player.getOreBalance(msg.sender) + _oreAmount < Player.getStrength(msg.sender), "Not enough strength");
+    require(Player.getOreBalance(msg.sender) + _oreAmount < PlayerParams.getStrength(msg.sender), "Not enough strength");
 
     BoxList.setOreBalance(_boxId, _box.oreBalance - _oreAmount);
     BoxList.setTreasureBalance(_boxId, _box.treasureBalance - _treasureAmount);

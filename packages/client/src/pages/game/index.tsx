@@ -1,34 +1,24 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import { useComponentValue, useEntityQuery } from "@latticexyz/react";
-import { Has, HasValue, getComponentValue, ProxyRead } from '@latticexyz/recs';
-import { decodeEntity, encodeEntity, singletonEntity } from "@latticexyz/store-sync/recs";
 import { loadMapData } from "@/utils";
-import Map from "@/components/Map";
 import UserAvatar from "@/components/UserAvatar";
 import Leaderboard from "@/components/Leaderboard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message, Modal } from 'antd';
 import "./styles.scss";
-import Rank from "@/components/Rank";
-import { CurIdMockData, PlayersMockData, RankMockData, TreasureChestMockData } from "@/mock/data";
 import { IPlayer } from "@/components/Player";
 import { useMUD } from "@/mud/MUDContext";
 import Battle from "@/components/Battle";
 import Log from "@/components/Log";
 import GameContext from '@/context';
-import TreasureChest from '@/components/TreasureChest';
 import UserInfoDialog from '@/components/UserInfoDialog';
 import Talk from '@/components/Talk';
 import Header from '../home/header'
-import { DELIVERY } from '@/config/map';
-import { getPlayersCache, updatePlayerPosition } from '@/utils/player';
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
 import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
-import { ICoordinate } from '@/components/MapCell';
 import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
@@ -48,10 +38,13 @@ let timeout = null
 const Game = () => {
   const navigate = useNavigate();
   const {
-    components: { Player, PlayerAddon, BattleList, BoxList, GlobalConfig, LootList1, LootList2, PlayerLocationLock, PlayerSeason, SyncProgress },
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
+
+  console.log(network)
+
+  const {tables, useStore, account} = network
 
   const [step, setStep] = useState(0);
 
@@ -77,95 +70,98 @@ const Game = () => {
   const [modalType, setModalType] = useState('');
   const [gotBox, setGotBox] = useState(null);
 
-  const { account } = network;
   const curId = account;
 
   const mapDataRef = useRef([]);
 
-  const GlobalConfigData = useEntityQuery([Has(GlobalConfig)]).map((entity) => getComponentValue(GlobalConfig, entity));
-  const syncProgressData = useEntityQuery([Has(SyncProgress)]).map((entity) => getComponentValue(SyncProgress, entity));
-  const syncProgress = (syncProgressData?.[0]?.percentage ?? 0);
+  // getMUDTables();
   // mud bug, if syncProgress not 100, it will return a decimals less 1.
-  const percentage = syncProgress < 1 ? ~~(syncProgress * 100) : syncProgress;
+  let percentage = 0
 
-  if (GlobalConfigData.length && GlobalConfigData[0].userContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
+  const GlobalConfigData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.GlobalConfig));
+    return records.map((e:any) => e.value);
+  });
+
+  const privateKey = network.privateKey
+  const rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
+  const provider = new ethers.providers.JsonRpcProvider(rpc)
+  const wallet = new ethers.Wallet(privateKey, provider)
+
+  if (GlobalConfigData.length) {
     let userContractAddress = GlobalConfigData[0].userContract
-    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
-  }
-
-  if (GlobalConfigData.length && GlobalConfigData[0].lootContract && !lootContract) {
-    let privateKey = network.privateKey
-    let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
-    let provider = new ethers.providers.JsonRpcProvider(rpc)
-    let wallet = new ethers.Wallet(privateKey, provider)
     let lootContractAddress = GlobalConfigData[0].lootContract
+    userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
   }
 
-  const LootList1Data = useEntityQuery([Has(LootList1)]).map((entity) => {
-    const loot = getComponentValue(LootList1, entity);
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    loot.addr = address
-    return loot;
-  })
-
-  const players = useEntityQuery([Has(Player)]).map((entity) => {
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    const player = getComponentValue(Player, entity);
-    player.addr = address
-    player.username = player.name;
-    Object.keys(player).forEach((k) => {
-      if (typeof player[k] === 'bigint') {
-        player[k] = Number(player[k])
-      }
-    });
-    if (player.lastBattleTime) {
-      let now = Math.floor(new Date().getTime() / 1000)
-      let lastBattleTime = player.lastBattleTime
-      let diff = now - lastBattleTime
-      let diffHp = diff * (player.maxHp / 1000)
-      player.hp = player.hp + diffHp
-      if (player.hp > player.maxHp) {
-        player.hp = player.maxHp
-      }
-      let localPlayer = localStorage.getItem('curPlayer')
-      if (localPlayer) {
-        localPlayer = JSON.parse(localPlayer)
-        if (localPlayer.addr.toLocaleLowerCase() == address.toLocaleLowerCase()) {
-          player.diffHp = Math.floor(player.hp - localPlayer.hp)
-        }
-      }
-    }
-    LootList1Data.forEach((item) => {
-      if (item.addr.toLocaleLowerCase() === address.toLocaleLowerCase()) {
-        let clothes = item.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        let handheld = item.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        let head = item.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-        player.equip = {
-          clothes,
-          handheld,
-          head,
-        }
-      }
-    })
-    return player;
+  const LootList1Data = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.LootList1));
+    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
   });
-  const PlayerSeasonData = useEntityQuery([Has(PlayerSeason)]).map((entity) => {
-    const playerSeason = getComponentValue(PlayerSeason, entity);
-    const address = decodeEntity({ addr: "address" }, entity)?.addr?.toLocaleLowerCase() || ''
-    playerSeason.addr = address
-    playerSeason.username = players.filter((item) => item.addr.toLocaleLowerCase() == address.toLocaleLowerCase())[0]?.name
-    return playerSeason;
-  }).sort((a, b) => {
-    return b.oreBalance - a.oreBalance
-  })
 
+  const PlayerParamsData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.PlayerParams));
+    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+  });
+  const PlayerSeasonData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.PlayerSeason));
+    return records.map((e:any) => {
+      let item = Object.assign(e.value, {addr: e.key.addr})
+      // 获取PlayerParamsData.name
+      let PlayerParamsDataItem = PlayerParamsData.find((player: any) => player.addr.toLocaleLowerCase() == e.key.addr.toLocaleLowerCase()) || {}
+      item.name = PlayerParamsDataItem.name
+      return item
+    }).sort((a, b) => b.oreBalance - a.oreBalance);
+  });
+  const PlayersData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.Player));
+    return records.map((e:any) => {
+      let playerItem = Object.assign(e.value, {addr: e.key.addr})
+      //LootList1Data
+      let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {}
+      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      playerItem.equip = {
+        clothes,
+        handheld,
+        head,
+      }
+      // PlayerParamsData
+      let playerParams = PlayerParamsData.find((player: any) => player.addr == e.key.addr) || {}
+      playerItem = Object.assign(playerItem, playerParams)
+      Object.keys(playerItem).forEach((k) => {
+        if (typeof playerItem[k] === 'bigint') {
+          playerItem[k] = Number(playerItem[k])
+        }
+      });
+      if (playerItem.lastBattleTime) {
+        let now = Math.floor(new Date().getTime() / 1000)
+        let lastBattleTime = playerItem.lastBattleTime
+        let diff = now - lastBattleTime
+        let diffHp = diff * (playerItem.maxHp / 1000)
+        playerItem.hp = playerItem.hp + diffHp
+        if (playerItem.hp > playerItem.maxHp) {
+          playerItem.hp = playerItem.maxHp
+        }
+        let localPlayer: any = localStorage.getItem('curPlayer') || null
+        if (localPlayer) {
+          localPlayer = JSON.parse(localPlayer)
+          if (localPlayer.addr.toLocaleLowerCase() == e.key.addr.toLocaleLowerCase()) {
+            playerItem.diffHp = Math.floor(playerItem.hp - localPlayer.hp)
+          }
+        }
+      }
+      playerItem.username = playerItem.name
+      return playerItem
+    })
+  });
 
-  const curPlayer = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  if (PlayersData.length && PlayersData[0].hp) percentage = 100
+
+  const curPlayer = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+  console.log(curPlayer)
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
     navigate('/');
   } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
@@ -185,17 +181,36 @@ const Game = () => {
       navigate('/');
     }
   }
-  const battles = useEntityQuery([Has(BattleList), HasValue(BattleList, {isEnd: false})]).map((entity) => {
-    const id = decodeEntity({ battleId: "uint256" }, entity);
-    const battle:any = getComponentValue(BattleList, entity)
-    battle.id = id.battleId.toString()
-    return battle;
+
+  const BoxListData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BoxList));
+    return records.map((e:any) => Object.assign(e.value, {id: e.key.boxId})).filter((e: any) => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
+  })
+
+  const BattleList1Data = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BattleList1));
+    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
   });
-  const battle:any = battles.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+
+  const BattleListData = useStore((state: any) => {
+    const records = Object.values(state.getRecords(tables.BattleList));
+    return records.map((e:any) => {
+      let battleItem = Object.assign(e.value, {id: e.key.battleId})
+      // battleList
+      let battle = BattleList1Data.find((e: any) => e.id == battleItem.id) || {}
+      if (battle) {
+        battleItem = Object.assign(battleItem, battle)
+      }
+      return battleItem
+    });
+  });
+
+  const battle:any = BattleListData.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+  
   if (battle && !startBattleData && percentage == 100) {
     const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
-    const target = players.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
-    const cur = players.find(player => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
+    const target = PlayersData.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+    const cur = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
     if (!battleCurPlayer) {
       setBattleCurPlayer(cur)
     }
@@ -217,13 +232,6 @@ const Game = () => {
       setModalVisible(true);
     }
   }
-  
-  const boxs = useEntityQuery([Has(BoxList)]).map((entity) => {
-    const id = decodeEntity({ boxId: "uint256" }, entity);
-    const box:any = getComponentValue(BoxList, entity)
-    box.id = id.boxId.toString()
-    return box;
-  }).filter(e => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
 
   const getBalance = async () => {
     const balance = await network.publicClient.getBalance({
@@ -248,9 +256,11 @@ const Game = () => {
     // return;
     setStartBattleData(false);
     setBattleId(null);
+    setBattleCurPlayer(null);
+    setTargetPlayer(null);
     if (winner && attacker && defender) {
       let loser = winner.toLocaleLowerCase() == attacker.toLocaleLowerCase() ? defender : attacker
-      let loserData = getComponentValue(Player, encodeEntity({ addr: "address" }, { addr: loser}))
+      let loserData = useStore.getState().getValue(tables.Player, { addr: loser })
       if (winner.toLocaleLowerCase() == account.toLocaleLowerCase()) {
         console.log('win');
         if (loserData?.state == 1 || loserData?.state == 0) {
@@ -266,7 +276,7 @@ const Game = () => {
         setTargetPlayer(null);
       } else {
         console.log('lose');
-        let cur = getComponentValue(Player, network.playerEntity);
+        let cur = useStore.getState().getValue(tables.Player, { addr: account })
         if (cur?.state == 1 || cur?.state == 0) {
           message.error('You lose the battle');
           return
@@ -276,7 +286,7 @@ const Game = () => {
         }
       }
     } else {
-      let cur = getComponentValue(Player, network.playerEntity);
+      let cur = useStore.getState().getValue(tables.Player, { addr: account })
       if (cur?.state == 1 || cur?.state == 0) {
         navigate('/');
         return
@@ -299,7 +309,8 @@ const Game = () => {
       message.error('Waiting for transaction');
       return false;
     }
-    const playerLock = getComponentValue(PlayerLocationLock, encodeEntity({ addr: "address" }, { addr: account}))
+    const playerLock = useStore.getState().getValue(tables.PlayerLocationLock, { addr: account })
+    console.log(playerLock)
     if (playerLock && Number(playerLock.lockTime)) {
       message.error('You are locked');
       if (!timeout) {
@@ -332,7 +343,7 @@ const Game = () => {
 
   const showUserInfo = async (player) => {
     // if (!player.userUrl || !player.lootUrl) {
-    //   let addon = getComponentValue(PlayerAddon, encodeEntity({addr: "address"}, {addr: player.addr}))
+    //   let addon = useStore.getState().getValue(tables.Addon, { userId: player.addr })
     //   console.log(addon)
     //   let userTokenId = addon.userId.toString()
     //   let lootTokenId = addon.lootId.toString()
@@ -425,8 +436,8 @@ const Game = () => {
   }
 
   const openTreasureChest = async (id) => {
-    const boxIndex = boxs.findIndex(item => item.id === id);
-    const box = boxs[boxIndex]
+    const boxIndex = BoxListData.findIndex(item => item.id === id);
+    const box = BoxListData[boxIndex]
     if (box.opened) {
       getCollectionsFun(box);
       return
@@ -471,18 +482,19 @@ const Game = () => {
         curId,
         curAddr: curPlayer?.addr,
         blockTime,
-        players,
+        players: PlayersData,
         curPlayer,
         simpleMapData,
         mapData: renderMapData,
         onPlayerMove: movePlayer,
         openingBox,
         showUserInfo,
-        treasureChest: boxs,
+        treasureChest: BoxListData,
         openTreasureChest,
         setStartBattle,
         isMovablePlayer,
-        onMoveToDelivery
+        onMoveToDelivery,
+        battles: BattleListData
       }}
     >
       <div className="mi-game" tabIndex={0}>
@@ -546,7 +558,7 @@ const Game = () => {
                 modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
-                <TreasureChest opening={false} />
+                <div className="mi-treasure-chest"></div>
               </div>
             </div>
             <div className="mi-modal-footer">
@@ -555,7 +567,7 @@ const Game = () => {
           </div>
         </Modal>
         {
-          percentage === 100 && <Leaderboard boxesCount={boxs.length}  leaderboard={PlayerSeasonData} />
+          percentage === 100 && <Leaderboard boxesCount={BoxListData.length}  leaderboard={PlayerSeasonData} />
         }
 
       </div>
