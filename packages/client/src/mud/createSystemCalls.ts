@@ -42,13 +42,10 @@ export function createSystemCalls(
   }
 
   const transfer = async (addr: any, transferData: any) => {
-    console.log('transfer', new Date().getTime());
     try {
       const tx = await worldContract.write.transfer([addr, ...transferData]);
       await waitForTransaction(tx);
-      console.log('transfer success', new Date().getTime(), tx);
     } catch (error) {
-      console.log('transfer', error);
       message.error(error.cause.reason || error.cause.details);
     }
   }
@@ -64,7 +61,6 @@ export function createSystemCalls(
       const tx = await worldContract.write.move([steps]);
       await waitForTransaction(tx);
       const receipt = await publicClient.getTransactionReceipt({ hash: tx });
-      console.log(receipt)
       // let receipt = r.receipt
       log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
@@ -79,11 +75,9 @@ export function createSystemCalls(
   };
 
   const selectBothNFT = async (userTokenId: any, lootTokenId: any, address: any) => {
-    console.log('selectBothNFT', new Date().getTime());
     try {
       const tx = await worldContract.write.selectBothNFT([userTokenId, lootTokenId]);
       await waitForTransaction(tx);
-      console.log('selectBothNFT success', new Date().getTime(), tx);
       return {
         playerData: useStore.getState().getValue(tables.PlayerParams, { addr: address }),
         lootData: useStore.getState().getValue(tables.LootList1, { addr: address })

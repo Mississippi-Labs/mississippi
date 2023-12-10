@@ -5,7 +5,6 @@
 //     systemCalls: { addTask, toggleTask, deleteTask },
 //   } = useMUD();
 
-//   console.log("tables", tables);
 
 //   const tasks = useStore((state) => {
 //     const records = Object.values(state.getRecords(tables.Tasks));

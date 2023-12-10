@@ -20,7 +20,6 @@ function Typewriter({ text, typingSpeed, step, name }) {
   }, [text, typingSpeed, currentIndex]);
 
   useEffect(() => {
-    console.log(1)
     setDisplayText('');
     setCurrentIndex(0);
   }, [step]);

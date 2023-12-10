@@ -57,7 +57,6 @@ const HomeHeader = (props: IProps) => {
     let balance = await network.publicClient.getBalance({
       address: network.walletClient.account.address
     })
-    console.log(balance, 'balance')
     let walletBalance = 0
     if (balance.toString() == '0') {
       transferFun(network.walletClient.account.address)
