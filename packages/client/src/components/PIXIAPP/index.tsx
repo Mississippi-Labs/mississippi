@@ -177,7 +177,7 @@ const PIXIAPP = () => {
         }
         return [];
       })
-      if (isDelivery(coordinate)) {
+      if (isDelivery(paths[paths.length - 1])) {
         onMoveToDelivery();
       } else {
         tryHunt();
