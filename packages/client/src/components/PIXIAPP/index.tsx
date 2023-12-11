@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Stage, Container, Sprite } from '@pixi/react';
+import { Stage, Container } from '@pixi/react';
 import * as PIXI from 'pixi.js';
 import MAP_CFG, { MapConfig } from '@/config/map';
 import PIXIMap from '@/components/PIXIMap';
@@ -26,7 +26,6 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, visualWidth, visualHeight } = MapConfig;
 
 
-
 const PIXIAPP = () => {
 
   const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
@@ -43,17 +42,15 @@ const PIXIAPP = () => {
   const [activePlayerId, setActivePlayerId] = useState('');
   const [huntingPlayerId, setHuntingActivePlayerId] = useState('');
 
-  // const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
-
   const renderPlayersRef = useRef<IPlayer[]>([]);
   const [playerUpdateTime, setPlayerUpdateTime] = useState(0);
   const renderPlayers = renderPlayersRef.current;
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
+
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
   const playersCache = getPlayersCache(players);
   useEffect(() => {
-    // let renderPlayersArr = [...renderPlayers];
     const validPlayer = players.filter((player) => isValidPlayer(player));
     validPlayer.forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
@@ -91,7 +88,6 @@ const PIXIAPP = () => {
       return hasFound;
     });
     setPlayerUpdateTime(Date.now());
-    // setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
 
@@ -101,14 +97,14 @@ const PIXIAPP = () => {
       // Avoid anomalies caused by dirty data
       if (isMovable(MAP_CFG[player.y][player.x]) && isMovable(MAP_CFG[target.y][target.x])) {
         const movePaths = bfs(simpleMapData, player, target);
-        animateMove(player, movePaths)
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        animateMove(player, movePaths, () => {})
       }
     });
     moveTasks.current = [];
   }
 
   const animateMove = (player, paths, onFinish) => {
-    // console.log(player, paths, 'animate move');
     let index = 0;
     const moveTime = calculateMoveTime(paths, blockTime);
     const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
@@ -124,13 +120,11 @@ const PIXIAPP = () => {
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
       movingPlayer.moving = true;
-      // setRenderPlayers([...renderPlayers]);
       setPlayerUpdateTime(Date.now());
       index++;
       if (index >= linePath.length) {
         movingPlayer.action = 'idle';
         movingPlayer.moving = false;
-        // setRenderPlayers([...renderPlayers]);
         setPlayerUpdateTime(Date.now());
         clearInterval(interval);
         onFinish?.()
@@ -189,13 +183,12 @@ const PIXIAPP = () => {
       } else {
         tryHunt();
       }
-      // setRenderPlayers([...renderPlayers]);
       setPlayerUpdateTime(Date.now());
     });
 
   }
 
-  const emitEvent = (action: string, coordinate: ICoordinate, e) => {
+  const emitEvent = (action: string, coordinate: ICoordinate) => {
     const type = MAP_CFG[coordinate.y][coordinate.x];
     if (!curPlayer) {
       return;
@@ -345,16 +338,6 @@ const PIXIAPP = () => {
                   </>
                 )
               }
-              {/*{*/}
-              {/*  activePlayerId !== curAddr && (*/}
-              {/*    <li>*/}
-              {/*      <button*/}
-              {/*        className="mi-btn"*/}
-              {/*        onClick={() => exeAction('attack')}*/}
-              {/*      >attack</button>*/}
-              {/*    </li>*/}
-              {/*  )*/}
-              {/*}*/}
               <li>
                 <button
                   className="mi-btn"
