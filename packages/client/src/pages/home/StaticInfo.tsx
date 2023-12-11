@@ -75,7 +75,7 @@ const StaticInfo = (props: IProps) => {
               <dl className="mi-home-desc-item">
                 <dt>How to play</dt>
                 <dd>
-                  As a player, you start each round by drawing a character card. Each card comes with random attributes like health, attack, speed, and equipment capacity. In the Alpha test, card draws are on the house – no charge. This NFT card is your ticket to the game. Once you're in, you can earn points by digging or plundering opponents for treasures on the map and hauling them out of the entrance
+                  As a player, you start each round by drawing a character card. Each card comes with random attributes like health, attack, speed, and equipment capacity. In the Alpha test, card draws are on the house – no charge. This NFT card is your ticket to the game. Once you're in, you can earn points by digging or plundering opponents for treasures on the map and hauling them out of the entrance.
                 </dd>
               </dl>
               <dl className="mi-home-desc-item">
