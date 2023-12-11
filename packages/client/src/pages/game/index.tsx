@@ -23,6 +23,7 @@ import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
+import { delay } from '../../utils/delay';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -91,6 +92,7 @@ const Game = () => {
     let lootContractAddress = GlobalConfigData[0].lootContract
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
+    percentage = 100
   }
 
   const LootList1Data = useStore((state: any) => {
@@ -155,8 +157,6 @@ const Game = () => {
       return playerItem
     })
   });
-
-  if (PlayersData.length && PlayersData[0].hp) percentage = 100
 
   const curPlayer = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {

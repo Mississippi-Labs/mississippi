@@ -9,6 +9,8 @@ import { SetupNetworkResult } from "./setupNetwork";
 import eventEmitter from '../utils/eventEmitter';
 import { message } from 'antd';
 
+import { delay } from '../utils/delay';
+
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 let wait = false;
@@ -78,6 +80,7 @@ export function createSystemCalls(
     try {
       const tx = await worldContract.write.selectBothNFT([userTokenId, lootTokenId]);
       await waitForTransaction(tx);
+      await delay(300)
       return {
         playerData: useStore.getState().getValue(tables.PlayerParams, { addr: address }),
         lootData: useStore.getState().getValue(tables.LootList1, { addr: address })
@@ -176,6 +179,7 @@ export function createSystemCalls(
       eventEmitter.emit('log', log)
       console.log('revealBox success', new Date().getTime(), tx);
       wait = false
+      await delay(300)
       return useStore.getState().getValue(tables.BoxList, { boxId })
     } catch (error) {
       console.log(error)
@@ -201,6 +205,7 @@ export function createSystemCalls(
       log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
+      await delay(300)
       return {
         type: 'success'
       }
@@ -256,6 +261,7 @@ export function createSystemCalls(
       log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
+      await delay(300)
       return {
         type: 'success',
         data: useStore.getState().getValue(tables.BattleList, { battleId })
@@ -288,6 +294,7 @@ export function createSystemCalls(
       log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
+      await delay(300)
       return {
         type: 'success',
         data: useStore.getState().getValue(tables.BattleList, { battleId })
@@ -320,6 +327,7 @@ export function createSystemCalls(
       log.block = await getBlockNumber(tx)
       eventEmitter.emit('log', log)
       wait = false
+      await delay(300)
       return useStore.getState().getValue(tables.BattleList, { battleId })
     } catch (error) {
       log.type = 'error'

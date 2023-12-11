@@ -400,11 +400,11 @@ const Test = () => {
         {
           players.map((item, index) => (<div key={index}>
             <h6>用户信息 {item.isMe ? '(自己)' : ''}</h6>
-            <div style={{ marginTop: '8px' }}>addr: {item.addr}</div>
-            <div style={{ marginTop: '8px' }}>hp: {item.hp.toString()}</div>
-            <div style={{ marginTop: '8px' }}>attack: {item.attack.toString()}</div>
-            <div style={{ marginTop: '8px' }}>oreBalance: {item.oreBalance.toString()}</div>
-            <div style={{ marginTop: '8px' }}>treasureBalance: {item.treasureBalance.toString()}</div>
+            <div style={{ marginTop: '8px' }}>addr: {item?.addr}</div>
+            <div style={{ marginTop: '8px' }}>hp: {item?.hp?.toString()}</div>
+            <div style={{ marginTop: '8px' }}>attack: {item?.attack?.toString()}</div>
+            <div style={{ marginTop: '8px' }}>oreBalance: {item?.oreBalance?.toString()}</div>
+            <div style={{ marginTop: '8px' }}>treasureBalance: {item?.treasureBalance?.toString()}</div>
             <div style={{ marginTop: '8px' }}>state：{item?.state}</div>
             <div style={{ marginTop: '8px' }}>坐标：{item?.x || 0}，{item?.y || 0}</div>
           </div>))
@@ -415,11 +415,11 @@ const Test = () => {
         {
           boxs.map((item, index) => (<div key={index} style={{marginBottom: '20px'}}>
             <h6>宝箱信息</h6>
-            <div style={{ marginTop: '8px' }}>id: {item.id}</div>
-            <div style={{ marginTop: '8px' }}>opened: {item.opened.toString()}</div>
-            <div style={{ marginTop: '8px' }}>owner: {item.owner}</div>
-            <div style={{ marginTop: '8px' }}>oreBalance: {item.opened ? item.oreBalance : '--'}</div>
-            <div style={{ marginTop: '8px' }}>treasureBalance:  {item.opened ? item.treasureBalance : '--'}</div>
+            <div style={{ marginTop: '8px' }}>id: {item?.id}</div>
+            <div style={{ marginTop: '8px' }}>opened: {item?.opened.toString()}</div>
+            <div style={{ marginTop: '8px' }}>owner: {item?.owner}</div>
+            <div style={{ marginTop: '8px' }}>oreBalance: {item?.opened ? item?.oreBalance : '--'}</div>
+            <div style={{ marginTop: '8px' }}>treasureBalance:  {item?.opened ? item?.treasureBalance : '--'}</div>
             <div style={{ marginTop: '8px' }}>坐标：{item?.x || 0}，{item?.y || 0}</div>
           </div>))
         }
