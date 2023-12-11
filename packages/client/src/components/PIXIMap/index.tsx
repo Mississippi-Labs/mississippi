@@ -3,8 +3,27 @@ import * as PIXI from 'pixi.js';
 import { Container, Sprite } from '@pixi/react';
 
 import MAP_CFG, { MapConfig } from '@/config/map';
-import { ICellClassCache, ICoordinate } from '@/components/MapCell';
+
 import { getCellClass } from '@/utils';
+
+interface ITransform {
+  index: number;
+  transform: string;
+}
+
+interface ICellClass {
+  transforms: ITransform[];
+  classList: number[];
+}
+
+export interface ICellClassCache {
+  [k: string]: ICellClass
+}
+
+export interface ICoordinate {
+  x: number;
+  y: number;
+}
 
 interface IProps {
   offset?: {

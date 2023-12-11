@@ -1,15 +1,8 @@
 
 
 .mi-home-page {
-    height: 100vh;
-    background: url("../../assets/img/bg.jpg") no-repeat center / 100% 100%;
+    background: url("../../assets/img/bg.jpg") no-repeat fixed 100% / 100%;
 
-    .mi-section {
-        position: relative;
-        padding-top: 116px;
-        height: 100%;
-
-    }
 
     .index-section {
 
@@ -22,6 +15,7 @@
 
         .intro-box {
             font-family: MISS, sans-serif;
+            word-spacing: 10px;
             width: 600px;
             color: #fff;
 
@@ -57,6 +51,7 @@
     .mint-section {
 
         font-family: MISS, Arial, "Microsoft YaHei UI", sans-serif;
+        word-spacing: 10px;
         color: #BC8C61;
         background: rgba(0, 0, 0, 0.6);
 
@@ -97,6 +92,7 @@
         font-size: 16px;
         line-height: 2;
         font-family: MISS, sans-serif;
+        word-spacing: 10px;
         text-align: center;
         color: #5D2E1C;
     }
@@ -130,6 +126,7 @@
     .create-wallet-successful-content {
         font-size: 24px;
         font-family: MISS, sans-serif;
+        word-spacing: 10px;
         color: #e16f39;
     }
 

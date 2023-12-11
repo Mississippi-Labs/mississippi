@@ -10,7 +10,7 @@ import PIXIFog from '@/components/PIXIFog';
 import PIXIPlayers from '@/components/PIXIPlayers';
 import { IPlayer } from '@/components/PIXIPlayers/Player';
 import GameContext from '@/context';
-import { ICoordinate } from '@/components/MapCell';
+import { ICoordinate } from '@/components/PIXIMap';
 import { CellType } from '@/constants';
 import { bfs, calculateMoveTime, calculateOffset, getDistance, isDelivery, isMovable } from '@/utils/map';
 import {

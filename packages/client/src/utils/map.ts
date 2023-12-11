@@ -1,8 +1,7 @@
 import { CellType } from '@/constants';
-import { ICoordinate } from '@/components/MapCell';
-import { IPlayer } from '@/components/Player';
+import { ICoordinate } from '@/components/PIXIMap';
 import MAP_CFG, { MapConfig, DELIVERY } from '@/config/map';
-const { cellSize } = MapConfig;
+
 
 export const cutMapData = (mapData, startCoordinate, endCoordinate) => {
   const { x: startX, y: startY} = startCoordinate;

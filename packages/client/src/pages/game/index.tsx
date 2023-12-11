@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { loadMapData } from "@/utils";
 import UserAvatar from "@/components/UserAvatar";
 import Leaderboard from "@/components/Leaderboard";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { message, Modal } from 'antd';
 import "./styles.scss";
 import { IPlayer } from "@/components/Player";
@@ -550,7 +550,7 @@ const Game = () => {
                 modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
-                <div className="mi-treasure-chest"></div>
+                <div className="mi-treasure-chest"/>
               </div>
             </div>
             <div className="mi-modal-footer">
