@@ -51,7 +51,7 @@ const StaticInfo = (props: IProps) => {
           <section className={"mi-section mi-section2"}>
             <div className="mi-home-desc">
               <div className="mi-home-desc-title-wrap">
-                <h2>Start From A Game, Then A World! </h2>
+                <h2>Start From A Game, Then A World</h2>
               </div>
               <p>A game has a single purpose, while a world holds infinite.</p>
               <img src={imgPlayer} alt="" className="player p1"/>
@@ -75,7 +75,7 @@ const StaticInfo = (props: IProps) => {
               <dl className="mi-home-desc-item">
                 <dt>How to play</dt>
                 <dd>
-                  As a player, you start each round by drawing a character card. Each card comes with random attributes like health, attack, speed, and equipment capacity. In the Alpha test, card draws are on the house – no charge. This NFT card is your ticket to the game. Once you're in, you can earn points by digging or plundering opponents for treasures on the map and hauling them out of the tunnel entrance.cave.
+                  As a player, you start each round by drawing a character card. Each card comes with random attributes like health, attack, speed, and equipment capacity. In the Alpha test, card draws are on the house – no charge. This NFT card is your ticket to the game. Once you're in, you can earn points by digging or plundering opponents for treasures on the map and hauling them out of the entrance
                 </dd>
               </dl>
               <dl className="mi-home-desc-item">
