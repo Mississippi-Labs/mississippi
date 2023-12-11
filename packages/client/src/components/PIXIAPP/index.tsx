@@ -43,13 +43,17 @@ const PIXIAPP = () => {
   const [activePlayerId, setActivePlayerId] = useState('');
   const [huntingPlayerId, setHuntingActivePlayerId] = useState('');
 
-  const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
+  // const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
+
+  const renderPlayersRef = useRef<IPlayer[]>([]);
+  const [playerUpdateTime, setPlayerUpdateTime] = useState(0);
+  const renderPlayers = renderPlayersRef.current;
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
   const playersCache = getPlayersCache(players);
   useEffect(() => {
-    let renderPlayersArr = [...renderPlayers];
+    // let renderPlayersArr = [...renderPlayers];
     const validPlayer = players.filter((player) => isValidPlayer(player));
     validPlayer.forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
@@ -59,7 +63,7 @@ const PIXIAPP = () => {
           // Maybe other fields changed
           Object.assign(renderPlayer, player);
         } else {
-          if (!renderPlayer.moving && !renderPlayer.waiting) {
+          if (!renderPlayer.moving && !renderPlayer.waiting && getDistance(renderPlayer, player) <= MapConfig.maxAnimateDistance) {
             moveTasks.current.push({
               player: renderPlayer,
               target: {
@@ -71,7 +75,7 @@ const PIXIAPP = () => {
           Object.assign(renderPlayer, { ...player, x: renderPlayer.x, y: renderPlayer.y});
         }
       } else {
-        renderPlayersArr.push({ ...player });
+        renderPlayers.push({ ...player });
         if (player.addr === curAddr) {
           setOffset(calculateOffset(player));
         }
@@ -79,14 +83,15 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => {
+    renderPlayersRef.current = renderPlayers.filter((player) => {
       const hasFound = validPlayer.find((p) => p.addr === player.addr);
       if (!hasFound) {
         console.log(`removed player ${player.name}`)
       }
       return hasFound;
     });
-    setRenderPlayers(renderPlayersArr);
+    setPlayerUpdateTime(Date.now());
+    // setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
 
@@ -119,12 +124,14 @@ const PIXIAPP = () => {
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
       movingPlayer.moving = true;
-      setRenderPlayers([...renderPlayers]);
+      // setRenderPlayers([...renderPlayers]);
+      setPlayerUpdateTime(Date.now());
       index++;
       if (index >= linePath.length) {
         movingPlayer.action = 'idle';
         movingPlayer.moving = false;
-        setRenderPlayers([...renderPlayers]);
+        // setRenderPlayers([...renderPlayers]);
+        setPlayerUpdateTime(Date.now());
         clearInterval(interval);
         onFinish?.()
       }
@@ -182,7 +189,8 @@ const PIXIAPP = () => {
       } else {
         tryHunt();
       }
-      setRenderPlayers([...renderPlayers]);
+      // setRenderPlayers([...renderPlayers]);
+      setPlayerUpdateTime(Date.now());
     });
 
   }
@@ -283,7 +291,7 @@ const PIXIAPP = () => {
             data={treasureChest}
             openingBox={openingBox}
           />
-          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId}/>
+          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId} playerUpdateTime={playerUpdateTime}/>
           <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
         </Container>
       </Stage>

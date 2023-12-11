@@ -79,5 +79,6 @@ export const MapConfig = {
   spriteCellSize: 16,
   width: MAP_CFG[0].length,
   height: MAP_CFG.length,
+  maxAnimateDistance: 7,
 }
 
