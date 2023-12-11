@@ -15,7 +15,6 @@ interface IProps {
 const Rank = (props: IProps) => {
 
   const { data, curId } = props;
-  console.log(data)
   const curIndex = data.findIndex(item => item.id === 1);
   const [visible, setVisible] = useState(false);
 

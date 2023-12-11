@@ -21,6 +21,7 @@ import {
   updatePlayerPosition
 } from '@/utils/player';
 
+
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const { cellSize, visualWidth, visualHeight } = MapConfig;
 
@@ -42,14 +43,19 @@ const PIXIAPP = () => {
   const [activePlayerId, setActivePlayerId] = useState('');
   const [huntingPlayerId, setHuntingActivePlayerId] = useState('');
 
-  const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
+  // const [renderPlayers, setRenderPlayers] = useState<IPlayer[]>([]);
+
+  const renderPlayersRef = useRef<IPlayer[]>([]);
+  const [playerUpdateTime, setPlayerUpdateTime] = useState(0);
+  const renderPlayers = renderPlayersRef.current;
   const curPlayer = renderPlayers.find(item => item.addr === curAddr)
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
   const playersCache = getPlayersCache(players);
   useEffect(() => {
-    let renderPlayersArr = [...renderPlayers];
-    players.filter((player) => isValidPlayer(player)).forEach((player) => {
+    // let renderPlayersArr = [...renderPlayers];
+    const validPlayer = players.filter((player) => isValidPlayer(player));
+    validPlayer.forEach((player) => {
       const renderPlayer = renderPlayers.find((rPlayer) => rPlayer.addr === player.addr);
       if (renderPlayer) {
         // update
@@ -57,7 +63,7 @@ const PIXIAPP = () => {
           // Maybe other fields changed
           Object.assign(renderPlayer, player);
         } else {
-          if (!renderPlayer.moving && !renderPlayer.waiting) {
+          if (!renderPlayer.moving && !renderPlayer.waiting && getDistance(renderPlayer, player) <= MapConfig.maxAnimateDistance) {
             moveTasks.current.push({
               player: renderPlayer,
               target: {
@@ -69,7 +75,7 @@ const PIXIAPP = () => {
           Object.assign(renderPlayer, { ...player, x: renderPlayer.x, y: renderPlayer.y});
         }
       } else {
-        renderPlayersArr.push({ ...player });
+        renderPlayers.push({ ...player });
         if (player.addr === curAddr) {
           setOffset(calculateOffset(player));
         }
@@ -77,14 +83,15 @@ const PIXIAPP = () => {
       }
     });
     // filter non-existent player
-    renderPlayersArr = renderPlayersArr.filter((player) => {
-      const hasFound = players.find((p) => p.addr === player.addr);
+    renderPlayersRef.current = renderPlayers.filter((player) => {
+      const hasFound = validPlayer.find((p) => p.addr === player.addr);
       if (!hasFound) {
         console.log(`removed player ${player.name}`)
       }
       return hasFound;
     });
-    setRenderPlayers(renderPlayersArr);
+    setPlayerUpdateTime(Date.now());
+    // setRenderPlayers(renderPlayersArr);
     exeMoveTasks();
   }, [playersCache]);
 
@@ -117,12 +124,14 @@ const PIXIAPP = () => {
       updatePlayerPosition(movingPlayer, linePath[index]);
       movingPlayer.action = 'run';
       movingPlayer.moving = true;
-      setRenderPlayers([...renderPlayers]);
+      // setRenderPlayers([...renderPlayers]);
+      setPlayerUpdateTime(Date.now());
       index++;
       if (index >= linePath.length) {
         movingPlayer.action = 'idle';
         movingPlayer.moving = false;
-        setRenderPlayers([...renderPlayers]);
+        // setRenderPlayers([...renderPlayers]);
+        setPlayerUpdateTime(Date.now());
         clearInterval(interval);
         onFinish?.()
       }
@@ -175,15 +184,13 @@ const PIXIAPP = () => {
         }
         return [];
       })
-      if (isDelivery(coordinate)) {
-        let path = paths[paths.length - 1];
-        if (path.x === 4 && path.y === 5) {
-          onMoveToDelivery();
-        }
+      if (isDelivery(paths[paths.length - 1])) {
+        onMoveToDelivery();
       } else {
         tryHunt();
       }
-      setRenderPlayers([...renderPlayers]);
+      // setRenderPlayers([...renderPlayers]);
+      setPlayerUpdateTime(Date.now());
     });
 
   }
@@ -208,6 +215,10 @@ const PIXIAPP = () => {
         setMenuVisible(false);
         break;
       case 'click':
+        // it will ignore the event when click delivery
+        if (isDelivery(coordinate)) {
+          return;
+        }
         targetChests = treasureChest.filter(item => item.x === coordinate.x && item.y === coordinate.y);
         if (targetChests.length > 0 && getDistance(curPlayer, coordinate) < 2) {
           openTreasureChest(targetChests[0].id);
@@ -280,7 +291,7 @@ const PIXIAPP = () => {
             data={treasureChest}
             openingBox={openingBox}
           />
-          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId}/>
+          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId} playerUpdateTime={playerUpdateTime}/>
           <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
         </Container>
       </Stage>

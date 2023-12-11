@@ -27,7 +27,6 @@ const Player = (props: IPlayer) => {
   const { username, addr, equip, gem = 0, toward, waiting, x, y } = props;
   const { curAddr } = useContext(GameContext);
 
-  // console.log(addr, curAddr, 'addr curid')
   return (
     <div>
     {

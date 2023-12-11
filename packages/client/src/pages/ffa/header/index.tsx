@@ -16,7 +16,7 @@ interface IProps {
 let transfering = false
 
 const HomeHeader = (props: IProps) => {
-  const [select, setSelect] = useState(false);
+
   const [walletAddress, setWalletAddress] = useState('');
   const [walletBalance, setWalletBalance] = useState('');
 
@@ -72,58 +72,34 @@ const HomeHeader = (props: IProps) => {
     }
   }, [network.walletClient?.account?.address])
 
-  const changeNetwork = (chainId) => {
-    localStorage.setItem('chainId', chainId);
-    // 返回首页并重新加载
-    window.location.href = '/'
-  }
+
   return (
-    <div className="home-header" style={{background: props.onlyRight ? 'none' : '#020202'}}>
-      {
-        !props.onlyRight ? (
-          <div className='home-header-l'>
-          <a href="/">
-            <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
-            </a>
-            
-            <nav className="header-nav">
-              <ul className="menu-lv1">
-                {/* <li><a href="">Leaderboard</a></li> */}
-                <li><a href="https://mississippi.gitbook.io/mississippi/" target='_blank' rel="noreferrer">Docs</a></li>
-                <li className="menu-socials">
-                  <a href="">Socials</a>
-                  <ul className="menu-lv2">
-                    <li>
-                      <a href="https://twitter.com/0xMississippi" target="_blank" rel="noreferrer">Twitter</a>
-                      <img src={imgTwitter} alt=""/>
-                    </li>
-                    <li>
-                      <a href="https://discord.gg/UkarGN9Fjn" target="_blank" title="coming soon" rel="noreferrer">Discord</a>
-                      <img src={imgDiscord} alt=""/>
-                    </li>
-                    
-                  </ul>
+    <div className="home-header" >
+      <div className='home-header-l'>
+        <a href="/">
+          <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
+        </a>
+
+        <nav className="header-nav">
+          <ul className="menu-lv1">
+            {/* <li><a href="">Leaderboard</a></li> */}
+            <li><a href="https://mississippi.gitbook.io/mississippi/" target='_blank' rel="noreferrer">Docs</a></li>
+            <li className="menu-socials">
+              <a href="">Socials</a>
+              <ul className="menu-lv2">
+                <li>
+                  <a href="https://twitter.com/0xMississippi" target="_blank" rel="noreferrer">Twitter</a>
+                  <img src={imgTwitter} alt=""/>
                 </li>
+                <li>
+                  <a href="https://discord.gg/UkarGN9Fjn" target="_blank" title="coming soon" rel="noreferrer">Discord</a>
+                  <img src={imgDiscord} alt=""/>
+                </li>
+
               </ul>
-            </nav>
-          </div>
-        ) : <div className='home-header-l'/>
-      }
-      <div className='select-network'>
-        <button className="play-btn mi-btn" onClick={() => setSelect(true)}>{network?.walletClient?.chain?.name}</button>
-        {
-          select ? <div>
-            <div className='network-list'>
-              <div className='network-item' onClick={() => changeNetwork(33784)}>Mississippi Testnet</div>
-              <div className='network-item' onClick={() => changeNetwork(17001)}>Redstone Testnet</div>
-              <div className='network-item' >Starknet(Coming Soon)</div>
-              {
-                import.meta.env.DEV ? <div className='network-item' onClick={() => changeNetwork(31337)}>Foundry</div> : null
-              }
-            </div>
-            <div className='mask' onClick={() => setSelect(false)}/>
-          </div> : null
-        }
+            </li>
+          </ul>
+        </nav>
       </div>
       {
         walletAddress ?

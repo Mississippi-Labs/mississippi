@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
 import UserPackage from '@/components/UserPackage';
-import Appearance from '@/components/Appearance';
 import * as PIXI from 'pixi.js';
 import { Stage } from '@pixi/react';
 import Player, { IPlayer } from '@/components/PIXIPlayers/Player';
-import { MapConfig } from '@/config/map';
 import Equipment from '@/components/Equipment';
-const { cellSize } = MapConfig;
 import defaultFoot from '@/assets/default-equip/Foot.png';
 import defaultHand from '@/assets/default-equip/hand1.png';
 import defaultNeck from '@/assets/default-equip/neck.png';

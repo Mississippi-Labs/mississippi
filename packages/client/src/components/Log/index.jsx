@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import './styles.scss';
 import eventEmitter from '../../utils/eventEmitter';
 
-console.log('eventEmitter', eventEmitter);
 
 const Log = () => {
   const [logs, setLogs] = useState([]);

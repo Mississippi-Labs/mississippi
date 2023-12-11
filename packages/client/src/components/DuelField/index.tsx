@@ -43,7 +43,6 @@ const DuelField = React.forwardRef<IDuelFieldMethod>((props: IProps, ref) => {
       setLeftAction('slash');
       setRightAction('blink');
       setEffectPositionX(680);
-      console.log(leftPlayer.name, 'attack', type);
       if (textureMap.current[type]) {
         setAttackType(type);
       }

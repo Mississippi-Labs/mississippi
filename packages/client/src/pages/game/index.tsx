@@ -23,6 +23,7 @@ import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
+import { delay } from '../../utils/delay';
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -41,8 +42,6 @@ const Game = () => {
     systemCalls: { move, openBox, revealBox, getCollections, battleInvitation, unlockUserLocation, submitGem, goHome, joinBattlefield },
     network,
   } = useMUD();
-
-  console.log(network)
 
   const {tables, useStore, account} = network
 
@@ -93,6 +92,7 @@ const Game = () => {
     let lootContractAddress = GlobalConfigData[0].lootContract
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
+    percentage = 100
   }
 
   const LootList1Data = useStore((state: any) => {
@@ -158,10 +158,7 @@ const Game = () => {
     })
   });
 
-  if (PlayersData.length && PlayersData[0].hp) percentage = 100
-
   const curPlayer = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
-  console.log(curPlayer)
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
     navigate('/');
   } else if (curPlayer && curPlayer.state == 1 && percentage == 100 && !userInfoVisible) {
@@ -169,7 +166,6 @@ const Game = () => {
   } else {
     if (percentage == 100 && curPlayer && curPlayer.addr) {
       curPlayer.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase())[0]?.oreBalance
-      console.log(curPlayer)
     }
   }
   if (curPlayer && curPlayer.addr) {
@@ -310,7 +306,6 @@ const Game = () => {
       return false;
     }
     const playerLock = useStore.getState().getValue(tables.PlayerLocationLock, { addr: account })
-    console.log(playerLock)
     if (playerLock && Number(playerLock.lockTime)) {
       message.error('You are locked');
       if (!timeout) {
@@ -344,7 +339,6 @@ const Game = () => {
   const showUserInfo = async (player) => {
     // if (!player.userUrl || !player.lootUrl) {
     //   let addon = useStore.getState().getValue(tables.Addon, { userId: player.addr })
-    //   console.log(addon)
     //   let userTokenId = addon.userId.toString()
     //   let lootTokenId = addon.lootId.toString()
   
@@ -375,7 +369,6 @@ const Game = () => {
         console.log(error)
       }
     } else {
-      console.log('waiting')
       setTimeout(() => {
         goHomeFun();
       }, 500)
@@ -406,7 +399,6 @@ const Game = () => {
         console.log('submitGem')
         setGotBox({oreBalance: curPlayer.oreBalance});
         await submitGem();
-        console.log(curPlayer)
         setModalType('submitGem');
         setModalVisible(true);
       }

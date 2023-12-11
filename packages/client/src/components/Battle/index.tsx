@@ -51,7 +51,6 @@ export default function Battle(props) {
   }
 
   const setTimer = (s) => {
-    console.log(s)
     const seconds = Number(s)
     if (seconds == 0) {
       forceEndFun()
@@ -119,11 +118,9 @@ export default function Battle(props) {
         }
       }
     } else if (battleState == 2) {
-      console.log(battleState, battle)
       if (curType == 'attacker' && (battle?.attackerState == 2 || battle?.attackerState == 0)) {
         if (battle?.defenderState == 2 || battle?.defenderState == 0) {
           setBattleState(3)
-          console.log(3)
         }
       } else if (curType == 'defender' && (battle?.defenderState == 2 || battle?.defenderState == 0)) {
         if (battle?.attackerState == 2 || battle?.attackerState == 0) {
@@ -185,7 +182,6 @@ export default function Battle(props) {
   }
 
   const afterAttack = (role: string) => {
-    console.log(role)
     let attackType = battle.defenderArg.toString() == '1' ? 'sprint' : battle.defenderArg.toString() == '2' ? 'sneak' : 'magic'
     let data = JSON.parse(JSON.stringify(battleData))
     if (role == 'left') {
@@ -278,7 +274,6 @@ export default function Battle(props) {
   }, [battleState])
 
   const setTacticsStepFun = (step, action) => {
-    console.log(step)
     if (battleState != 0) return
     if (action) {
       setConfirmBattleData([action])
@@ -287,7 +282,6 @@ export default function Battle(props) {
   }
 
   const setSelectTactic = (tactic: number) => {
-    console.log(tactic)
     if (battleState != 0) return
     if (tactic) {
       confirmBattleFun(tactic)
@@ -337,7 +331,6 @@ export default function Battle(props) {
       localStorage.removeItem('confirmBattleData')
       return
     } else {
-      console.log(res)
       let data = res.data
       if (curType == 'attacker' && data?.attackerState == 0) {
         setBattleState(0)

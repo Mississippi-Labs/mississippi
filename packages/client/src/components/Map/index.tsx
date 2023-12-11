@@ -58,7 +58,6 @@ const Map = (props: IProps) => {
   const cellClassCache = useRef<ICellClassCache>({});
 
   const onMoveTo = (coordinate) => {
-    console.log(players, coordinate, 'onMoveTo', curId)
     const { x, y, speed } = players.find((player) => player.addr.toLocaleLowerCase() === curId.toLocaleLowerCase());
     const paths = bfs(simpleMapData, { x, y }, coordinate).slice(1).slice(0, Number(speed));
     onPlayerMove(paths, formatMovePath(paths));
