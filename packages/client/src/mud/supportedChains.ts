@@ -13,8 +13,8 @@
 import { MUDChain, latticeTestnet, mudFoundry } from "@latticexyz/common/chains";
 import { sepolia, arbitrumGoerli } from 'viem/chains'
 
-arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.infura.io/v3/5ca372516740427e97512d4dfefd9c47'];
-arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.infura.io/ws/v3/5ca372516740427e97512d4dfefd9c47'];
+arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.publicnode.com'];
+arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.publicnode.com'];
 
 const testnet = {
   name: "Mississippi testnet",
