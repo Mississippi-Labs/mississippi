@@ -11,6 +11,8 @@
     "deploy:local": "pnpm run build && mud deploy",
     "deploy:testnet": "pnpm run build && mud deploy --profile=lattice-testnet",
     "deploy:lidamao": "pnpm run build && mud deploy --profile=Mississippi-testnet",
+    "deploy:redstone": "pnpm run build && mud deploy --profile=REDSTONE-HOLESKY",
+    "deploy:arb": "pnpm run build && mud deploy --profile=arb-testnet",
 
     "dev": "pnpm mud dev-contracts --rpc http://127.0.0.1:8545",
     "lint": "pnpm run prettier && pnpm run solhint",
