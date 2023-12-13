@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel } from 'swiper/modules';
 import SwiperCore from 'swiper';
-import 'swiper/css';
 import './staticInfo.scss';
 import FAQ from '@/config/faq';
 

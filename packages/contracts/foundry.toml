@@ -27,7 +27,7 @@ eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
 
 
 [profile.arb-testnet]
-eth_rpc_url = "https://arbitrum-goerli.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
+eth_rpc_url = "https://arbitrum-goerli.publicnode.com"
 optimizer = true
 optimizer_runs = 3000
 
