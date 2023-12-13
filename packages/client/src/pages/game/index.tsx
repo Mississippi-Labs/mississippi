@@ -23,7 +23,9 @@ import Loading from '@/components/Loading';
 import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
-import { delay } from '../../utils/delay';
+import { getClient } from '../../utils/client';
+import { async } from "rxjs";
+
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -238,7 +240,6 @@ const Game = () => {
     setBalance(walletBalance);  
   }
 
-
   useEffect(() => {
     loadMapData().then((csv) => {
       setRenderMapData(csv);
@@ -247,6 +248,21 @@ const Game = () => {
     getBalance()
   }, []);
 
+  // useEffect(() => {
+  //   const getClientFun = async () => {
+  //     try {
+  //       let client = await getClient(network.privateKey, network.walletClient?.chain?.rpcUrls?.default?.http[0])
+  //       console.log('client', client)
+  //       client.on('channel.mssp', (e) => {
+  //         console.log('channel.mssp', e)
+  //       });
+
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   getClientFun()
+  // }, []);
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     // return;
@@ -364,6 +380,13 @@ const Game = () => {
       try {
         curPlayer.waiting = true;
         await goHome();
+        if (curPlayer.oreBalance > 0) {
+          console.log('submitGem')
+          setGotBox({oreBalance: curPlayer.oreBalance});
+          await submitGem();
+          setModalType('submitGem');
+          setModalVisible(true);
+        }
         curPlayer.waiting = false;
       } catch (error) {
         console.log(error)
@@ -395,13 +418,6 @@ const Game = () => {
     setUserInfoVisible(true);
     try {
       goHomeFun();
-      if (curPlayer.oreBalance > 0) {
-        console.log('submitGem')
-        setGotBox({oreBalance: curPlayer.oreBalance});
-        await submitGem();
-        setModalType('submitGem');
-        setModalVisible(true);
-      }
     } catch (error) {
       console.log(error)
     }
