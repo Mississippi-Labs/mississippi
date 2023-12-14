@@ -2,7 +2,7 @@
 
 .mi-home-page {
     min-height: 100vh;
-    background: url("../../assets/img/bg.jpg") no-repeat fixed 100% / 100%;
+    background: url("../../assets/img/bg.jpg") no-repeat fixed 100% / 100% 100%;
 
 
     .index-section {
@@ -54,6 +54,7 @@
         font-family: MISS, Arial, "Microsoft YaHei UI", sans-serif;
         word-spacing: 10px;
         color: #BC8C61;
+        height: 100vh;
         background: rgba(0, 0, 0, 0.6);
 
         .mint-box {
