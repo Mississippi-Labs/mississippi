@@ -24,8 +24,9 @@ import {BLOCK_TIME} from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
 import { getClient } from '../../utils/client';
-import { async } from "rxjs";
+import { getUserPublicProfileRequest } from '@web3mq/client';
 
+let client
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -248,21 +249,70 @@ const Game = () => {
     getBalance()
   }, []);
 
-  // useEffect(() => {
-  //   const getClientFun = async () => {
-  //     try {
-  //       let client = await getClient(network.privateKey, network.walletClient?.chain?.rpcUrls?.default?.http[0])
-  //       console.log('client', client)
-  //       client.on('channel.mssp', (e) => {
-  //         console.log('channel.mssp', e)
-  //       });
 
+  const showMsg = async (msg) => {
+    const userData = await getUserPublicProfileRequest({
+      did_type: 'web3mq',
+      did_value: msg.from,
+      timestamp: Date.now(),
+      my_userid: '',
+    });
+    console.log(userData)
+  }
+
+  // useEffect(() => {
+  //   const groupId = `group:095d747d5e3f09842191d1d9cf98bdd54b23d289`
+  //   const getClientFun = async () => {
+  //     console.log(groupId)
+  //     try {
+  //       client = await getClient(network.privateKey, network.walletClient?.chain?.rpcUrls?.default?.http[0], curPlayer?.name)
+  //       console.log(client)
+  //       const handleEvent = async (event: any) => {
+  //         if (event.type === 'channel.getList') {
+  //           const { channelList = [], activeChannel } = client.channel;
+  //           console.log(channelList, activeChannel)
+  //           let channel = channelList.find((item: any) => item.chatid == groupId)
+  //           if (!channelList || !channelList.length || !channel) {
+  //             await client.channel.joinGroup(groupId);
+  //           }
+  //           client.channel.setActiveChannel(channel)
+  //           client.message.sendMessage('hello channel');
+  //         }
+  //         if (event.type === 'message.getList') {
+  //           console.log(client.message.messageList);
+  //           let lastMsg = client.message.messageList[client.message.messageList.length - 1]
+  //           showMsg(lastMsg)
+  //           // let msg = await client.message.getMessageList({
+  //           //   page: 1,
+  //           //   size: 20,
+  //           // }, groupId); 
+  //           // console.log(msg)
+  //         }
+          
+  //       }
+  //       client.on('channel.getList', handleEvent)
+  //       client.on('message.getList', handleEvent);
+  //       client.on('message.delivered', handleEvent);
+  //       client.on('message.send', handleEvent);
+  //       let channelList = await client.channel.queryChannels({
+  //         page: 1,
+  //         size: 100
+  //       })
+  //       let msg = await client.message.getMessageList({
+  //         page: 1,
+  //         size: 2,
+  //       }, groupId); 
   //     } catch (error) {
   //       console.log(error)
   //     }
   //   }
   //   getClientFun()
   // }, []);
+
+  const sendMessage = async (data) => {
+    await client.message.sendMessage(data);
+    console.log(client.message);
+  }
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     // return;

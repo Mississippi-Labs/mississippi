@@ -5,8 +5,8 @@ const password = "password";
 const didType = 'metamask'
 
 
-export const getClient = async (privateKey, rpc) => {
-  privateKey = '0x893614f36825dec2d47395fb943d29780f79b9ef5520b765faa2eb009545f002'
+export const getClient = async (privateKey, rpc, name) => {
+  // privateKey = '0x893614f36825dec2d47395fb943d29780f79b9ef5520b765faa2eb009545f002'
   const provider = new ethers.providers.JsonRpcProvider(rpc);
   const wallet = new ethers.Wallet(privateKey, provider);
   const didValue = wallet.address.toLowerCase();
@@ -44,6 +44,8 @@ export const getClient = async (privateKey, rpc) => {
 
     localStorage.setItem('mainPrivateKey', secretKey);
     localStorage.setItem('mainPublicKey', publicKey);
+    localMainPublicKey = publicKey;
+    localMainPrivateKey = secretKey;
 
     const { signContent } = await Client.register.getRegisterSignContent({
       userid,
@@ -64,23 +66,17 @@ export const getClient = async (privateKey, rpc) => {
       mainPublicKey: publicKey,
       did_pubkey: '',
       didType,
-      nickname: '',
+      nickname: `${wallet.address}_${name}`,
       avatar_url: '',
       signature,
     }
     console.log(params)
     const registerRes = await Client.register.register(params);
+    // const resetRes = await Client.register.resetPassword(params)
     console.log(registerRes);
+    // console.log(resetRes);
   }
 
-  console.log({
-    password,
-    userid,
-    did_value: didValue,
-    did_type: didType,
-    mainPublicKey: localMainPublicKey,
-    mainPrivateKey: localMainPrivateKey,
-  })
   const {
     tempPrivateKey,
     tempPublicKey,
@@ -95,14 +91,6 @@ export const getClient = async (privateKey, rpc) => {
     mainPublicKey: localMainPublicKey,
     mainPrivateKey: localMainPrivateKey,
   });
-
-  console.log({
-    tempPrivateKey,
-    tempPublicKey,
-    pubkeyExpiredTimestamp,
-    mainPrivateKey,
-    mainPublicKey,
-  })
   // 3. You must ensure that the Client.init initialization is complete and that you have a key pair
   const client = Client.getInstance({
     PrivateKey: tempPrivateKey,
