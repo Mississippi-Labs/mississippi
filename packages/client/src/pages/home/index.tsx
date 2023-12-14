@@ -179,12 +179,12 @@ const Home = () => {
         let blockNumber = await network.publicClient.getBlockNumber()
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber >= 1) {
+          if (currentBlockNumber - blockNumber >= 2) {
             clearInterval(interval)
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
-            let revealres = await pluginContract.multRevealNFT(lootTokenIds[lootTokenIds?.length - 1].toString(), userTokenIds[userTokenIds?.length - 1].toString())
+            let revealres = await pluginContract.multRevealNFT(lootTokenIds[0].toString(), userTokenIds[0].toString())
             console.log(revealres, 'revealres')
             await revealres.wait()
             resolve('success')
@@ -228,8 +228,8 @@ const Home = () => {
         navigate('/game');
         return
       }
-      let userTokenId = userTokenIds[userTokenIds?.length - 1].toString()
-      let lootTokenId = lootTokenIds[lootTokenIds?.length - 1].toString()
+      let userTokenId = userTokenIds[0].toString()
+      let lootTokenId = lootTokenIds[0].toString()
   
       // let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       // let url = urls[0]

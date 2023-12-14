@@ -88,6 +88,9 @@ export function createSystemCalls(
     } catch (error) {
       console.log('selectUserNft', error);
       message.error(error.cause.reason || error.cause.details);
+      return {
+        type: 'error'
+      }
     }
   }
 
