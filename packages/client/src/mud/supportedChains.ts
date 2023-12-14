@@ -15,6 +15,7 @@ import { sepolia, arbitrumGoerli } from 'viem/chains'
 
 arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.publicnode.com'];
 arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.publicnode.com'];
+arbitrumGoerli.indexerUrl = [ 'https://indexer_arb.0xmssp.xyz'];
 
 const testnet = {
   name: "Mississippi testnet",

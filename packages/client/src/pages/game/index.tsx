@@ -144,7 +144,7 @@ const Game = () => {
         let lastBattleTime = playerItem.lastBattleTime
         let diff = now - lastBattleTime
         let diffHp = diff * (playerItem.maxHp / 1000)
-        playerItem.hp = playerItem.hp + diffHp
+        playerItem.hp = Math.floor(playerItem.hp + diffHp)
         if (playerItem.hp > playerItem.maxHp) {
           playerItem.hp = playerItem.maxHp
         }
