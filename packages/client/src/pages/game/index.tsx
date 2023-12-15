@@ -73,6 +73,7 @@ const Game = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [gotBox, setGotBox] = useState(null);
+  const [msgMap, setMsgMap] = useState({});
 
   const curId = account;
 
@@ -270,14 +271,20 @@ const Game = () => {
 
 
   const showMsg = async (msg) => {
-    // console.log(msg)
-    // const userData = await getUserPublicProfileRequest({
-    //   did_type: 'web3mq',
-    //   did_value: msg.from,
-    //   timestamp: Date.now(),
-    //   my_userid: '',
-    // });
-    // console.log(userData)
+    const userData = await getUserPublicProfileRequest({
+      did_type: 'web3mq',
+      did_value: msg.senderId,
+      timestamp: Date.now(),
+      my_userid: '',
+    });
+    const addr = userData?.data?.wallet_address?.toLowerCase()
+    console.log(addr)
+    msgMap[addr] = {
+      content: msg.content,
+      time: msg.timestamp < 1672502400000 ? msg.timestamp * 1000 : msg.timestamp
+    }
+    setMsgMap({ ...msgMap });
+    console.log(msg, 'show')
     
     let playerIndex = playerList.current.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
     let player = playerList.current[playerIndex]
@@ -308,7 +315,7 @@ const Game = () => {
             setClientData(client)
           }
           if (event.type === 'message.getList') {
-            console.log(client.message.messageList);
+            console.log(client.message.messageList, 'message.getList');
             
             let lastMsg = client.message.messageList[client.message.messageList.length - 1]
             showMsg(lastMsg)
@@ -322,8 +329,8 @@ const Game = () => {
             console.log(event)
           }
           if (event.type === 'message.send') {
-            console.log(event)
-            console.log(client.message.messageList);
+            let lastMsg = client.message.messageList[client.message.messageList.length - 1]
+            showMsg(lastMsg)
           }
           
         }
@@ -589,7 +596,8 @@ const Game = () => {
         setStartBattle,
         isMovablePlayer,
         onMoveToDelivery,
-        battles: BattleListData
+        battles: BattleListData,
+        msgMap
       }}
     >
       <div className="mi-game" tabIndex={0}>

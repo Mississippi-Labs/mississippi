@@ -20,6 +20,7 @@ import {
   isValidPlayer,
   updatePlayerPosition
 } from '@/utils/player';
+import PIXIMsg from '@/components/PIXIMsg';
 
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -29,7 +30,7 @@ const { cellSize, visualWidth, visualHeight } = MapConfig;
 const PIXIAPP = () => {
 
   const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
-    onMoveToDelivery, onPlayerMove, setStartBattle, blockTime = 1500 } = useContext(GameContext);
+    onMoveToDelivery, onPlayerMove, setStartBattle, blockTime = 1500, msgMap } = useContext(GameContext);
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -284,7 +285,13 @@ const PIXIAPP = () => {
             data={treasureChest}
             openingBox={openingBox}
           />
-          <PIXIPlayers data={renderPlayers} huntingPlayerId={huntingPlayerId} playerUpdateTime={playerUpdateTime}/>
+          <PIXIPlayers
+            data={renderPlayers}
+            huntingPlayerId={huntingPlayerId}
+            playerUpdateTime={playerUpdateTime}
+            msgMap={msgMap}
+          />
+          <PIXIMsg players={renderPlayers} msgMap={msgMap}/>
           <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
         </Container>
       </Stage>

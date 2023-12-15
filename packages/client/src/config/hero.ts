@@ -282,3 +282,5 @@ export const EffectCfg = {
     height: 265
   }
 }
+
+export const MsgShowTime = 10;
