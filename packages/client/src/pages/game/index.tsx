@@ -73,6 +73,7 @@ const Game = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
   const [gotBox, setGotBox] = useState(null);
+  const [msgMap, setMsgMap] = useState({});
 
   const curId = account;
 
@@ -270,7 +271,13 @@ const Game = () => {
 
 
   const showMsg = async (msg) => {
-    console.log(msg)
+    const addr = msg.username.split('_')[0];
+    msgMap[addr] = {
+      content: msg.content,
+      time: Date.now(),
+    }
+    setMsgMap({ ...msgMap });
+    console.log(msg, 'show')
     // const userData = await getUserPublicProfileRequest({
     //   did_type: 'web3mq',
     //   did_value: msg.from,
@@ -308,7 +315,7 @@ const Game = () => {
             setClientData(client)
           }
           if (event.type === 'message.getList') {
-            console.log(client.message.messageList);
+            console.log(client.message.messageList, 'message.getList');
             
             let lastMsg = client.message.messageList[client.message.messageList.length - 1]
             showMsg(lastMsg)
@@ -588,7 +595,8 @@ const Game = () => {
         setStartBattle,
         isMovablePlayer,
         onMoveToDelivery,
-        battles: BattleListData
+        battles: BattleListData,
+        msgMap
       }}
     >
       <div className="mi-game" tabIndex={0}>

@@ -1,4 +1,6 @@
 import { IPlayer } from '@/components/PIXIPlayers/Player';
+import { IMsgMap } from '@/components/PIXIPlayers';
+import { MsgShowTime } from '@/config/hero';
 
 export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {
   const updateX = player.x - next.x;
@@ -48,4 +50,11 @@ export const createPathInterpolator = (path, steps = 24) => {
 
 export const isValidPlayer = (player: IPlayer) => {
   return player.state === 2;
+}
+
+export const getValidMsgContent = (addr: string, msgMap: IMsgMap) => {
+  if (msgMap[addr] && (Date.now() - msgMap[addr].time < MsgShowTime * 1000)) {
+    return msgMap[addr].content;
+  }
+  return '';
 }
