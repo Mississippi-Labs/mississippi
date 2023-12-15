@@ -23,7 +23,7 @@
     "@pixi/react": "^7.1.1",
     "@types/node": "^18.15.11",
     "@vitejs/plugin-react": "^4.1.1",
-    "@web3mq/client": "^1.0.25",
+    "@web3mq/client": "1.0.26-beta.1",
     "antd": "^5.12.1",
     "buffer": "^6.0.3",
     "contracts": "workspace:*",

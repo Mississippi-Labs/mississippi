@@ -69,8 +69,8 @@ importers:
         specifier: ^4.1.1
         version: 4.2.1(vite@4.5.1)
       '@web3mq/client':
-        specifier: ^1.0.25
-        version: 1.0.25
+        specifier: 1.0.26-beta.1
+        version: 1.0.26-beta.1
       antd:
         specifier: ^5.12.1
         version: 5.12.1(react-dom@18.2.0)(react@18.2.0)
@@ -2502,8 +2502,8 @@ packages:
       - supports-color
     dev: false
 
-  /@web3mq/client@1.0.25:
-    resolution: {integrity: sha512-VW2zKrP+cdorArfvWyrP/RRmAuvR7zZTF5f/AzkYyG1Chhg5FVJ3YKTgkacKkuA0U+j5nj2J25c0c8nU59Axqg==}
+  /@web3mq/client@1.0.26-beta.1:
+    resolution: {integrity: sha512-FykbXaUB4idG/I/k3MOCFYgQGGdDQJy96mwqtootamtc3CV3o5iX7sxPbgXB0esFVuwwuNTSrudOrq7DobPEIQ==}
     dependencies:
       '@noble/ed25519': 1.7.3
       '@protobuf-ts/plugin': 2.9.3

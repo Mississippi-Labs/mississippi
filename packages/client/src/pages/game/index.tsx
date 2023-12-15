@@ -270,7 +270,7 @@ const Game = () => {
 
 
   const showMsg = async (msg) => {
-    console.log(msg)
+    // console.log(msg)
     // const userData = await getUserPublicProfileRequest({
     //   did_type: 'web3mq',
     //   did_value: msg.from,
@@ -281,13 +281,13 @@ const Game = () => {
     
     let playerIndex = playerList.current.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
     let player = playerList.current[playerIndex]
-    console.log(player, playerList.current)
+    // console.log(player, playerList.current)
     if (player) player.lastMsg = msg.content
     playerList.current[playerIndex] = player
   }
 
   const sendMsg = async (msg) => {
-    console.log(msg)
+    // console.log(msg)
     await clientData.message.sendMessage(`E${msg + 1}`);
   }
 
@@ -323,6 +323,7 @@ const Game = () => {
           }
           if (event.type === 'message.send') {
             console.log(event)
+            console.log(client.message.messageList);
           }
           
         }
@@ -336,7 +337,7 @@ const Game = () => {
         })
         let msg = await client.message.getMessageList({
           page: 1,
-          size: 2,
+          size: 1,
         }, groupId); 
       } catch (error) {
         console.log(error)
