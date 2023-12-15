@@ -26,6 +26,7 @@ import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
 import { getClient } from '../../utils/client';
 import { getUserPublicProfileRequest } from '@web3mq/client';
+import { delay } from '../../utils/delay'
 
 const toObject = (obj) => {
   return JSON.parse(JSON.stringify(obj, (key, value) =>
@@ -77,9 +78,13 @@ const Game = () => {
 
   const mapDataRef = useRef([]);
 
+  const playerList = useRef([])
+
   // getMUDTables();
   // mud bug, if syncProgress not 100, it will return a decimals less 1.
-  let percentage = 0
+  // let percentage = 0
+  const [percentage, setPercentage] = useState(0);
+
 
   const GlobalConfigData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.GlobalConfig));
@@ -161,6 +166,8 @@ const Game = () => {
     })
   });
 
+  playerList.current = PlayersData
+
   const curPlayer = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
   if (curPlayer && curPlayer.state == 0 && percentage == 100) {
     navigate('/');
@@ -220,10 +227,7 @@ const Game = () => {
       setBattleId(battle.id)
     }
     setStartBattleData(true);
-  }
-
-  percentage = 100
-  
+  }  
   const getCollectionsFun = async (box: any) => {
     setGotBox(box);
     setModalType('getCollections');
@@ -248,8 +252,19 @@ const Game = () => {
       setRenderMapData(csv);
       mapDataRef.current = csv;
     });
-    getBalance()
+    getBalance();
   }, []);
+
+  useEffect(() => {
+    const setP = async () => {
+      await delay(400)
+      setPercentage(100);
+    }
+    if (GlobalConfigData.length && percentage < 100) {
+      setP()
+    }
+    
+  }, [GlobalConfigData]);
 
   const [clientData, setClientData] = useState(null)
 
@@ -264,10 +279,11 @@ const Game = () => {
     // });
     // console.log(userData)
     
-    let playerIndex = PlayersData.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
-    let player = PlayersData[playerIndex]
-    player.lastMsg = msg.content
-    PlayersData[playerIndex] = player
+    let playerIndex = playerList.current.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
+    let player = playerList.current[playerIndex]
+    console.log(player, playerList.current)
+    if (player) player.lastMsg = msg.content
+    playerList.current[playerIndex] = player
   }
 
   const sendMsg = async (msg) => {
