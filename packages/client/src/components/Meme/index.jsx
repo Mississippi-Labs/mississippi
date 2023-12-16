@@ -29,7 +29,7 @@ const Meme = (props) => {
   return (
     <div className='meme' style={{maxHeight: isShowAll ? '210px' : '70px'}}>
       <div className='bg' style={{height: isShowAll ? 'auto' : '30px'}}>
-        <img src="/assets/img/meme/meme.png" alt="" />
+        <img src="/assets/img/meme/meme.svg" alt="" />
         <div className="btns">
           {
             arr.map((item, index) => (
@@ -38,7 +38,7 @@ const Meme = (props) => {
           }
         </div>
       </div>
-      <div className='show-all' style={{transform: isShowAll ? 'rotate(180deg)' : 'rotate(0deg)'}} onClick={changeShow}>
+      <div className='show-all' style={{transform: isShowAll ? 'rotate(0deg)' : 'rotate(180deg)'}} onClick={changeShow}>
         <img src='/assets/img/meme/arrow.svg' alt='' />
       </div>
     </div>
