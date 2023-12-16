@@ -57,7 +57,7 @@ const PIXIMsg = (props: IProps) => {
         players.filter(player => !isDelivery(player) && getValidMsgContent(player?.addr?.toLocaleLowerCase(), msgMap)).map((player) => (
           <Container position={[player.x * cellSize, player.y * cellSize]} key={player.addr}>
             <Sprite
-              image={'/assets/img/meme/box.svg'}
+              image={'/assets/img/meme/box.png'}
               width={56}
               height={50}
               x={cellSize + 18}
