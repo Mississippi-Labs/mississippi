@@ -278,7 +278,6 @@ const Game = () => {
       my_userid: '',
     });
     const addr = userData?.data?.wallet_address?.toLowerCase()
-    console.log(addr)
     msgMap[addr] = {
       content: msg.content,
       time: msg.timestamp < 1672502400000 ? msg.timestamp * 1000 : msg.timestamp

@@ -8,24 +8,41 @@
   border-radius: 10px;
   border: 10px solid #BC8C61;
   background: #FCBD80;
-  padding: 5px 40px 10px 10px;
+  padding: 10px 40px 10px 10px;
   box-sizing: border-box;
   max-height: 70px;
   transition: all 0.3s inherit;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   font-size: 0;
   overflow: hidden;
-  .meme-item {
-    margin-right: 5px;
-    margin-top: 5px;
-    cursor: pointer;
+  .bg {
+    width: 345px;
+    height: auto;
+    overflow: hidden;
+    position: relative;
     img {
-      width: 30px;
-      height: 30px;
+      width: 100%;
+      height: auto;
     }
+    .btns {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  }
+  .meme-item {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    margin-right: 2px;
+    margin-bottom: 5px;
   }
   .show-all {
     position: absolute;
