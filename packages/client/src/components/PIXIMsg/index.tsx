@@ -30,14 +30,12 @@ const PIXIMsg = (props: IProps) => {
     // e 分割
     let msgArr = msg.split('E');
     let index = msgArr[1] - 1;
-    console.log('index', index);
     //  一行10个 取第n个图
     let x = index % 10;
     let y = Math.floor(index / 10);
     // 图片宽度30，间隔5 取第n个坐标
     x = x * 35;
     y = y * 35;
-    console.log('x', x);
     let sheet;
     sheet = PIXI.Texture.from(assets.current);
     let rectangle = new PIXI.Rectangle(x, y, 30, 30);
