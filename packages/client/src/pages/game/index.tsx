@@ -271,30 +271,29 @@ const Game = () => {
 
 
   const showMsg = async (msg) => {
-    const addr = msg.username.split('_')[0];
+    const userData = await getUserPublicProfileRequest({
+      did_type: 'web3mq',
+      did_value: msg.senderId,
+      timestamp: Date.now(),
+      my_userid: '',
+    });
+    const addr = userData?.data?.wallet_address?.toLowerCase()
     msgMap[addr] = {
       content: msg.content,
-      time: Date.now(),
+      time: msg.timestamp < 1672502400000 ? msg.timestamp * 1000 : msg.timestamp
     }
     setMsgMap({ ...msgMap });
     console.log(msg, 'show')
-    // const userData = await getUserPublicProfileRequest({
-    //   did_type: 'web3mq',
-    //   did_value: msg.from,
-    //   timestamp: Date.now(),
-    //   my_userid: '',
-    // });
-    // console.log(userData)
     
     let playerIndex = playerList.current.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
     let player = playerList.current[playerIndex]
-    console.log(player, playerList.current)
+    // console.log(player, playerList.current)
     if (player) player.lastMsg = msg.content
     playerList.current[playerIndex] = player
   }
 
   const sendMsg = async (msg) => {
-    console.log(msg)
+    // console.log(msg)
     await clientData.message.sendMessage(`E${msg + 1}`);
   }
 
@@ -329,7 +328,8 @@ const Game = () => {
             console.log(event)
           }
           if (event.type === 'message.send') {
-            console.log(event)
+            let lastMsg = client.message.messageList[client.message.messageList.length - 1]
+            showMsg(lastMsg)
           }
           
         }
@@ -343,7 +343,7 @@ const Game = () => {
         })
         let msg = await client.message.getMessageList({
           page: 1,
-          size: 2,
+          size: 1,
         }, groupId); 
       } catch (error) {
         console.log(error)
