@@ -21,6 +21,7 @@ import {
   updatePlayerPosition
 } from '@/utils/player';
 import PIXIMsg from '@/components/PIXIMsg';
+import MiniMap from '@/components/MiniMap';
 
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -31,6 +32,7 @@ const PIXIAPP = () => {
 
   const { openingBox, simpleMapData, players, curAddr, showUserInfo, openTreasureChest, treasureChest, isMovablePlayer,
     onMoveToDelivery, onPlayerMove, setStartBattle, blockTime = 1500, msgMap } = useContext(GameContext);
+
   const [previewPaths, setPreviewPaths] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0});
 
@@ -42,11 +44,13 @@ const PIXIAPP = () => {
   const [clickedPlayers, setClickedPlayers] = useState([]);
   const [activePlayerId, setActivePlayerId] = useState('');
   const [huntingPlayerId, setHuntingActivePlayerId] = useState('');
+  const [miniMapVisible, setMiniMapVisible] = useState(false);
 
   const renderPlayersRef = useRef<IPlayer[]>([]);
   const [playerUpdateTime, setPlayerUpdateTime] = useState(0);
   const renderPlayers = renderPlayersRef.current;
-  const curPlayer = renderPlayers.find(item => item.addr === curAddr)
+  const curPlayer = renderPlayers.find(item => item.addr === curAddr);
+
 
   const moveTasks = useRef([]);
   const clickedCoordinate = useRef({ x: -1, y : -1})
@@ -141,6 +145,13 @@ const PIXIAPP = () => {
     document.body.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       return false;
+    });
+
+    document.body.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        console.log('tab')
+        setMiniMapVisible((prevState => !prevState));
+      }
     })
   }, []);
 
@@ -296,6 +307,7 @@ const PIXIAPP = () => {
         </Container>
       </Stage>
 
+      <MiniMap curPlayer={curPlayer} visible={miniMapVisible}/>
       {
         menuVisible && (
           <div className="mi-cell-user-menu" style={menuPosition}>
