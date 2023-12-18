@@ -9,7 +9,6 @@ import { ICoordinate } from '@/components/PIXIMap';
 
 interface IProps {
   curPlayer: IPlayer;
-  visible: boolean;
 }
 
 const size = 10;
@@ -71,10 +70,10 @@ const MemoMap = React.memo(function InnerMiniMap() {
 
 const MiniMap = (props: IProps) => {
 
-  const { curPlayer, visible } = props;
+  const { curPlayer } = props;
 
   return (
-    <div className={`mini-map-wrapper ${visible ? '' : 'hidden'}`}>
+    <div className={`mini-map-wrapper`}>
       <Stage
         width={MAP_CFG[0].length * size}
         height={MAP_CFG.length * size}

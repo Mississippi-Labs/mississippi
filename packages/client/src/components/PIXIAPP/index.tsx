@@ -307,7 +307,9 @@ const PIXIAPP = () => {
         </Container>
       </Stage>
 
-      <MiniMap curPlayer={curPlayer} visible={miniMapVisible}/>
+      {
+        miniMapVisible && <MiniMap curPlayer={curPlayer} />
+      }
       {
         menuVisible && (
           <div className="mi-cell-user-menu" style={menuPosition}>
