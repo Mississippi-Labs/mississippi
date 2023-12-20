@@ -98,4 +98,107 @@
             }
         }
     }
+
+    .dialog-user {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: 100%;
+
+        .username {
+            font-size: 16px;
+            color: #5D2E1C;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        dl {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+
+            dt {
+                margin-right: 10px;
+                color: #BC8C61;
+            }
+
+            dd {
+                color: #fff;
+            }
+        }
+    }
+
+    .dialog-opt {
+        display: flex;
+        justify-content: center;
+
+        button {
+            margin: 0 10px;
+            width: 128px;
+            height: 48px;
+            line-height: 54px;
+        }
+    }
+
+    .ffa-battle-dialog {
+        position: fixed;
+        width: 860px;
+        height: 380px;
+        left: 50%;
+        top: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        background: url("../../assets/img/user_bg.png") no-repeat center / 100% 100%;
+        outline: 1000px solid rgba(0, 0, 0, 0.5);
+
+        .battle-user-info {
+            background-color: #ddc9b2;
+            border: 5px solid #6f391e;
+            border-radius: 10px;
+            height: 69px;
+            position: fixed;
+            top: 40px;
+            width: 316px;
+            padding: 10px;
+
+            &.player1 {
+                left: 40px;
+            }
+
+            &.player2 {
+                right: 40px;
+            }
+
+            .battle-user-info-detail {
+                display: flex;
+                color: #000;
+                font-size: 10px;
+
+                .username {
+                    flex: 1;
+                }
+
+                & > div:not(:first-child) {
+                    margin-left: 10px;
+                }
+            }
+
+            .hp-wrapper {
+                margin-top: 4px;
+                border: 3px solid #2c2c2c;
+                border-radius: 6px;
+                height: 22px;
+
+                .hp {
+                    background: #ff6060;
+                    color: #000;
+                    font-size: 10px;
+                    line-height: 22px;
+                    padding-right: 20px;
+                    text-align: right;
+                    height: 100%;
+                }
+            }
+        }
+    }
 }

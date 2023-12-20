@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './styles.scss';
 import Header from './header';
 import UserInfo from './userInfo';
 import fightIcon from '@/assets/img/fight-icon.png';
+import Dialog from '@/pages/ffa/dialog';
+import DuelField from '@/components/DuelField';
+import { playerA, playerB } from '@/mock/data';
 
 const FFA = () => {
 
   const [tab, setTab] = useState('home');
 
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [battleVisible, setBattleVisible] = useState(false);
+  const battleRef = useRef();
 
   return (
     <div className={'ffa-page'}>
@@ -47,7 +53,12 @@ const FFA = () => {
                     <div className="addr">0x34..35</div>
                     <div className="win-count">V2</div>
                     <div className="lose-count">D6</div>
-                    <div className="fight-icon">
+                    <div
+                      className="fight-icon"
+                      onClick={() => {
+                        setDialogVisible(true);
+                      }}
+                    >
                       <img src={fightIcon} alt="fight"/>
                     </div>
                   </li>
@@ -78,6 +89,82 @@ const FFA = () => {
           </div>
         }
       </section>
+
+      <Dialog visible={dialogVisible}>
+        <div className={'dialog-user'}>
+          <div className="dialog-userinfo">
+            <div className="username">AA</div>
+            <dl>
+              <dt>HP</dt>
+              <dd>100</dd>
+            </dl>
+            <dl>
+              <dt>Attack</dt>
+              <dd>100</dd>
+            </dl>
+            <dl>
+              <dt>Defense</dt>
+              <dd>100</dd>
+            </dl>
+            <dl>
+              <dt>Speed</dt>
+              <dd>10</dd>
+            </dl>
+          </div>
+
+          <div className="dialog-opt">
+            <button className="battle-opt mi-btn" onClick={() => setBattleVisible(true)}>Battle</button>
+            <button
+              className="battle-opt mi-btn"
+              onClick={() => {
+                setDialogVisible(false);
+              }}
+            >OK</button>
+
+          </div>
+        </div>
+      </Dialog>
+      {
+        battleVisible && (
+          <div className="ffa-battle-dialog">
+            <div className="battle-user-info player1">
+              <div className="battle-user-info-detail">
+                <div className="username">Alic</div>
+                <div>ATK 10</div>
+                <div>DEF 10</div>
+                <div>SPD 10</div>
+              </div>
+
+              <div className="hp-wrapper">
+                <div className="hp" style={{ width: '50%' }}>100/200</div>
+              </div>
+            </div>
+
+            <div className="battle-user-info player2">
+              <div className="battle-user-info-detail">
+                <div className="username">Bob</div>
+                <div>ATK 10</div>
+                <div>DEF 10</div>
+                <div>SPD 10</div>
+              </div>
+
+              <div className="hp-wrapper">
+                <div className="hp" style={{ width: '50%' }}>120/240</div>
+              </div>
+            </div>
+
+            <DuelField
+              ref={battleRef}
+              leftPlayer={playerA}
+              rightPlayer={playerB}
+              afterAttack={() => {
+                console.log('attack')
+              }}
+            />
+          </div>
+        )
+      }
+
     </div>
   );
 };
