@@ -1,0 +1,28 @@
+.mi-leaderboard {
+  position: fixed;
+  right: 40px;
+  top: 100px;
+  color: #fff;
+  z-index: 999;
+  font-family: MISS;
+  .boxes {
+    font-size: 12px;
+  }
+  .section-title {
+    font-size: 20px;
+    margin: 14px 0;
+  }
+  .leaderboard-item {
+    font-size: 12px;
+    display: flex;
+    margin-top: 8px;
+  }
+  .player-score {
+    margin-right: 8px;
+  }
+
+  .player-name {
+    margin-right: 8px;
+    flex: 1;
+  }
+}

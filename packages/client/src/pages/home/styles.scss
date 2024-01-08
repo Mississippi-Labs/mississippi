@@ -1,0 +1,141 @@
+
+
+.mi-home-page {
+    min-height: 100vh;
+    background: url("../../assets/img/bg.jpg") no-repeat fixed 100% / 100% 100%;
+
+
+    .index-section {
+
+        .duck-index {
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            width: 670px;
+        }
+
+        .intro-box {
+            font-family: MISS, sans-serif;
+            word-spacing: 10px;
+            width: 600px;
+            color: #fff;
+
+            h1 {
+                margin: 60px auto 40px;
+                text-align: center;
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+                line-height: 2;
+            }
+
+            .play-btn {
+                display: block;
+                margin: 40px auto;
+                height: 66px;
+                font-size: 16px;
+                padding: 0 30px;
+                box-sizing: border-box;
+            }
+        }
+
+        .section-box {
+            position: relative;
+            width: 1280px;
+            margin: 0 auto;
+        }
+    }
+
+
+    .mint-section {
+        display: flex;
+        align-items: center;
+        font-family: MISS, Arial, "Microsoft YaHei UI", sans-serif;
+        word-spacing: 10px;
+        color: #BC8C61;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+
+        .mint-box {
+            padding-top: 24px;
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mint-title {
+            margin-bottom: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 40px;
+        }
+
+        .mi-btn {
+            display: block;
+            margin: 36px auto;
+            padding: 0 24px;
+            box-sizing: border-box;
+            height: 66px;
+            font-size: 16px;
+        }
+
+    }
+}
+
+.create-wallet-wrapper {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+
+    .create-wallet-content {
+        padding: 20px;
+        font-size: 16px;
+        line-height: 2;
+        font-family: MISS, sans-serif;
+        word-spacing: 10px;
+        text-align: center;
+        color: #5D2E1C;
+    }
+
+    .mint-name {
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 245px;
+            height: 45px;
+            background: url("../../assets/img/btn.png") no-repeat center / 100% 100%;
+        }
+
+        button {
+            font-size: 16px;
+            width: 170px;
+            height: 45px;
+        }
+    }
+
+}
+
+.create-wallet-successful-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+
+    .create-wallet-successful-content {
+        font-size: 24px;
+        font-family: MISS, sans-serif;
+        word-spacing: 10px;
+        color: #e16f39;
+    }
+
+    button {
+        width: 220px;
+        height: 70px;
+        font-size: 16px;
+    }
+}

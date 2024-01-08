@@ -1,0 +1,31 @@
+.mi-treasure-chest {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../../assets/img/treasureChest.png") no-repeat center / 100%;
+
+    .open-loading {
+        position: absolute;
+        bottom: 100%;
+        width: 100%;
+        height: 10px;
+        border: 2px solid;
+        visibility: hidden;
+
+        .progress {
+            width: 0;
+            height: 100%;
+            background: #f00;
+            transition: width 2s;
+        }
+
+        &.opening {
+            visibility: visible;
+            .progress {
+                width: 90%;
+            }
+        }
+    }
+}
