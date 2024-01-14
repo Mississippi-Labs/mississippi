@@ -12,6 +12,7 @@ import indexDuckImg_1 from '@/assets/duck/1.svg';
 import indexDuckImg_2 from '@/assets/duck/2.svg';
 import indexDuckImg_3 from '@/assets/duck/3.svg';
 import indexDuckImg_4 from '@/assets/duck/4.svg';
+import indexDuckImg_5 from '@/assets/duck/5.svg';
 import gemImg from '@/assets/duck/gem.svg';
 import bgImg from '@/assets/img/slate.svg';
 
@@ -57,6 +58,7 @@ const StaticInfo = (props: IProps) => {
               <img src={indexDuckImg_2} alt="" className="duck duck-2"/>
               <img src={indexDuckImg_3} alt="" className="duck duck-3"/>
               <img src={indexDuckImg_4} alt="" className="duck duck-4"/>
+              <img src={indexDuckImg_5} alt="" className="duck duck-5"/>
               <img src={gemImg} alt="" className="gem"/>
             </div>
           </section>

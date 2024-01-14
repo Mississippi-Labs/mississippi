@@ -18,16 +18,19 @@
                 position: absolute;
                 bottom: 0;
                 right: 0;
-                animation: beat-scale 2s infinite;
+                animation: beat-scale .6s infinite;
                 opacity: 0;
                 &.duck-3 {
-                    animation-delay: .5s;
+                    animation-delay: .12s;
                 }
                 &.duck-2 {
-                    animation-delay: 1s;
+                    animation-delay: .24s;
                 }
                 &.duck-1 {
-                    animation-delay: 1.5s;
+                    animation-delay: .36s;
+                }
+                &.duck-5 {
+                    animation-delay: .48s;
                 }
             }
             .gem {
@@ -181,10 +184,10 @@
     0%{
         opacity: 1;
     }
-    25%{
+    20%{
         opacity: 1;
     }
-    26%{
+    21%{
         opacity: 0;
     }
 }
