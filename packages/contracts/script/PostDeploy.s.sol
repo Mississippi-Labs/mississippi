@@ -13,15 +13,17 @@ contract PostDeploy is Script {
   function run(address worldAddress) external {
     // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+    
 
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
     console.log(" ========== PostDeploy  ========== ");
+ 
+    address muser = 0x2428109A9e775E4406fe079132F216dc77117333;
+    address mloot = 0x4A16f2658De79278Bce592258e7e38aB4c222787;
+    address mplugin = 0xcE34c3d4373A094d6e22ab15f0b0C36c771663cb;
 
-    address muser = 0xA183bc858540FFf7bbB69A4053e22f1B055B5451;
-    address mloot = 0xA311087e7B8916608e4323E9A692ab4d8e8FCd56;
-    address mplugin = 0x75C289BDBbEA706748B4147F373AEA997617A1B5;
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 
     IWorld(worldAddress).Init(muser, mloot, mplugin,merkleRoot);
