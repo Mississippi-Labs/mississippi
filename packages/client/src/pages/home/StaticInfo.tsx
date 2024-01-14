@@ -7,7 +7,13 @@ import FAQ from '@/config/faq';
 import imgPlayer from '@/assets/img/player_1.png';
 import imgPlayer2 from '@/assets/img/player_2.png';
 import imgPlayers from '@/assets/img/players.png';
-import indexDuckImg from '@/assets/img/duck_index.svg';
+// import indexDuckImg from '@/assets/img/duck_index.svg';
+import indexDuckImg_1 from '@/assets/duck/1.svg';
+import indexDuckImg_2 from '@/assets/duck/2.svg';
+import indexDuckImg_3 from '@/assets/duck/3.svg';
+import indexDuckImg_4 from '@/assets/duck/4.svg';
+import gemImg from '@/assets/duck/gem.svg';
+import bgImg from '@/assets/img/slate.svg';
 
 import lxDaoIcon from '@/assets/img/lxdao.png';
 import web3Icon from '@/assets/img/web3.png';
@@ -30,20 +36,29 @@ const StaticInfo = (props: IProps) => {
           <section className={"mi-section index-section"}>
             <div className="section-box">
               <div className="intro-box">
-                <h1 className={'intro-title'}>Welcome to Mississippi</h1>
-                <p>
-                  An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
+                <img src={bgImg} alt="" className="bg-img"/>
+                <div className='intro-main'>
+                  <h1 className={'intro-title'}>Welcome to Mississippi</h1>
+                  <p>
+                    An ancient cave, cursed by its creator, opens intermittently as if alive <br/><br/>
 
-                  The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
+                    The cavern is rich in energy gems that prudent adventurers can take, while those who miss the time to leave due to greed will be trapped in the cavern forever <br/><br/>
 
-                  The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
+                    The Mississippi Company executives saw the value of the caves and decided to monopolize them <br/><br/>
 
-                  Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
-                </p>
-                <button className="play-btn mi-btn" onClick={onPlay}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                    Just when the plan was about to succeed, a group of crazy duck adventurers stormed into the cave...
+                  </p>
+                  <button className="play-btn mi-btn" onClick={onPlay}>{(!isOpen) ? 'Please wait for open demo day' : 'PLAY NOW'}</button>
+                </div>
               </div>
             </div>
-            <img src={indexDuckImg} alt="duck" className={'duck-index'}/>
+            <div className={'img-wrap'}>
+              <img src={indexDuckImg_1} alt="" className="duck duck-1"/>
+              <img src={indexDuckImg_2} alt="" className="duck duck-2"/>
+              <img src={indexDuckImg_3} alt="" className="duck duck-3"/>
+              <img src={indexDuckImg_4} alt="" className="duck duck-4"/>
+              <img src={gemImg} alt="" className="gem"/>
+            </div>
           </section>
 
           <section className={"mi-section mi-section2"}>

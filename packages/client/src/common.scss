@@ -57,6 +57,11 @@ button {
     unicode-range: U+0025-00FF;
 }
 
+@font-face {
+    font-family: Arbutus;
+    src: url('./assets/font/Arbutus.ttf');
+}
+
 button[disabled] {
     cursor: not-allowed;
 }

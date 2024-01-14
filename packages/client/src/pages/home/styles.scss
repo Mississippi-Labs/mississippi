@@ -7,28 +7,65 @@
 
     .index-section {
 
-        .duck-index {
+        .img-wrap {
             position: absolute;
             bottom: 0;
-            right: 20px;
+            right: 0px;
             width: 670px;
+            .duck {
+                width: 100%;
+                height: auto;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                animation: beat-scale 2s infinite;
+                opacity: 0;
+                &.duck-3 {
+                    animation-delay: .5s;
+                }
+                &.duck-2 {
+                    animation-delay: 1s;
+                }
+                &.duck-1 {
+                    animation-delay: 1.5s;
+                }
+            }
+            .gem {
+                position: absolute;
+                bottom: -80px;
+                right: 35%;
+            }
         }
 
         .intro-box {
-            font-family: MISS, sans-serif;
-            word-spacing: 10px;
-            width: 600px;
+            font-family: Arbutus, sans-serif;
+            word-spacing: 0px;
+            width:765px;
             color: #fff;
+            position: relative;
+            .intro-main {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 9;
+                padding: 140px 113px 0;
+                box-sizing: border-box;
+            }
 
             h1 {
-                margin: 60px auto 40px;
                 text-align: center;
-                font-size: 28px;
+                font-size: 40px;
+                font-family: Arbutus;
+                line-height: normal;
+                margin-bottom: 30px;
             }
 
             p {
-                font-size: 16px;
-                line-height: 2;
+                font-family: Arbutus;
+                font-size: 20px;
+                line-height: normal;
             }
 
             .play-btn {
@@ -137,5 +174,17 @@
         width: 220px;
         height: 70px;
         font-size: 16px;
+    }
+}
+
+@keyframes beat-scale {
+    0%{
+        opacity: 1;
+    }
+    25%{
+        opacity: 1;
+    }
+    26%{
+        opacity: 0;
     }
 }
