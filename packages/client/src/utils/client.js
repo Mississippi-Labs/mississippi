@@ -21,7 +21,6 @@ export const getClient = async (privateKey, rpc, name) => {
     did_type: 'eth',
   });
   console.log(userid, userExist);
-
   let localMainPrivateKey = localStorage.getItem('mainPrivateKey') || '';
   let localMainPublicKey = localStorage.getItem('mainPublicKey') || '';
   if (!userExist) {

@@ -315,14 +315,8 @@ const Game = () => {
           }
           if (event.type === 'message.getList') {
             console.log(client.message.messageList, 'message.getList');
-            
             let lastMsg = client.message.messageList[client.message.messageList.length - 1]
             showMsg(lastMsg)
-            // let msg = await client.message.getMessageList({
-            //   page: 1,
-            //   size: 20,
-            // }, groupId); 
-            // console.log(msg)
           }
           if (event.type === 'message.delivered') {
             console.log(event)
@@ -351,11 +345,6 @@ const Game = () => {
     }
     getClientFun()
   }, []);
-
-  const sendMessage = async (data) => {
-    await client.message.sendMessage(data);
-    console.log(client.message);
-  }
 
   const finishBattle = (winner: any, attacker: any, defender: any) => {
     // return;
