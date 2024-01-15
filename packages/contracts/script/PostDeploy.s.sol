@@ -19,10 +19,10 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     console.log(" ========== PostDeploy  ========== ");
- 
-    address muser = 0x2428109A9e775E4406fe079132F216dc77117333;
-    address mloot = 0x4A16f2658De79278Bce592258e7e38aB4c222787;
-    address mplugin = 0xcE34c3d4373A094d6e22ab15f0b0C36c771663cb;
+
+    address muser = 0x77043504FbC54084Da8Eb3594e13199733EA8ed6;
+    address mloot = 0xF80DC0DEB5d0b636Ed5e84d1359Eb2C6E4dD141D;
+    address mplugin = 0x28f150f469639dA393e76c5D87ba8F83C0292f01;
 
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 
