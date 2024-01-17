@@ -42,11 +42,11 @@ const redstone = {
   nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
   rpcUrls: {
     default: {
-      http: ["https://redstone.0xmssp.xyz"],
+      http: ["https://rpc.holesky.redstone.xyz"],
       webSocket: ["https://rpc.holesky.redstone.xyz"],
     },
     public: {
-      http: ["https://redstone.0xmssp.xyz"],
+      http: ["https://rpc.holesky.redstone.xyz"],
       webSocket: ["https://rpc.holesky.redstone.xyz"],
     },
   }
