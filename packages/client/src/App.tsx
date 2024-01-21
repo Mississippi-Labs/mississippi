@@ -22,7 +22,6 @@ import HeroEdit from '@/pages/heroEdit';
 import PIXIAPP from '@/components/PIXIAPP';
 import { useEffect } from 'react';
 import TestBattle from '@/pages/testBattle';
-import FFA from '@/pages/ffa';
 
 export const App = () => {
   return (
@@ -36,7 +35,6 @@ export const App = () => {
             <Route path="heroEdit" element={<HeroEdit />} />
             <Route path="app" element={<PIXIAPP />} />
             <Route path="testBattle" element={<TestBattle />} />
-            <Route path="ffa" element={<FFA />} />
           </Route>
         </Routes>
       </BrowserRouter>
