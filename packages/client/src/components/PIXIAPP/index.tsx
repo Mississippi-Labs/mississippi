@@ -309,6 +309,9 @@ const PIXIAPP = () => {
     }
   }
 
+  const curPlayerPosition = curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5];
+
+
   return (
     <div style={{ position: 'relative' }}>
       <Stage
@@ -329,10 +332,10 @@ const PIXIAPP = () => {
             data={renderPlayers}
             huntingPlayerId={huntingPlayerId}
             playerUpdateTime={playerUpdateTime}
-            msgMap={msgMap}
+            curPlayerPosition={curPlayerPosition}
           />
           <PIXIMsg players={renderPlayers} msgMap={msgMap}/>
-          <PIXIFog position={curPlayer ? [curPlayer.x, curPlayer.y] : [4, 5]}/>
+          <PIXIFog position={curPlayerPosition}/>
         </Container>
       </Stage>
 
