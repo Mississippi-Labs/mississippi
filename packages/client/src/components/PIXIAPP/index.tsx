@@ -22,6 +22,7 @@ import {
 } from '@/utils/player';
 import PIXIMsg from '@/components/PIXIMsg';
 import MiniMap from '@/components/MiniMap';
+import showFPS from '@/utils/fps';
 
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -110,13 +111,14 @@ const PIXIAPP = () => {
   }
 
   const animateMove = (player, paths, onFinish) => {
+    console.log('moving', player.name);
     let index = 0;
     const moveTime = calculateMoveTime(paths, blockTime);
     const linePath = createPathInterpolator(paths, ~~(moveTime / 16));
-    const interval = setInterval(() => {
+    const _move = () => {
       const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
       if (!movingPlayer) {
-        clearInterval(interval);
+        // clearInterval(interval);
         return;
       }
       if (movingPlayer.addr === curPlayer?.addr) {
@@ -131,10 +133,35 @@ const PIXIAPP = () => {
         movingPlayer.action = 'idle';
         movingPlayer.moving = false;
         setPlayerUpdateTime(Date.now());
-        clearInterval(interval);
-        onFinish?.()
+        // clearInterval(interval);
+        onFinish?.();
+        return;
       }
-    }, 16)
+      requestAnimationFrame(_move);
+    };
+    _move();
+    // const interval = setInterval(() => {
+    //   const movingPlayer = renderPlayers.find(item => item.addr === player.addr);
+    //   if (!movingPlayer) {
+    //     clearInterval(interval);
+    //     return;
+    //   }
+    //   if (movingPlayer.addr === curPlayer?.addr) {
+    //     setOffset(calculateOffset(linePath[index]));
+    //   }
+    //   updatePlayerPosition(movingPlayer, linePath[index]);
+    //   movingPlayer.action = 'run';
+    //   movingPlayer.moving = true;
+    //   setPlayerUpdateTime(Date.now());
+    //   index++;
+    //   if (index >= linePath.length) {
+    //     movingPlayer.action = 'idle';
+    //     movingPlayer.moving = false;
+    //     setPlayerUpdateTime(Date.now());
+    //     clearInterval(interval);
+    //     onFinish?.()
+    //   }
+    // }, 16)
 
   }
 
@@ -149,10 +176,12 @@ const PIXIAPP = () => {
 
     document.body.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
-        console.log('tab')
         setMiniMapVisible((prevState => !prevState));
       }
-    })
+    });
+    if (location.hostname === 'localhost') {
+      showFPS.go();
+    }
   }, []);
 
   const createPreviewPath = (coordinate: ICoordinate) => {
