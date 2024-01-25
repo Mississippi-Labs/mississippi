@@ -25,7 +25,7 @@ const PIXIPlayers = (props: IProps) => {
       {
         data.filter(isRenderable).map((player, index) => {
 
-          return <Player key={index} hpVisible hunted={huntingPlayerId === player.addr} {...player}/>;
+          return <Player key={player.addr} hpVisible hunted={huntingPlayerId === player.addr} {...player}/>;
         })
       }
     </Container>
