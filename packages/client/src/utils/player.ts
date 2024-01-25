@@ -1,5 +1,5 @@
 import { IPlayer } from '@/components/PIXIPlayers/Player';
-import { IMsgMap } from '@/components/PIXIPlayers';
+import { IMsgMap } from '@/components/PIXIMsg';
 import { MsgShowTime } from '@/config/hero';
 
 export const updatePlayerPosition = (player: IPlayer, next: IPlayer) => {

@@ -20,3 +20,4 @@ packages/contracts/types/*
 !packages/contracts/out/IWorld.sol/
 
 packages/client/dist/*
+.idea/*

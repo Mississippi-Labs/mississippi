@@ -123,12 +123,25 @@ const Game = () => {
       return item
     }).sort((a, b) => b.oreBalance - a.oreBalance);
   });
+
+  const lootCache = useRef({});
   const PlayersData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.Player));
     return records.map((e:any) => {
       let playerItem = Object.assign(e.value, {addr: e.key.addr})
       //LootList1Data
-      let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {}
+      let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {};
+      // if (!lootCache.current[loot.addr]) {
+      //   // playerItem.equip = lootCache.current[loot.addr]
+      //   let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      //   let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      //   let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      //   lootCache.current[loot.addr] = playerItem.equip = {
+      //     clothes,
+      //     handheld,
+      //     head,
+      //   }
+      // }
       let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")

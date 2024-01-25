@@ -9,7 +9,7 @@ import * as PIXI from 'pixi.js';
 
 const { cellSize } = MapConfig;
 
-interface IMsgMap {
+export interface IMsgMap {
   [key: string]: {
     content: string;
     time: number;
