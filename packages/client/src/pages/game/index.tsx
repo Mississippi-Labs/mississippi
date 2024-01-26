@@ -124,24 +124,12 @@ const Game = () => {
     }).sort((a, b) => b.oreBalance - a.oreBalance);
   });
 
-  const lootCache = useRef({});
   const PlayersData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.Player));
     return records.map((e:any) => {
       let playerItem = Object.assign(e.value, {addr: e.key.addr})
       //LootList1Data
       let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {};
-      // if (!lootCache.current[loot.addr]) {
-      //   // playerItem.equip = lootCache.current[loot.addr]
-      //   let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      //   let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      //   let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      //   lootCache.current[loot.addr] = playerItem.equip = {
-      //     clothes,
-      //     handheld,
-      //     head,
-      //   }
-      // }
       let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
       let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
@@ -224,6 +212,17 @@ const Game = () => {
       return battleItem
     });
   });
+  const attackerAddrList = BattleListData?.filter(item => !item.isEnd).map(item => item.attacker) ?? [];
+  const attackerPoints = attackerAddrList.map(addr => {
+    const attacker = PlayersData.find(player => player.addr === addr);
+    if (attacker) {
+      return {
+        x: attacker.x,
+        y: attacker.y,
+      }
+    }
+    return null;
+  }).filter(Boolean);
 
   const battle:any = BattleListData.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
   
@@ -598,6 +597,7 @@ const Game = () => {
         isMovablePlayer,
         onMoveToDelivery,
         battles: BattleListData,
+        attackerPoints,
         msgMap
       }}
     >
