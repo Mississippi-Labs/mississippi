@@ -12,6 +12,7 @@
             bottom: 0;
             right: 0px;
             width: 670px;
+            height: 670px;
             .duck {
                 width: 100%;
                 height: auto;
@@ -46,13 +47,17 @@
             width:765px;
             color: #fff;
             position: relative;
+            .bg-img {
+                width:765px;
+                height: 823px;
+            }
             .intro-main {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
-                z-index: 9;
+                z-index: 2;
                 padding: 140px 113px 0;
                 box-sizing: border-box;
             }
