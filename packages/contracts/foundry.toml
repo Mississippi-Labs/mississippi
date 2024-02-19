@@ -68,4 +68,14 @@ eth_rpc_url = "https://linea-goerli.infura.io/v3/8a5edc3264dd435391dad31e754031d
 optimizer = true
 optimizer_runs = 3000
 
+[profile.opbnb-test]
+eth_rpc_url = "https://opbnb-testnet-rpc.bnbchain.org"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.opbnb]
+eth_rpc_url = "https://opbnb-mainnet-rpc.bnbchain.org"
+optimizer = true
+optimizer_runs = 3000
 
