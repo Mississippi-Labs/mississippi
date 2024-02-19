@@ -17,6 +17,7 @@ arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.publicnode.com']
 arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.publicnode.com'];
 arbitrumGoerli.indexerUrl = [ 'https://indexer_arb.0xmssp.xyz/trpc'];
 
+
 const testnet = {
   name: "Mississippi testnet",
   id: 33784,
@@ -52,8 +53,26 @@ const redstone = {
   }
 }
 
+const opBNB = {
+  id: 204,
+  name: 'opBNB Mainnet',
+  network: 'opBNB Mainnet',
+  nativeCurrency: {
+    name: 'BNB',
+    symbol: 'BNB',
+    decimals: 18,
+  },
+  rpcUrls: {
+    public: { 
+      http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+      webSocket: ['https://opbnb-mainnet-rpc.bnbchain.org'],
+    },
+    default: { http: ['https://opbnb-mainnet-rpc.bnbchain.org'], webSocket: ['https://opbnb-mainnet-rpc.bnbchain.org'] },
+  }
+}
+
 /*
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [mudFoundry, latticeTestnet, sepolia, arbitrumGoerli, testnet, redstone];
+export const supportedChains: MUDChain[] = [mudFoundry, latticeTestnet, sepolia, arbitrumGoerli, testnet, redstone, opBNB];

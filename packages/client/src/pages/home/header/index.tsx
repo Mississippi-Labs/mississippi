@@ -119,6 +119,7 @@ const HomeHeader = (props: IProps) => {
               <div className='network-item' onClick={() => changeNetwork(33784)}>Mississippi Testnet</div>
               <div className='network-item' onClick={() => changeNetwork(17001)}>Redstone Testnet</div>
               <div className='network-item' onClick={() => changeNetwork(421613)}>Arbitrum Goerli</div>
+              <div className='network-item' onClick={() => changeNetwork(204)}>opBNB</div>
               
               <div className='network-item' >Starknet(Coming Soon)</div>
               {
@@ -130,8 +131,8 @@ const HomeHeader = (props: IProps) => {
         }
       </div>
       {
-        walletAddress ?
-          <UserAddress address={walletAddress} account={walletBalance + 'ETH'}/>
+        walletAddress ? 
+          <UserAddress address={walletAddress} account={walletBalance + (network?.walletClient?.chain?.id == 204 ? 'BNB' : 'ETH')}/>
           :
           <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY NOW</button>
       }
