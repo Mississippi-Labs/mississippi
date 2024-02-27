@@ -1,0 +1,147 @@
+.home-header {
+  position: fixed;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  padding: 8px 30px 8px 8px;
+  font-family: MISS, sans-serif;
+  //font-family: Arbutus, Arial, sans-serif;
+  background: #020202;
+
+  .home-header-l {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .header-logo {
+    height: 80px;
+  }
+
+  .play-btn {
+    padding: 0px 30px;
+    height: 55px;
+    font-size: 16px;
+  }
+
+  .header-nav {
+    flex: 1;
+
+    .menu-lv1 {
+      display: flex;
+
+      &>li {
+        position: relative;
+      }
+
+      .menu-socials {
+        &::after {
+          content: '';
+          position: absolute;
+          top: 18px;
+          right: 0;
+          width: 21px;
+          height: 12px;
+          transform: rotate(180deg);
+          transition: all 0.3s;
+          background: url("../../../assets/img/btn_3.png");
+        }
+
+        &:hover::after {
+          transform: rotate(0);
+        }
+
+        &:hover {
+          .menu-lv2 {
+            display: block;
+          }
+        }
+      }
+
+    }
+
+    .menu-lv2 {
+      display: none;
+      position: absolute;
+      left: 32px;
+      top: 99%;
+      padding: 10px;
+      width: 384px;
+      border-radius: 8px;
+      background: #412f50;
+
+      li {
+        position: relative;
+
+        img {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+        }
+      }
+
+      a {
+        padding: 0 14px;
+        line-height: 60px;
+        border-radius: 8px;
+
+        &:hover {
+          background: #543f66;
+        }
+      }
+    }
+
+    a {
+      display: block;
+      padding: 0 32px;
+      font-size: 14px;
+      line-height: 46px;
+      color: #fff;
+    }
+  }
+}
+
+.select-network {
+  position: relative;
+  margin-right: 15px;
+  min-width: 330px;
+  .mi-btn {
+    width: 100%;
+  }
+  .mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+  .network-list {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 5px solid #BC8C61;
+    background: #FCBD80;
+    z-index: 999;
+    .network-item {
+      font-size: 14px;
+      line-height: 32px;
+      padding: 8px;
+      box-sizing: border-box;
+      cursor: pointer;
+      color: #5d2e1c;
+      &:hover {
+        background: #f5b676;
+      }
+    }
+  }
+}

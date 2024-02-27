@@ -1,0 +1,198 @@
+
+
+.mi-home-page {
+    min-height: 100vh;
+    background: url("../../assets/img/bg.jpg") no-repeat fixed 100% / 100% 100%;
+
+
+    .index-section {
+
+        .img-wrap {
+            position: absolute;
+            bottom: 0;
+            right: 0px;
+            width: 670px;
+            height: 670px;
+            .duck {
+                width: 100%;
+                height: auto;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                animation: beat-scale .6s infinite;
+                opacity: 0;
+                &.duck-3 {
+                    animation-delay: .12s;
+                }
+                &.duck-2 {
+                    animation-delay: .24s;
+                }
+                &.duck-1 {
+                    animation-delay: .36s;
+                }
+                &.duck-5 {
+                    animation-delay: .48s;
+                }
+            }
+            .gem {
+                position: absolute;
+                bottom: -80px;
+                right: 35%;
+            }
+        }
+
+        .intro-box {
+            font-family: Arbutus, sans-serif;
+            word-spacing: 0px;
+            width:765px;
+            color: #fff;
+            position: relative;
+            .bg-img {
+                width:765px;
+                height: 823px;
+            }
+            .intro-main {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                padding: 140px 113px 0;
+                box-sizing: border-box;
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 40px;
+                font-family: Arbutus;
+                line-height: normal;
+                margin-bottom: 30px;
+            }
+
+            p {
+                font-family: Arbutus;
+                font-size: 20px;
+                line-height: normal;
+            }
+
+            .play-btn {
+                display: block;
+                margin: 40px auto;
+                height: 66px;
+                font-size: 16px;
+                padding: 0 30px;
+                box-sizing: border-box;
+            }
+        }
+
+        .section-box {
+            position: relative;
+            width: 1280px;
+            margin: 0 auto;
+        }
+    }
+
+
+    .mint-section {
+        display: flex;
+        align-items: center;
+        font-family: MISS, Arial, "Microsoft YaHei UI", sans-serif;
+        word-spacing: 10px;
+        color: #BC8C61;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+
+        .mint-box {
+            padding-top: 24px;
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mint-title {
+            margin-bottom: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 40px;
+        }
+
+        .mi-btn {
+            display: block;
+            margin: 36px auto;
+            padding: 0 24px;
+            box-sizing: border-box;
+            height: 66px;
+            font-size: 16px;
+        }
+
+    }
+}
+
+.create-wallet-wrapper {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+
+    .create-wallet-content {
+        padding: 20px;
+        font-size: 16px;
+        line-height: 2;
+        font-family: MISS, sans-serif;
+        word-spacing: 10px;
+        text-align: center;
+        color: #5D2E1C;
+    }
+
+    .mint-name {
+        display: flex;
+        justify-content: space-between;
+
+        input {
+            width: 245px;
+            height: 45px;
+            background: url("../../assets/img/btn.png") no-repeat center / 100% 100%;
+        }
+
+        button {
+            font-size: 16px;
+            width: 170px;
+            height: 45px;
+        }
+    }
+
+}
+
+.create-wallet-successful-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+
+    .create-wallet-successful-content {
+        font-size: 24px;
+        font-family: MISS, sans-serif;
+        word-spacing: 10px;
+        color: #e16f39;
+    }
+
+    button {
+        width: 220px;
+        height: 70px;
+        font-size: 16px;
+    }
+}
+
+@keyframes beat-scale {
+    0%{
+        opacity: 1;
+    }
+    20%{
+        opacity: 1;
+    }
+    21%{
+        opacity: 0;
+    }
+}

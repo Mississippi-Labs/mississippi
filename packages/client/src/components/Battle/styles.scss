@@ -1,0 +1,416 @@
+.mi-battle-wrap {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.mi-battle-content {
+  display: flex;
+  align-items: flex-start;
+  font-family: MISS;
+
+}
+
+.mi-battle {
+  border-radius: 8px;
+  width: 897px;
+
+  .mi-battle-main {
+    border-radius: 7px;
+    background-color: rgba(220, 199, 175, 0.95);
+    box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
+    padding: 24px 20px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .mi-battle-character {
+    height: 380px;
+    background: #fff;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    justify-content: space-between;
+    background: url('../../assets/img/battle/bg.png') no-repeat;
+    background-size: 100% 100%;
+
+    .mi-battle-info-icon {
+      position: absolute;
+    }
+
+    .mi-battle-character-card {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: center;
+      width: 319px;
+      height: 319px;
+      transition: all .3s;
+
+      img {
+        // margin-top: 90px;
+        width: 280px;
+      }
+
+      .mi-battle-character-card-hp {
+        border-radius: 10px;
+        border: 5px solid #6F391E;
+        background: #DDC9B2;
+        padding: 7px 5px;
+        box-sizing: border-box;
+        position: relative;
+        width: 300px;
+        // left: 40px;
+        .user-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #000;
+          font-family: MISS;
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          margin-bottom: 8px;
+        }
+        .hp-wrap {
+          border: 4px solid #2d2d2d;
+          height: 30px;
+          overflow: hidden;
+          border-radius: 6px;
+          width: 280px;
+          position: relative;
+          box-sizing: border-box;
+          .hp-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            width: 100%;
+            line-height: 1;
+            box-sizing: border-box;
+          }
+          
+        }
+        .hp-loss {
+          position: absolute;
+          right: -60px;
+          top: -40px;
+          color: #FFF;
+          font-family: Inter;
+          font-size: 28px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          transform: rotate(-10.07deg);
+          -webkit-text-stroke: 1px #000;
+        }
+        .confirm-info {
+          position: absolute;
+          top: -50px;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            margin-right: 12px;
+            width: 36px;
+            height: 36px;
+          }
+        }
+      }
+
+      .battle-1 {
+        &.attack {
+          transform: translateX(400px);
+        }
+        &.back {
+          transform: translateX(-30px);
+        }
+        img {
+          transform: scaleX(-1);
+        }
+      }
+
+      .battle-2 {
+        &.attack {
+          transform: translateX(-400px);
+        }
+        &.back {
+          transform: translateX(30px);
+        }
+      }
+      .dark-attacker {
+        position: relative;
+        top: 20px;
+        right: 30px;
+        width: 280px;
+        height: 236px;
+      }
+
+      .dark-defender {
+        position: relative;
+        top: 20px;
+        left: 30px;
+        width: 280px;
+        height: 236px;
+      }
+    }
+
+    .mi-battle-character-info {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 0 12px;
+      padding-bottom: 12px;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 26px; /* 162.5% */
+      .character-info {
+        color: #000;
+      }
+    }
+  }
+  .battle-action {
+    margin-top: 14px;
+    font-family: MISS;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: relative;
+    z-index: 9;
+    .action-step {
+      width: 510px;
+      flex: 0 0 510px;
+      height: 108px;
+      border-radius: 10px;
+      background: #6F391E;
+      padding: 10px 22px;
+      box-sizing: border-box;
+      line-height: 2;
+    }
+    .battle-tactics {
+      flex: 1;
+      height: 108px;
+      border-radius: 10px;
+      background: #6F391E;
+      padding: 22px;
+      box-sizing: border-box;
+      margin-left: 20px;
+      .tactics-item {
+        width: 130px;
+        flex: 0 0 130px;
+        height: 26px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        &.bag {
+          color: rgba(217, 217, 217, 0.58);
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  .mi-battle-action {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 7px;
+    background: rgba(220, 199, 175, 0.95);
+    box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
+    padding: 6px 20px 60px;
+    box-sizing: border-box;
+    height: 142px;
+
+    .action {
+      .icon {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        margin-right: 39px;
+        cursor: pointer;
+        .icon-bg {
+          width: 64px;
+          height: 64px;
+        }
+        .icon-btn {
+          width: 64px;
+          height: 64px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+        }
+        &.icon-r {
+          margin-left: 17px;
+          margin-right: 0;
+          .icon-btn {
+            width: 64px;
+            height: 64px;
+          }
+        }
+      }
+      img {
+        width: 64px;
+        height: 64px;
+      }
+
+      .action-title {
+        background: #fff;
+        text-align: center;
+        width: 193px;
+        height: 28px;
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        // line-height: 1;
+        margin-bottom: 7px;
+        border: 1px solid #B47C57;
+        background: #E9D2B8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .action-hint {
+        color: #FFF;
+        text-align: center;
+        text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+        -webkit-text-stroke: 1px #000;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        margin-top: -1px;
+      }
+
+      .confirm-btn {
+        width: 179px;
+        height: 59px;
+        margin: 16px auto;
+        position: relative;
+        cursor: pointer;
+        img {
+          width: 179px;
+          height: 59px;
+        }
+        .confirm-text {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #FFF;
+          text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+          // text-stroke:1px #f00;
+          -webkit-text-stroke: 1px #000;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal; 
+        }
+      }
+    }
+  }
+}
+
+.mi-battle-info {
+  margin-left: 9px;
+  width: 220px;
+  height: 559px;
+  border-radius: 7px;
+  background: #DCC7AF;
+  box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
+  .info-title {
+    padding: 25px 18px 0;
+    box-sizing: border-box;
+    color: #000;
+    font-family: MISS;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .action-section {
+    margin-top: 48px;
+    padding: 0 18px;
+    box-sizing: border-box;
+    .section-title {
+      margin-bottom: 8px;
+      font-family: MISS;
+      color: #000;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: capitalize;
+    }
+    .action-item {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      img {
+        width: 42px;
+        height: 42px;
+      }
+      p {
+        margin-left: 25px;
+        font-family: MISS;
+        color: #000;
+        font-size: 14px;
+        font-weight: 400;
+        text-transform: capitalize;
+      }
+    }
+  }
+  .tactic-section {
+    padding: 0 9px;
+    box-sizing: border-box;
+    margin-top: 55px;
+    .section-title {
+      margin-bottom: 4px;
+      font-family: MISS;
+      color: #000;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: capitalize;
+    }
+    img {
+      width: 26px;
+      height: 26px;
+    }
+    p {
+      color: #000;
+      font-family: Inter;
+      font-size: 26px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      width: 16px;
+      display: flex;
+      align-items: center;
+      margin: 0 7px;
+    }
+  }
+}

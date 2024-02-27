@@ -1,0 +1,11 @@
+.mi-map-fog {
+    position: absolute;
+    z-index: 10;
+    left: -150vw;
+    top: -150vh;
+    width: 300vw;
+    height: 300vh;
+    background: radial-gradient(circle closest-side at 50% 50%, #00000000 300px, #000000ff 64%);
+    pointer-events: none;
+    // display: none;
+}

@@ -1,0 +1,87 @@
+.ffa-userinfo-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .right-main-content {
+        width: 600px;
+    }
+
+    .user-detail-content {
+        display: flex;
+    }
+
+    .user-appearance-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+        width: 338px;
+        height: 338px;
+        background: url("../../../assets/img/user_bg.png") no-repeat center / 100% 100%;
+
+        .user-appearance-box {
+            width: 256px;
+            height: 256px;
+        }
+    }
+
+    .ffa-info-box {
+        border: 5px solid #BAA48B;
+        background: #FFF5E9;
+    }
+
+
+    .user-attr-wrapper {
+        margin-right: 20px;
+        width: 180px;
+        padding: 20px 0;
+        font-size: 13px;
+        line-height: 2;
+
+        dl {
+            min-width: 50%;
+            display: flex;
+        }
+
+        dt {
+            padding-left: 20px;
+            margin-right: 10px;
+            color: #BC8C61;
+        }
+
+        .base-attr {
+            margin-right: 10px;
+            color: #000;
+        }
+
+        &.loaded {
+            .extra-attr {
+                visibility: visible;
+            }
+        }
+
+        .extra-attr {
+            visibility: hidden;
+            color: red;
+            display: none;
+
+            &::before {
+                content: '+';
+            }
+        }
+    }
+
+    .mi-user-package {
+        margin-bottom: 24px;
+    }
+
+    .how-to-play {
+        padding: 20px;
+        height: 338px;
+    }
+}

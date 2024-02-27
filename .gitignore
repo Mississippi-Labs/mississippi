@@ -1,1 +1,23 @@
 node_modules
+.env
+packages/contracts/src/codegen/
+packages/contracts/worlds.json
+.DS_Store
+# worlds.json
+packages/contracts/deploys/**/*.json
+packages/contracts/cache/*
+packages/contracts/out/*
+packages/contracts/node_modules/*
+packages/contracts/broadcast/*
+packages/contracts/types/*
+*.meta
+# /pnpm-lock.yaml
+
+# out for loot and user
+!packages/contracts/out/Loot.sol/
+!packages/contracts/out/User.sol/
+!packages/contracts/out/Plugin.sol/
+!packages/contracts/out/IWorld.sol/
+
+packages/client/dist/*
+.idea/*

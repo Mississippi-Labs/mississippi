@@ -1,0 +1,40 @@
+.mi-user-package {
+    width: 366px;
+
+    .package-items-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 600px;
+        padding: 12px;
+        min-height: 105px;
+        border: 5px solid #DCC7AF;
+        background: #FFF5E9;
+    }
+
+    .package-item {
+        position: relative;
+        margin-bottom: 14px;
+        width: 72px;
+        height: 72px;
+        background: #FFF5E9;
+        border: 5px solid #DCC7AF;
+
+        &:nth-child(-n+3) {
+            border-color: #DCC7AF;
+        }
+
+        .package-item-gem {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .package-item-count {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-family: Arial, "Microsoft YaHei UI", sans-serif;
+        }
+    }
+}

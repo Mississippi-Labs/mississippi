@@ -1,0 +1,228 @@
+.static-info {
+    font-family: MISS, sans-serif;
+    word-spacing: 10px;
+
+    .mi-section {
+        position: relative;
+        padding-top: 86px;
+        width: 1280px;
+        margin: 0 auto;
+
+        .play-btn {
+            display: block;
+            margin: 40px auto;
+            width: 216px;
+            height: 66px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+    }
+
+    .mi-section2 {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .mi-section-video {
+        color: #fff;
+        width: 1280px;
+        margin: 0 auto;
+
+        h2 {
+            margin: 20px auto;
+        }
+    }
+
+    .mi-home-desc {
+        position: relative;
+
+        .mi-home-desc-title-wrap {
+            position: relative;
+            padding: 0 38px;
+            text-align: center;
+
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                width: 40px;
+                height: 60px;
+                background: url("../../assets/img/title_bg.png") no-repeat center;
+            }
+
+            &:before {
+                left: 0;
+            }
+
+            &:after {
+                right: 0;
+                transform: rotateY(180deg);
+            }
+        }
+
+        h2 {
+            background: #55225e;
+            font-size: 18px;
+            line-height: 60px;
+            color: #fae1cc;
+        }
+
+        p {
+            padding: 44px 120px;
+            font-size: 16px;
+            line-height: 42px;
+            color: #55225e;
+            text-align: center;
+            background: url("../../assets/img/desc_bg.png") no-repeat center / 100% 100%;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 10px;
+        }
+
+        .p1 {
+            left: -10px;
+            bottom: 16px;
+        }
+
+        .p2 {
+            right: 10px;
+            //transform: rotateY(180deg);
+        }
+    }
+
+
+    .mi-home-desc-wrapper {
+        padding-top: 20px;
+        color: #fff;
+
+        dl {
+            margin-bottom: 20px;
+            padding: 16px 30px;
+            border-radius: 16px;
+            background: rgb(0, 0, 0, 0.5);
+        }
+
+        dt {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        dd {
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            word-spacing: 0;
+            line-height: 1.5;
+        }
+    }
+
+    .mi-section-faq {
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .faq-wrapper {
+            color: #fff;
+
+            dl {
+                padding: 24px 32px;
+                border-radius: 16px;
+                background: rgba(0, 0, 0, 0.5);
+                margin-bottom: 10px;
+                cursor: pointer;
+            }
+
+            dt {
+                position: relative;
+                font-size: 18px;
+
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 16px;
+                    right: 20px;
+                    width: 21px;
+                    height: 12px;
+                    transform: rotate(180deg);
+                    transition: all 0.3s;
+                    background: url("../../assets/img/btn_3.png");
+                }
+
+                &.active::after {
+                    transform: rotate(0);
+                }
+            }
+
+            dd {
+                display: none;
+                font-size: 20px;
+                font-family: Arial, sans-serif;
+                word-spacing: 0;
+                padding-top: 10px;
+                line-height: 2;
+                text-shadow: 0 4px 4px #00000040;
+            }
+
+            dt.active + dd {
+                display: block;
+            }
+        }
+    }
+
+    .mi-section-last {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .players {
+            width: 250px;
+            height: 180px;
+        }
+
+
+        .player-desc {
+            font-size: 22px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .backed-by-wrapper {
+            margin-top: 40px;
+            color: #fff;
+            ul {
+                margin-top: 24px;
+            }
+            li {
+                display: flex;
+                margin-bottom: 24px;
+                align-items: center;
+
+                img {
+                    margin-right: 24px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+        }
+    }
+}
+
+@keyframes move {
+    from {
+        top: 36px;
+    }
+
+    to {
+        top: 46px;
+    }
+}
