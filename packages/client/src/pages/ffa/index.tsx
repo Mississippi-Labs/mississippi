@@ -17,7 +17,7 @@ const FFA = () => {
 
   return (
     <div className={'ffa-page'}>
-      <Header/>
+      <Header />
 
       <section className={'ffa-section'}>
         <div className="ffa-switch-wrapper">
@@ -36,7 +36,7 @@ const FFA = () => {
         </div>
         {
           tab === 'home' && <>
-            <UserInfo/>
+            <UserInfo />
             <button className="mi-btn">Mint and Go</button>
           </>
         }
@@ -59,7 +59,7 @@ const FFA = () => {
                         setDialogVisible(true);
                       }}
                     >
-                      <img src={fightIcon} alt="fight"/>
+                      <img src={fightIcon} alt="fight" />
                     </div>
                   </li>
                 </ul>

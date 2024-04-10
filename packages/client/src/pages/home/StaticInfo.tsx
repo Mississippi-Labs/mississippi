@@ -27,7 +27,7 @@ interface IProps {
 
 const StaticInfo = (props: IProps) => {
   const { onPlay, isOpen } = props;
-
+˝
   const [faqActiveIndex, setFaqActiveIndex] = useState(-1);
   SwiperCore.use([Mousewheel]);
 

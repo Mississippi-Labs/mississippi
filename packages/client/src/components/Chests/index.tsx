@@ -41,7 +41,7 @@ const Chests = (props: IProps) => {
           return (
             <Container position={[item.x * cellSize, item.y * cellSize]} key={item.id}>
               {
-                openingBox === item.id && <ProgressBar width={cellSize} animate={true}/>
+                openingBox === item.id && <ProgressBar width={cellSize} animate={true} />
               }
               <Sprite
                 width={cellSize}
