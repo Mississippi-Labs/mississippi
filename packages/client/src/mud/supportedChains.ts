@@ -15,7 +15,6 @@ import { sepolia, arbitrumGoerli } from 'viem/chains'
 
 arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.publicnode.com'];
 arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.publicnode.com'];
-arbitrumGoerli.indexerUrl = [ 'https://indexer_arb.0xmssp.xyz/trpc'];
 
 
 const testnet = {
@@ -33,7 +32,23 @@ const testnet = {
       webSocket: ["https://rpc1.0xmssp.xyz"],
     },
   },
-  indexerUrl: "https://indexer.0xmssp.xyz/trpc",
+}
+
+const opSepolia = {
+  name: "OP Sepolia testnet",
+  id: 11155420,
+  network: "OP Sepolia",
+  nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
+  rpcUrls: {
+    default: {
+      http: ["https://opt-sepolia.g.alchemy.com/v2/bce2VN0gO5fwujxkK1p9hR6W2sQR8smT"],
+      webSocket: ["wss://opt-sepolia.g.alchemy.com/v2/bce2VN0gO5fwujxkK1p9hR6W2sQR8smT"],
+    },
+    public: {
+      http: ["https://opt-sepolia.g.alchemy.com/v2/bce2VN0gO5fwujxkK1p9hR6W2sQR8smT"],
+      webSocket: ["wss://opt-sepolia.g.alchemy.com/v2/bce2VN0gO5fwujxkK1p9hR6W2sQR8smT"],
+    },
+  },
 }
 
 const redstone = {
@@ -75,4 +90,4 @@ const opBNB = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [mudFoundry, latticeTestnet, sepolia, arbitrumGoerli, testnet, redstone, opBNB];
+export const supportedChains: MUDChain[] = [mudFoundry, latticeTestnet, sepolia, arbitrumGoerli, testnet, redstone, opBNB, opSepolia];
