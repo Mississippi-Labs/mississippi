@@ -27,7 +27,7 @@ eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
 
 
 [profile.arb-testnet]
-eth_rpc_url = "https://arbitrum-goerli.publicnode.com"
+eth_rpc_url = "https://goerli-rollup.arbitrum.io/rpc"
 optimizer = true
 optimizer_runs = 3000
 
@@ -59,6 +59,11 @@ eth_rpc_url = "https://sepolia-rpc.scroll.io"
 
 [profile.optimism-goerli]
 eth_rpc_url = "https://goerli.optimism.io"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.optimism-sepolia]
+eth_rpc_url = "https://opt-sepolia.g.alchemy.com/v2/GMXWDyKINgtqVDG71TVa5HAzzBSUkPyv"
 optimizer = true
 optimizer_runs = 3000
 
