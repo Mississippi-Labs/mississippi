@@ -120,6 +120,7 @@ const HomeHeader = (props: IProps) => {
               <div className='network-item' onClick={() => changeNetwork(17001)}>Redstone Testnet</div>
               <div className='network-item' onClick={() => changeNetwork(421613)}>Arbitrum Goerli</div>
               <div className='network-item' onClick={() => changeNetwork(204)}>opBNB</div>
+              <div className='network-item' onClick={() => changeNetwork(11155420)}>OP Sepolia</div>
               
               <div className='network-item' >Starknet(Coming Soon)</div>
               {

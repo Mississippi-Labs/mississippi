@@ -21,7 +21,7 @@ import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
 import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
 import Loading from '@/components/Loading';
-import {BLOCK_TIME} from '@/config/chain';
+import { BLOCK_TIME } from '@/config/chain';
 import discordImg from '@/assets/img/discord.png';
 import { TALK_MAIN } from '@/config/talk';
 import { getClient } from '../../utils/client';
@@ -48,7 +48,7 @@ const Game = () => {
     network,
   } = useMUD();
 
-  const {tables, useStore, account} = network
+  const { tables, useStore, account } = network
 
   const [step, setStep] = useState(0);
 
@@ -89,7 +89,7 @@ const Game = () => {
 
   const GlobalConfigData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.GlobalConfig));
-    return records.map((e:any) => e.value);
+    return records.map((e: any) => e.value);
   });
 
   const privateKey = network.privateKey
@@ -106,17 +106,17 @@ const Game = () => {
 
   const LootList1Data = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.LootList1));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+    return records.map((e: any) => Object.assign(e.value, { addr: e.key.addr }));
   });
 
   const PlayerParamsData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.PlayerParams));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+    return records.map((e: any) => Object.assign(e.value, { addr: e.key.addr }));
   });
   const PlayerSeasonData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.PlayerSeason));
-    return records.map((e:any) => {
-      let item = Object.assign(e.value, {addr: e.key.addr})
+    return records.map((e: any) => {
+      let item = Object.assign(e.value, { addr: e.key.addr })
       // 获取PlayerParamsData.name
       let PlayerParamsDataItem = PlayerParamsData.find((player: any) => player.addr.toLocaleLowerCase() == e.key.addr.toLocaleLowerCase()) || {}
       item.name = PlayerParamsDataItem.name
@@ -126,13 +126,13 @@ const Game = () => {
 
   const PlayersData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.Player));
-    return records.map((e:any) => {
-      let playerItem = Object.assign(e.value, {addr: e.key.addr})
+    return records.map((e: any) => {
+      let playerItem = Object.assign(e.value, { addr: e.key.addr })
       //LootList1Data
       let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {};
-      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
       playerItem.equip = {
         clothes,
         handheld,
@@ -192,18 +192,18 @@ const Game = () => {
 
   const BoxListData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.BoxList));
-    return records.map((e:any) => Object.assign(e.value, {id: e.key.boxId})).filter((e: any) => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
+    return records.map((e: any) => Object.assign(e.value, { id: e.key.boxId })).filter((e: any) => e.opened == false || (e.opened && (e.oreBalance || e.treasureBalance)));
   })
 
   const BattleList1Data = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.BattleList1));
-    return records.map((e:any) => Object.assign(e.value, {id: e.key.battleId}));
+    return records.map((e: any) => Object.assign(e.value, { id: e.key.battleId }));
   });
 
   const BattleListData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.BattleList));
-    return records.map((e:any) => {
-      let battleItem = Object.assign(e.value, {id: e.key.battleId})
+    return records.map((e: any) => {
+      let battleItem = Object.assign(e.value, { id: e.key.battleId })
       // battleList
       let battle = BattleList1Data.find((e: any) => e.id == battleItem.id) || {}
       if (battle) {
@@ -224,11 +224,11 @@ const Game = () => {
     return null;
   }).filter(Boolean);
 
-  const battle:any = BattleListData.filter((item:any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
-  
+  const battle: any = BattleListData.filter((item: any) => (item.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() || item.defender.toLocaleLowerCase() == account.toLocaleLowerCase()) && !item.isEnd)[0]
+
   if (battle && !startBattleData && percentage == 100) {
-    const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker 
-    const target = PlayersData.filter((item:any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
+    const targetAddr = battle.attacker.toLocaleLowerCase() == account.toLocaleLowerCase() ? battle.defender : battle.attacker
+    const target = PlayersData.filter((item: any) => item.addr.toLocaleLowerCase() == targetAddr.toLocaleLowerCase())[0]
     const cur = PlayersData.find((player: any) => player.addr.toLocaleLowerCase() == account.toLocaleLowerCase());
     if (!battleCurPlayer) {
       setBattleCurPlayer(cur)
@@ -240,7 +240,7 @@ const Game = () => {
       setBattleId(battle.id)
     }
     setStartBattleData(true);
-  }  
+  }
   const getCollectionsFun = async (box: any) => {
     setGotBox(box);
     setModalType('getCollections');
@@ -257,7 +257,7 @@ const Game = () => {
     })
     // 转成eth
     const walletBalance = (+ethers.utils.formatEther(balance.toString())).toFixed(2)
-    setBalance(walletBalance);  
+    setBalance(walletBalance);
   }
 
   useEffect(() => {
@@ -276,7 +276,7 @@ const Game = () => {
     if (GlobalConfigData.length && percentage < 100) {
       setP()
     }
-    
+
   }, [GlobalConfigData]);
 
   const [clientData, setClientData] = useState(null)
@@ -296,7 +296,7 @@ const Game = () => {
     }
     setMsgMap({ ...msgMap });
     console.log(msg, 'show')
-    
+
     let playerIndex = playerList.current.findIndex((item) => item.addr.toLocaleLowerCase() == network.account.toLocaleLowerCase())
     let player = playerList.current[playerIndex]
     // console.log(player, playerList.current)
@@ -337,7 +337,7 @@ const Game = () => {
             let lastMsg = client.message.messageList[client.message.messageList.length - 1]
             showMsg(lastMsg)
           }
-          
+
         }
         client.on('channel.getList', handleEvent)
         client.on('message.getList', handleEvent);
@@ -350,7 +350,7 @@ const Game = () => {
         let msg = await client.message.getMessageList({
           page: 1,
           size: 1,
-        }, groupId); 
+        }, groupId);
       } catch (error) {
         console.log(error)
       }
@@ -451,11 +451,11 @@ const Game = () => {
     //   let addon = useStore.getState().getValue(tables.Addon, { userId: player.addr })
     //   let userTokenId = addon.userId.toString()
     //   let lootTokenId = addon.lootId.toString()
-  
+
     //   let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
     //   let url = urls[0]
     //   let lootUrl = urls[1]
-    
+
     //   url = atobUrl(url)
     //   lootUrl = atobUrl(lootUrl)
 
@@ -464,7 +464,7 @@ const Game = () => {
     // }
 
     player.seasonOreBalance = PlayerSeasonData.filter((item) => item.addr.toLocaleLowerCase() == player.addr.toLocaleLowerCase())[0]?.oreBalance
-    
+
     setUserInfoPlayer(player);
     setUserInfoVisible(true);
   }
@@ -476,7 +476,7 @@ const Game = () => {
         await goHome();
         if (curPlayer.oreBalance > 0) {
           console.log('submitGem')
-          setGotBox({oreBalance: curPlayer.oreBalance});
+          setGotBox({ oreBalance: curPlayer.oreBalance });
           await submitGem();
           setModalType('submitGem');
           setModalVisible(true);
@@ -501,7 +501,7 @@ const Game = () => {
       if (curPlayer?.state == 1) {
         message.loading('join battlefield')
         await joinBattlefield()
-        message.destroy() 
+        message.destroy()
       }
       setUserInfoVisible(false);
       setUserInfoPlayer(null);
@@ -528,7 +528,7 @@ const Game = () => {
   }
 
   const setStartBattle = async (player) => {
-    const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, {x: player.x, y: player.y}).slice(1);
+    const paths = bfs(simpleMapData, { x: curPlayer.x, y: curPlayer.y }, { x: player.x, y: player.y }).slice(1);
     let res = await battleInvitation(player.addr, formatMovePath(paths));
     if (res) {
       // setTargetPlayer(player);
@@ -602,24 +602,24 @@ const Game = () => {
       }}
     >
       <div className="mi-game" tabIndex={0}>
-      <div className="mi-game-head">
-        <div className="mi-game-user-avatar">
-          <UserAvatar
-            {...(curPlayer ?? {})}
-            balance={balance}
-            address={account}
-          />
+        <div className="mi-game-head">
+          <div className="mi-game-user-avatar">
+            <UserAvatar
+              {...(curPlayer ?? {})}
+              balance={balance}
+              address={account}
+            />
+          </div>
+          <Header onlyRight={true} />
         </div>
-        <Header onlyRight={true} />
-      </div>
         {
           percentage < 100 ?
-            <Loading percent={percentage}/>
+            <Loading percent={percentage} />
             :
-            <PIXIAPP/>
+            <PIXIAPP />
         }
         {
-          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} onSkip={onSkip} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1}  /> : null
+          (curPlayer && percentage == 100 && (talked == 'false')) ? <Talk onNext={onNext} onSkip={onSkip} text={TALK_MAIN[step].text} sample={TALK_MAIN[step].img} step={step + 1} /> : null
         }
         <div className="discord">
           <a href="https://discord.gg/UkarGN9Fjn" target="_blank"><img src={discordImg} /></a>
@@ -645,7 +645,7 @@ const Game = () => {
             />
           )
         }
-        
+
 
         <Modal
           visible={modalVisible}
@@ -655,14 +655,14 @@ const Game = () => {
         >
           <div className={'mi-modal-content-wrapper'}>
             <div className="mi-modal-content">
-              { 
+              {
                 modalType === 'submitGem' ? <div className="mi-modal-title">Congrats,you submitted {gotBox?.oreBalance} gems!</div> : null
               }
               {
                 modalType === 'getCollections' ? <div className="mi-modal-title">{gotBox?.oreBalance ? `Congrats,you got ${gotBox?.oreBalance} gems!` : `oops! It's an empty box`}</div> : null
               }
               <div className="mi-treasure-chest-wrapper">
-                <div className="mi-treasure-chest"/>
+                <div className="mi-treasure-chest" />
               </div>
             </div>
             <div className="mi-modal-footer">
@@ -671,7 +671,7 @@ const Game = () => {
           </div>
         </Modal>
         {
-          percentage === 100 && <Leaderboard boxesCount={BoxListData.length}  leaderboard={PlayerSeasonData} />
+          percentage === 100 && <Leaderboard boxesCount={BoxListData.length} leaderboard={PlayerSeasonData} />
         }
 
         {

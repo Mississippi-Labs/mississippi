@@ -9,7 +9,7 @@ import { message } from 'antd';
 import CountDown from '@/hooks/useCountDown';
 import GameContext from '@/context';
 
-let interval:any = null
+let interval: any = null
 let nonceHex = ''
 
 let curType = ''
@@ -19,7 +19,7 @@ let isFirst = false
 export default function Battle(props) {
   const duel = useRef<IDuelFieldMethod>();
 
-  let {battleId, curPlayer, targetPlayer} = props
+  let { battleId, curPlayer, targetPlayer } = props
   const [tacticsStep, setTacticsStep] = useState(1);
   const [confirmBattleData, setConfirmBattleData] = useState([]);
   const [battleData, setBattleData] = useState({});
@@ -55,13 +55,13 @@ export default function Battle(props) {
     if (seconds == 0) {
       forceEndFun()
     } else {
-      return (<p style={{height: '20px', background: '#fff', width: (seconds / 30 * 100) + '%'}}>{seconds}</p>)
+      return (<p style={{ height: '20px', background: '#fff', width: (seconds / 30 * 100) + '%' }}>{seconds}</p>)
     }
   }
 
   const forceEndFun = async () => {
     try {
-      let resultBattle:any = await forceEnd(battleId)
+      let resultBattle: any = await forceEnd(battleId)
       if (resultBattle?.type && resultBattle?.type == 'error') {
       } else if (resultBattle?.isEnd && resultBattle?.winner) {
         isFirst = true
@@ -316,7 +316,7 @@ export default function Battle(props) {
     )
   }
 
-  const confirmBattleFun = async (arg:Number) => {
+  const confirmBattleFun = async (arg: Number) => {
     if (battleState != 0) return
     let action = confirmBattleData[0] || 'attack'
     let actionHex = ethers.utils.formatBytes32String(action);
@@ -335,12 +335,12 @@ export default function Battle(props) {
       if (curType == 'attacker' && data?.attackerState == 0) {
         setBattleState(0)
         localStorage.removeItem('confirmBattleData')
-        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        setTimeout(() => { confirmBattleFun(arg) }, 100)
         return
       } else if (curType == 'defender' && data?.defenderState == 0) {
         setBattleState(0)
         localStorage.removeItem('confirmBattleData')
-        setTimeout(() => {confirmBattleFun(arg)}, 100)
+        setTimeout(() => { confirmBattleFun(arg) }, 100)
         return
       }
       setTimeout(() => {
@@ -383,7 +383,7 @@ export default function Battle(props) {
               <div className="mi-battle-character-card" >
                 <div className="mi-battle-character-card-hp">
                   <div className='user-info'>
-                    <div style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis'}}>{targetPlayer?.name}</div>
+                    <div style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>{targetPlayer?.name}</div>
                     <div>ATK:{targetPlayer?.attack.toString()}</div>
                   </div>
                   <div className='hp-wrap'>
@@ -407,7 +407,7 @@ export default function Battle(props) {
                 </div>
               </div>
             </div>
-            <div style={{position: 'absolute', top: '50px', height: '380px'}}>
+            <div style={{ position: 'absolute', top: '50px', height: '380px' }}>
               <DuelField
                 ref={duel}
                 leftPlayer={curPlayer}
@@ -432,24 +432,24 @@ export default function Battle(props) {
                     }
                   </div> : battleState == 3 ? getDom() : battleState == 4 ? <p>{battle?.winner.toLocaleLowerCase() == curPlayer.addr.toLocaleLowerCase() ? `You win the battle! Click anywhere on the screen to continue you adventure` : `You loss the battle! Don't worry. Click anywhere on the screen to return to the Base`}</p> : null
                 }
-                
+
               </div>
               <div className='battle-tactics'>
                 {
-                  tacticsStep == 1 ? (<div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF'}}>
+                  tacticsStep == 1 ? (<div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF' }}>
                     <div className='tactics-item' onClick={() => setTacticsStepFun(2, 'attack')}>Attack</div>
                     <div className='tactics-item bag'>Bag</div>
                     <div className='tactics-item' onClick={() => setTacticsStepFun(2, 'escape')}>Escape</div>
                   </div>) : tacticsStep == 2 ? (
-                    <div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF'}} >
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: battleState != 0 ? 'rgba(217, 217, 217, 0.58)' : '#FFF' }} >
                       <div className='tactics-item' onClick={() => setSelectTactic(1)}>Sprint</div>
                       <div className='tactics-item' onClick={() => setSelectTactic(2)}>Sneak</div>
                       <div className='tactics-item' onClick={() => setSelectTactic(3)}>Magic</div>
-                      <div className='tactics-item' onClick={() => setTacticsStepFun(1)}><span style={{transform: 'rotate(180deg)', marginBottom: '2px', marginRight: '4px'}}>→</span>Back</div>
+                      <div className='tactics-item' onClick={() => setTacticsStepFun(1)}><span style={{ transform: 'rotate(180deg)', marginBottom: '2px', marginRight: '4px' }}>→</span>Back</div>
                     </div>
                   ) : null
                 }
-                
+
               </div>
             </div>
           </div>

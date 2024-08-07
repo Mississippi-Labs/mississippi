@@ -15,15 +15,15 @@ const Appearance = (props: IProps) => {
 
   return (
     <div className={`mi-appearance-wrapper ${toward === 'Right' ? 'appearance-right' : ''}`}>
-      <img src={'/assets/img/duck/default.png'} alt="" className={'user-appearance'}/>
+      <img src={'/assets/img/duck/default.png'} alt="" className={'user-appearance'} />
       {
-        clothes && <img src={`/assets/img/duck/Clothes/${clothes}.png`} alt=""/>
+        clothes && <img src={`/assets/img/duck/Clothes/${clothes}.png`} alt="" />
       }
       {
-        handheld && <img src={`/assets/img/duck/Handheld/${handheld}.png`} alt=""/>
+        handheld && <img src={`/assets/img/duck/Handheld/${handheld}.png`} alt="" />
       }
       {
-        head && <img src={`/assets/img/duck/Head/${head}.png`} alt=""/>
+        head && <img src={`/assets/img/duck/Head/${head}.png`} alt="" />
       }
     </div>
   );

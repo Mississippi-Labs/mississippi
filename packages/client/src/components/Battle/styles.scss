@@ -65,6 +65,7 @@
         box-sizing: border-box;
         position: relative;
         width: 300px;
+
         // left: 40px;
         .user-info {
           display: flex;
@@ -78,6 +79,7 @@
           line-height: normal;
           margin-bottom: 8px;
         }
+
         .hp-wrap {
           border: 4px solid #2d2d2d;
           height: 30px;
@@ -86,6 +88,7 @@
           width: 280px;
           position: relative;
           box-sizing: border-box;
+
           .hp-text {
             display: flex;
             align-items: center;
@@ -98,8 +101,9 @@
             line-height: 1;
             box-sizing: border-box;
           }
-          
+
         }
+
         .hp-loss {
           position: absolute;
           right: -60px;
@@ -113,6 +117,7 @@
           transform: rotate(-10.07deg);
           -webkit-text-stroke: 1px #000;
         }
+
         .confirm-info {
           position: absolute;
           top: -50px;
@@ -121,6 +126,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+
           img {
             margin-right: 12px;
             width: 36px;
@@ -133,9 +139,11 @@
         &.attack {
           transform: translateX(400px);
         }
+
         &.back {
           transform: translateX(-30px);
         }
+
         img {
           transform: scaleX(-1);
         }
@@ -145,10 +153,12 @@
         &.attack {
           transform: translateX(-400px);
         }
+
         &.back {
           transform: translateX(30px);
         }
       }
+
       .dark-attacker {
         position: relative;
         top: 20px;
@@ -177,12 +187,15 @@
       font-size: 16px;
       font-style: normal;
       font-weight: 400;
-      line-height: 26px; /* 162.5% */
+      line-height: 26px;
+
+      /* 162.5% */
       .character-info {
         color: #000;
       }
     }
   }
+
   .battle-action {
     margin-top: 14px;
     font-family: MISS;
@@ -196,6 +209,7 @@
     line-height: normal;
     position: relative;
     z-index: 9;
+
     .action-step {
       width: 510px;
       flex: 0 0 510px;
@@ -206,6 +220,7 @@
       box-sizing: border-box;
       line-height: 2;
     }
+
     .battle-tactics {
       flex: 1;
       height: 108px;
@@ -214,6 +229,7 @@
       padding: 22px;
       box-sizing: border-box;
       margin-left: 20px;
+
       .tactics-item {
         width: 130px;
         flex: 0 0 130px;
@@ -222,6 +238,7 @@
         cursor: pointer;
         display: flex;
         align-items: center;
+
         &.bag {
           color: rgba(217, 217, 217, 0.58);
           cursor: default;
@@ -247,10 +264,12 @@
         height: 64px;
         margin-right: 39px;
         cursor: pointer;
+
         .icon-bg {
           width: 64px;
           height: 64px;
         }
+
         .icon-btn {
           width: 64px;
           height: 64px;
@@ -261,15 +280,18 @@
           bottom: 0;
           margin: auto;
         }
+
         &.icon-r {
           margin-left: 17px;
           margin-right: 0;
+
           .icon-btn {
             width: 64px;
             height: 64px;
           }
         }
       }
+
       img {
         width: 64px;
         height: 64px;
@@ -310,10 +332,12 @@
         margin: 16px auto;
         position: relative;
         cursor: pointer;
+
         img {
           width: 179px;
           height: 59px;
         }
+
         .confirm-text {
           position: absolute;
           left: 0;
@@ -330,7 +354,7 @@
           font-size: 18px;
           font-style: normal;
           font-weight: 400;
-          line-height: normal; 
+          line-height: normal;
         }
       }
     }
@@ -344,6 +368,7 @@
   border-radius: 7px;
   background: #DCC7AF;
   box-shadow: 5px 4px 4px -1px rgba(0, 0, 0, 0.25);
+
   .info-title {
     padding: 25px 18px 0;
     box-sizing: border-box;
@@ -354,10 +379,12 @@
     font-weight: 400;
     line-height: normal;
   }
+
   .action-section {
     margin-top: 48px;
     padding: 0 18px;
     box-sizing: border-box;
+
     .section-title {
       margin-bottom: 8px;
       font-family: MISS;
@@ -366,14 +393,17 @@
       font-weight: 400;
       text-transform: capitalize;
     }
+
     .action-item {
       margin-bottom: 16px;
       display: flex;
       align-items: center;
+
       img {
         width: 42px;
         height: 42px;
       }
+
       p {
         margin-left: 25px;
         font-family: MISS;
@@ -384,10 +414,12 @@
       }
     }
   }
+
   .tactic-section {
     padding: 0 9px;
     box-sizing: border-box;
     margin-top: 55px;
+
     .section-title {
       margin-bottom: 4px;
       font-family: MISS;
@@ -396,10 +428,12 @@
       font-weight: 400;
       text-transform: capitalize;
     }
+
     img {
       width: 26px;
       height: 26px;
     }
+
     p {
       color: #000;
       font-family: Inter;

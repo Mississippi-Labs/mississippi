@@ -48,30 +48,30 @@ const Home = () => {
   // getMUDData
   const GameConfigData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.GameConfig));
-    return records.map((e:any) => e.value);
+    return records.map((e: any) => e.value);
   });
   const GlobalConfigData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.GlobalConfig));
-    return records.map((e:any) => e.value);
+    return records.map((e: any) => e.value);
   });
   const LootList1Data = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.LootList1));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+    return records.map((e: any) => Object.assign(e.value, { addr: e.key.addr }));
   });
 
   const PlayerParamsData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.PlayerParams));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+    return records.map((e: any) => Object.assign(e.value, { addr: e.key.addr }));
   });
   const PlayerData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.Player));
-    return records.map((e:any) => {
-      let playerItem = Object.assign(e.value, {addr: e.key.addr})
+    return records.map((e: any) => {
+      let playerItem = Object.assign(e.value, { addr: e.key.addr })
       //LootList1Data
       let loot = LootList1Data.find((loot: any) => loot.addr == e.key.addr) || {}
-      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let clothes = loot?.chest?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let handheld = loot?.weapon?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let head = loot?.head?.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
       playerItem.equip = {
         clothes,
         handheld,
@@ -86,7 +86,7 @@ const Home = () => {
 
   const PlayerAddonData = useStore((state: any) => {
     const records = Object.values(state.getRecords(tables.PlayerAddon));
-    return records.map((e:any) => Object.assign(e.value, {addr: e.key.addr}));
+    return records.map((e: any) => Object.assign(e.value, { addr: e.key.addr }));
   });
 
   const curPlayer = PlayerData.find((player: any) => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
@@ -103,17 +103,17 @@ const Home = () => {
     userContract = new ethers.Contract(userContractAddress, userAbi, wallet)
     lootContract = new ethers.Contract(lootContractAddress, lootAbi, wallet)
     pluginContract = new ethers.Contract(pluginContractAddress, pluginAbi, wallet)
-    userContract?.getUserTokenIdList().then((res:any) => {
+    userContract?.getUserTokenIdList().then((res: any) => {
       userTokenIds = res
     })
-    lootContract?.getUserTokenIdList().then((res:any) => {
+    lootContract?.getUserTokenIdList().then((res: any) => {
       lootTokenIds = res
     })
   }
 
   console.log(PlayerAddonData, GameConfigData, GlobalConfigData, LootList1Data, PlayerData, 'PlayerAddonData, GameConfigData, SyncProgressData, GlobalConfigData, LootList1Data, PlayerData')
 
-  const syncprogress = {percentage: 100}
+  const syncprogress = { percentage: 100 }
   // isOpen
   const [isOpen, setIsOpen] = useState(import.meta.env.VITE_IS_OPEN == 'true' ? true : false);
 
@@ -144,7 +144,7 @@ const Home = () => {
       setHead(curPlayer?.equip?.head);
       setPlayer(curPlayer);
     }
-    
+
     // const address = localStorage.getItem(UserAddressKey);
     // if (address) {
     //   setWalletAddress(address);
@@ -199,8 +199,8 @@ const Home = () => {
 
   const toObject = (obj) => {
     return JSON.parse(JSON.stringify(obj, (key, value) => typeof value === 'bigint' ? value.toString() : value
-  ))
-}
+    ))
+  }
 
   const mintAndGo = async (type, uName) => {
     if (syncprogress?.percentage != 100) {
@@ -230,7 +230,7 @@ const Home = () => {
       }
       let userTokenId = userTokenIds[0].toString()
       let lootTokenId = lootTokenIds[0].toString()
-  
+
       // let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
       // let url = urls[0]
       // let lootUrl = urls[1]
@@ -248,9 +248,9 @@ const Home = () => {
 
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
 
-      let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
-      let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g,"")
+      let clothes = lootData.chest.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let handheld = lootData.weapon.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
+      let head = lootData.head.replace(/"(.*?)"/, '').split(' of')[0].replace(/^\s+|\s+$/g, "")
       setPlayer(playerData)
       setClothes(clothes);
       setHandheld(handheld);
@@ -262,7 +262,7 @@ const Home = () => {
         head,
       }
 
-      let player = Object.assign(playerData, {username: username || uName, clothes, handheld, head})
+      let player = Object.assign(playerData, { username: username || uName, clothes, handheld, head })
       console.log(player, 'player', username, uName)
       await Promise.all([setInfo(username || uName, ''), joinBattlefield()])
       setMinting(false);
@@ -353,10 +353,10 @@ const Home = () => {
               <h2 className="mint-title">HOME</h2>
               <UserInfo clothes={clothes} handheld={handheld} head={head} userUrl={userUrl} lootUrl={lootUrl} player={player} />
               <button className="mi-btn" onClick={mintAndGo} disabled={minting}>
-                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO': `Waiting for sync... ${getProgress()}`}
+                {syncprogress?.percentage == 100 ? minting ? 'Loading...' : (userTokenIds?.length && lootTokenIds?.length) ? 'Join The Game' : 'MINT AND GO' : `Waiting for sync... ${getProgress()}`}
               </button>
               {
-                minting ? <div style={{textAlign: 'center', fontSize: '12px'}}>The minting process may take up to several tens of seconds</div> : null
+                minting ? <div style={{ textAlign: 'center', fontSize: '12px' }}>The minting process may take up to several tens of seconds</div> : null
               }
             </div>
           </div>
