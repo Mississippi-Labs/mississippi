@@ -87,7 +87,7 @@ optimizer_runs = 3000
 
 
 [profile.arbitrum-sepolia]
-eth_rpc_url = "https://arb-sepolia.g.alchemy.com/v2/yeoUWWVKUqgftBb9QT5MB_RGPKlPN3At"
+eth_rpc_url = "https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"
 optimizer = true
 optimizer_runs = 3000
 
