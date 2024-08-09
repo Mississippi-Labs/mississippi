@@ -38,13 +38,11 @@ const HomeHeader = (props: IProps) => {
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
-    console.log(wallet, 'wallet')
     let transferGas = TRANSFER_GAS[network.walletClient?.chain?.id || 31337]
     wallet.sendTransaction({
       to,
       value: ethers.utils.parseEther(transferGas)
     }).then(res => {
-      console.log(res, 'res')
       transfering = false
       getBalance()
     }).catch(err => {
