@@ -115,10 +115,6 @@ const HomeHeader = (props: IProps) => {
           select ? <div>
             <div className='network-list'>
               <div className='network-item' onClick={() => changeNetwork(421614)}>Arbitrum Sepolia</div>
-              <div className='network-item' onClick={() => changeNetwork(204)}>opBNB</div>
-              <div className='network-item' onClick={() => changeNetwork(11155420)}>OP Sepolia</div>
-              
-              <div className='network-item' >Starknet(Coming Soon)</div>
               {
                 import.meta.env.DEV ? <div className='network-item' onClick={() => changeNetwork(31337)}>Foundry</div> : null
               }

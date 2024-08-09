@@ -30,7 +30,8 @@ const arbSepolia = {
       http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
       webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
     },
-  }
+  },
+  indexerUrl: 'https://indexer.lidamao.tech'
 };
 
 const opSepolia = {
