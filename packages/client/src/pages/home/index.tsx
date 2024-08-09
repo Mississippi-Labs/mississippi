@@ -183,10 +183,15 @@ const Home = () => {
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
             console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds', tokenIds)
-            let revealres = await pluginContract.multRevealNFT(lootTokenIds[0].toString(), userTokenIds[0].toString())
-            console.log(revealres, 'revealres')
-            await revealres.wait()
-            resolve('success')
+            try {
+              let revealres = await pluginContract.multRevealNFT(lootTokenIds[0].toString(), userTokenIds[0].toString())
+              console.log(revealres, 'revealres')
+              await revealres.wait()
+              resolve('success')
+            } catch (error) {
+              mintAndGo('mint', usernameRef.current.value)
+            }
+            
           }
         }, 1000)
       } catch (error) {
