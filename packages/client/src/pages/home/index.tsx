@@ -177,11 +177,12 @@ const Home = () => {
         let blockNumber = await network.publicClient.getBlockNumber()
         let interval = setInterval(async () => {
           let currentBlockNumber = await network.publicClient.getBlockNumber()
-          if (currentBlockNumber - blockNumber >= 2) {
+          if (currentBlockNumber - blockNumber >= 3) {
             clearInterval(interval)
             let tokenIds = await Promise.all([userContract.getUserTokenIdList(), lootContract.getUserTokenIdList()])
             userTokenIds = tokenIds[0]
             lootTokenIds = tokenIds[1]
+            console.log(userTokenIds, lootTokenIds, 'userTokenIds, lootTokenIds', tokenIds)
             let revealres = await pluginContract.multRevealNFT(lootTokenIds[0].toString(), userTokenIds[0].toString())
             console.log(revealres, 'revealres')
             await revealres.wait()
