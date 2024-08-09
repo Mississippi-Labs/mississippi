@@ -20,9 +20,11 @@ contract PostDeploy is Script {
 
     console.log(" ========== PostDeploy  ========== ");
 
-    address muser = 0xEc30f284Ca8fD19967Ec2BbD07c2dc3B24A8D445;
-    address mloot = 0x621C0403Fc19272043119389F63dE68F493184D1;
-    address mplugin = 0x0B4aD32Cc29823FE7ff3A8E83BCe1B8689d13EB8;
+
+
+    address muser = 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35;
+    address mloot = 0xA15BB66138824a1c7167f5E85b957d04Dd34E468;
+    address mplugin = 0xb19b36b1456E65E3A6D514D3F715f204BD59f431;
 
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 

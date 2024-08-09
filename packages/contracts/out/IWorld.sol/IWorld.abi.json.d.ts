@@ -709,7 +709,7 @@ declare const abi: [
       {
         "name": "encodedLengths",
         "type": "bytes32",
-        "internalType": "PackedCounter"
+        "internalType": "EncodedLengths"
       },
       {
         "name": "dynamicData",
@@ -743,7 +743,7 @@ declare const abi: [
       {
         "name": "encodedLengths",
         "type": "bytes32",
-        "internalType": "PackedCounter"
+        "internalType": "EncodedLengths"
       },
       {
         "name": "dynamicData",
@@ -930,7 +930,7 @@ declare const abi: [
     "name": "initialize",
     "inputs": [
       {
-        "name": "coreModule",
+        "name": "initModule",
         "type": "address",
         "internalType": "contract IModule"
       }
@@ -948,7 +948,7 @@ declare const abi: [
         "internalType": "contract IModule"
       },
       {
-        "name": "args",
+        "name": "encodedArgs",
         "type": "bytes",
         "internalType": "bytes"
       }
@@ -966,7 +966,7 @@ declare const abi: [
         "internalType": "contract IModule"
       },
       {
-        "name": "args",
+        "name": "encodedArgs",
         "type": "bytes",
         "internalType": "bytes"
       }
@@ -1203,9 +1203,9 @@ declare const abi: [
         "internalType": "string"
       },
       {
-        "name": "systemFunctionSelector",
-        "type": "bytes4",
-        "internalType": "bytes4"
+        "name": "systemFunctionSignature",
+        "type": "string",
+        "internalType": "string"
       }
     ],
     "outputs": [
@@ -1252,7 +1252,7 @@ declare const abi: [
       {
         "name": "system",
         "type": "address",
-        "internalType": "contract WorldContextConsumer"
+        "internalType": "contract System"
       },
       {
         "name": "publicAccess",
@@ -1319,6 +1319,19 @@ declare const abi: [
         "name": "fieldNames",
         "type": "string[]",
         "internalType": "string[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "renounceOwnership",
+    "inputs": [
+      {
+        "name": "namespaceId",
+        "type": "bytes32",
+        "internalType": "ResourceId"
       }
     ],
     "outputs": [],
@@ -1577,7 +1590,7 @@ declare const abi: [
       {
         "name": "encodedLengths",
         "type": "bytes32",
-        "internalType": "PackedCounter"
+        "internalType": "EncodedLengths"
       },
       {
         "name": "dynamicData",
@@ -1803,6 +1816,32 @@ declare const abi: [
   },
   {
     "type": "function",
+    "name": "unregisterDelegation",
+    "inputs": [
+      {
+        "name": "delegatee",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "unregisterNamespaceDelegation",
+    "inputs": [
+      {
+        "name": "namespaceId",
+        "type": "bytes32",
+        "internalType": "ResourceId"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "unregisterStoreHook",
     "inputs": [
       {
@@ -1921,7 +1960,7 @@ declare const abi: [
         "name": "encodedLengths",
         "type": "bytes32",
         "indexed": false,
-        "internalType": "PackedCounter"
+        "internalType": "EncodedLengths"
       },
       {
         "name": "dynamicData",
@@ -1949,6 +1988,12 @@ declare const abi: [
         "internalType": "bytes32[]"
       },
       {
+        "name": "dynamicFieldIndex",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "uint8"
+      },
+      {
         "name": "start",
         "type": "uint48",
         "indexed": false,
@@ -1964,7 +2009,7 @@ declare const abi: [
         "name": "encodedLengths",
         "type": "bytes32",
         "indexed": false,
-        "internalType": "PackedCounter"
+        "internalType": "EncodedLengths"
       },
       {
         "name": "data",
@@ -2008,6 +2053,166 @@ declare const abi: [
   },
   {
     "type": "error",
+    "name": "EncodedLengths_InvalidLength",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_Empty",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_InvalidStaticDataLength",
+    "inputs": [
+      {
+        "name": "staticDataLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "computedStaticDataLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_StaticLengthDoesNotFitInAWord",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_StaticLengthIsNotZero",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_StaticLengthIsZero",
+    "inputs": [
+      {
+        "name": "index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_TooManyDynamicFields",
+    "inputs": [
+      {
+        "name": "numFields",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxFields",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FieldLayout_TooManyFields",
+    "inputs": [
+      {
+        "name": "numFields",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "maxFields",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Module_AlreadyInstalled",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Module_MissingDependency",
+    "inputs": [
+      {
+        "name": "dependency",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Module_NonRootInstallNotSupported",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Module_RootInstallNotSupported",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Schema_InvalidLength",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Schema_StaticTypeAfterDynamicType",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Slice_OutOfBounds",
+    "inputs": [
+      {
+        "name": "data",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "start",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "end",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "Store_IndexOutOfBounds",
     "inputs": [
       {
@@ -2024,15 +2229,15 @@ declare const abi: [
   },
   {
     "type": "error",
-    "name": "Store_InvalidDynamicDataLength",
+    "name": "Store_InvalidBounds",
     "inputs": [
       {
-        "name": "expected",
+        "name": "start",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "received",
+        "name": "end",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -2114,7 +2319,55 @@ declare const abi: [
   },
   {
     "type": "error",
+    "name": "Store_InvalidStaticDataLength",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Store_InvalidValueSchemaDynamicLength",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "Store_InvalidValueSchemaLength",
+    "inputs": [
+      {
+        "name": "expected",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "received",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Store_InvalidValueSchemaStaticLength",
     "inputs": [
       {
         "name": "expected",
@@ -2259,6 +2512,17 @@ declare const abi: [
         "name": "interfaceId",
         "type": "bytes4",
         "internalType": "bytes4"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "World_InvalidNamespace",
+    "inputs": [
+      {
+        "name": "namespace",
+        "type": "bytes14",
+        "internalType": "bytes14"
       }
     ]
   },

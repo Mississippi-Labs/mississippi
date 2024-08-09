@@ -27,9 +27,9 @@ contract BoxSystem is System {
       BoxList.setOwner(_boxId, _msgSender());
     }
 
-    uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
+    uint256 randomId = GameConfig.getRandomId();
     BoxList.setRandomId(_boxId, randomId);
-    GameConfig.setRandomId(GAME_CONFIG_KEY, randomId + 1);
+    GameConfig.setRandomId( randomId + 1);
 
     // RandomList.getAuthor(_randomId),
     RandomList.set(randomId, block.number, _msgSender());
@@ -57,7 +57,7 @@ contract BoxSystem is System {
 
     require(_box.opened == true, "Box is not opened");
 
-    if (block.timestamp < _box.openTime + BattleConfig.getMaxBoxBindTime(BATTLE_CONFIG_KEY)) {
+    if (block.timestamp < _box.openTime + BattleConfig.getMaxBoxBindTime()) {
       require(msg.sender == _box.owner, "The box is waiting for its opener, please wait");
     }
     

@@ -19,7 +19,7 @@ contract MoveSystem is System {
         // 用户自行解锁
         require(PlayerLocationLock.get(_msgSender()) != 0, "You are not locked");
         require(
-            PlayerLocationLock.get(_msgSender()) + BattleConfig.getMaxUserLocationLockTime(BATTLE_CONFIG_KEY) <=
+            PlayerLocationLock.get(_msgSender()) + BattleConfig.getMaxUserLocationLockTime() <=
                 block.timestamp,
             "You are locked"
         );
@@ -28,7 +28,7 @@ contract MoveSystem is System {
 
     function move(Position[] memory moveList) external {
         require(
-            moveList.length > 0 && moveList.length <= BattleConfig.getMaxMoveDistance(BATTLE_CONFIG_KEY),
+            moveList.length > 0 && moveList.length <= BattleConfig.getMaxMoveDistance(),
             "invalid move distance"
         );
         require(moveList.length <= PlayerParams.getSpeed(_msgSender()), "exceed player speed");

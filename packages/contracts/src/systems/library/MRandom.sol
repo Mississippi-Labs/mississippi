@@ -30,7 +30,7 @@ library MRandom {
   }
 
   function requestRandom() external {
-    uint256 randomId = GameConfig.getRandomId(GAME_CONFIG_KEY);
+    uint256 randomId = GameConfig.getRandomId();
     RandomList.setAuthor(randomId, msg.sender);
     RandomList.setBlockNumber(randomId, block.number);
 

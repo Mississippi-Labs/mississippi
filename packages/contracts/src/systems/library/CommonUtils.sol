@@ -77,7 +77,7 @@ library CommonUtils {
           bytes32 leaf = keccak256(
               abi.encodePacked(info.x, ",", info.y, ",", prefer)
           );
-          bool isValidLeaf = MerkleProof.verify(info.proof, GameConfig.getMerkleRoot(GAME_CONFIG_KEY), leaf);
+          bool isValidLeaf = MerkleProof.verify(info.proof, GameConfig.getMerkleRoot(), leaf);
           require(isValidLeaf, "Bad position");
       }
   }

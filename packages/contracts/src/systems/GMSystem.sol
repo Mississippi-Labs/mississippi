@@ -11,9 +11,9 @@ contract GMSystem  is System {
 
     // season 
     function GetSeasonInfo() public view returns (uint256, uint256, uint256) {
-        uint256 start = Season.getStart(MAP_KEY);
-        uint256 end = Season.getEnd(MAP_KEY);
-        uint256 no = Season.getNo(MAP_KEY);
+        uint256 start = Season.getStart();
+        uint256 end = Season.getEnd();
+        uint256 no = Season.getNo();
         return (start, end, no);
     }
 
@@ -21,27 +21,27 @@ contract GMSystem  is System {
     function SetSeasonInfo(uint256 _start, uint256 _end) public {
         require (_start < _end, "start must be less than end");
         
-        uint256 now_end = Season.getEnd(MAP_KEY);
+        uint256 now_end = Season.getEnd();
         require (_start > now_end, "start must be more than prev end");
 
-        Season.setStart(MAP_KEY, _start);
-        Season.setEnd(MAP_KEY, _end);
-        uint256 no = Season.getNo(MAP_KEY);
-        Season.setNo(MAP_KEY, no+1);
+        Season.setStart( _start);
+        Season.setEnd( _end);
+        uint256 no = Season.getNo();
+        Season.setNo( no+1);
     }
 
     // merkle root
     function SetMapMerkleRoot(bytes32 _root) public {
-        GameConfig.setMerkleRoot(GAME_CONFIG_KEY, _root);
+        GameConfig.setMerkleRoot( _root);
     }
 
     // create box 
     function CreateBox(uint16 _x, uint16 _y) public {
-        uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
+        uint256 boxId = GameConfig.getBoxId();
         BoxList.setX(boxId, _x);
         BoxList.setY(boxId, _y);
         // BoxList.setDropTime(boxId, block.timestamp);
-        GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
+        GameConfig.setBoxId(boxId + 1);
     }
 
     function multCreateBox(Coordinate[] memory cList) public {
@@ -52,11 +52,11 @@ contract GMSystem  is System {
 
     // set user contract address 
     function SetUserContract(address _user) public {
-        GlobalConfig.setUserContract(GLOBAL_CONFIG_KEY, _user);
+        GlobalConfig.setUserContract( _user);
     }
 
     function setGmaeOpen(bool _b) external{
-        GameConfig.setIsOpen(GAME_CONFIG_KEY, _b);
+        GameConfig.setIsOpen( _b);
     }
 
     

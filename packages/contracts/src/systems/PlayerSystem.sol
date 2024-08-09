@@ -40,7 +40,7 @@ contract PlayerSystem is System {
   function selectUserNft(uint256 _tokenId) public {
     address sender = _msgSender();
     // Player.selectNft(_msgSender(), tokenId);
-    address userAddress = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
+    address userAddress = GlobalConfig.getUserContract();
     User user = User(userAddress);
     require(user.ownerOf(_tokenId) == sender, "You are not the owner of this NFT");
     (uint256 hp, uint256 attack, uint256 attackRange, uint256 speed, uint256 strength, uint256 space) = user
@@ -57,7 +57,7 @@ contract PlayerSystem is System {
   }
 
   function selectLootNFT(uint256 _tokenId) public {
-    address lootAddress = GlobalConfig.getLootContract(GLOBAL_CONFIG_KEY);
+    address lootAddress = GlobalConfig.getLootContract();
     Loot loot = Loot(lootAddress);
     address _sender = _msgSender();
     require(loot.ownerOf(_tokenId) == _msgSender(), "You are not the owner of this NFT");
@@ -88,7 +88,7 @@ contract PlayerSystem is System {
   }
 
   function getUserInfo(uint256 tokenId) public view returns (uint256, uint256, uint256, uint256, uint256, uint256) {
-    address userAddress = GlobalConfig.getUserContract(GLOBAL_CONFIG_KEY);
+    address userAddress = GlobalConfig.getUserContract();
     User user = User(userAddress);
     return user.getStructInfo(tokenId);
   }

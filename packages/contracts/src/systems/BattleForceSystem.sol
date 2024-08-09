@@ -18,7 +18,7 @@ contract BattleForceSystem is System {
         BattleListData memory battle = BattleList.get(_battleId);
         BattleList1Data memory battle1 = BattleList1.get(_battleId);
         require(_msgSender() == battle.attacker || _msgSender() == battle.defender, "not in battle");
-        require(block.timestamp - battle.endTimestamp > BattleConfig.getMaxTimeLimit(BATTLE_CONFIG_KEY), "battle not timeout");
+        require(block.timestamp - battle.endTimestamp > BattleConfig.getMaxTimeLimit(), "battle not timeout");
         require(battle.isEnd == false, "battle already end");
         // 可以强制结束阶段为:confirmed, revealed
 

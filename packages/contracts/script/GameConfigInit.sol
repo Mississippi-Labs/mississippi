@@ -10,7 +10,7 @@ library GameConfigInit {
   function initGameConfig() internal {
     console.log(" ========= initGameConfig");
     // bytes32 merkleRoot = 0xa969691ad8c2e97e3d516e08f5b10ee4decd5f278a5f03ac4fa3532be181c854;
-    GameConfig.setBattleId(GAME_CONFIG_KEY,1);
+    GameConfig.setBattleId(1);
     // GameConfig.set(
     //   GAME_CONFIG_KEY, //key
     //   GameConfigData({
@@ -29,13 +29,13 @@ library GameConfigInit {
   }
 
   function setInitPosition() internal {
-    GameConfig.setOriginX(GAME_CONFIG_KEY, 4);
-    GameConfig.setOriginY(GAME_CONFIG_KEY, 4);
+    GameConfig.setOriginX( 4);
+    GameConfig.setOriginY( 4);
   }
 
   function getPosition() internal view returns (uint256, uint256) {
-    uint256 x = GameConfig.getOriginX(GAME_CONFIG_KEY);
-    uint256 y = GameConfig.getOriginY(GAME_CONFIG_KEY);
+    uint256 x = GameConfig.getOriginX();
+    uint256 y = GameConfig.getOriginY();
     return (x, y);
   }
 }

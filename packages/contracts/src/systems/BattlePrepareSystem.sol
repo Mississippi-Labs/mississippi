@@ -21,8 +21,8 @@ contract BattlePrepareSystem is System {
     //实际上是送到原点
     // TODO似乎可以直接通过indexer获取,就不需要再次插入了
 
-    Player.setX(player, GameConfig.getOriginX(GAME_CONFIG_KEY));
-    Player.setY(player, GameConfig.getOriginY(GAME_CONFIG_KEY));
+    Player.setX(player, GameConfig.getOriginX());
+    Player.setY(player, GameConfig.getOriginY());
     Player.setState(player, PlayerState.Exploring);
  
   }
@@ -32,7 +32,7 @@ contract BattlePrepareSystem is System {
     PlayerData memory player = Player.get(_msgSender());
     require(player.state == PlayerState.Exploring, "You should in exploring state");
     require(
-      player.x == GameConfig.getOriginX(GAME_CONFIG_KEY) && player.y == GameConfig.getOriginY(GAME_CONFIG_KEY),
+      player.x == GameConfig.getOriginX() && player.y == GameConfig.getOriginY(),
       "You are not in the origin point"
     );
     BattleUtils._goPreparing(_msgSender());
@@ -43,7 +43,7 @@ contract BattlePrepareSystem is System {
     // 一个格子只能有一个人
     // 判断对战双方的状态是否是Exploring
     require(
-      positionList.length > 0 && positionList.length <= BattleConfig.getMaxAttackzDistance(BATTLE_CONFIG_KEY),
+      positionList.length > 0 && positionList.length <= BattleConfig.getMaxAttackzDistance(),
       "invalid attack distance"
     );
     require(positionList.length <= PlayerParams.getAttackRange(_msgSender()), "exceed player attackRange"); //Todo: temp remove
@@ -67,14 +67,14 @@ contract BattlePrepareSystem is System {
     // Player.setHp(_msgSender(), initPlayerHp(_msgSender()));
     // Player.setHp(_targetAddress, initPlayerHp(_targetAddress)); //战斗结算才需要设置hp
 
-    uint256 battleId = GameConfig.getBattleId(GAME_CONFIG_KEY);
+    uint256 battleId = GameConfig.getBattleId();
     BattleList.setAttacker(battleId, _msgSender());
     BattleList.setDefender(battleId, _targetAddress);
     BattleList.setAttackerHP(battleId, initPlayerHp(_msgSender()));
     BattleList.setDefenderHP(battleId, initPlayerHp(_targetAddress));
     // BattleList.setStartTimestamp(battleId, block.timestamp);
     // BattleList.setEndTimestamp(battleId, block.timestamp); //结束时才需要设置
-    GameConfig.setBattleId(GAME_CONFIG_KEY, battleId + 1);
+    GameConfig.setBattleId( battleId + 1);
 
     emit AttackStart(_msgSender(), _targetAddress);
   }

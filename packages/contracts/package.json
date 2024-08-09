@@ -17,7 +17,6 @@
     "deploy:opbnb": "pnpm run build && mud deploy --profile=opbnb",
     "deploy:op-sepolia": "pnpm run build && mud deploy --profile=optimism-sepolia",
     "deploy:arbitrum-sepolia": "pnpm run build && mud deploy --profile=arbitrum-sepolia",
-
     "dev": "pnpm mud dev-contracts",
     "lint": "pnpm run prettier && pnpm run solhint",
     "prettier": "prettier --write 'src/**/*.sol'",
@@ -29,7 +28,8 @@
     "@latticexyz/schema-type": "2.1.0",
     "@latticexyz/store": "2.1.0",
     "@latticexyz/world": "2.1.0",
-    "@latticexyz/world-modules": "2.1.0"
+    "@latticexyz/world-modules": "2.1.0",
+    "@openzeppelin/contracts": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

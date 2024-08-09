@@ -73,7 +73,7 @@ library BattleUtils {
       BattleList.setIsEnd(_battleId, true);
     // 处理战败方
     // 爆装备
-    uint256 boxId = GameConfig.getBoxId(GAME_CONFIG_KEY);
+    uint256 boxId = GameConfig.getBoxId();
     PlayerData memory losser = Player.get(_looser);
     BoxListData memory box;
     box.x = losser.x;
@@ -88,7 +88,7 @@ library BattleUtils {
     Player.setOreBalance(_looser, 0);
     Player.setTreasureBalance(_looser, 0);
 
-    GameConfig.setBoxId(GAME_CONFIG_KEY, boxId + 1);
+    GameConfig.setBoxId( boxId + 1);
     // 回家
     _goPreparing(_looser);
 

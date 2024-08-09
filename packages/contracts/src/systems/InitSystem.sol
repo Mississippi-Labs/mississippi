@@ -16,7 +16,7 @@ contract InitSystem is System {
     }
 
     GameConfig.set(
-      GAME_CONFIG_KEY, //key
+       //key
       GameConfigData({
         merkleRoot: _merkleRoot, //merkleRoot
         battleId: 1, //battleId,
@@ -30,7 +30,7 @@ contract InitSystem is System {
     );
     address[] memory players;
     BattleConfig.set(
-      BATTLE_CONFIG_KEY, //key
+       //key
       10, //maxAttackzDistance
       15, //maxMoveDistance,
       20, //maxTimeLimit,
@@ -38,15 +38,15 @@ contract InitSystem is System {
       10 //maxBoxBindTime
     );
     GlobalConfig.setUserContract(
-      GLOBAL_CONFIG_KEY, //key
+       //key
       _userContract
     );
     GlobalConfig.setLootContract(
-      GLOBAL_CONFIG_KEY, //key
+       //key
       _lootContract
     );
     GlobalConfig.setPluginContract(
-      GLOBAL_CONFIG_KEY, //key
+       //key
       _pluginContract
     );
   }
