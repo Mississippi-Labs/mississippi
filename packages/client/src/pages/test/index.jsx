@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { decodeEntity } from "@latticexyz/store-sync/recs";
-import { Has, getComponentValue } from '@latticexyz/recs';
 import { useLocation } from 'react-router-dom';
 import { useMUD } from '@/mud/MUDContext';
 import { main } from '../../utils/createMerkelTree';
@@ -16,8 +15,8 @@ import { Switch, Select } from 'antd';
 import { message } from 'antd';
 import MAP_CFG from '@/config/map';
 
-import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
-import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+import lootAbi from 'contracts/out/Loot.sol/MLoot.abi.json'
+import userAbi from 'contracts/out/User.sol/MUser.abi.json'
 
 let userContract
 let lootContract

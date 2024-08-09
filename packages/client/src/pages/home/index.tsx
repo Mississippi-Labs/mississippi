@@ -9,9 +9,9 @@ import { ethers } from 'ethers';
 
 import indexDuckImg from '@/assets/img/duck_index.svg';
 
-import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
-import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
-import pluginAbi from '../../../../contracts/out/Plugin.sol/MPlugin.abi.json'
+import lootAbi from 'contracts/out/Loot.sol/MLoot.abi.json'
+import userAbi from 'contracts/out/User.sol/MUser.abi.json'
+import pluginAbi from 'contracts/out/Plugin.sol/MPlugin.abi.json'
 import StaticInfo from '@/pages/home/StaticInfo';
 
 let userContract: any
@@ -90,12 +90,10 @@ const Home = () => {
   });
 
   const curPlayer = PlayerData.find((player: any) => player.addr.toLocaleLowerCase() == network?.account.toLocaleLowerCase());
-
   const privateKey = network.privateKey
   const rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
   const provider = new ethers.providers.JsonRpcProvider(rpc)
   const wallet = new ethers.Wallet(privateKey, provider)
-
   if (GlobalConfigData.length) {
     let userContractAddress = GlobalConfigData[0].userContract
     let lootContractAddress = GlobalConfigData[0].lootContract
@@ -230,21 +228,6 @@ const Home = () => {
       }
       let userTokenId = userTokenIds[0].toString()
       let lootTokenId = lootTokenIds[0].toString()
-
-      // let urls = await Promise.all([userContract.tokenURI(userTokenId), lootContract.tokenURI(lootTokenId)])
-      // let url = urls[0]
-      // let lootUrl = urls[1]
-      // console.log("get loot and user success")
-      // console.log(urls, 'url')
-      // try {
-      //   url = atobUrl(url)
-      //   lootUrl = atobUrl(lootUrl)
-      // } catch (error) {
-      //   mintAndGo('mint')
-      //   console.log(error)
-      // }
-      // setUserUrl(url.image)
-      // setLootUrl(lootUrl.image)
 
       let { playerData, lootData } = await selectBothNFT(userTokenId, lootTokenId, network.account)
 

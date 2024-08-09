@@ -10,29 +10,28 @@
  *
  */
 
-import { MUDChain, latticeTestnet, mudFoundry } from "@latticexyz/common/chains";
-import { sepolia, arbitrumGoerli } from 'viem/chains'
+import { MUDChain, mudFoundry } from "@latticexyz/common/chains";
 
-arbitrumGoerli.rpcUrls.default.http = ['https://arbitrum-goerli.publicnode.com'];
-arbitrumGoerli.rpcUrls.default.webSocket = [ 'wss://arbitrum-goerli.publicnode.com'];
-
-
-const testnet = {
-  name: "Mississippi testnet",
-  id: 33784,
-  network: "mississippi-testnet",
-  nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
+/** @deprecated This chain is deprecated and will be going offline soon. Please switch to Garnet! */
+const arbSepolia = {
+  name: "ARB Sepolia testnet",
+  id: 421614,
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ether",
+    symbol: "ETH",
+  },
   rpcUrls: {
     default: {
-      http: ["https://rpc1.0xmssp.xyz"],
-      webSocket: ["https://rpc1.0xmssp.xyz"],
+      http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
     },
     public: {
-      http: ["https://rpc1.0xmssp.xyz"],
-      webSocket: ["https://rpc1.0xmssp.xyz"],
+      http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
     },
-  },
-}
+  }
+};
 
 const opSepolia = {
   name: "OP Sepolia testnet",
@@ -51,22 +50,18 @@ const opSepolia = {
   },
 }
 
-const redstone = {
-  name: "Redstone testnet",
-  id: 17001,
-  network: "redstone-testnet",
-  nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
-  rpcUrls: {
-    default: {
-      http: ["https://rpc.holesky.redstone.xyz"],
-      webSocket: ["https://rpc.holesky.redstone.xyz"],
-    },
-    public: {
-      http: ["https://rpc.holesky.redstone.xyz"],
-      webSocket: ["https://rpc.holesky.redstone.xyz"],
-    },
-  }
-}
+// const arbSepolia = {
+//   name: "ARB Sepolia testnet",
+//   id: 421614,
+//   nativeCurrency: { decimals: 18, name: "Ether", symbol: "ETH" },
+//   iconUrls: ['https://redstone.xyz/chain-icons/redstone.png'],
+//   rpcUrls: {
+//     default: {
+//       http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+//       webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+//     }
+//   }
+// }
 
 const opBNB = {
   id: 204,
@@ -78,7 +73,7 @@ const opBNB = {
     decimals: 18,
   },
   rpcUrls: {
-    public: { 
+    public: {
       http: ['https://opbnb-mainnet-rpc.bnbchain.org'],
       webSocket: ['https://opbnb-mainnet-rpc.bnbchain.org'],
     },
@@ -90,4 +85,4 @@ const opBNB = {
  * See https://mud.dev/tutorials/minimal/deploy#run-the-user-interface
  * for instructions on how to add networks.
  */
-export const supportedChains: MUDChain[] = [mudFoundry, latticeTestnet, sepolia, arbitrumGoerli, testnet, redstone, opBNB, opSepolia];
+export const supportedChains: MUDChain[] = [mudFoundry, opBNB, opSepolia, arbSepolia, mudFoundry];

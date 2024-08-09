@@ -1,5 +1,5 @@
 [profile.default]
-solc = "0.8.21"
+solc = "0.8.24"
 ffi = false
 fuzz_runs = 256
 optimizer = true
@@ -22,9 +22,14 @@ extra_output_files = [
 ]
 fs_permissions = [{ access = "read", path = "./"}]
 
+[profile.garnet]
+eth_rpc_url = "https://rpc.garnetchain.com"
+
+[profile.redstone]
+eth_rpc_url = "https://rpc.redstonechain.com"
+
 [profile.lattice-testnet]
 eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
-
 
 [profile.arb-testnet]
 eth_rpc_url = "https://goerli-rollup.arbitrum.io/rpc"

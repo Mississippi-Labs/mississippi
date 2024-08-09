@@ -34,7 +34,7 @@ const HomeHeader = (props: IProps) => {
       PRIVATE_KEY = '0x7f5f5b59608a084ae03db047c8c4cfa79898b37c69e1c028c1e310bb28e190fd'
     } else if (network.walletClient?.chain?.id == 421613) {
       PRIVATE_KEY = '0x7f5f5b59608a084ae03db047c8c4cfa79898b37c69e1c028c1e310bb28e190fd'
-    }
+    } else {return}
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
@@ -116,9 +116,7 @@ const HomeHeader = (props: IProps) => {
         {
           select ? <div>
             <div className='network-list'>
-              <div className='network-item' onClick={() => changeNetwork(33784)}>Mississippi Testnet</div>
-              <div className='network-item' onClick={() => changeNetwork(17001)}>Redstone Testnet</div>
-              <div className='network-item' onClick={() => changeNetwork(421613)}>Arbitrum Goerli</div>
+              <div className='network-item' onClick={() => changeNetwork(421614)}>Arbitrum Sepolia</div>
               <div className='network-item' onClick={() => changeNetwork(204)}>opBNB</div>
               <div className='network-item' onClick={() => changeNetwork(11155420)}>OP Sepolia</div>
               

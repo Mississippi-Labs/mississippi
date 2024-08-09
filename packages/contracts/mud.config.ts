@@ -1,6 +1,6 @@
-import { mudConfig } from "@latticexyz/world/register";
+import { defineWorld } from "@latticexyz/world";
 
-export default mudConfig({
+export default defineWorld({
   systems: {
     BattleSystem: {
       name: "battle",
@@ -40,42 +40,36 @@ export default mudConfig({
     BattleEndType: ["NotEnd", "NormalEnd", "AllEscape", "RoundEnd"],
   },
   tables: {
-
     Season: {
-      valueSchema: {
+      schema: {
         start: "uint256",
         end: "uint256",
         no: "uint256",
-      }
+      },
+      key: [],
     },
     PlayerSeason: {
-      keySchema: {
-        addr: "address",
-      },
-      valueSchema: {
+      schema: {
         oreBalance: "uint16",//为什么要用uint16
         attackCount: "uint16",
-      }
-    },
-    Player: {
-      keySchema: {
         addr: "address",
       },
-      valueSchema: {
+      key: ["addr"],
+    },
+    Player: {
+      schema: {
         x: "uint16",
         y: "uint16",
         oreBalance: "uint16",
         treasureBalance: "uint16",
         state: "PlayerState",
-        lastBattleTime: "uint256"
-        
-      }
-    },
-    PlayerParams:{
-      keySchema: {
+        lastBattleTime: "uint256",
         addr: "address",
       },
-      valueSchema: {
+      key: ["addr"],
+    },
+    PlayerParams:{
+      schema: {
         hp: "uint256",
         attack: "uint256",
         attackRange: "uint256",
@@ -83,26 +77,27 @@ export default mudConfig({
         strength: "uint256",
         space: "uint256",
         maxHp: "uint256",
-        name: "string"
-      }
-    },
-    PlayerAddon: {
-      keySchema: {
+        name: "string",
         addr: "address",
       },
-      valueSchema: {
+      key: ["addr"],
+    },
+    PlayerAddon: {
+      schema: {
         lootId: "uint256",
-        userId: "uint256"
-      }
+        userId: "uint256",
+        addr: "address",
+      },
+      key: ["addr"],
     },
     Ownable: {
-      valueSchema: {
+      schema: {
         owner: "address",
-      }
+      },
+      key: [],
     },
     GameConfig: {
-     
-      valueSchema: {
+      schema: {
         merkleRoot: "bytes32",
         battleId: "uint256",
         randomId: "uint256",
@@ -111,49 +106,45 @@ export default mudConfig({
         roomId: "uint256",
         boxId: "uint256",
         isOpen: "bool",
-      }
+      },
+      key: [],
     },
     BattleConfig: {
-      valueSchema: {
+      schema: {
         maxAttackzDistance: "uint256",
         maxMoveDistance: "uint256",
         maxTimeLimit: "uint256",
         maxUserLocationLockTime: "uint256",
         maxBoxBindTime: "uint256",
-      }
+      },
+      key: [],
     },
     Board: {
-      keySchema: {
+      schema: {
+        x: "uint16",
+        y: "uint16",
         addr: "address"
       },
-      valueSchema: {
-        x: "uint16",
-        y: "uint16",
-      }
+      key: ['addr'],
     },
     MapBoard: {
-      keySchema: {
+      schema: {
+        addresses: "address[]",
         x: "uint16",
         y: "uint16",
       },
-      valueSchema: {
-        addresses: "address[]",
-      }
+      key: ['x', 'y'],
     },
     RandomList: {
-      keySchema: {
-        id: "uint256",
-      },
-      valueSchema: {
+      schema: {
         blockNumber: "uint256",
         author: "address",
-      }
+        id: "uint256",
+      },
+      key: ["id"],
     },
     BattleList: {
-      keySchema: {
-        battleId: "uint256",
-      },
-      valueSchema: {
+      schema: {
         attacker: "address",
         defender: "address",
         winner: "address",
@@ -161,13 +152,12 @@ export default mudConfig({
         defenderHP: "uint256",
         isEnd: "bool",
         endTimestamp: "uint256",
-      }
-    },
-    BattleList1:{
-      keySchema: {
         battleId: "uint256",
       },
-      valueSchema: {
+      key: ["battleId"],
+    },
+    BattleList1:{
+      schema: {
         attackerState: "BattleState",
         defenderState: "BattleState",
         attackerAction: "bytes32",
@@ -176,21 +166,19 @@ export default mudConfig({
         defenderBuffHash: "bytes32",
         attackerArg: "uint256",
         defenderArg: "uint256",
-      }
+        battleId: "uint256",
+      },
+      key: ["battleId"],
     },
     PlayerLocationLock: {
-      keySchema: {
+      schema: {
+        lockTime: "uint256",
         addr: "address",
       },
-      valueSchema: {
-        lockTime: "uint256",
-      }
+      key: ["addr"],
     },
     BoxList: {
-      keySchema: {
-        boxId: "uint256",
-      },
-      valueSchema: {
+      schema: {
         x: "uint16",
         y: "uint16",
         oreBalance: "uint16",
@@ -200,39 +188,41 @@ export default mudConfig({
         openTime: "uint256",
         opened: "bool",
         owner: "address",
-      }
+        boxId: "uint256",
+      },
+      key: ["boxId"],
     },
     LootList1: {
-      keySchema: {
-        addr: "address",
-      },
-      valueSchema: {
+      schema: {
         weapon: "string",
         chest: "string",
         head: "string",
         waist: "string",
         foot: "string",
-      }
-
-    },
-    LootList2: {
-      keySchema: {
         addr: "address",
       },
-      valueSchema: {
+      key: ["addr"],
+    },
+    LootList2: {
+      schema: {
         hand: "string",
         neck: "string",
-        ring: "string"
-      }
+        ring: "string",
+        addr: "address",
+      },
+      key: ["addr"],
 
     },
     GlobalConfig: {
-      dataStruct: false,
-      valueSchema: {
+      schema: {
         userContract: "address",
         lootContract: "address",
         pluginContract: "address",
-      }
+      },
+      key: [],
+      codegen: {
+        dataStruct: false,
+      },
     }
   }
 });

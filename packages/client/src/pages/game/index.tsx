@@ -17,8 +17,8 @@ import Header from '../home/header'
 import { bfs, simplifyMapData } from '@/utils/map';
 import useMerkel from '@/hooks/useMerkel';
 import { ethers } from 'ethers';
-import lootAbi from '../../../../contracts/out/Loot.sol/MLoot.abi.json'
-import userAbi from '../../../../contracts/out/User.sol/MUser.abi.json'
+import lootAbi from 'contracts/out/Loot.sol/MLoot.abi.json'
+import userAbi from 'contracts/out/User.sol/MUser.abi.json'
 import PIXIAPP from '@/components/PIXIAPP';
 import Loading from '@/components/Loading';
 import { BLOCK_TIME } from '@/config/chain';
