@@ -23,12 +23,12 @@ const arbSepolia = {
   },
   rpcUrls: {
     default: {
-      http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
-      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+      http: ["https://arb-sepolia.g.alchemy.com/v2/xQr0n2BqF1Hkkuw5_0YiEXeyQdSYoW1u"],
+      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/xQr0n2BqF1Hkkuw5_0YiEXeyQdSYoW1u"],
     },
     public: {
-      http: ["https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
-      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"],
+      http: ["https://arb-sepolia.g.alchemy.com/v2/xQr0n2BqF1Hkkuw5_0YiEXeyQdSYoW1u"],
+      webSocket: ["wss://arb-sepolia.g.alchemy.com/v2/xQr0n2BqF1Hkkuw5_0YiEXeyQdSYoW1u"],
     },
   },
   indexerUrl: 'https://indexer.lidamao.tech'
