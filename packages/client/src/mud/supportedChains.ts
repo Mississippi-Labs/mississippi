@@ -11,6 +11,7 @@
  */
 
 import { MUDChain, mudFoundry } from "@latticexyz/common/chains";
+// import { mainnet } from "viem/chains";
 
 /** @deprecated This chain is deprecated and will be going offline soon. Please switch to Garnet! */
 const arbSepolia = {

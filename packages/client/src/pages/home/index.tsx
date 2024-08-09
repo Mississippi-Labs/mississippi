@@ -261,7 +261,8 @@ const Home = () => {
     } catch (error) {
       setMinting(false);
       console.log(error)
-      message.error(error);
+      mintAndGo('mint', uName)
+      // message.error(error);
     }
   }
 
