@@ -22,9 +22,12 @@ contract PostDeploy is Script {
 
 
 
-    address muser = 0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35;
-    address mloot = 0xA15BB66138824a1c7167f5E85b957d04Dd34E468;
-    address mplugin = 0xb19b36b1456E65E3A6D514D3F715f204BD59f431;
+    address muser = 0x4C50c9Ff5466cC782c52a3c42694E68179DC7773;
+    address mloot = 0xA4581E34903524F5Bf61787cF9C77611aB545459;
+
+    address mplugin = 0xEDa2E64e337D85058A952427f26b24cbB8089F4C;
+
+
 
     bytes32 merkleRoot = 0x5df91eca63323dbb115087ef262075c5bcea99b8eaf95f520efb8d48ff447499;
 
