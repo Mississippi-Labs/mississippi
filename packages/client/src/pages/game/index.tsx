@@ -550,7 +550,8 @@ const Game = () => {
     // 每隔1s获取一次getBlockNumber
     const interval = setInterval(async () => {
       const currentBlockNumber = await network.publicClient.getBlockNumber()
-      if (currentBlockNumber - blockNumber >= 2) {
+      console.log(currentBlockNumber, blockNumber)
+      if (currentBlockNumber - blockNumber >= 5) {
         clearInterval(interval)
         let boxData = await revealBox(id)
         boxData.id = id
