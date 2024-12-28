@@ -16,7 +16,7 @@ const HeroEdit = () => {
       appearance[comp] = Hero[comp][0];
     });
 
-    setAppearance({...appearance});
+    setAppearance({ ...appearance });
   }, []);
 
   const equip = {
@@ -27,7 +27,7 @@ const HeroEdit = () => {
 
   return (
     <div className={'mi-hero-page'}>
-      <UserInfo player={{ equip, oreBalance: 3, seasonOreBalance: 6 }}/>
+      <UserInfo player={{ equip, oreBalance: 3, seasonOreBalance: 6 }} />
       {/*<div className="actions">*/}
       {/*  <select*/}
       {/*    onChange={(e) => {*/}

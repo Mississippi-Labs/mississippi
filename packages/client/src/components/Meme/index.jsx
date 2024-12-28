@@ -25,10 +25,10 @@ const Meme = (props) => {
     setIsShowAll(!isShowAll);
   }
 
-  
+
   return (
-    <div className='meme' style={{maxHeight: isShowAll ? '210px' : '70px'}}>
-      <div className='bg' style={{height: isShowAll ? 'auto' : '30px'}}>
+    <div className='meme' style={{ maxHeight: isShowAll ? '210px' : '70px' }}>
+      <div className='bg' style={{ height: isShowAll ? 'auto' : '30px' }}>
         <img src="/assets/img/meme/meme.svg" alt="" />
         <div className="btns">
           {
@@ -38,7 +38,7 @@ const Meme = (props) => {
           }
         </div>
       </div>
-      <div className='show-all' style={{transform: isShowAll ? 'rotate(0deg)' : 'rotate(180deg)'}} onClick={changeShow}>
+      <div className='show-all' style={{ transform: isShowAll ? 'rotate(0deg)' : 'rotate(180deg)' }} onClick={changeShow}>
         <img src='/assets/img/meme/arrow.svg' alt='' />
       </div>
     </div>

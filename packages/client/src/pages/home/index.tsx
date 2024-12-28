@@ -191,7 +191,7 @@ const Home = () => {
             } catch (error) {
               mintAndGo('mint', usernameRef.current.value)
             }
-            
+
           }
         }, 1000)
       } catch (error) {

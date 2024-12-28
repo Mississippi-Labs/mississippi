@@ -14,15 +14,18 @@
   transition: all 0.3s inherit;
   font-size: 0;
   overflow: hidden;
+
   .bg {
     width: 345px;
     height: auto;
     overflow: hidden;
     position: relative;
+
     img {
       width: 100%;
       height: auto;
     }
+
     .btns {
       position: absolute;
       left: 0;
@@ -35,6 +38,7 @@
       flex-wrap: wrap;
     }
   }
+
   .meme-item {
     position: relative;
     z-index: 2;
@@ -44,6 +48,7 @@
     margin-right: 2px;
     margin-bottom: 5px;
   }
+
   .show-all {
     position: absolute;
     right: 10px;
@@ -56,10 +61,11 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s inherit;
+
     img {
       width: 15px;
       height: 15px;
     }
   }
-  
+
 }

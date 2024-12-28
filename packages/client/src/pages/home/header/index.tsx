@@ -34,7 +34,7 @@ const HomeHeader = (props: IProps) => {
       PRIVATE_KEY = '0x7f5f5b59608a084ae03db047c8c4cfa79898b37c69e1c028c1e310bb28e190fd'
     } else if (network.walletClient?.chain?.id == 421613) {
       PRIVATE_KEY = '0x7f5f5b59608a084ae03db047c8c4cfa79898b37c69e1c028c1e310bb28e190fd'
-    } else {return}
+    } else { return }
     let rpc = network.walletClient?.chain?.rpcUrls?.default?.http[0] || 'http://127.0.0.1:8545'
     let provider = new ethers.providers.JsonRpcProvider(rpc)
     let wallet = new ethers.Wallet(PRIVATE_KEY, provider)
@@ -78,14 +78,14 @@ const HomeHeader = (props: IProps) => {
     window.location.href = '/'
   }
   return (
-    <div className="home-header" style={{background: props.onlyRight ? 'none' : '#020202'}}>
+    <div className="home-header" style={{ background: props.onlyRight ? 'none' : '#020202' }}>
       {
         !props.onlyRight ? (
           <div className='home-header-l'>
-          <a href="/">
-            <img src={Logo} alt="MISSISSIPPI" className="header-logo"/>
+            <a href="/">
+              <img src={Logo} alt="MISSISSIPPI" className="header-logo" />
             </a>
-            
+
             <nav className="header-nav">
               <ul className="menu-lv1">
                 {/* <li><a href="">Leaderboard</a></li> */}
@@ -95,19 +95,19 @@ const HomeHeader = (props: IProps) => {
                   <ul className="menu-lv2">
                     <li>
                       <a href="https://twitter.com/0xMississippi" target="_blank" rel="noreferrer">Twitter</a>
-                      <img src={imgTwitter} alt=""/>
+                      <img src={imgTwitter} alt="" />
                     </li>
                     <li>
                       <a href="https://discord.gg/UkarGN9Fjn" target="_blank" title="coming soon" rel="noreferrer">Discord</a>
-                      <img src={imgDiscord} alt=""/>
+                      <img src={imgDiscord} alt="" />
                     </li>
-                    
+
                   </ul>
                 </li>
               </ul>
             </nav>
           </div>
-        ) : <div className='home-header-l'/>
+        ) : <div className='home-header-l' />
       }
       <div className='select-network'>
         <button className="play-btn mi-btn" onClick={() => setSelect(true)}>{network?.walletClient?.chain?.name}</button>
@@ -119,13 +119,13 @@ const HomeHeader = (props: IProps) => {
                 import.meta.env.DEV ? <div className='network-item' onClick={() => changeNetwork(31337)}>Foundry</div> : null
               }
             </div>
-            <div className='mask' onClick={() => setSelect(false)}/>
+            <div className='mask' onClick={() => setSelect(false)} />
           </div> : null
         }
       </div>
       {
-        walletAddress ? 
-          <UserAddress address={walletAddress} account={walletBalance + (network?.walletClient?.chain?.id == 204 ? 'BNB' : 'ETH')}/>
+        walletAddress ?
+          <UserAddress address={walletAddress} account={walletBalance + (network?.walletClient?.chain?.id == 204 ? 'BNB' : 'ETH')} />
           :
           <button className="play-btn mi-btn" onClick={props.onPlayBtnClick}>PLAY NOW</button>
       }

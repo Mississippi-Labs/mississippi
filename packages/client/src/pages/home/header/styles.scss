@@ -111,9 +111,11 @@
   position: relative;
   margin-right: 15px;
   min-width: 330px;
+
   .mi-btn {
     width: 100%;
   }
+
   .mask {
     position: fixed;
     top: 0;
@@ -122,6 +124,7 @@
     right: 0;
     z-index: 99;
   }
+
   .network-list {
     position: absolute;
     top: 55px;
@@ -132,6 +135,7 @@
     border: 5px solid #BC8C61;
     background: #FCBD80;
     z-index: 999;
+
     .network-item {
       font-size: 14px;
       line-height: 32px;
@@ -139,6 +143,7 @@
       box-sizing: border-box;
       cursor: pointer;
       color: #5d2e1c;
+
       &:hover {
         background: #f5b676;
       }
