@@ -1,0 +1,72 @@
+.mi-equipment {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    background-size: 1600%;
+    background-position: 2px 4px;
+
+    .equipment-info {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        top: -80px;
+        left: 99%;
+        width: 440px;
+        padding-left: 20px;
+        height: 226px;
+
+
+        .equipment-info-content {
+            position: relative;
+            width: 420px;
+            height: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 5px solid #DCC7AF;
+            background: #FFF5E9;
+
+            &::before, &::after {
+                content: '';
+                position: absolute;
+                right: 100%;
+                top: 50%;
+                transform: translate3d(0, -50%, 0);
+            }
+
+            &::before {
+                border: 20px solid;
+                border-color: transparent #DCC7AF transparent transparent;
+            }
+
+            &::after {
+                border: 14px solid;
+                transform: translate3d(1px, -50%, 0);
+                border-color: transparent #FFF5E9 transparent transparent;
+            }
+        }
+
+        .loot-list {
+            display: flex;
+            justify-content: space-between;
+
+            .loot-item {
+                width: 120px;
+                height: 120px;
+                background: #000;
+            }
+        }
+
+        .equipment-desc {
+            margin-top: 12px;
+            font-size: 12px;
+            line-height: 1.57;
+            color: #BC8C61;
+        }
+    }
+
+    &:hover .equipment-info {
+        //display: block;
+    }
+}

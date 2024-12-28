@@ -1,5 +1,5 @@
 [profile.default]
-solc_version = "0.8.13"
+solc = "0.8.24"
 ffi = false
 fuzz_runs = 256
 optimizer = true
@@ -22,5 +22,77 @@ extra_output_files = [
 ]
 fs_permissions = [{ access = "read", path = "./"}]
 
+[profile.garnet]
+eth_rpc_url = "https://rpc.garnetchain.com"
+
+[profile.redstone]
+eth_rpc_url = "https://rpc.redstonechain.com"
+
 [profile.lattice-testnet]
 eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"
+
+[profile.arb-testnet]
+eth_rpc_url = "https://goerli-rollup.arbitrum.io/rpc"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.linea-testnet]
+eth_rpc_url = "https://linea-goerli.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.sepolia-testnet]
+eth_rpc_url = "https://sepolia.infura.io/v3/5ca372516740427e97512d4dfefd9c47"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.Mississippi-testnet]
+eth_rpc_url = "http://rpc1.0xMssp.xyz"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.REDSTONE-HOLESKY]
+eth_rpc_url = "https://rpc.holesky.redstone.xyz"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.scroll-sepolia]
+eth_rpc_url = "https://sepolia-rpc.scroll.io"
+
+[profile.optimism-goerli]
+eth_rpc_url = "https://goerli.optimism.io"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.optimism-sepolia]
+eth_rpc_url = "https://opt-sepolia.g.alchemy.com/v2/GMXWDyKINgtqVDG71TVa5HAzzBSUkPyv"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.linea-goerli]
+eth_rpc_url = "https://linea-goerli.infura.io/v3/8a5edc3264dd435391dad31e754031d6"
+optimizer = true
+optimizer_runs = 3000
+
+[profile.opbnb-test]
+eth_rpc_url = "https://opbnb-testnet-rpc.bnbchain.org"
+optimizer = true
+optimizer_runs = 3000
+
+
+[profile.opbnb]
+eth_rpc_url = "https://opbnb-mainnet-rpc.bnbchain.org"
+optimizer = true
+optimizer_runs = 3000
+
+
+
+[profile.arbitrum-sepolia]
+eth_rpc_url = "https://arb-sepolia.g.alchemy.com/v2/rDwBqKe2Zy38AF5b-GB2Y5bfH7wspLM5"
+optimizer = true
+optimizer_runs = 3000
+

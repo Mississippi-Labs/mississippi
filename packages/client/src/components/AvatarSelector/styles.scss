@@ -1,0 +1,25 @@
+
+.mi-c-avatars-wrap {
+    position: relative;
+    width: 100px;
+    height: 100px;
+
+    .avatars {
+        position: absolute;
+        top: 100%;
+        display: grid;
+        width: 400px;
+        grid-template-columns: repeat(5, 1fr);
+        background: #fff;
+
+        .avatar-item {
+            height: 80px;
+        }
+    }
+
+    .avatar-selected {
+        width: 100px;
+        height: 100px;
+    }
+
+}

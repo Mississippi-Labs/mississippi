@@ -1,0 +1,62 @@
+.mi-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .player-info {
+        position: absolute;
+        display: flex;
+        font-size: 16px;
+        font-family: MISS, sans-serif;
+        left: 0;
+        bottom: 100%;
+        width: 100%;
+    }
+
+    .mi-appearance-wrapper {
+        transform: scale(1.8);
+
+        &.appearance-right {
+            transform: rotateY(180deg) scale(1.8);
+        }
+    }
+
+    .gem-num {
+        margin-right: 10px;
+        color: #f00;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
+
+    .player-username {
+        flex: 1;
+        font-size:20px;
+        zoom:0.5;
+        color: #000;
+        text-align: center;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
+
+    .player-body {
+        //flex: 1;
+        //background: url("");
+    }
+
+    .waiting-tip {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        font-size: 12px;
+        font-family: MISS, sans-serif;
+        left: 0;
+        top: 100%;
+        width: 100%;
+        color: #000;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    }
+}
